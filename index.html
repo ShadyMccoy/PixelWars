@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Screeps AI</title>
+	<script src="./node_modules/systemjs/dist/system.js"></script>
+	<script src="./node_modules/lodash/lodash.min.js"></script>
+	<script src=./built/tsc.js></script>
+</head>
+<body>
+	<p id="p1">Hello World!</p>
+	<button onclick="initAnimate()">initAnimate</button>
+	<button onclick="Animate()">Animate</button>
+	<canvas id="backgroundCanvas" width="300" height="200" style="border:1px solid #000000;"></canvas>
+	<script>
+		var main = function(callback) { System.import('main').then(callback)};
+		function testRunner() {main(function(m) { m.runMain(); }); }
+		function initAnimate() {main(function(m) { m.initCanvas(document.getElementById("backgroundCanvas")); }); }
+		function Animate() {main(function(m) { m.animate(); }); }
+		//foo('main',function(m) { m.runMain(); },console.error.bind(console))
+	</script>
+</body>
+</html>
