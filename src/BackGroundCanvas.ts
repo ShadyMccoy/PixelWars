@@ -1,5 +1,8 @@
+import { Map } from './Map';
+
 export class BackgroundMap {
     private canvas : HTMLCanvasElement;
+    private map : Map;
     private CurrentView : MapView;
     private ctx: CanvasRenderingContext2D;
 
@@ -9,13 +12,27 @@ export class BackgroundMap {
     }
 
     public drawMap() {
-        this.ctx.fillStyle = "black";
-        this.ctx.fillRect(0, 0, 1280, 720);
         this.ctx.beginPath();
-        this.ctx.strokeStyle = "red";
-        this.ctx.lineWidth = 5;
-        this.ctx.arc(100, 100, 100, 0, 2 * Math.PI);
+        this.ctx.strokeStyle = "black";
+        this.ctx.lineWidth = 1;
+
+        let tw = this.getTileWidth();
+        let th = this.getTileHeight();
+        for (let w=0; w<this.map.width; w++) {
+            for (let h=0; h<this.map.height; h++) {
+                this.ctx.rect(w*tw,h*th,tw,th);
+            }
+        }
+        this.ctx.rect
         this.ctx.stroke();
+    }
+
+    private getTileWidth() : number {
+        return this.canvas.width / this.map.width;
+    }
+    
+    private getTileHeight() : number {
+        return this.canvas.height / this.map.height;
     }
 }
 

@@ -7,7 +7,7 @@ export function runMain() {
 
 var bgm : BackgroundMap;
 export function initCanvas(canvas : HTMLCanvasElement) {
-	bgm = new BackgroundMap({ canvas: canvas});
+	bgm = new BackgroundMap({ canvas: canvas, map: { width: 10, height: 5}});
 }
 
 
