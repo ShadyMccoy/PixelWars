@@ -10,7 +10,11 @@ export function initCanvas(canvas : HTMLCanvasElement) {
 	bgm = new BackgroundMap({ canvas: canvas, map: { width: 10, height: 5}});
 }
 
-
 export function animate() {
 	bgm.drawMap();
+}
+
+export function onGameClick(x : number, y : number) {
+	console.log('onGameClick'+x);
+	bgm.SelectTile(x,y);
 }

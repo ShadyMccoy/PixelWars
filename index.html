@@ -6,16 +6,30 @@
 	<script src="./node_modules/lodash/lodash.min.js"></script>
 	<script src=./built/tsc.js></script>
 </head>
-<body>
+<body onload="initAnimate()">
+	<canvas id="backgroundCanvas" width="300" height="200" style="border:1px solid #000000;"></canvas><br />
 	<p id="p1">Hello World!</p>
+	
 	<button onclick="initAnimate()">initAnimate</button>
 	<button onclick="Animate()">Animate</button>
-	<canvas id="backgroundCanvas" width="300" height="200" style="border:1px solid #000000;"></canvas>
+	<button onclick="GameLoop()">Animate</button>
 	<script>
 		var main = function(callback) { System.import('main').then(callback)};
 		function testRunner() {main(function(m) { m.runMain(); }); }
-		function initAnimate() {main(function(m) { m.initCanvas(document.getElementById("backgroundCanvas")); }); }
+		let canvas = document.getElementById("backgroundCanvas");
+		function initAnimate() {main(function(m) { m.initCanvas(canvas); }); }
+		function captureMouseClick(e) {
+			main(function(m) {m.onGameClick(e.clientX,e.clientY)})
+			console.log(e.clientX);
+		}
+		canvas.addEventListener('click', captureMouseClick);
+
 		function Animate() {main(function(m) { m.animate(); }); }
+
+		function GameLoop() {
+			requestAnimationFrame(GameLoop);
+			Animate();
+		}
 		//foo('main',function(m) { m.runMain(); },console.error.bind(console))
 	</script>
 </body>
