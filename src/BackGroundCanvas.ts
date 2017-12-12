@@ -10,6 +10,7 @@ export class BackgroundMap {
     constructor(Values : Object) {
         Object.assign(this,Values);
         this.ctx = this.canvas.getContext("2d");
+        this.ctx.globalAlpha = 1;
     }
 
     public drawMap() {
@@ -41,6 +42,11 @@ export class BackgroundMap {
     }
 
     public SelectTile(x : number, y : number) {
+        if (this.selected) {
+            this.selected.undraw(this.getTileWidth(),this.getTileHeight(),this.ctx);
+            console.log('undraw');
+        }
+
         this.selected = new Tile(
             Math.floor(x/this.getTileWidth()),
             Math.floor(y/this.getTileHeight()));
@@ -63,6 +69,17 @@ class Tile {
     constructor(x : number, y : number) {
         this.x = x;
         this.y = y;
+    }
+
+    public undraw(width : number, height : number, ctx : CanvasRenderingContext2D) {
+        //ctx.strokeStyle = "#FFFFFF";
+        
+        //ctx.beginPath();
+        ctx.clearRect(width*this.x+1, height*this.y+1, width - 2, height -2);
+        //console.log('x: '+  (width*this.x+5) + ',y: ' + (height*this.y+5));
+        //console.log('drawTile');
+        //ctx.rect
+        //ctx.stroke();
     }
 
     public draw(width : number, height : number, ctx : CanvasRenderingContext2D) {
