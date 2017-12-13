@@ -44,14 +44,11 @@ export class BackgroundMap {
     public SelectTile(x : number, y : number) {
         if (this.selected) {
             this.selected.undraw(this.getTileWidth(),this.getTileHeight(),this.ctx);
-            console.log('undraw');
         }
 
         this.selected = new Tile(
             Math.floor(x/this.getTileWidth()),
             Math.floor(y/this.getTileHeight()));
-            
-        console.log('x: ' + this.selected.x + ',y: ' + this.selected.y);
     }
 
 }
@@ -72,21 +69,12 @@ class Tile {
     }
 
     public undraw(width : number, height : number, ctx : CanvasRenderingContext2D) {
-        //ctx.strokeStyle = "#FFFFFF";
-        
-        //ctx.beginPath();
         ctx.clearRect(width*this.x+1, height*this.y+1, width - 2, height -2);
-        //console.log('x: '+  (width*this.x+5) + ',y: ' + (height*this.y+5));
-        //console.log('drawTile');
-        //ctx.rect
-        //ctx.stroke();
     }
 
     public draw(width : number, height : number, ctx : CanvasRenderingContext2D) {
         ctx.beginPath();
         ctx.rect(width*this.x + 5, height*this.y+5, width - 10, height -10);
-        console.log('x: '+  (width*this.x+5) + ',y: ' + (height*this.y+5));
-        console.log('drawTile');
         ctx.rect
         ctx.stroke();
     }

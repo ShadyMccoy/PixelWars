@@ -1,20 +1,20 @@
-import { Goal } from './Goal';
-import { BackgroundMap } from './BackGroundCanvas';
+import { Goal } from "./Goal";
+import { BackgroundMap } from "./BackGroundCanvas";
 
 export function runMain() {
-	document.getElementById("p1").innerHTML = Goal.echo('ottO')
+  document.getElementById("p1").innerHTML = Goal.echo("ottO");
 }
 
-var bgm : BackgroundMap;
-export function initCanvas(canvas : HTMLCanvasElement) {
-	bgm = new BackgroundMap({ canvas: canvas, map: { width: 10, height: 5}});
+var bgm: BackgroundMap;
+export function initCanvas(canvas: HTMLCanvasElement) {
+  bgm = new BackgroundMap({ canvas: canvas, map: { width: 10, height: 5 } });
 }
 
 export function animate() {
-	bgm.drawMap();
+  bgm.drawMap();
 }
 
-export function onGameClick(x : number, y : number) {
-	console.log('onGameClick'+x);
-	bgm.SelectTile(x,y);
+export function onGameClick(x: number, y: number) {
+  console.log("onGameClick" + x);
+  bgm.SelectTile(x, y);
 }

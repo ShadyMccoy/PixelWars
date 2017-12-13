@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Screeps AI</title>
 	<script src="./node_modules/systemjs/dist/system.js"></script>
 	<script src="./node_modules/lodash/lodash.min.js"></script>
 	<script src=./built/tsc.js></script>
 </head>
-<body onload="initAnimate()">
-	<canvas id="backgroundCanvas" width="300" height="200" style="border:1px solid #000000;"></canvas><br />
-	<p id="p1">Hello World!</p>
-	
-	<button onclick="initAnimate()">initAnimate</button>
-	<button onclick="Animate()">Animate</button>
-	<button onclick="GameLoop()">Animate</button>
-	<script>
-		var main = function(callback) { System.import('main').then(callback)};
-		function testRunner() {main(function(m) { m.runMain(); }); }
-		let canvas = document.getElementById("backgroundCanvas");
-		function initAnimate() {main(function(m) { m.initCanvas(canvas); }); }
-		function captureMouseClick(e) {
-			main(function(m) {m.onGameClick(e.clientX,e.clientY)})
-			console.log(e.clientX);
-		}
-		canvas.addEventListener('click', captureMouseClick);
 
-		function Animate() {main(function(m) { m.animate(); }); }
-
-		function GameLoop() {
-			requestAnimationFrame(GameLoop);
-			Animate();
-		}
-		//foo('main',function(m) { m.runMain(); },console.error.bind(console))
-	</script>
+<body onload="initGame()">
+	<div id="canvasesdiv" style="position:relative; width:400px; height:300px">
+		<canvas id="layer1" style="z-index: 1;
+				position:absolute;
+				left:0px;
+				top:0px;
+				" height="300px" width="400">
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+		<canvas id="layer2" style="z-index: 2;
+				position:absolute;
+				left:0px;
+				top:0px;
+				" height="300px" width="400">
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+		<canvas id="layer3" style="z-index: 3;
+				position:absolute;
+				left:0px;
+				top:0px;
+				" height="300px" width="400">
+			This text is displayed if your browser does not support HTML5 Canvas.
+		</canvas>
+	</div>
+	<script src="./main.js"></script>
 </body>
+
 </html>
