@@ -12,6 +12,7 @@ export function initCanvas(canvas: HTMLCanvasElement) {
 }
 
 export function animate() {
+	bgm.drawMap();
 }
 
 export function onGameClick(x: number, y: number) {

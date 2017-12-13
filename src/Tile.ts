@@ -18,10 +18,12 @@ export class Tile {
         ctx.clearRect(width*this.x+1, height*this.y+1, width - 2, height -2);
     }
 
-    public draw(width : number, height : number, ctx : CanvasRenderingContext2D) {
-        ctx.beginPath();
+    public draw(width : number, height : number, isSelected : boolean, ctx : CanvasRenderingContext2D) {
+        ctx.rect(width*this.x, height*this.y, width, height);
+        ctx.rect
+
+        if (!isSelected) { return; }
         ctx.rect(width*this.x + 5, height*this.y+5, width - 10, height -10);
         ctx.rect
-        ctx.stroke();
     }
 }

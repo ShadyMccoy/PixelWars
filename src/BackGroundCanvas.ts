@@ -7,11 +7,18 @@ export class BackgroundMap {
     private CurrentView : MapView;
     private ctx: CanvasRenderingContext2D;
     private selected : Tile;
+    private tiles : Tile[];
     
     constructor(Values : Object) {
         Object.assign(this,Values);
         this.ctx = this.canvas.getContext("2d");
         this.ctx.globalAlpha = 1;
+        this.tiles = new Array<Tile>();
+        for (let w=0; w<this.map.width; w++) {
+            for (let h=0; h<this.map.height; h++) {
+                this.tiles.push(new Tile(w,h));
+            }
+        }
     }
 
     public drawMap() {
@@ -21,17 +28,11 @@ export class BackgroundMap {
 
         let tw = this.getTileWidth();
         let th = this.getTileHeight();
-        for (let w=0; w<this.map.width; w++) {
-            for (let h=0; h<this.map.height; h++) {
-                this.ctx.rect(w*tw,h*th,tw,th);
-            }
-        }
-        this.ctx.rect
-        this.ctx.stroke();
-
+        this.tiles.forEach( t => t.draw(tw,th,false,this.ctx) );
         if (this.selected) { 
-            this.selected.draw(this.getTileWidth(),this.getTileHeight(),this.ctx);
+            this.selected.draw(tw,th,true,this.ctx);
         }
+        this.ctx.stroke();
     }
 
     private getTileWidth() : number {
