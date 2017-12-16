@@ -1,5 +1,6 @@
 import { Map } from './Map';
 import { Tile } from './Tile';
+import { Army } from './Army';
 
 export class BackgroundMap {
     private canvas : HTMLCanvasElement;
@@ -19,6 +20,8 @@ export class BackgroundMap {
                 this.tiles.push(new Tile(w,h));
             }
         }
+
+        this.tiles[7].registerArmy(new Army(4,'Player1'));
     }
 
     public drawMap() {
@@ -29,10 +32,14 @@ export class BackgroundMap {
         let tw = this.getTileWidth();
         let th = this.getTileHeight();
         this.tiles.forEach( t => t.draw(tw,th,false,this.ctx) );
-        if (this.selected) { 
-            this.selected.draw(tw,th,true,this.ctx);
-        }
         this.ctx.stroke();
+    }
+
+    public drawSelected() {
+        if (this.selected) { 
+            this.selected.draw(this.getTileWidth(),this.getTileHeight(),true,this.ctx);
+        }
+
     }
 
     private getTileWidth() : number {

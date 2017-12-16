@@ -8,6 +8,7 @@ export class Tile {
     constructor(x : number, y : number) {
         this.x = x;
         this.y = y;
+        this.armies = new Array<Army>();
     }
 
     public registerArmy(army : Army) {
@@ -22,8 +23,10 @@ export class Tile {
         ctx.rect(width*this.x, height*this.y, width, height);
         ctx.rect
 
+        this.armies.forEach(a => a.draw(this.x,this.y,width,height,ctx));
+
         if (!isSelected) { return; }
         ctx.rect(width*this.x + 5, height*this.y+5, width - 10, height -10);
-        ctx.rect
+        ctx.rect;
     }
 }

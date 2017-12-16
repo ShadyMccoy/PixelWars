@@ -16,4 +16,8 @@ export class Army {
         this.strength -= power;
         tile.registerArmy(new Army(power,this.player));
     }
+
+    public draw(x : number, y : number, width : number, height : number, ctx : CanvasRenderingContext2D) {
+        ctx.arc(width*(x+0.5),height*(y+0.5),width/2,0,2*Math.PI);
+    }
 }
