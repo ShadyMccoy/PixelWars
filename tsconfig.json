@@ -6,7 +6,7 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "outFile": "built/tsc.js",
-        "sourceMap": false,
+        "sourceMap": true,
         "target": "es6"
     },
     "include": [

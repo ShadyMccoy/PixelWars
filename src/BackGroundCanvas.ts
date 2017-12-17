@@ -17,11 +17,12 @@ export class BackgroundMap {
         this.tiles = new Array<Tile>();
         for (let w=0; w<this.map.width; w++) {
             for (let h=0; h<this.map.height; h++) {
-                this.tiles.push(new Tile(w,h));
+                this.tiles.push(new Tile(w,h,this.getTileWidth(),this.getTileHeight(),this.ctx));
             }
         }
 
         this.tiles[7].registerArmy(new Army(4,'Player1'));
+        this.tiles[14].registerArmy(new Army(4,'Player1'));
     }
 
     public drawMap() {
@@ -31,35 +32,25 @@ export class BackgroundMap {
 
         let tw = this.getTileWidth();
         let th = this.getTileHeight();
-        this.tiles.forEach( t => t.draw(tw,th,false,this.ctx) );
+        this.tiles.forEach( t => t.draw() );
+        this.ctx.stroke();
+        this.tiles.forEach( t => t.drawArmies() );
         this.ctx.stroke();
     }
 
     public drawSelected() {
         if (this.selected) { 
-            this.selected.draw(this.getTileWidth(),this.getTileHeight(),true,this.ctx);
+            this.selected.draw();
         }
-
     }
 
-    private getTileWidth() : number {
+    public getTileWidth() : number {
         return this.canvas.width / this.map.width;
     }
     
-    private getTileHeight() : number {
+    public getTileHeight() : number {
         return this.canvas.height / this.map.height;
     }
-
-    public SelectTile(x : number, y : number) {
-        if (this.selected) {
-            this.selected.clear(this.getTileWidth(),this.getTileHeight(),this.ctx);
-        }
-
-        this.selected = new Tile(
-            Math.floor(x/this.getTileWidth()),
-            Math.floor(y/this.getTileHeight()));
-    }
-
 }
 
 class MapView {

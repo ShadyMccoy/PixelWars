@@ -5,26 +5,26 @@
 	<title>Screeps AI</title>
 	<script src="./node_modules/systemjs/dist/system.js"></script>
 	<script src="./node_modules/lodash/lodash.min.js"></script>
-	<script src=./built/tsc.js></script>
+	<script src="./built/tsc.js"></script>
 </head>
 
 <body onload="initGame()">
 	<div id="canvasesdiv" style="position:relative; width:400px; height:300px">
-		<canvas id="layer1" style="z-index: 1;
+		<canvas id="BackgroundCanvas" style="z-index: 1;
 				position:absolute;
 				left:0px;
 				top:0px;
 				" height="300px" width="400">
 			This text is displayed if your browser does not support HTML5 Canvas.
 		</canvas>
-		<canvas id="layer2" style="z-index: 2;
+		<canvas id="AgentsCanvas" style="z-index: 2;
 				position:absolute;
 				left:0px;
 				top:0px;
 				" height="300px" width="400">
 			This text is displayed if your browser does not support HTML5 Canvas.
 		</canvas>
-		<canvas id="layer3" style="z-index: 3;
+		<canvas id="ControllerCanvas" style="z-index: 3;
 				position:absolute;
 				left:0px;
 				top:0px;

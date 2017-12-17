@@ -1,32 +1,48 @@
-import { Army } from './Army';
+import { Army } from "./Army";
 
 export class Tile {
-    readonly x : number;
-    readonly y : number;
-    armies : Army[];
+  readonly x: number;
+  readonly y: number;
+  private width: number;
+  private height: number;
+  private ctx: CanvasRenderingContext2D;
+  armies: Army[];
 
-    constructor(x : number, y : number) {
-        this.x = x;
-        this.y = y;
-        this.armies = new Array<Army>();
-    }
+  constructor(x: number, y: number, w: number, h: number, ctx: CanvasRenderingContext2D) {
+    this.x = x;
+    this.y = y;
+    this.width = w;
+    this.height = h;
+    this.ctx = ctx;
+    this.armies = new Array<Army>();
+  }
 
-    public registerArmy(army : Army) {
-        this.armies.push(army);
-    }
+  public registerArmy(army: Army) {
+    this.armies.push(army);
+  }
 
-    public clear(width : number, height : number, ctx : CanvasRenderingContext2D) {
-        ctx.clearRect(width*this.x+1, height*this.y+1, width - 2, height -2);
-    }
+  public clear() {
+    console.log('clear...');
+    this.ctx.clearRect(
+      this.width * this.x + 1,
+      this.height * this.y + 1,
+      this.width - 2,
+      this.height - 2
+    );
+  }
 
-    public draw(width : number, height : number, isSelected : boolean, ctx : CanvasRenderingContext2D) {
-        ctx.rect(width*this.x, height*this.y, width, height);
-        ctx.rect
+  public draw() {
+    this.ctx.rect(this.width * this.x, this.height * this.y, this.width, this.height);
+    this.ctx.rect;
+  }
 
-        this.armies.forEach(a => a.draw(this.x,this.y,width,height,ctx));
+  public drawSelection() {
+    this.ctx.rect(this.width * this.x + 5, this.height * this.y + 5, this.width - 10, this.height - 10);
+    this.ctx.rect;
+    this.ctx.stroke();
+  }
 
-        if (!isSelected) { return; }
-        ctx.rect(width*this.x + 5, height*this.y+5, width - 10, height -10);
-        ctx.rect;
-    }
+  public drawArmies() {
+    this.armies.forEach(a => a.draw(this.x, this.y, this.width, this.height, this.ctx));
+  }
 }
