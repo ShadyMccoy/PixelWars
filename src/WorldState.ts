@@ -1,5 +1,3 @@
 export class WorldState {
-    constructor(states : any) {
-        
-    }
+  constructor(states: any) {}
 }

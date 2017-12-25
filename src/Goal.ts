@@ -1,11 +1,9 @@
-import { WorldState } from './WorldState';
+import { WorldState } from "./WorldState";
 
 export class Goal {
-    constructor(desiredWorldState : WorldState) {
-        
-    }
+  constructor(desiredWorldState: WorldState) {}
 
-    static echo(input : string) {
-        return input+input;
-    }
+  static echo(input: string) {
+    return input + input;
+  }
 }

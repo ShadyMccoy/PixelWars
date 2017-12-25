@@ -1,4 +1,4 @@
-import { Agents } from './Agents';
+import { Agents } from "./Agents";
 import { Goal } from "./Goal";
 import { BackgroundMap } from "./BackGroundCanvas";
 import { Controller } from "./Controller";
@@ -7,9 +7,9 @@ export function runMain() {
   document.getElementById("p1").innerHTML = Goal.echo("ottO");
 }
 
-var bgm : BackgroundMap;
-var agents : Agents;
-var controller : Controller;
+var bgm: BackgroundMap;
+var agents: Agents;
+var controller: Controller;
 
 export function init(
   UIBackground: HTMLCanvasElement,
@@ -21,8 +21,8 @@ export function init(
     map: { width: 10, height: 5 }
   });
 
-  agents = new Agents(bgm,UIAgents)
-  controller = new Controller(bgm,UIController);
+  agents = new Agents(bgm, UIAgents);
+  controller = new Controller(bgm, UIController);
   bgm.drawMap();
 }
 

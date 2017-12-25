@@ -1,16 +1,31 @@
 import { Army } from "./Army";
 
+export class GamePos {
+  public id: number;
+  public x: number;
+  public y: number;
+
+  constructor(id: number, x: number, y: number) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+  }
+}
+
 export class Tile {
-  readonly x: number;
-  readonly y: number;
+  readonly pos: GamePos;
   private width: number;
   private height: number;
   private ctx: CanvasRenderingContext2D;
   armies: Army[];
 
-  constructor(x: number, y: number, w: number, h: number, ctx: CanvasRenderingContext2D) {
-    this.x = x;
-    this.y = y;
+  constructor(
+    pos: GamePos,
+    w: number,
+    h: number,
+    ctx: CanvasRenderingContext2D
+  ) {
+    this.pos = pos;
     this.width = w;
     this.height = h;
     this.ctx = ctx;
@@ -22,27 +37,38 @@ export class Tile {
   }
 
   public clear() {
-    console.log('clear...');
     this.ctx.clearRect(
-      this.width * this.x + 1,
-      this.height * this.y + 1,
+      this.width * this.pos.x + 1,
+      this.height * this.pos.y + 1,
       this.width - 2,
       this.height - 2
     );
   }
 
   public draw() {
-    this.ctx.rect(this.width * this.x, this.height * this.y, this.width, this.height);
+    this.ctx.rect(
+      this.width * this.pos.x,
+      this.height * this.pos.y,
+      this.width,
+      this.height
+    );
     this.ctx.rect;
   }
 
   public drawSelection() {
-    this.ctx.rect(this.width * this.x + 5, this.height * this.y + 5, this.width - 10, this.height - 10);
+    this.ctx.rect(
+      this.width * this.pos.x + 5,
+      this.height * this.pos.y + 5,
+      this.width - 10,
+      this.height - 10
+    );
     this.ctx.rect;
     this.ctx.stroke();
   }
 
   public drawArmies() {
-    this.armies.forEach(a => a.draw(this.x, this.y, this.width, this.height, this.ctx));
+    this.armies.forEach(a =>
+      a.draw(this.pos.x, this.pos.y, this.width, this.height, this.ctx)
+    );
   }
 }
