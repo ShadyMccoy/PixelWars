@@ -40,6 +40,7 @@ export function runAgents() {
 export function animate() {
   if (!initialized) {return;}
   bgm.drawMap();
+  agents.drawAgents();
   controller.drawController();
 }
 

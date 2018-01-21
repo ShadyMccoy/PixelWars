@@ -23,9 +23,22 @@ export class Agents {
   
   public runAgents(interval : number) : void {
     this.agents.forEach( a => {
-      a.runAgent(interval);
+      a.runAgent(interval, this.bgm);
     })
   }
+
+  
+  public drawAgents() {
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = "black";
+    this.ctx.lineWidth = 1;
+
+    let tw = this.bgm.getTileWidth();
+    let th = this.bgm.getTileHeight();
+    this.agents.forEach( a => a.draw(tw,th,this.ctx) );
+    this.ctx.stroke();
+  }
+
 }
 
 export abstract class Agent {
@@ -34,11 +47,9 @@ export abstract class Agent {
     this.pos = gamePos;
   }
 
-  abstract runAgent(interval : number) : void;
+  abstract runAgent(interval : number, bgm: BackgroundMap) : void;
 
   abstract draw(
-    x: number,
-    y: number,
     width: number,
     height: number,
     ctx: CanvasRenderingContext2D

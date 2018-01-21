@@ -17,7 +17,6 @@ export class Tile {
   private width: number;
   private height: number;
   private ctx: CanvasRenderingContext2D;
-  agents: Agent[];
 
   constructor(
     pos: GamePos,
@@ -29,11 +28,10 @@ export class Tile {
     this.width = w;
     this.height = h;
     this.ctx = ctx;
-    this.agents = new Array<Agent>();
   }
 
   public registerAgent(agent: Agent) {
-    this.agents.push(agent);
+    Agents.push(agent);
   }
 
   public clear() {
@@ -64,11 +62,5 @@ export class Tile {
     );
     this.ctx.rect;
     this.ctx.stroke();
-  }
-
-  public drawArmies() {
-    this.agents.forEach(a =>
-      a.draw(this.pos.x, this.pos.y, this.width, this.height, this.ctx)
-    );
   }
 }
