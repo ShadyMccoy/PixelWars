@@ -1,8 +1,11 @@
 import { BackgroundMap } from "./BackGroundCanvas";
 import { Map } from "./Map";
 import { Tile, GamePos } from './Tile';
+import { runMain } from './main';
 
 export class Agents {
+  private MAX_TICK_RATE = 100;
+  private lastTick : Date;
   private agents: Agent[];
   private bgm: BackgroundMap;
   private ctx: CanvasRenderingContext2D;
@@ -17,6 +20,12 @@ export class Agents {
     this.agents.push(agent);
     this.bgm.getTileFromPos(agent.pos).registerAgent(agent);
   }
+  
+  public runAgents(interval : number) : void {
+    this.agents.forEach( a => {
+      a.runAgent(interval);
+    })
+  }
 }
 
 export abstract class Agent {
@@ -24,6 +33,8 @@ export abstract class Agent {
   constructor(gamePos: GamePos) {
     this.pos = gamePos;
   }
+
+  abstract runAgent(interval : number) : void;
 
   abstract draw(
     x: number,

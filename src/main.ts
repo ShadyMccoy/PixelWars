@@ -25,7 +25,7 @@ export function init(
 
   agents = new Agents(bgm, UIAgents);
 
-  let army1 = new Army(bgm.getTile(7).pos, 5, "Player1");
+  let army1 = new Army(bgm.getTile(7).pos, 0.01, "Player1");
   agents.AddAgent(army1)
 
   controller = new Controller(bgm, UIController);
@@ -34,6 +34,9 @@ export function init(
   initialized = true;
 }
 
+export function runAgents() {
+  agents.runAgents(0.01);
+}
 export function animate() {
   if (!initialized) {return;}
   bgm.drawMap();

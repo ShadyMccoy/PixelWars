@@ -21,16 +21,21 @@ export class Army extends Agent {
     tile.registerAgent(new Army(tile.pos, power, this.player));
   }
 
+  public runAgent(interval : number) : void {
+    this.strength += interval;
+    //this.attack()
+  }
+
   public draw(
     x: number,
     y: number,
     width: number,
     height: number,
     ctx: CanvasRenderingContext2D
-  ) {
+  ) : void {
     ctx.beginPath();
     ctx.fillStyle = "red";
-    ctx.arc(width * (x + 0.5), height * (y + 0.5), width / 2, 0, 2 * Math.PI);
+    ctx.arc(width * (x + 0.5), height * (y + 0.5), this.strength * width / 2, 0, 2 * Math.PI);
     ctx.fill();
   }
 }

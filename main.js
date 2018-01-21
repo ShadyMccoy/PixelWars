@@ -27,14 +27,21 @@ function Animate() {
   });
 }
 
+function RunAgents() {
+  main(function(m) {
+    m.runAgents();
+  });
+}
+
 function initGame() {
   initAnimate();
   
-  GameLoop();
+  setInterval(RunAgents,10);
+  AnimateLoop();
 }
 
-function GameLoop() {
-  requestAnimationFrame(GameLoop);
+function AnimateLoop() {
+  requestAnimationFrame(AnimateLoop);
   Animate();
 }
 
