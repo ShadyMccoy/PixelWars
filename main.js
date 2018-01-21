@@ -1,6 +1,4 @@
-var BackgroundCanvas = document.getElementById("BackgroundCanvas");
-var AgentCanvas = document.getElementById("AgentsCanvas");
-var ControllerCanvas = document.getElementById("ControllerCanvas");
+
 
 var main = function(callback) {
   System.import("main").then(callback);
@@ -11,9 +9,13 @@ function captureMouseClick(e) {
     m.onGameClick(e.clientX, e.clientY);
   });
 }
-ControllerCanvas.addEventListener("click", captureMouseClick);
 
 function initAnimate() {
+  var BackgroundCanvas = document.getElementById("BackgroundCanvas");
+  var AgentCanvas = document.getElementById("AgentsCanvas");
+  var ControllerCanvas = document.getElementById("ControllerCanvas");
+  ControllerCanvas.addEventListener("click", captureMouseClick);
+  
   main(function(m) {
     m.init(BackgroundCanvas, AgentCanvas, ControllerCanvas);
   });
@@ -24,12 +26,15 @@ function Animate() {
     m.animate();
   });
 }
+
+function initGame() {
+  initAnimate();
+  
+  GameLoop();
+}
+
 function GameLoop() {
   requestAnimationFrame(GameLoop);
   Animate();
 }
 
-function initGame() {
-  initAnimate();
-  GameLoop();
-}

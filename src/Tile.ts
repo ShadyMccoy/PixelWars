@@ -1,4 +1,4 @@
-import { Army } from "./Army";
+import { Agent } from './Agents';
 
 export class GamePos {
   public id: number;
@@ -17,7 +17,7 @@ export class Tile {
   private width: number;
   private height: number;
   private ctx: CanvasRenderingContext2D;
-  armies: Army[];
+  agents: Agent[];
 
   constructor(
     pos: GamePos,
@@ -29,11 +29,11 @@ export class Tile {
     this.width = w;
     this.height = h;
     this.ctx = ctx;
-    this.armies = new Array<Army>();
+    this.agents = new Array<Agent>();
   }
 
-  public registerArmy(army: Army) {
-    this.armies.push(army);
+  public registerAgent(agent: Agent) {
+    this.agents.push(agent);
   }
 
   public clear() {
@@ -67,7 +67,7 @@ export class Tile {
   }
 
   public drawArmies() {
-    this.armies.forEach(a =>
+    this.agents.forEach(a =>
       a.draw(this.pos.x, this.pos.y, this.width, this.height, this.ctx)
     );
   }

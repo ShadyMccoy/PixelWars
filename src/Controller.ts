@@ -1,4 +1,4 @@
-import { Tile } from "./Tile";
+import { Tile, GamePos } from './Tile';
 import { BackgroundMap } from "./BackGroundCanvas";
 export class Controller {
   private bgm: BackgroundMap;
@@ -29,8 +29,10 @@ export class Controller {
     }
 
     this.SelectedTile = new Tile(
-      Math.floor(x / this.bgm.getTileWidth()),
-      Math.floor(y / this.bgm.getTileHeight()),
+      new GamePos(
+        -1,
+        Math.floor(x / this.bgm.getTileWidth()),
+        Math.floor(y / this.bgm.getTileHeight())),
       this.bgm.getTileWidth(),
       this.bgm.getTileHeight(),
       this.ctx

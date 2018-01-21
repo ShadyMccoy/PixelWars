@@ -2,6 +2,7 @@ import { Agents } from "./Agents";
 import { Goal } from "./Goal";
 import { BackgroundMap } from "./BackGroundCanvas";
 import { Controller } from "./Controller";
+import { Army } from './Army';
 
 export function runMain() {
   document.getElementById("p1").innerHTML = Goal.echo("ottO");
@@ -10,6 +11,7 @@ export function runMain() {
 var bgm: BackgroundMap;
 var agents: Agents;
 var controller: Controller;
+var initialized: boolean;
 
 export function init(
   UIBackground: HTMLCanvasElement,
@@ -22,11 +24,18 @@ export function init(
   });
 
   agents = new Agents(bgm, UIAgents);
+
+  let army1 = new Army(bgm.getTile(7).pos, 5, "Player1");
+  agents.AddAgent(army1)
+
   controller = new Controller(bgm, UIController);
   bgm.drawMap();
+  
+  initialized = true;
 }
 
 export function animate() {
+  if (!initialized) {return;}
   bgm.drawMap();
   controller.drawController();
 }

@@ -1,5 +1,5 @@
 import { Map } from "./Map";
-import { Tile } from "./Tile";
+import { Tile, GamePos } from './Tile';
 
 export class BackgroundMap {
   private canvas: HTMLCanvasElement;
@@ -14,8 +14,8 @@ export class BackgroundMap {
     this.ctx = this.canvas.getContext("2d");
     this.ctx.globalAlpha = 1;
     this.tiles = new Array<Tile>();
-    for (let w = 0; w < this.map.width; w++) {
-      for (let h = 0; h < this.map.height; h++) {
+    for (let h = 0; h < this.map.height; h++) {
+      for (let w = 0; w < this.map.width; w++) {
         this.tiles.push(
           new Tile(
             { id: w * this.map.width + h, x: w, y: h },
@@ -26,6 +26,12 @@ export class BackgroundMap {
         );
       }
     }
+  }
+
+  public getTileFromPos(pos: GamePos) {
+    console.log('x: ' + pos.x + ', y: ' + pos.y);
+    console.log(pos.x + (this.map.width * pos.y));
+    return this.tiles[pos.x + (this.map.width * pos.y)];
   }
 
   public getTile(idx: number): Tile {

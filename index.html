@@ -6,9 +6,10 @@
 	<script src="./node_modules/systemjs/dist/system.js"></script>
 	<script src="./node_modules/lodash/lodash.min.js"></script>
 	<script src="./built/tsc.js"></script>
+	<script src="./main.js"></script>
 </head>
 
-<body onload="initGame()">
+<body onload="initAnimate(); GameLoop();">
 	<div id="canvasesdiv" style="position:relative; width:400px; height:300px">
 		<canvas id="BackgroundCanvas" style="z-index: 1;
 				position:absolute;
@@ -32,7 +33,6 @@
 			This text is displayed if your browser does not support HTML5 Canvas.
 		</canvas>
 	</div>
-	<script src="./main.js"></script>
 </body>
 
 </html>

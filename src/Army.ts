@@ -4,10 +4,9 @@ import { GamePos, Tile } from "./Tile";
 export class Army extends Agent {
   private strength: number;
   private player: string;
-  private pos: GamePos;
 
   constructor(pos: GamePos, strength: number, player: string) {
-    super();
+    super(pos);
     this.pos = pos;
     this.strength = strength;
     this.player = player;
@@ -19,7 +18,7 @@ export class Army extends Agent {
     }
 
     this.strength -= power;
-    tile.registerArmy(new Army(tile.pos, power, this.player));
+    tile.registerAgent(new Army(tile.pos, power, this.player));
   }
 
   public draw(
