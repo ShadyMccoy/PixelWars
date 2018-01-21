@@ -1,4 +1,4 @@
-import { Agent } from "./Agents";
+import { Agents, Agent } from './Agents';
 import { GamePos, Tile } from "./Tile";
 import { BackgroundMap } from './BackGroundCanvas';
 
@@ -13,27 +13,36 @@ export class Army extends Agent {
     this.player = player;
   }
 
+  public getPlayer() : string {
+    return this.player;
+  }
+  
+  public getStrength() : number {
+    return this.strength;
+  }
+  
   public attack(tile: Tile, power: number) {
     if (power > this.strength) {
       power = this.strength;
     }
 
     this.strength -= power;
-    tile.registerAgent(new Army(tile.pos, power, this.player));
+    Agents.AddAgent(new Army(tile.pos, power, this.player));
   }
 
-  public runAgent(interval : number, bgm : BackgroundMap) : void {
+  public runAgent(interval : number) : void {
     this.strength += interval;
-    this.attack(bgm.getAdjacentTile(this.pos),this.strength / 2);
+    this.attack(BackgroundMap.getAdjacentTile(this.pos),this.strength / 2);
   }
 
   public draw(
-    width: number,
-    height: number,
-    ctx: CanvasRenderingContext2D
   ) : void {
     let x = this.pos.x;
     let y = this.pos.y;
+    let width = BackgroundMap.getTileWidth();
+    let height = BackgroundMap.getTileHeight();
+    let ctx = Agents.ctx;
+
     ctx.beginPath();
     ctx.fillStyle = "red";
     ctx.arc(width * (x + 0.5), height * (y + 0.5), this.strength * width / 2, 0, 2 * Math.PI);

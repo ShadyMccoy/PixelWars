@@ -1,41 +1,42 @@
 import { Tile, GamePos } from './Tile';
 import { BackgroundMap } from "./BackGroundCanvas";
+
 export class Controller {
-  private bgm: BackgroundMap;
-  private ctx: CanvasRenderingContext2D;
-  private SelectedTile: Tile;
-  private PreviousSelectedTile: Tile;
+  private static ctx: CanvasRenderingContext2D;
+  private static SelectedTile: Tile;
+  private static PreviousSelectedTile: Tile;
 
-  constructor(bgm: BackgroundMap, ctx: HTMLCanvasElement) {
-    this.bgm = bgm;
-    this.ctx = ctx.getContext("2d");
+  private constructor() {}
+
+  public static init(ctx: HTMLCanvasElement) {
+    Controller.ctx = ctx.getContext("2d");
   }
 
-  public drawController() {
-    this.ctx.beginPath();
-    if (this.PreviousSelectedTile) {
-      this.PreviousSelectedTile.clear();
-      this.PreviousSelectedTile = null;
+  public static drawController() {
+    Controller.ctx.beginPath();
+    if (Controller.PreviousSelectedTile) {
+      Controller.PreviousSelectedTile.clear();
+      Controller.PreviousSelectedTile = null;
     }
-    if (this.SelectedTile) {
-      this.SelectedTile.drawSelection();
+    if (Controller.SelectedTile) {
+      Controller.SelectedTile.drawSelection();
     }
-    this.ctx.stroke();
+    Controller.ctx.stroke();
   }
 
-  public SelectTile(x: number, y: number) {
-    if (this.SelectedTile) {
-      this.PreviousSelectedTile = this.SelectedTile;
+  public static SelectTile(x: number, y: number) {
+    if (Controller.SelectedTile) {
+      Controller.PreviousSelectedTile = Controller.SelectedTile;
     }
 
-    this.SelectedTile = new Tile(
+    Controller.SelectedTile = new Tile(
       new GamePos(
         -1,
-        Math.floor(x / this.bgm.getTileWidth()),
-        Math.floor(y / this.bgm.getTileHeight())),
-      this.bgm.getTileWidth(),
-      this.bgm.getTileHeight(),
-      this.ctx
+        Math.floor(x / BackgroundMap.getTileWidth()),
+        Math.floor(y / BackgroundMap.getTileHeight())),
+      BackgroundMap.getTileWidth(),
+      BackgroundMap.getTileHeight(),
+      Controller.ctx
     );
   }
 }

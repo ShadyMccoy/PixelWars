@@ -1,4 +1,5 @@
 import { Agent } from './Agents';
+import { Army } from './Army';
 
 export class GamePos {
   public id: number;
@@ -17,6 +18,7 @@ export class Tile {
   private width: number;
   private height: number;
   private ctx: CanvasRenderingContext2D;
+  private agents : Agent[];
 
   constructor(
     pos: GamePos,
@@ -28,10 +30,25 @@ export class Tile {
     this.width = w;
     this.height = h;
     this.ctx = ctx;
+    this.agents = new Array<Agent>();
   }
 
-  public registerAgent(agent: Agent) {
-    Agents.push(agent);
+  public resolveConflicts() {
+    let results: { [playerName: string]: number; } = {};
+    this.agents.forEach( a => {
+      let army = <Army>a;
+      
+      if (!results[army.getPlayer()]) { 
+        results[army.getPlayer()] = 0;
+      }
+
+      results[army.getPlayer()] += army.getStrength();
+    });
+
+    this.agents = new Array<Agent>();
+    Object.keys(results).forEach( playerName => {
+      this.agents.push(new Army(this.pos,results[playerName],playerName))
+    });
   }
 
   public clear() {
@@ -62,5 +79,9 @@ export class Tile {
     );
     this.ctx.rect;
     this.ctx.stroke();
+  }
+
+  public registerAgent(agent: Agent) {
+    this.agents.push(agent);
   }
 }
