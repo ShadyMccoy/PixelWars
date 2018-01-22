@@ -2,6 +2,8 @@ import { Agents } from "./Agents";
 import { Goal } from "./Goal";
 import { BackgroundMap } from "./BackGroundCanvas";
 import { Controller } from "./Controller";
+import { Army } from './Army';
+import { GamePos } from './GamePos';
 
 export function runMain() {
   document.getElementById("p1").innerHTML = Goal.echo("ottO");
@@ -20,6 +22,7 @@ export function init(
   });
 
   Agents.init(UIAgents);
+  Agents.AddAgent( new Army( new GamePos(7,7,0), 1, "Player1"));
 
   Controller.init(UIController);
   BackgroundMap.drawMap();

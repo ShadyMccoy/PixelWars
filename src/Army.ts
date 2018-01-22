@@ -23,6 +23,7 @@ export class Army extends Agent {
   }
   
   public attack(tile: Tile, power: number) {
+    if (tile === undefined) { return; }
     if (power > this.strength) {
       power = this.strength;
     }

@@ -31,7 +31,7 @@ export class BackgroundMap {
   }
 
   public static resolveConflicts() {
-    //;this.tiles.forEach( t => t.resolveConflicts() );
+    this.tiles.forEach( t => t.resolveConflicts() );
   }
 
   public static getAdjacentTile(pos: GamePos) : Tile {
@@ -60,8 +60,6 @@ export class BackgroundMap {
   }
 
   public static getTileFromPos(pos: GamePos) : Tile {
-    console.log('x: ' + pos.x + ', y: ' + pos.y);
-    console.log(pos.x + (BackgroundMap.map.width * pos.y));
     return BackgroundMap.tiles[pos.x + (BackgroundMap.map.width * pos.y)];
   }
 
