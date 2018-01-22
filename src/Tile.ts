@@ -1,17 +1,5 @@
 import { Agent } from './Agents';
-import { Army } from './Army';
-
-export class GamePos {
-  public id: number;
-  public x: number;
-  public y: number;
-
-  constructor(id: number, x: number, y: number) {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-  }
-}
+import { GamePos } from './GamePos';
 
 export class Tile {
   readonly pos: GamePos;
@@ -31,24 +19,6 @@ export class Tile {
     this.height = h;
     this.ctx = ctx;
     this.agents = new Array<Agent>();
-  }
-
-  public resolveConflicts() {
-    let results: { [playerName: string]: number; } = {};
-    this.agents.forEach( a => {
-      let army = <Army>a;
-      
-      if (!results[army.getPlayer()]) { 
-        results[army.getPlayer()] = 0;
-      }
-
-      results[army.getPlayer()] += army.getStrength();
-    });
-
-    this.agents = new Array<Agent>();
-    Object.keys(results).forEach( playerName => {
-      this.agents.push(new Army(this.pos,results[playerName],playerName))
-    });
   }
 
   public clear() {

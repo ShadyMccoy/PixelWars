@@ -1,4 +1,5 @@
-import { Tile, GamePos } from './Tile';
+import { Tile } from './Tile';
+import { GamePos } from "./GamePos";
 import { BackgroundMap } from "./BackGroundCanvas";
 
 export class Controller {

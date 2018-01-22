@@ -1,6 +1,7 @@
 import { Agents, Agent } from './Agents';
-import { GamePos, Tile } from "./Tile";
+import { GamePos } from "./GamePos";
 import { BackgroundMap } from './BackGroundCanvas';
+import { Tile } from './Tile';
 
 export class Army extends Agent {
   private strength: number;

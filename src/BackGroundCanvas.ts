@@ -1,5 +1,6 @@
 import { Map } from "./Map";
-import { Tile, GamePos } from './Tile';
+import { Tile } from './Tile';
+import { GamePos } from './GamePos';
 
 export class BackgroundMap {
   private static canvas: HTMLCanvasElement;
@@ -30,7 +31,7 @@ export class BackgroundMap {
   }
 
   public static resolveConflicts() {
-    this.tiles.forEach( t => t.resolveConflicts() );
+    //;this.tiles.forEach( t => t.resolveConflicts() );
   }
 
   public static getAdjacentTile(pos: GamePos) : Tile {

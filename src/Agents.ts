@@ -1,5 +1,5 @@
 import { BackgroundMap } from './BackGroundCanvas';
-import { GamePos } from './Tile';
+import { GamePos } from './GamePos';
 
 export class Agents {
   private static agents: Agent[];
