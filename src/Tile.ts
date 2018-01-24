@@ -1,12 +1,12 @@
-import { Agent } from './Agents';
 import { GamePos } from './GamePos';
+import { Army } from './Army';
 
 export class Tile {
   readonly pos: GamePos;
   private width: number;
   private height: number;
   private ctx: CanvasRenderingContext2D;
-  private agents : Agent[];
+  private armies : Army[];
 
   constructor(
     pos: GamePos,
@@ -18,7 +18,7 @@ export class Tile {
     this.width = w;
     this.height = h;
     this.ctx = ctx;
-    this.agents = new Array<Agent>();
+    this.armies = new Array<Army>();
   }
 
   public clear() {
@@ -51,7 +51,32 @@ export class Tile {
     this.ctx.stroke();
   }
 
-  public registerAgent(agent: Agent) {
-    this.agents.push(agent);
+  public registerArmy(army: Army) : void {
+    this.armies.push(army);
+  }
+
+  public resolveConflicts() : void {
+    if (this.armies.length <= 1) { return; }
+    let newArmies = new Array<Army>();
+    let forces = new Forces();
+    this.armies.forEach( a => {
+      let force = forces[a.getPlayer()]
+      if (force) {
+        force.joinForces(a);
+      } else {
+        forces[a.getPlayer()] = a;
+        newArmies.push(a);
+      }
+    });
+
+    this.armies = newArmies;
+  }
+}
+
+class Forces {
+  [Player:string]: Army;
+  
+  constructor() {
+
   }
 }

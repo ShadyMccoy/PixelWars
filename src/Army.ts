@@ -8,7 +8,7 @@ export class Army extends Agent {
   private player: string;
 
   constructor(pos: GamePos, strength: number, player: string) {
-    super(pos);
+    super(pos,"Army");
     this.pos = pos;
     this.strength = strength;
     this.player = player;
@@ -21,20 +21,30 @@ export class Army extends Agent {
   public getStrength() : number {
     return this.strength;
   }
+
+  public joinForces(army: Army) {
+    this.strength += army.getStrength();
+    army.clear();
+    army.DeleteAgent();
+  }
   
   public attack(tile: Tile, power: number) {
     if (tile === undefined) { return; }
+    if (power <= 1) { return; }
     if (power > this.strength) {
       power = this.strength;
     }
 
     this.strength -= power;
-    Agents.AddAgent(new Army(tile.pos, power, this.player));
+
+    let newArmy = new Army(tile.pos, power, this.player)
+    Agents.AddAgent(newArmy);
+    BackgroundMap.getTileFromPos(this.pos).registerArmy(newArmy);
   }
 
   public runAgent(interval : number) : void {
     this.strength += interval;
-    this.attack(BackgroundMap.getAdjacentTile(this.pos),this.strength / 2);
+    this.attack(BackgroundMap.getAdjacentTile(this.pos),this.strength / 3);
   }
 
   public draw(
@@ -49,5 +59,16 @@ export class Army extends Agent {
     ctx.fillStyle = "red";
     ctx.arc(width * (x + 0.5), height * (y + 0.5), this.strength * width / 2, 0, 2 * Math.PI);
     ctx.fill();
+  }
+
+  public clear(
+  ) : void {
+    let x = this.pos.x;
+    let y = this.pos.y;
+    let width = this.strength*BackgroundMap.getTileWidth();
+    let height = this.strength*BackgroundMap.getTileHeight();
+    let ctx = Agents.ctx;
+
+    ctx.clearRect(x-width/2,y-height/2,width,height);
   }
 }

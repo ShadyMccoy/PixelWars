@@ -32,6 +32,7 @@ export function init(
 
 export function runAgents() {
   Agents.runAgents(0.01);
+  BackgroundMap.resolveConflicts();
 }
 
 export function animate() {
