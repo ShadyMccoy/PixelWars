@@ -37,6 +37,7 @@ export class Agents {
   }
 
   public static drawAgents() {
+    Agents.ctx.clearRect(0,0,Agents.ctx.canvas.width,Agents.ctx.canvas.height);
     Agents.ctx.beginPath();
     Agents.ctx.strokeStyle = "black";
     Agents.ctx.lineWidth = 1;
@@ -61,6 +62,7 @@ export abstract class Agent {
     this.AgentType = type;
     this.AgentID = Math.floor(100000000000000 * Math.random()).toString();
     this.lastTick = Agents.lastTick;
+    Agents.AddAgent(this);
   }
 
   abstract runAgent(interval: number): void;

@@ -24,27 +24,23 @@ export class Army extends Agent {
 
   public joinForces(army: Army) {
     this.strength += army.getStrength();
-    army.clear();
     army.DeleteAgent();
   }
   
   public attack(tile: Tile, power: number) {
     if (tile === undefined) { return; }
     if (power <= 1) { return; }
-    if (power > this.strength) {
-      power = this.strength;
-    }
+    if (this.strength - power < 1) { return; }
 
     this.strength -= power;
+    let newArmy = new Army(tile.pos, power, this.player);
 
-    let newArmy = new Army(tile.pos, power, this.player)
-    Agents.AddAgent(newArmy);
-    BackgroundMap.getTileFromPos(this.pos).registerArmy(newArmy);
+    BackgroundMap.getTileFromPos(tile.pos).registerArmy(newArmy);
   }
 
   public runAgent(interval : number) : void {
     this.strength += interval;
-    this.attack(BackgroundMap.getAdjacentTile(this.pos),this.strength / 3);
+    this.attack(BackgroundMap.getAdjacentTile(this.pos),Math.random() * this.strength);
   }
 
   public draw(
@@ -59,16 +55,5 @@ export class Army extends Agent {
     ctx.fillStyle = "red";
     ctx.arc(width * (x + 0.5), height * (y + 0.5), this.strength * width / 2, 0, 2 * Math.PI);
     ctx.fill();
-  }
-
-  public clear(
-  ) : void {
-    let x = this.pos.x;
-    let y = this.pos.y;
-    let width = this.strength*BackgroundMap.getTileWidth();
-    let height = this.strength*BackgroundMap.getTileHeight();
-    let ctx = Agents.ctx;
-
-    ctx.clearRect(x-width/2,y-height/2,width,height);
   }
 }
