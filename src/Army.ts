@@ -3,6 +3,8 @@ import { GamePos } from "./GamePos";
 import { BackgroundMap } from './BackGroundCanvas';
 import { Tile } from './Tile';
 
+let MAXARMYSIZE = 4;
+
 export class Army extends Agent {
   private strength: number;
   private player: string;
@@ -40,21 +42,22 @@ export class Army extends Agent {
 
   public runAgent(interval : number) : void {
     this.strength += interval;
-    if (this.strength > 4) { this.strength = 4 }
+    if (this.strength > MAXARMYSIZE) { this.strength = MAXARMYSIZE }
     this.attack(BackgroundMap.getAdjacentTile(this.pos),Math.random() * this.strength);
   }
 
   public draw(
   ) : void {
-    let x = this.pos.x;
-    let y = this.pos.y;
-    let width = BackgroundMap.getTileWidth();
-    let height = BackgroundMap.getTileHeight();
+    let width = BackgroundMap.getTileWidth() * this.strength / MAXARMYSIZE;
+    let height = BackgroundMap.getTileHeight() * this.strength / MAXARMYSIZE;
+    
+    let x = BackgroundMap.getTileWidth()*(this.pos.x + 0.5)-width/2;
+    let y = BackgroundMap.getTileHeight()*(this.pos.y + 0.5)-height/2 ;
     let ctx = Agents.ctx;
 
     ctx.beginPath();
-    ctx.fillStyle = "red";
-    ctx.arc(width * (x + 0.5), height * (y + 0.5), this.strength * width / 2, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.strokeStyle = "red";
+    ctx.rect(x,y,width,height);
+    ctx.stroke();
   }
 }
