@@ -40,6 +40,7 @@ export class Army extends Agent {
 
   public runAgent(interval : number) : void {
     this.strength += interval;
+    if (this.strength > 4) { this.strength = 4 }
     this.attack(BackgroundMap.getAdjacentTile(this.pos),Math.random() * this.strength);
   }
 

@@ -18,7 +18,7 @@ export function init(
 ) {
   BackgroundMap.init({
     canvas: UIBackground,
-    map: { width: 10, height: 5 }
+    map: { width: 50, height: 50 }
   });
 
   Agents.init(UIAgents);
