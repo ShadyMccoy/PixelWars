@@ -3,38 +3,36 @@ import { Tile } from './Tile';
 import { GamePos } from './GamePos';
 
 export class BackgroundMap {
-  private static canvas: HTMLCanvasElement;
-  private static map: Map;
-  private static ctx: CanvasRenderingContext2D;
-  private static selected: Tile;
-  private static tiles: Tile[];
+  private canvas: HTMLCanvasElement;
+  private map: Map;
+  private ctx: CanvasRenderingContext2D;
+  private selected: Tile;
+  private tiles: Tile[];
 
-  private constructor() {}
-
-  public static init(Values: Object) {
-    Object.assign(BackgroundMap, Values);
-    BackgroundMap.ctx = BackgroundMap.canvas.getContext("2d");
-    BackgroundMap.ctx.globalAlpha = 1;
-    BackgroundMap.tiles = new Array<Tile>();
-    for (let h = 0; h < BackgroundMap.map.height; h++) {
-      for (let w = 0; w < BackgroundMap.map.width; w++) {
-        BackgroundMap.tiles.push(
+  public constructor(Values: Object) {
+    Object.assign(this, Values);
+    this.ctx = this.canvas.getContext("2d");
+    this.ctx.globalAlpha = 1;
+    this.tiles = new Array<Tile>();
+    for (let h = 0; h < this.map.height; h++) {
+      for (let w = 0; w < this.map.width; w++) {
+        this.tiles.push(
           new Tile(
-            new GamePos(w * BackgroundMap.map.width + h,w,h),
-            BackgroundMap.getTileWidth(),
-            BackgroundMap.getTileHeight(),
-            BackgroundMap.ctx
+            new GamePos(w * this.map.width + h,w,h),
+            this.getTileWidth(),
+            this.getTileHeight(),
+            this.ctx
           )
         );
       }
     }
   }
 
-  public static resolveConflicts() {
+  public resolveConflicts() {
     this.tiles.forEach( t => t.resolveConflicts() );
   }
 
-  public static getAdjacentTile(pos: GamePos) : Tile {
+  public getAdjacentTile(pos: GamePos) : Tile {
     let randomNum = Math.random();
     let x = pos.x;
     let y = pos.y;
@@ -48,45 +46,45 @@ export class BackgroundMap {
       y += 1;
     }
 
-    if (x < 0 || x > BackgroundMap.map.width) {
+    if (x < 0 || x > this.map.width) {
       x = pos.x;
     }
     
-    if (y < 0 || y > BackgroundMap.map.height) {
+    if (y < 0 || y > this.map.height) {
       y = pos.y;
     }
 
-    return BackgroundMap.getTileFromPos(new GamePos(-1, x, y));
+    return this.getTileFromPos(new GamePos(-1, x, y));
   }
 
-  public static getTileFromPos(pos: GamePos) : Tile {
-    return BackgroundMap.tiles[pos.x + (BackgroundMap.map.width * pos.y)];
+  public getTileFromPos(pos: GamePos) : Tile {
+    return this.tiles[pos.x + (this.map.width * pos.y)];
   }
 
-  public static getTile(idx: number): Tile {
-    return BackgroundMap.tiles[idx];
+  public getTile(idx: number): Tile {
+    return this.tiles[idx];
   }
 
-  public static drawMap() {
-    BackgroundMap.ctx.beginPath();
-    BackgroundMap.ctx.strokeStyle = "black";
-    BackgroundMap.ctx.lineWidth = 1;
+  public drawMap() {
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = "black";
+    this.ctx.lineWidth = 1;
 
-    BackgroundMap.tiles.forEach(t => t.draw());
-    BackgroundMap.ctx.stroke();
+    this.tiles.forEach(t => t.draw());
+    this.ctx.stroke();
   }
 
-  public static drawSelected() {
-    if (BackgroundMap.selected) {
-      BackgroundMap.selected.draw();
+  public drawSelected() {
+    if (this.selected) {
+      this.selected.draw();
     }
   }
 
-  public static getTileWidth(): number {
-    return BackgroundMap.canvas.width / BackgroundMap.map.width;
+  public getTileWidth(): number {
+    return this.canvas.width / this.map.width;
   }
 
-  public static getTileHeight(): number {
-    return BackgroundMap.canvas.height / BackgroundMap.map.height;
+  public getTileHeight(): number {
+    return this.canvas.height / this.map.height;
   }
 }

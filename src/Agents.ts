@@ -1,49 +1,48 @@
-import { GamePos } from "./GamePos";
+import { GamePos } from './GamePos';
+import { GameState } from './GameState';
 
 export class Agents {
-  private static agents: AgentCollection;
-  public static ctx: CanvasRenderingContext2D;
-  public static lastTick: number;
+  private agents: AgentCollection;
+  public ctx: CanvasRenderingContext2D;
+  public lastTick: number;
+  //private game: GameState;
 
-  private constructor() {}
-
-  public static init(canvas: HTMLCanvasElement) {
-    Agents.ctx = canvas.getContext("2d");
-    Agents.agents = {};
+  public constructor(canvas: HTMLCanvasElement, game: GameState) {
+    this.ctx = canvas.getContext("2d");
+    this.agents = {};
     this.lastTick = 0;
+    //this.game = game;
   }
 
-  public static AddAgent(agent: Agent) {
-    Agents.agents[agent.AgentID] = agent;
+  public AddAgent(agent: Agent) : void {
+    this.agents[agent.AgentID] = agent;
   }
 
-  static removeAgent(id: string): void {
-    delete Agents.agents[id];
+  removeAgent(id: string): void {
+    delete this.agents[id];
   }
 
-  public static runAgents(interval: number): void {
-    Agents.lastTick += 1;
-    console.log(Object.keys(Agents.agents).length);
-    if (Object.keys(Agents.agents).length > 100) {
-      Error('too many agents');
-    }
-    Object.keys(Agents.agents).forEach(k => {
-      let agent = Agents.agents[k];
-      if (agent.lastTick < Agents.lastTick) {
+  public runAgents(interval: number): void {
+    this.lastTick += 1;
+    console.log(Object.keys(this.agents).length);
+    
+    Object.keys(this.agents).forEach(k => {
+      let agent = this.agents[k];
+      if (agent.lastTick < this.lastTick) {
         agent.runAgent(interval);
       }
-      agent.lastTick = Agents.lastTick;
+      agent.lastTick = this.lastTick;
     });
   }
 
-  public static drawAgents() {
-    Agents.ctx.clearRect(0,0,Agents.ctx.canvas.width,Agents.ctx.canvas.height);
-    Agents.ctx.beginPath();
-    Agents.ctx.strokeStyle = "black";
-    Agents.ctx.lineWidth = 1;
+  public drawAgents() {
+    this.ctx.clearRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height);
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = "black";
+    this.ctx.lineWidth = 1;
 
-    Object.keys(Agents.agents).forEach(k => Agents.agents[k].draw());
-    Agents.ctx.stroke();
+    Object.keys(this.agents).forEach(k => this.agents[k].draw());
+    this.ctx.stroke();
   }
 }
 
@@ -55,14 +54,16 @@ export abstract class Agent {
   public pos: GamePos;
   readonly AgentType: string;
   readonly AgentID: string;
+  protected game: GameState;
   public lastTick: number;
 
-  constructor(gamePos: GamePos, type: string) {
+  constructor(gamePos: GamePos, type: string, game: GameState) {
     this.pos = gamePos;
     this.AgentType = type;
     this.AgentID = Math.floor(100000000000000 * Math.random()).toString();
-    this.lastTick = Agents.lastTick;
-    Agents.AddAgent(this);
+    this.lastTick = this.lastTick;
+    this.game = game;
+    this.game.getAgents().AddAgent(this);
   }
 
   abstract runAgent(interval: number): void;
@@ -70,6 +71,6 @@ export abstract class Agent {
   abstract draw(): void;
 
   public DeleteAgent() {
-    Agents.removeAgent(this.AgentID);
+    this.game.getAgents().removeAgent(this.AgentID);
   }
 }

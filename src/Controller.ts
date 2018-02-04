@@ -1,43 +1,43 @@
 import { Tile } from './Tile';
 import { GamePos } from "./GamePos";
-import { BackgroundMap } from "./BackGroundCanvas";
+import { GameState } from './GameState';
 
 export class Controller {
-  private static ctx: CanvasRenderingContext2D;
-  private static SelectedTile: Tile;
-  private static PreviousSelectedTile: Tile;
+  private ctx: CanvasRenderingContext2D;
+  private SelectedTile: Tile;
+  private PreviousSelectedTile: Tile;
+  private game: GameState;
 
-  private constructor() {}
-
-  public static init(ctx: HTMLCanvasElement) {
-    Controller.ctx = ctx.getContext("2d");
+  public constructor(ctx: HTMLCanvasElement, game: GameState) {
+    this.ctx = ctx.getContext("2d");
+    this.game = game;
   }
 
-  public static drawController() {
-    Controller.ctx.beginPath();
-    if (Controller.PreviousSelectedTile) {
-      Controller.PreviousSelectedTile.clear();
-      Controller.PreviousSelectedTile = null;
+  public drawController() {
+    this.ctx.beginPath();
+    if (this.PreviousSelectedTile) {
+      this.PreviousSelectedTile.clear();
+      this.PreviousSelectedTile = null;
     }
-    if (Controller.SelectedTile) {
-      Controller.SelectedTile.drawSelection();
+    if (this.SelectedTile) {
+      this.SelectedTile.drawSelection();
     }
-    Controller.ctx.stroke();
+    this.ctx.stroke();
   }
 
-  public static SelectTile(x: number, y: number) {
-    if (Controller.SelectedTile) {
-      Controller.PreviousSelectedTile = Controller.SelectedTile;
+  public SelectTile(x: number, y: number) {
+    if (this.SelectedTile) {
+      this.PreviousSelectedTile = this.SelectedTile;
     }
 
-    Controller.SelectedTile = new Tile(
+    this.SelectedTile = new Tile(
       new GamePos(
         -1,
-        Math.floor(x / BackgroundMap.getTileWidth()),
-        Math.floor(y / BackgroundMap.getTileHeight())),
-      BackgroundMap.getTileWidth(),
-      BackgroundMap.getTileHeight(),
-      Controller.ctx
+        Math.floor(x / this.game.getBackground().getTileWidth()),
+        Math.floor(y / this.game.getBackground().getTileHeight())),
+      this.game.getBackground().getTileWidth(),
+      this.game.getBackground().getTileHeight(),
+      this.ctx
     );
   }
 }

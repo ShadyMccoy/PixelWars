@@ -1,16 +1,16 @@
-import { Agents, Agent } from './Agents';
+import { Agent } from './Agents';
 import { GamePos } from "./GamePos";
-import { BackgroundMap } from './BackGroundCanvas';
 import { Tile } from './Tile';
+import { GameState } from './GameState';
 
-let MAXARMYSIZE = 4;
+let MAX_ARMY_SIZE = 4;
 
 export class Army extends Agent {
   private strength: number;
   private player: string;
 
-  constructor(pos: GamePos, strength: number, player: string) {
-    super(pos,"Army");
+  constructor(pos: GamePos, strength: number, player: string, game: GameState) {
+    super(pos,"Army",game);
     this.pos = pos;
     this.strength = strength;
     this.player = player;
@@ -35,25 +35,26 @@ export class Army extends Agent {
     if (this.strength - power < 1) { return; }
 
     this.strength -= power;
-    let newArmy = new Army(tile.pos, power, this.player);
+    let newArmy = new Army(tile.pos, power, this.player, this.game);
 
-    BackgroundMap.getTileFromPos(tile.pos).registerArmy(newArmy);
+    this.game.getBackground().getTileFromPos(tile.pos).registerArmy(newArmy);
   }
 
   public runAgent(interval : number) : void {
     this.strength += interval;
-    if (this.strength > MAXARMYSIZE) { this.strength = MAXARMYSIZE }
-    this.attack(BackgroundMap.getAdjacentTile(this.pos),Math.random() * this.strength);
+    if (this.strength > MAX_ARMY_SIZE) { this.strength = MAX_ARMY_SIZE }
+    this.attack(this.game.getBackground().getAdjacentTile(this.pos),Math.random() * this.strength);
   }
 
   public draw(
   ) : void {
-    let width = BackgroundMap.getTileWidth() * this.strength / MAXARMYSIZE;
-    let height = BackgroundMap.getTileHeight() * this.strength / MAXARMYSIZE;
+    let map = this.game.getBackground();
+    let width = map.getTileWidth() * this.strength / MAX_ARMY_SIZE;
+    let height = map.getTileHeight() * this.strength / MAX_ARMY_SIZE;
     
-    let x = BackgroundMap.getTileWidth()*(this.pos.x + 0.5)-width/2;
-    let y = BackgroundMap.getTileHeight()*(this.pos.y + 0.5)-height/2 ;
-    let ctx = Agents.ctx;
+    let x = map.getTileWidth()*(this.pos.x + 0.5)-width/2;
+    let y = map.getTileHeight()*(this.pos.y + 0.5)-height/2 ;
+    let ctx = this.game.getAgents().ctx;
 
     ctx.beginPath();
     ctx.strokeStyle = "red";
