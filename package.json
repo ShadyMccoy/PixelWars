@@ -1,0 +1,15 @@
+{
+  "name": "ScreepsAI",
+  "version": "0.0.1",
+  "description": "Reini's GOAP",
+  "license": "MIT",
+  "repository": {
+    "type": "git"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.85",
+    "lodash": "latest",
+    "systemjs": "latest",
+    "typescript": "latest"
+  }
+}
