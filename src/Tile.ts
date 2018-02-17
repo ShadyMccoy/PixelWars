@@ -57,7 +57,6 @@ export class Tile {
 
   public resolveConflicts() : void {
     if (this.armies.length <= 1) { return; }
-    let newArmies = new Array<Army>();
     let forces = new Forces();
     this.armies.forEach( a => {
       let force = forces[a.getPlayer()]
@@ -65,11 +64,25 @@ export class Tile {
         force.joinForces(a);
       } else {
         forces[a.getPlayer()] = a;
-        newArmies.push(a);
       }
     });
 
-    this.armies = newArmies;
+    let army1 = <Army>{};
+    Object.keys(forces).forEach( playerName => {
+      let f = forces[playerName];
+      if (!army1.AgentID) { army1 = f; return;}
+
+      if (f.getStrength() > army1.getStrength()) {
+        f.FightArmy(army1.getStrength());
+        army1.DeleteAgent();
+        army1 = f;
+      } else {
+        army1.FightArmy(f.getStrength());
+        f.DeleteAgent();
+      }
+    });
+    
+    this.armies = [army1];
   }
 }
 

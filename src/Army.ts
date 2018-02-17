@@ -24,6 +24,10 @@ export class Army extends Agent {
     return this.strength;
   }
 
+  public FightArmy(ArmyStrength : number) : void {
+    this.strength -= ArmyStrength;
+  }
+
   public joinForces(army: Army) {
     this.strength += army.getStrength();
     army.DeleteAgent();
@@ -57,7 +61,11 @@ export class Army extends Agent {
     let ctx = this.game.getAgents().ctx;
 
     ctx.beginPath();
-    ctx.strokeStyle = "red";
+    if (this.player == "Player1") {
+    ctx.strokeStyle = "red";}
+    else {
+      ctx.strokeStyle = "blue";
+    }
     ctx.rect(x,y,width,height);
     ctx.stroke();
   }

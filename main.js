@@ -1,5 +1,3 @@
-
-
 var main = function(callback) {
   System.import("main").then(callback);
 };
@@ -36,7 +34,7 @@ function RunAgents() {
 function initGame() {
   initAnimate();
   
-  setInterval(RunAgents,50);
+  setInterval(RunAgents,5);
   AnimateLoop();
 }
 
@@ -44,4 +42,3 @@ function AnimateLoop() {
   requestAnimationFrame(AnimateLoop);
   Animate();
 }
-

@@ -1,5 +1,4 @@
 import { Army } from './Army';
-import { GamePos } from './GamePos';
 import { GameState } from './GameState';
 
 let game = new GameState();
@@ -16,7 +15,11 @@ export function init(
   });
   
   game.createAgents(UIAgents);
-  game.getAgents().AddAgent( new Army( new GamePos(7,7,0), 1, "Player1", game));
+  let t = game.getBackground().getTile(1);
+  t.registerArmy(new Army(t.pos, 1, "Player1", game));
+  
+  t = game.getBackground().getTile(10);
+  t.registerArmy(new Army(t.pos, 1, "Player2", game));
 
   game.createController(UIController);
 
