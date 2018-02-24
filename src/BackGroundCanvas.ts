@@ -34,17 +34,21 @@ export class BackgroundMap {
     this.tiles.forEach( t => t.resolveConflicts() );
   }
 
-  public getAdjacentTile(pos: GamePos) : Tile {
+  public getRandomAdjacentTile(pos: GamePos) : Tile {
     let randomNum = Math.random();
+    return this.getAdjacentTile(pos,randomNum*4);
+  }
+
+  public getAdjacentTile(pos: GamePos, idx : number) : Tile {
     let x = pos.x;
     let y = pos.y;
-    if (randomNum < 0.25) { 
+    if (idx < 1) { 
       x -= 1;
-    } else if (randomNum < 0.5) {
+    } else if (idx < 2) {
       x += 1;
-    } else if (randomNum < 0.75) { 
+    } else if (idx < 3) { 
       y -= 1;
-    } else if (randomNum < 1) {
+    } else if (idx < 4) {
       y += 1;
     }
 

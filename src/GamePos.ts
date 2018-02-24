@@ -9,5 +9,9 @@ export class GamePos {
       this.x = x;
       this.y = y;
     }
+
+    public equals(pos : GamePos) :boolean {
+      return this.x == pos.x && this.y == pos.y;
+    }
 }
   

@@ -84,6 +84,14 @@ export class Tile {
     
     this.armies = [army1];
   }
+
+  public getArmies() : Army[] {
+    return this.armies;
+  }
+
+  public equals(otherTile : Tile) : boolean {
+    return this.pos.equals(otherTile.pos);
+  }
 }
 
 class Forces {
