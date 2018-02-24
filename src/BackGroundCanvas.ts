@@ -14,16 +14,18 @@ export class BackgroundMap {
     this.ctx = this.canvas.getContext("2d");
     this.ctx.globalAlpha = 1;
     this.tiles = new Array<Tile>();
+    let TileId = 0;
     for (let h = 0; h < this.map.height; h++) {
       for (let w = 0; w < this.map.width; w++) {
         this.tiles.push(
           new Tile(
-            new GamePos(w * this.map.width + h,w,h),
+            new GamePos(TileId,w,h),
             this.getTileWidth(),
             this.getTileHeight(),
             this.ctx
           )
         );
+        TileId++;
       }
     }
   }
@@ -46,11 +48,11 @@ export class BackgroundMap {
       y += 1;
     }
 
-    if (x < 0 || x > this.map.width) {
+    if (x < 0 || x >= this.map.width) {
       x = pos.x;
     }
     
-    if (y < 0 || y > this.map.height) {
+    if (y < 0 || y >= this.map.height) {
       y = pos.y;
     }
 
