@@ -92,7 +92,7 @@ export class Army extends Agent {
 
   
   private Repel() : void {
-    let gradient = [-2,2,-2,2];
+    let gradient = [-2,2,-2,3];
     let tile = this.getWeakestAdjacentTile(gradient);
     if (!tile) { return; } 
     let enemyArmies = tile.getArmies();

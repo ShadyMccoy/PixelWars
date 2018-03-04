@@ -76,6 +76,7 @@ export class BackgroundMap {
   }
 
   public drawMap() {
+    if (this.map.width > 10) { return; } 
     this.ctx.beginPath();
     this.ctx.strokeStyle = "black";
     this.ctx.lineWidth = 1;
