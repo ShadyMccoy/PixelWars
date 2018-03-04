@@ -11,7 +11,7 @@ export function init(
 
   game.createBackground({
     canvas: UIBackground,
-    map: { width: 30, height: 30 }
+    map: { width: 100, height: 100 }
   });
   
   game.createAgents(UIAgents);
@@ -21,6 +21,10 @@ export function init(
   
   t = game.getBackground().getTile(899);
   t.registerArmy(new Army(t.pos, 1, "Player1", game));
+
+  t = game.getBackground().getTile(3544);
+  t.registerArmy(new Army(t.pos, 1, "Player1", game));
+
 
   game.createController(UIController);
 
