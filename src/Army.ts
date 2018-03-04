@@ -3,7 +3,7 @@ import { GamePos } from "./GamePos";
 import { Tile } from "./Tile";
 import { GameState } from "./GameState";
 
-let MAX_ARMY_SIZE = 5.3;
+let MAX_ARMY_SIZE = 10;
 
 export class Army extends Agent {
   private strength: number;
@@ -62,57 +62,95 @@ export class Army extends Agent {
     }
 
     if (this.player == "Player1") {
-      let tile = this.getWeakestAdjacentTile();
-      let enemyArmies = tile.getArmies();
-      
-      let enemyStrength = this.getArmiesStrength(enemyArmies);
-
-      if (enemyArmies.length > 0 && enemyArmies[0].player == this.player) {
-        this.attack(tile, this.strength - (this.strength + enemyStrength) / 2);
-        return;
-      }
-
-      if (enemyStrength + 1 < this.strength) {
-        this.attack(tile, this.strength - 1);
-      }
+      this.SlowAndSteady();
     }
     else {
-      this.attack(this.game.getBackground().getRandomAdjacentTile(this.pos),Math.random() * this.strength);
+      this.Repel();
     }
   }
 
-  private getWeakestAdjacentTile(): Tile {
+  //private RandomAttack() : void {
+  //  this.attack(this.game.getBackground().getRandomAdjacentTile(this.pos),Math.random() * this.strength);
+ // }
+
+  private SlowAndSteady() : void {
+    let tile = this.getWeakestAdjacentTile();
+    if (!tile) { return; } 
+    let enemyArmies = tile.getArmies();
+    
+    let enemyStrength = this.getArmiesStrength(enemyArmies);
+
+    if (enemyArmies.length > 0 && enemyArmies[0].player == this.player) {
+      this.attack(tile, this.strength - (this.strength + enemyStrength) / 2);
+      return;
+    }
+
+    if (enemyStrength + 1 < this.strength) {
+      this.attack(tile, this.strength - 1);
+    }
+  }
+
+  
+  private Repel() : void {
+    let gradient = [-2,2,-2,2];
+    let tile = this.getWeakestAdjacentTile(gradient);
+    if (!tile) { return; } 
+    let enemyArmies = tile.getArmies();
+    
+    let enemyStrength = this.getArmiesStrength(enemyArmies);
+    let direction = this.pos.directionTo(tile.pos);
+    let currGradient = 0;
+    if (direction >= 0) { currGradient = gradient[direction]; }
+    if (enemyArmies.length > 0 && enemyArmies[0].player == this.player) {
+      this.attack(tile, currGradient + this.strength - (this.strength + enemyStrength) / 2);
+      return;
+    }
+
+    if (enemyStrength - currGradient < this.strength) {
+      this.attack(tile, this.strength - 1);
+    }
+  }
+
+  private getWeakestAdjacentTile(gradient = [0,0,0,0]): Tile {
     let bgm = this.game.getBackground();
     let tile1 = bgm.getAdjacentTile(this.pos, 0);
     let tile2 = bgm.getAdjacentTile(this.pos, 1);
-    if (
-      !tile1.equals(tile2) &&
-      this.getArmiesStrength(tile1.getArmies()) >
-        this.getArmiesStrength(tile2.getArmies())
-    ) {
-      tile1 = tile2;
-    }
 
+    let currGradient = 0;
+    let returnTile = this.getWeakerTile(tile1,tile2,gradient[currGradient],gradient[1]);
+    if (returnTile && returnTile.equals(tile2)) { currGradient = 1; }
     tile2 = bgm.getAdjacentTile(this.pos, 2);
-    if (
-      !tile1.equals(tile2) &&
-      this.getArmiesStrength(tile1.getArmies()) >
-        this.getArmiesStrength(tile2.getArmies())
-    ) {
-      tile1 = tile2;
-    }
-
+    returnTile = this.getWeakerTile(returnTile,tile2,gradient[currGradient],gradient[2]);
+    if (returnTile && returnTile.equals(tile2)) { currGradient = 2; }
     tile2 = bgm.getAdjacentTile(this.pos, 3);
-    if (
-      !tile1.equals(tile2) &&
-      this.getArmiesStrength(tile1.getArmies()) >
-        this.getArmiesStrength(tile2.getArmies())
-    ) {
-      tile1 = tile2;
+    returnTile = this.getWeakerTile(returnTile,tile2,gradient[currGradient],gradient[3]);
+    
+    if (!returnTile || !this.game.getBackground().isValidPos(returnTile.pos)) { return undefined; }
+    
+    return returnTile;
+  }
+
+  private getWeakerTile(tile1 : Tile, tile2 : Tile, gradient1 : number, gradient2 : number) : Tile {
+    let bgm = this.game.getBackground();
+    
+    if (!tile2 || !tile2.pos || !bgm.isValidPos(tile2.pos)) {
+      return tile1;
+    } else if (!tile1 || !tile1.pos || !bgm.isValidPos(tile2.pos)) {
+      return tile2;
+    } else if ( tile1.equals(tile2) ) { 
+      return tile1;
     }
 
-    return tile1;
+    if (
+      this.getArmiesStrength(tile1.getArmies()) - gradient1 >
+        this.getArmiesStrength(tile2.getArmies()) - gradient2
+    ) {
+      return tile2;
+    } else { 
+      return tile1;
+    }
   }
+
 
   private getArmiesStrength(armies: Army[]): number {
     let strength = 0;

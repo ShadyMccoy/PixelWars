@@ -34,7 +34,7 @@ function RunAgents() {
 function initGame() {
   initAnimate();
   
-  setInterval(RunAgents,20);
+  setInterval(RunAgents,50);
   AnimateLoop();
 }
 

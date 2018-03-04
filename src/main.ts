@@ -11,14 +11,15 @@ export function init(
 
   game.createBackground({
     canvas: UIBackground,
-    map: { width: 10, height: 10 }
+    map: { width: 30, height: 30 }
   });
   
   game.createAgents(UIAgents);
+  
   let t = game.getBackground().getTile(0);
   t.registerArmy(new Army(t.pos, 1, "Player2", game));
   
-  t = game.getBackground().getTile(99);
+  t = game.getBackground().getTile(899);
   t.registerArmy(new Army(t.pos, 1, "Player1", game));
 
   game.createController(UIController);

@@ -91,7 +91,7 @@ export class Tile {
 
   public equals(otherTile : Tile) : boolean {
     return this.pos.equals(otherTile.pos);
-  }
+  }  
 }
 
 class Forces {
