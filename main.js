@@ -1,5 +1,3 @@
-
-
 var main = function(callback) {
   System.import("main").then(callback);
 };
@@ -44,4 +42,3 @@ function AnimateLoop() {
   requestAnimationFrame(AnimateLoop);
   Animate();
 }
-
