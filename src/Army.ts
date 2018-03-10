@@ -2,21 +2,25 @@ import { Agent } from "./Agents";
 import { GamePos } from "./GamePos";
 import { Tile } from "./Tile";
 import { GameState } from "./GameState";
+import { Player } from "./Player";
 
 let MAX_ARMY_SIZE = 10;
 
 export class Army extends Agent {
   private strength: number;
-  private player: string;
+  private player: Player;
+  private strategy : (army : Army) => void;
 
-  constructor(pos: GamePos, strength: number, player: string, game: GameState) {
+  constructor(pos: GamePos, strength: number, player: Player, game: GameState, attackStrategy ?: (army : Army) => void) {
     super(pos, "Army", game);
     this.pos = pos;
     this.strength = strength;
     this.player = player;
+
+    this.strategy = attackStrategy;
   }
 
-  public getPlayer(): string {
+  public getPlayer(): Player {
     return this.player;
   }
 
@@ -33,19 +37,25 @@ export class Army extends Agent {
     army.DeleteAgent();
   }
 
-  public attack(tile: Tile, power: number) {
+  private isAttackValid(tile : Tile, power : number) : boolean {
     if (tile === undefined) {
-      return;
+      return false;
     }
     if (this.pos.equals(tile.pos)) {
-      return;
+      return false;
     }
     if (power <= 0.5) {
-      return;
+      return false;
     }
     if (this.strength - power < 1) {
-      return;
+      return false;
     }
+
+    return true;
+  }
+
+  public attack(tile: Tile, power: number) {
+    if (!this.isAttackValid(tile,power)) { return; }
 
     this.strength -= power;
     let newArmy = new Army(tile.pos, power, this.player, this.game);
@@ -61,57 +71,22 @@ export class Army extends Agent {
       this.strength = MAX_ARMY_SIZE;
     }
 
-    if (this.player == "Player1") {
-      this.SlowAndSteady();
-    }
-    else {
-      this.Repel();
-    }
+    this.strategy(this);
+
+//    if (this.player == "Player1") {
+//      this.SlowAndSteady();
+//    }
+//    else {
+//      this.Repel();
+//    }
   }
 
   //private RandomAttack() : void {
   //  this.attack(this.game.getBackground().getRandomAdjacentTile(this.pos),Math.random() * this.strength);
  // }
 
-  private SlowAndSteady() : void {
-    let tile = this.getWeakestAdjacentTile();
-    if (!tile) { return; } 
-    let enemyArmies = tile.getArmies();
-    
-    let enemyStrength = this.getArmiesStrength(enemyArmies);
 
-    if (enemyArmies.length > 0 && enemyArmies[0].player == this.player) {
-      this.attack(tile, this.strength - (this.strength + enemyStrength) / 2);
-      return;
-    }
-
-    if (enemyStrength + 1 < this.strength) {
-      this.attack(tile, this.strength - 1);
-    }
-  }
-
-  
-  private Repel() : void {
-    let gradient = [-2,2,-2,3];
-    let tile = this.getWeakestAdjacentTile(gradient);
-    if (!tile) { return; } 
-    let enemyArmies = tile.getArmies();
-    
-    let enemyStrength = this.getArmiesStrength(enemyArmies);
-    let direction = this.pos.directionTo(tile.pos);
-    let currGradient = 0;
-    if (direction >= 0) { currGradient = gradient[direction]; }
-    if (enemyArmies.length > 0 && enemyArmies[0].player == this.player) {
-      this.attack(tile, currGradient + this.strength - (this.strength + enemyStrength) / 2);
-      return;
-    }
-
-    if (enemyStrength - currGradient < this.strength) {
-      this.attack(tile, this.strength - 1);
-    }
-  }
-
-  private getWeakestAdjacentTile(gradient = [0,0,0,0]): Tile {
+  public getWeakestAdjacentTile(gradient = [0,0,0,0]): Tile {
     let bgm = this.game.getBackground();
     let tile1 = bgm.getAdjacentTile(this.pos, 0);
     let tile2 = bgm.getAdjacentTile(this.pos, 1);
@@ -152,7 +127,7 @@ export class Army extends Agent {
   }
 
 
-  private getArmiesStrength(armies: Army[]): number {
+  public getArmiesStrength(armies: Army[]): number {
     let strength = 0;
     armies.forEach(a => (strength += a.getStrength()));
     return strength;
@@ -168,11 +143,7 @@ export class Army extends Agent {
     let ctx = this.game.getAgents().ctx;
 
     ctx.beginPath();
-    if (this.player == "Player1") {
-      ctx.strokeStyle = "red";
-    } else {
-      ctx.strokeStyle = "blue";
-    }
+    ctx.strokeStyle = this.player.getColor();
     ctx.rect(x, y, width, height);
     ctx.stroke();
   }

@@ -59,11 +59,11 @@ export class Tile {
     if (this.armies.length <= 1) { return; }
     let forces = new Forces();
     this.armies.forEach( a => {
-      let force = forces[a.getPlayer()]
+      let force = forces[a.getPlayer().getPlayerName()]
       if (force) {
         force.joinForces(a);
       } else {
-        forces[a.getPlayer()] = a;
+        forces[a.getPlayer().getPlayerName()] = a;
       }
     });
 
