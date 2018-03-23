@@ -41,6 +41,8 @@ export class Army extends Agent {
     if (tile === undefined) {
       return false;
     }
+
+    //if (!this.pos.isAdjacentTo(tile.pos)) { return false; }
     if (this.pos.equals(tile.pos)) {
       return false;
     }
@@ -71,7 +73,11 @@ export class Army extends Agent {
       this.strength = MAX_ARMY_SIZE;
     }
 
-    this.strategy(this);
+    if (typeof(this.strategy) === typeof(Function)) {
+      this.strategy(this);
+    } else {
+      this.player.getStrategy()(this);
+    }
 
 //    if (this.player == "Player1") {
 //      this.SlowAndSteady();
@@ -100,17 +106,15 @@ export class Army extends Agent {
     tile2 = bgm.getAdjacentTile(this.pos, 3);
     returnTile = this.getWeakerTile(returnTile,tile2,gradient[currGradient],gradient[3]);
     
-    if (!returnTile || !this.game.getBackground().isValidPos(returnTile.pos)) { return undefined; }
+    if (!returnTile) { return undefined; }
     
-    return returnTile;
+    return this.game.getBackground().EnsureValidTileFromPos(returnTile.pos);
   }
 
   private getWeakerTile(tile1 : Tile, tile2 : Tile, gradient1 : number, gradient2 : number) : Tile {
-    let bgm = this.game.getBackground();
-    
-    if (!tile2 || !tile2.pos || !bgm.isValidPos(tile2.pos)) {
+    if (!tile2 || !tile2.pos) {
       return tile1;
-    } else if (!tile1 || !tile1.pos || !bgm.isValidPos(tile2.pos)) {
+    } else if (!tile1 || !tile1.pos) {
       return tile2;
     } else if ( tile1.equals(tile2) ) { 
       return tile1;

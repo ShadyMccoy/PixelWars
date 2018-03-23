@@ -1,3 +1,4 @@
+//import { BackgroundMap } from './BackGroundCanvas';
 
 export class GamePos {
     public id: number;

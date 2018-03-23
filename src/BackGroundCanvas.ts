@@ -39,8 +39,10 @@ export class BackgroundMap {
     return this.getAdjacentTile(pos,randomNum*4);
   }
 
-  public isValidPos(pos : GamePos) : boolean {
-    return pos.x >= 0 && pos.x < this.map.width && pos.y >= 0 && pos.y < this.map.height;
+  public EnsureValidTileFromPos(pos : GamePos) : Tile {
+    pos.x = ((pos.x % this.map.width) + this.map.width) % this.map.width;
+    pos.y = ((pos.y % this.map.height) + this.map.height) % this.map.height;
+    return this.getTileFromPos(pos);
   }
 
   public getAdjacentTile(pos: GamePos, idx : number) : Tile {
@@ -56,15 +58,7 @@ export class BackgroundMap {
       y += 1;
     }
 
-    if (x < 0 || x >= this.map.width) {
-      x = pos.x;
-    }
-    
-    if (y < 0 || y >= this.map.height) {
-      y = pos.y;
-    }
-
-    return this.getTileFromPos(new GamePos(-1, x, y));
+    return this.EnsureValidTileFromPos(new GamePos(-1, x, y));
   }
 
   public getTileFromPos(pos: GamePos) : Tile {
