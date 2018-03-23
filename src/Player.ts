@@ -3,7 +3,9 @@ import { Army } from "./Army";
 export class Players {
     private players : PlayersCollection;
 
-    constructor() { }
+    constructor() {
+        this.players = {};
+     }
 
     public AddPlayer(player : Player) {
        this.players[player.getPlayerName()] = player;

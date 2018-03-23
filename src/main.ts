@@ -12,23 +12,20 @@ export function init(
 
   game.createBackground({
     canvas: UIBackground,
-    map: { width: 100, height: 100 }
+    map: { width: 30, height: 30 }
   });
   
   game.createAgents(UIAgents);
   game.createPlayers();
   let player1 = new Player("Player1","red",SlowAndSteady);
-  let player2 = new Player("Player1","red",Repel);
+  let player2 = new Player("Player1","blue",Repel);
   game.AddPlayer(player1);
   game.AddPlayer(player2);
   
   let t = game.getBackground().getTile(0);
   t.registerArmy(new Army(t.pos, 1, player2, game));
   
-  t = game.getBackground().getTile(899);
-  t.registerArmy(new Army(t.pos, 1, player1, game));
-
-  t = game.getBackground().getTile(3544);
+  t = game.getBackground().getTile(400);
   t.registerArmy(new Army(t.pos, 1, player1, game));
 
   game.createController(UIController);
