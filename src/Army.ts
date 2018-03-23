@@ -137,6 +137,10 @@ export class Army extends Agent {
     return strength;
   }
 
+  public getGame() : GameState {
+    return this.game;
+  }
+
   public draw(): void {
     let map = this.game.getBackground();
     let width = map.getTileWidth() * this.strength / MAX_ARMY_SIZE;
