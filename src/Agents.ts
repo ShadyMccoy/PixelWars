@@ -5,13 +5,11 @@ export class Agents {
   private agents: AgentCollection;
   public ctx: CanvasRenderingContext2D;
   public lastTick: number;
-  //private game: GameState;
-
-  public constructor(canvas: HTMLCanvasElement, game: GameState) {
+  
+  public constructor(canvas: HTMLCanvasElement) {
     this.ctx = canvas.getContext("2d");
     this.agents = {};
     this.lastTick = 0;
-    //this.game = game;
   }
 
   public AddAgent(agent: Agent) : void {
