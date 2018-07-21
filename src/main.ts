@@ -176,7 +176,12 @@ export function runAgents() {
   game.getBackground().resolveConflicts();
 }
 
+export function ToggleAnimate() {
+  game.isAnimating = !game.isAnimating;
+}
+
 export function animate() {
+  if (!game.isAnimating) return;
   game.getAgents().drawAgents();
   game.getController().drawController();
 }

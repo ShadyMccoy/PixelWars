@@ -8,6 +8,7 @@ export class GameState {
     private background?: BackgroundMap;
     private controller?: Controller;
     private players?: Players;
+    public isAnimating : Boolean;
 
     constructor() {
         
