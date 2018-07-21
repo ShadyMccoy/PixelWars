@@ -25,6 +25,36 @@ export class Player {
     private playerName : string;
     private color : string;
     private attackStrategy : (army : Army) => void;
+    public weights = [
+        [
+          [0,0,0,0,0],
+          [0,0,1,0,0],
+          [0,0,0,1,0],
+          [0,0,1,0,0],
+          [0,0,0,0,0]
+        ],
+        [
+          [0,0,0,0,0],
+          [0,0,1,0,0],
+          [0,1,0,0,0],
+          [0,0,1,0,0],
+          [0,0,0,0,0]
+        ],
+        [
+          [0,0,0,0,0],
+          [0,0,0,0,0],
+          [0,1,0,1,0],
+          [0,0,1,0,0],
+          [0,0,0,0,0]
+        ],
+        [
+          [0,0,0,0,0],
+          [0,0,1,0,0],
+          [0,1,0,1,0],
+          [0,0,0,0,0],
+          [0,0,0,0,0]
+        ]
+    ];
 
     constructor(name : string, color : string, strategy : (army : Army) => void) {
         this.playerName = name;
