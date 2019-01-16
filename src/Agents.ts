@@ -42,6 +42,10 @@ export class Agents {
     Object.keys(this.agents).forEach(k => this.agents[k].draw());
     this.ctx.stroke();
   }
+  
+  public ResetAgents() {
+    this.agents = {};
+  }
 }
 
 interface AgentCollection {

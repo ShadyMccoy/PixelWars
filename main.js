@@ -13,12 +13,23 @@ function initAnimate() {
   var AgentCanvas = document.getElementById("AgentsCanvas");
   var ControllerCanvas = document.getElementById("ControllerCanvas");
   ControllerCanvas.addEventListener("click", captureMouseClick);
-  
+
   main(function(m) {
     m.init(BackgroundCanvas, AgentCanvas, ControllerCanvas);
   });
 }
 
+function ResetGame() {
+  main(function(m) {
+    m.ResetGame();
+  });
+}
+
+function ToggleAnimate() {
+  main(function(m) {
+    m.ToggleAnimate();
+  });
+}
 function Animate() {
   main(function(m) {
     m.animate();
@@ -33,8 +44,8 @@ function RunAgents() {
 
 function initGame() {
   initAnimate();
-  
-  setInterval(RunAgents,10);
+
+  setInterval(RunAgents, 10);
   AnimateLoop();
 }
 

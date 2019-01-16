@@ -8,6 +8,7 @@ export class GameState {
     private background?: BackgroundMap;
     private controller?: Controller;
     private players?: Players;
+    public isAnimating : Boolean;
 
     constructor() {
         
@@ -55,5 +56,10 @@ export class GameState {
 
     public getPlayer(name : string) : Player {
         return this.players.getPlayer(name);
+    }
+
+    public ResetGame() {
+        this.players = null;
+        this.agents.ResetAgents();
     }
 }

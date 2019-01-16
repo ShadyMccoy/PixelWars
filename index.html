@@ -9,7 +9,7 @@
 	<script src="./main.js"></script>
 </head>
 
-<body onload="initGame();">
+<body>
 	<div id="canvasesdiv" style="position:relative; width:400px; height:300px">
 		<canvas id="BackgroundCanvas" style="z-index: 1;
 				position:absolute;
@@ -33,6 +33,9 @@
 			This text is displayed if your browser does not support HTML5 Canvas.
 		</canvas>
 	</div>
+	<button onclick="initGame()">Init Game</button>
+	<button onclick="ToggleAnimate()">Toggle Animate</button>
+	<button onclick="ResetGame()">Reset</button>
 </body>
 
 </html>
