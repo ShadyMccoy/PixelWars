@@ -66,6 +66,10 @@ export class Player {
         return this.attackStrategy;
     }
 
+    public SetWeights( newWeights : [[[number]]]) {
+        this.weights = newWeights;
+    }
+
     public getPlayerName() : string {
         return this.playerName;
     }

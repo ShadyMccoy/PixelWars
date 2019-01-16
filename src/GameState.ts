@@ -57,4 +57,9 @@ export class GameState {
     public getPlayer(name : string) : Player {
         return this.players.getPlayer(name);
     }
+
+    public ResetGame() {
+        this.players = null;
+        this.agents.ResetAgents();
+    }
 }

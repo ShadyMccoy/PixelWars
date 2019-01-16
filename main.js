@@ -19,6 +19,12 @@ function initAnimate() {
   });
 }
 
+function ResetGame() {
+  main(function(m) {
+    m.ResetGame();
+  });
+}
+
 function ToggleAnimate() {
   main(function(m) {
     m.ToggleAnimate();

@@ -13,10 +13,40 @@ export function init(
 
   game.createBackground({
     canvas: UIBackground,
-    map: { width: 40, height: 30 }
+    map: { width: 21, height: 21 }
   });
   
   game.createAgents(UIAgents);
+  game.createPlayers();
+  let player1 = new Player("Player1","red",Trinity);
+  let player2 = new Player("Player2","blue",Trinity);
+  let player3 = new Player("Player3","purple",Trinity);
+  let player4 = new Player("Player4","gray",Trinity);
+  game.AddPlayer(player1);
+  game.AddPlayer(player2);
+  game.AddPlayer(player3);
+  game.AddPlayer(player4);
+  
+  let t = game.getBackground().getTile(100);
+  t.registerArmy(new Army(t.pos, 1, player1, game));
+  
+  t = game.getBackground().getTile(200);
+  t.registerArmy(new Army(t.pos, 1, player2, game));
+
+  t = game.getBackground().getTile(300);
+  t.registerArmy(new Army(t.pos, 1, player3, game));
+
+  t = game.getBackground().getTile(400);
+  t.registerArmy(new Army(t.pos, 1, player4, game));
+
+  game.createController(UIController);
+
+  game.getBackground().drawMap();
+}
+
+export function ResetGame(
+) {
+  game.ResetGame();
   game.createPlayers();
   let player1 = new Player("Player1","red",SlowAndSteady);
   let player2 = new Player("Player2","blue",Repel);
@@ -34,9 +64,8 @@ export function init(
   t = game.getBackground().getTile(1050);
   t.registerArmy(new Army(t.pos, 1, player3, game));
 
-  game.createController(UIController);
-
   game.getBackground().drawMap();
+  game.isAnimating = true;
 }
 
 

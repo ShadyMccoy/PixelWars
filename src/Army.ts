@@ -2,7 +2,7 @@ import { Agent } from "./Agents";
 import { GamePos } from "./GamePos";
 import { Tile } from "./Tile";
 import { GameState } from "./GameState";
-import { Player } from "./Player";
+import { Player } from './Player';
 
 let MAX_ARMY_SIZE = 10;
 
@@ -154,5 +154,18 @@ export class Army extends Agent {
     ctx.strokeStyle = this.player.getColor();
     ctx.rect(x, y, width, height);
     ctx.stroke();
+  }
+
+  private SplitPlayer() {
+    let player = this.getPlayer();
+    let NewPlayer = new Player(
+      Math.random().toString(36).slice(2), 
+      '#'+Math.floor(Math.random()*16777215).toString(16),
+      this.strategy);
+
+    let NewWeights = NewPlayer.weights.slice();
+    //NewWeights.forEach(weight => {
+    //  weight += (0.5-Math.random())/10;
+    //});
   }
 }
