@@ -3,6 +3,15 @@ export default {
   author: "core",
   version: 1,
   description: "Sends small probes toward weak enemies, preferring lonely tiles.",
+  summary: `Probe-and-spread. Each army scores neighbors as enemyStrength -
+0.5 * friendlyCount and picks the lowest-scoring tile that we can still
+overpower (enemyS < strength - 0.5). It commits about 40% of strength
+into the probe, never the whole army. Thesis: territory is scored by
+tile count, not stack count, so it pays to seed the map with cheap
+controlling armies rather than walk one big stack across it. The
+friendlyCount bonus is a small repulsion: prefer lonely tiles so we
+don't pile onto territory we already own. Brittle against Aggressive,
+which preys on the half-strength remainders we leave behind.`,
   act(army, game) {
     const neighbors = army.tile ? army.tile.neighbors : null;
     const pid = army.player.id;

@@ -28,12 +28,15 @@ export class Controls {
     this.modeSelect.addEventListener("change", () => this.app.loadMode(this.modeSelect.value));
     this.toggleGrid.addEventListener("change", () => {
       this.app.renderer.showGrid = this.toggleGrid.checked;
+      this.app.markDirty();
     });
     this.toggleTerritory.addEventListener("change", () => {
       this.app.renderer.showTerritory = this.toggleTerritory.checked;
+      this.app.markDirty();
     });
     this.toggleGlow.addEventListener("change", () => {
       this.app.renderer.showGlow = this.toggleGlow.checked;
+      this.app.markDirty();
     });
 
     document.addEventListener("keydown", (e) => {
