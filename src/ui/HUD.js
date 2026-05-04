@@ -75,7 +75,6 @@ export class HUD {
       head.innerHTML = `
         <span class="player-dot" style="background:${player.color}"></span>
         <span class="player-name">${escapeHtml(player.name)}</span>
-        <span class="player-stat" title="Armies">⚔ <b data-stat="armies">0</b></span>
         <span class="player-stat" title="Strength">⬢ <b data-stat="strength">0</b></span>
         <span class="player-stat" title="Territory">▣ <b data-stat="territory">0</b></span>
       `;
@@ -134,7 +133,6 @@ export class HUD {
     for (const player of this.game.players.list) {
       const row = this.root.querySelector(`[data-player-id="${player.id}"]`);
       if (!row) continue;
-      row.querySelector('[data-stat="armies"]').textContent = player.totals.armies;
       row.querySelector('[data-stat="strength"]').textContent = player.totals.strength.toFixed(1);
       row.querySelector('[data-stat="territory"]').textContent = player.totals.territory;
       const fill = row.querySelector(".strength-fill");
