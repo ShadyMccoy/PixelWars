@@ -1,9 +1,18 @@
 import { GameMap } from "./GameMap.js";
 import { Army } from "./Army.js";
 import { Players } from "./Player.js";
+import { makeRng } from "./rng.js";
 
 export class Game {
-  constructor({ width = 40, height = 30, wrap = true, growth = 1, maxArmy = 10, maxHistory = 240 } = {}) {
+  constructor({
+    width = 40,
+    height = 30,
+    wrap = true,
+    growth = 1,
+    maxArmy = 10,
+    maxHistory = 240,
+    seed = null,
+  } = {}) {
     this.map = new GameMap({ width, height, wrap });
     this.players = new Players();
     this.armies = [];
@@ -15,15 +24,18 @@ export class Game {
     this.maxArmy = maxArmy;
     this.history = [];
     this.maxHistory = maxHistory;
-    this.eventBus = new EventTarget();
+    this.seed = seed;
+    this.rng = makeRng(seed);
+    this.eventBus = typeof EventTarget !== "undefined" ? new EventTarget() : null;
     this._territoryDirty = true;
   }
 
   on(event, fn) {
-    this.eventBus.addEventListener(event, fn);
+    this.eventBus?.addEventListener(event, fn);
   }
 
   emit(event, detail) {
+    if (!this.eventBus || typeof CustomEvent === "undefined") return;
     this.eventBus.dispatchEvent(new CustomEvent(event, { detail }));
   }
 

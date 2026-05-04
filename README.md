@@ -35,19 +35,42 @@ Then visit <http://localhost:8000>.
 ## Strategies
 
 `SlowAndSteady`, `Repel`, `Trinity`, `Aggressive`, `Defender`, `Random`,
-`Berserker`, `Cautious`, `Swarm`. Drop new ones into `src/strategies/index.js`
-and they appear in the HUD automatically.
+`Berserker`, `Cautious`, `Swarm`. One file per bot in `src/strategies/`,
+registered in `src/strategies/index.js`. See [docs/strategies.md](docs/strategies.md)
+for the bot-author guide.
+
+## Tournaments
+
+Headless bot tournaments run on Node (>= 19):
+
+```bash
+node tournament/run.js                              # all bots, arena, 10 rounds
+node tournament/run.js --bots Aggressive,Trinity    # specific lineup
+node tournament/run.js --map royale --rounds 30     # different map / longer
+node tournament/run.js --list                       # what's available
+node tournament/run.js --help
+```
+
+Matches are reproducible: `node tournament/run.js --seed 42` always produces
+the same standings.
 
 ## Architecture
 
 ```
 src/
-  core/        Game, GameMap, Tile, Army, Player, GamePos
-  strategies/  AI behaviors (army -> game)
-  modes/       Preset configs and starting positions
+  core/        Game, GameMap, Tile, Army, Player, GamePos, rng
+  strategies/  One file per bot + a registry index
+  modes/       Preset configs and starting positions (browser)
   render/      HiDPI canvas renderer + stats chart
   ui/          HUD player cards, control bar
-  main.js      App entry
+  main.js      Browser app entry
+tournament/
+  arena.js     Headless single-match runner
+  scheduler.js Round-robin / FFA scheduler
+  maps.js      Map presets for tournaments
+  run.js       CLI entrypoint
+docs/
+  strategies.md  Bot-author guide
 ```
 
-Plain ES modules. No bundler. No framework.
+Plain ES modules. No bundler. No framework. No `npm install`.
