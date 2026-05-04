@@ -9,15 +9,32 @@
 const STORE_URL = "tournament/leagues.json";
 
 export class LeagueViewer {
-  constructor({ root, refreshButton, app }) {
+  constructor({ root, refreshButton, app, onFirstLoad }) {
     this.root = root;
     this.app = app;
     this.leagues = [];
     this.expandedTiers = new Map(); // map -> tier index currently shown
     this.seedCounter = Date.now() & 0x7fffffff;
+    this._onFirstLoad = onFirstLoad;
+    this._firstLoadDone = false;
 
     refreshButton?.addEventListener("click", () => this.load());
     this.load();
+  }
+
+  // Returns args suitable for app.loadLeagueMatch with the top tier of
+  // the first saved league, or null if nothing is saved yet.
+  topTierArgs(seed) {
+    const league = this.leagues[0];
+    if (!league || !league.tiers?.length) return null;
+    return {
+      leagueMap: league.map,
+      mapConfig: league.mapConfig,
+      tierIndex: 0,
+      tierBots: league.tiers[0].slice(),
+      poolSize: league.poolSize,
+      seed: seed ?? ++this.seedCounter,
+    };
   }
 
   async load() {
@@ -29,9 +46,17 @@ export class LeagueViewer {
       this.leagues = Array.isArray(parsed?.leagues) ? parsed.leagues : [];
     } catch (e) {
       this.root.innerHTML = `<div class="hud-empty">No saved leagues.<br/><span style="font-size:10px">Run: <code>node tournament/run.js --league</code></span></div>`;
+      this._notifyFirstLoad();
       return;
     }
     this.render();
+    this._notifyFirstLoad();
+  }
+
+  _notifyFirstLoad() {
+    if (this._firstLoadDone) return;
+    this._firstLoadDone = true;
+    this._onFirstLoad?.(this.leagues);
   }
 
   render() {
@@ -92,6 +117,7 @@ export class LeagueViewer {
     btn.className = "btn btn-watch";
     btn.textContent = `▶ Watch random match`;
     btn.addEventListener("click", () => {
+      this.app._userChoseMode = true;
       const seed = ++this.seedCounter;
       this.app.loadLeagueMatch({
         leagueMap: league.map,

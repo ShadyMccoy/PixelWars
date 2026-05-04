@@ -25,7 +25,10 @@ export class Controls {
       this.app.speed = parseFloat(this.speed.value);
       this.speedLabel.textContent = `${this.app.speed.toFixed(1)}x`;
     });
-    this.modeSelect.addEventListener("change", () => this.app.loadMode(this.modeSelect.value));
+    this.modeSelect.addEventListener("change", () => {
+      this.app._userChoseMode = true;
+      this.app.loadMode(this.modeSelect.value);
+    });
     this.toggleGrid.addEventListener("change", () => {
       this.app.renderer.showGrid = this.toggleGrid.checked;
       this.app.markDirty();

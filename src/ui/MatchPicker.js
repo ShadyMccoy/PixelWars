@@ -85,6 +85,7 @@ export class MatchPicker {
       row.appendChild(lineup);
       row.addEventListener("click", () => {
         try {
+          this.app._userChoseMode = true;
           this.setActive(entry.id);
           this.app.loadReplay(entry);
         } catch (e) {

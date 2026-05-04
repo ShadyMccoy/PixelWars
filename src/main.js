@@ -49,6 +49,9 @@ class App {
     // / classic / arena / royale the user usually wants to keep watching
     // past the first elimination, so it stays off there.
     this.autoStopOnWinner = false;
+    // Tracks whether the user has already changed mode / picked a match
+    // so the async league loader doesn't yank them out of an active view.
+    this._userChoseMode = false;
 
     this.populateModeSelect();
     this.loadMode(this.modeKey);
@@ -61,6 +64,15 @@ class App {
       root: document.getElementById("league-viewer"),
       refreshButton: document.getElementById("btn-leagues-refresh"),
       app: this,
+      // First time leagues finish loading, default to a top-tier match
+      // so visitors land on the marquee competition rather than Classic
+      // (unless they've already clicked something).
+      onFirstLoad: (leagues) => {
+        if (this._userChoseMode) return;
+        if (!leagues.length) return;
+        const args = this.leagueViewer.topTierArgs();
+        if (args) this.loadLeagueMatch(args);
+      },
     });
     this.startLoop();
   }
