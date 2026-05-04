@@ -52,6 +52,12 @@ League mode (similar-skill matchups via tier-based promotion/relegation):
   --relegate N        Bottom N relegate each season (default: 2)
   --bootstrap N       Pre-season pool-play matches to seed initial tiers
                       (default: 50; use 0 to skip)
+  --seed-from-league NAME  Use the saved league for that map as the
+                      initial bot order (skips bootstrap). Active bots
+                      not in the saved league are slotted in at the
+                      tier given by --insert-tier.
+  --insert-tier N     1-indexed tier at which to insert previously-
+                      unranked bots (default: 3)
 
 Single-match / replay:
   --lineup A,B,C      Run one match with this lineup at --seed
@@ -103,6 +109,8 @@ function parseArgs(argv) {
     archiveClear: false,
     archiveList: false,
     listAll: false,
+    seedFromLeague: null,
+    insertTier: 3,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -129,6 +137,8 @@ function parseArgs(argv) {
       case "--promote": opts.promote = parseInt(next(), 10); break;
       case "--relegate": opts.relegate = parseInt(next(), 10); break;
       case "--bootstrap": opts.bootstrap = parseInt(next(), 10); break;
+      case "--seed-from-league": opts.seedFromLeague = next(); break;
+      case "--insert-tier": opts.insertTier = parseInt(next(), 10); break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
@@ -406,6 +416,36 @@ async function cmdLeague(opts) {
     process.exit(1);
   }
 
+  // If asked, seed the initial bot order from a previously-saved league —
+  // existing tier composition stays put, and any active bot the saved
+  // league didn't see (newly added strategies) gets slotted in at the
+  // chosen tier so it has a few seasons to climb or sink.
+  let bootstrap = opts.bootstrap;
+  let newBotNames = [];
+  if (opts.seedFromLeague) {
+    const leagues = await loadLeagues();
+    const src = leagues.find((l) => l.map === opts.seedFromLeague);
+    if (!src) {
+      console.error(`No saved league for map "${opts.seedFromLeague}". Run --league --map ${opts.seedFromLeague} first.`);
+      process.exit(1);
+    }
+    const knownInLeague = new Set(src.tiers.flat());
+    const activeNames = new Set(strategies.map((s) => s.name));
+    const seededOrder = src.tiers.flat().filter((n) => activeNames.has(n));
+    newBotNames = strategies.map((s) => s.name).filter((n) => !knownInLeague.has(n));
+    const insertAt = Math.max(0, (opts.insertTier - 1) * opts.tierSize);
+    const reordered = [
+      ...seededOrder.slice(0, insertAt),
+      ...newBotNames,
+      ...seededOrder.slice(insertAt),
+    ];
+    strategies = reordered.map((n) => getStrategy(n));
+    bootstrap = 0;
+    if (!opts.json) {
+      console.log(`Seeded from "${opts.seedFromLeague}" league. ${newBotNames.length} new bot${newBotNames.length === 1 ? "" : "s"} inserted at tier ${opts.insertTier}: ${newBotNames.join(", ") || "(none)"}\n`);
+    }
+  }
+
   const flaggedEntries = [];
   const onMatch = (season, tier, idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
@@ -433,7 +473,7 @@ async function cmdLeague(opts) {
   };
 
   const totalEstimated =
-    opts.bootstrap +
+    bootstrap +
     opts.seasons *
       Math.ceil(strategies.length / opts.tierSize) *
       opts.matchesPerSeason;
@@ -441,7 +481,7 @@ async function cmdLeague(opts) {
     console.log(
       `Running league: ${strategies.length} bots · tier-size=${opts.tierSize} · ` +
       `seasons=${opts.seasons} · ${opts.matchesPerSeason} matches/tier/season · ` +
-      `${opts.promote}↑/${opts.relegate}↓ · bootstrap=${opts.bootstrap}`,
+      `${opts.promote}↑/${opts.relegate}↓ · bootstrap=${bootstrap}`,
     );
     console.log(`(~${totalEstimated} matches total)\n`);
   }
@@ -455,7 +495,7 @@ async function cmdLeague(opts) {
     poolSize: opts.pool,
     promote: opts.promote,
     relegate: opts.relegate,
-    bootstrapMatches: opts.bootstrap,
+    bootstrapMatches: bootstrap,
     baseSeed: opts.seed,
     maxTicks: opts.ticks,
     onMatch,
