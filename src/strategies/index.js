@@ -7,6 +7,7 @@ import Random from "./Random.js";
 import Berserker from "./Berserker.js";
 import Cautious from "./Cautious.js";
 import Swarm from "./Swarm.js";
+import { GENERATED } from "./generated.js";
 
 export const STRATEGY_LIST = [
   SlowAndSteady,
@@ -18,6 +19,7 @@ export const STRATEGY_LIST = [
   Berserker,
   Cautious,
   Swarm,
+  ...GENERATED,
 ];
 
 export const STRATEGIES = Object.fromEntries(STRATEGY_LIST.map((s) => [s.name, s]));
