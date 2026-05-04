@@ -27,6 +27,7 @@ import Bulwark from "./Bulwark.js";
 import Conqueror from "./Conqueror.js";
 import Stalker from "./Stalker.js";
 import Citadel from "./Citadel.js";
+import Lance from "./Lance.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
 
@@ -62,6 +63,7 @@ export const ALL_STRATEGY_LIST = [
   Conqueror,
   Stalker,
   Citadel,
+  Lance,
   ...GENERATED,
 ];
 
