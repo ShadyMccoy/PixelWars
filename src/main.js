@@ -8,7 +8,7 @@ import { HUD } from "./ui/HUD.js";
 import { Controls } from "./ui/Controls.js";
 import { MatchPicker } from "./ui/MatchPicker.js";
 import { LeagueViewer } from "./ui/LeagueViewer.js";
-import { STRATEGIES } from "./strategies/index.js";
+import { ALL_STRATEGIES } from "./strategies/index.js";
 import { MAPS } from "../tournament/maps.js";
 
 // Mirrors tournament/arena.js so a replayed match looks the same on screen
@@ -123,7 +123,7 @@ class App {
     // headless result in the browser is a matter of feeding the same
     // values into a Game instance.
     const strategies = entry.lineup.map((name) => {
-      const s = STRATEGIES[name];
+      const s = ALL_STRATEGIES[name];
       if (!s) throw new Error(`Replay references unknown strategy: ${name}`);
       return s;
     });
@@ -192,7 +192,7 @@ class App {
       sampled.push(pool.splice(j, 1)[0]);
     }
     const strategies = sampled.map((name) => {
-      const s = STRATEGIES[name];
+      const s = ALL_STRATEGIES[name];
       if (!s) throw new Error(`League references unknown strategy: ${name}`);
       return s;
     });

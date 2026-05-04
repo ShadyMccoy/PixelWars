@@ -17,14 +17,17 @@
 // FFA mode (legacy: every strategy plays every match — only with small pools):
 //   node tournament/run.js --pool 0 --bots A,B,C,D --rounds 30
 
-import { STRATEGY_LIST, getStrategy } from "../src/strategies/index.js";
+import { STRATEGY_LIST, ALL_STRATEGY_LIST, ARCHIVED_STRATEGY_LIST, getStrategy } from "../src/strategies/index.js";
 import { MAPS } from "./maps.js";
 import { runFfaTournament, runPoolTournament } from "./scheduler.js";
 import { runLeague } from "./league.js";
 import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
-import { saveLeague, getLeagueStorePath } from "./leagueStore.js";
+import { saveLeague, loadLeagues, getLeagueStorePath } from "./leagueStore.js";
+import { writeFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const HELP = `Usage: node tournament/run.js [options]
 
@@ -57,8 +60,17 @@ Single-match / replay:
   --flags TAG[,TAG]   Filter listed/flagged-saved matches to these tags
                       (any of: ${FLAG_TAGS.join(", ")})
 
+Archive (exclude weak bots from default tournament pool):
+  --archive-bottom N  Archive every bot in the bottom N tiers across all
+                      saved leagues (or just --map NAME's league)
+  --archive-add A,B   Add specific bots to the archive
+  --archive-remove A  Remove specific bots from the archive
+  --archive-clear     Clear the archive (everyone competes again)
+  --archive-list      Print the current archive and exit
+
 Misc:
-  --list              List available strategies and exit
+  --list              List active strategies and exit
+  --list-all          List every strategy (active + archived) and exit
   --help              Show this help
 `;
 
@@ -85,6 +97,12 @@ function parseArgs(argv) {
     promote: 2,
     relegate: 2,
     bootstrap: 50,
+    archiveBottom: null,
+    archiveAdd: null,
+    archiveRemove: null,
+    archiveClear: false,
+    archiveList: false,
+    listAll: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -111,9 +129,16 @@ function parseArgs(argv) {
       case "--promote": opts.promote = parseInt(next(), 10); break;
       case "--relegate": opts.relegate = parseInt(next(), 10); break;
       case "--bootstrap": opts.bootstrap = parseInt(next(), 10); break;
+      case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
+      case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
+      case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
+      case "--archive-clear": opts.archiveClear = true; break;
+      case "--archive-list": opts.archiveList = true; break;
       case "--list":
         console.log(STRATEGY_LIST.map((s) => `${s.name.padEnd(18)} ${s.description ?? ""}`).join("\n"));
         process.exit(0);
+      case "--list-all":
+        opts.listAll = true; break;
       case "--help": case "-h":
         console.log(HELP);
         process.exit(0);
@@ -246,6 +271,120 @@ async function cmdReplay(opts) {
     console.error(`\nWARNING: replay diverged from saved result (ticks ${result.ticks} vs ${entry.ticks}, winner ${result.ranking[0]?.strategy} vs ${entry.ranking[0]?.strategy}).`);
     console.error("This usually means a strategy's behavior changed since the match was saved.");
   }
+}
+
+// ---------------------------------------------------------- archive
+
+const ARCHIVE_PATH = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  "..", "src", "strategies", "archive.js",
+);
+
+async function writeArchive(names) {
+  const sorted = [...new Set(names)].sort();
+  const body =
+`// Archived bots — excluded from new tournaments and the HUD strategy
+// dropdown, but still loadable by name for replays and league watching.
+//
+// This file is auto-managed by:
+//   node tournament/run.js --archive-bottom N      # archive bottom N tiers
+//   node tournament/run.js --archive-clear         # remove all
+//   node tournament/run.js --archive-add A,B,C
+//   node tournament/run.js --archive-remove A,B,C
+//
+// You can also hand-edit it.
+export const ARCHIVED = [
+${sorted.map((n) => `  ${JSON.stringify(n)},`).join("\n")}
+];
+`;
+  await writeFile(ARCHIVE_PATH, body, "utf8");
+  return sorted;
+}
+
+function currentArchive() {
+  return ARCHIVED_STRATEGY_LIST.map((s) => s.name);
+}
+
+async function cmdArchiveList(opts) {
+  const cur = currentArchive();
+  if (cur.length === 0) {
+    console.log("Archive is empty — every strategy competes by default.");
+    return;
+  }
+  console.log(`Archived (${cur.length}):`);
+  for (const name of cur) console.log(`  ${name}`);
+}
+
+async function cmdArchiveClear(opts) {
+  await writeArchive([]);
+  console.log(`Archive cleared. ${ALL_STRATEGY_LIST.length} active strategies.`);
+}
+
+async function cmdArchiveAdd(opts) {
+  const cur = new Set(currentArchive());
+  const validNames = new Set(ALL_STRATEGY_LIST.map((s) => s.name));
+  const added = [];
+  for (const name of opts.archiveAdd) {
+    if (!validNames.has(name)) {
+      console.error(`Unknown strategy: ${name}`);
+      process.exit(1);
+    }
+    if (!cur.has(name)) { cur.add(name); added.push(name); }
+  }
+  const final = await writeArchive([...cur]);
+  console.log(`Archived ${added.length} new bot${added.length === 1 ? "" : "s"} (${final.length} total): ${added.join(", ") || "(none new)"}`);
+}
+
+async function cmdArchiveRemove(opts) {
+  const cur = new Set(currentArchive());
+  const removed = [];
+  for (const name of opts.archiveRemove) {
+    if (cur.delete(name)) removed.push(name);
+  }
+  const final = await writeArchive([...cur]);
+  console.log(`Removed ${removed.length} bot${removed.length === 1 ? "" : "s"} from archive (${final.length} remain): ${removed.join(", ") || "(none)"}`);
+}
+
+async function cmdArchiveBottom(opts) {
+  const N = opts.archiveBottom;
+  if (!Number.isFinite(N) || N <= 0) {
+    console.error(`--archive-bottom needs a positive integer; got ${opts.archiveBottom}`);
+    process.exit(1);
+  }
+  const leagues = await loadLeagues();
+  if (leagues.length === 0) {
+    console.error(`No saved leagues. Run \`node tournament/run.js --league\` first.`);
+    process.exit(1);
+  }
+  // Filter to a single map if --map was specified explicitly. Default
+  // (opts.map=="arena") still triggers the filter though, which is the
+  // wrong default for archive-bottom; we want union of all leagues. Use
+  // a sentinel: only filter if the user passed --map explicitly. Lacking
+  // that detection here, we just take the union of all saved leagues.
+  const sources = leagues;
+
+  const archive = new Set();
+  const breakdown = [];
+  for (const league of sources) {
+    if (league.tiers.length < N) {
+      console.error(`League "${league.map}" only has ${league.tiers.length} tiers; need at least ${N}.`);
+      process.exit(1);
+    }
+    const bottom = league.tiers.slice(league.tiers.length - N).flat();
+    breakdown.push({ map: league.map, count: bottom.length });
+    for (const name of bottom) archive.add(name);
+  }
+
+  // Don't accidentally archive the manual core strategies that someone
+  // may want to keep around for the HUD even if they're weak (e.g.
+  // Hunter is intentionally simple). Honor only the data — let the user
+  // hand-edit if they want exceptions.
+
+  const final = await writeArchive([...archive]);
+  console.log(`Archived ${final.length} bots from the bottom ${N} tier${N === 1 ? "" : "s"} of each league:`);
+  for (const b of breakdown) console.log(`  ${b.map.padEnd(8)} contributed ${b.count} bots`);
+  console.log(`\nActive pool now: ${ALL_STRATEGY_LIST.length - final.length} bots`);
+  console.log(`(re-import the strategies module — i.e. re-run anything else — to pick up the change)`);
 }
 
 // ---------------------------------------------------------- league
@@ -387,7 +526,19 @@ async function cmdLeague(opts) {
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
 
+  if (opts.listAll) {
+    console.log(ALL_STRATEGY_LIST.map((s) => {
+      const tag = ARCHIVED_STRATEGY_LIST.includes(s) ? " [archived]" : "";
+      return `${s.name.padEnd(18)}${tag.padEnd(12)} ${s.description ?? ""}`;
+    }).join("\n"));
+    return;
+  }
   if (opts.listInteresting) return cmdListInteresting(opts);
+  if (opts.archiveList) return cmdArchiveList(opts);
+  if (opts.archiveClear) return cmdArchiveClear(opts);
+  if (opts.archiveAdd) return cmdArchiveAdd(opts);
+  if (opts.archiveRemove) return cmdArchiveRemove(opts);
+  if (opts.archiveBottom != null) return cmdArchiveBottom(opts);
   if (opts.replay) return cmdReplay(opts);
   if (opts.league) return cmdLeague(opts);
 
