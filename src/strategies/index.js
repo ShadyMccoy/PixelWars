@@ -19,6 +19,11 @@ import Bully from "./Bully.js";
 import Adaptive from "./Adaptive.js";
 import Membrane from "./Membrane.js";
 import Crusader from "./Crusader.js";
+import Vanguard from "./Vanguard.js";
+import Spearhead from "./Spearhead.js";
+import Surge from "./Surge.js";
+import Wildfire from "./Wildfire.js";
+import Bulwark from "./Bulwark.js";
 import Conqueror from "./Conqueror.js";
 import Stalker from "./Stalker.js";
 import Citadel from "./Citadel.js";
@@ -49,6 +54,11 @@ export const ALL_STRATEGY_LIST = [
   Adaptive,
   Membrane,
   Crusader,
+  Vanguard,
+  Spearhead,
+  Surge,
+  Wildfire,
+  Bulwark,
   Conqueror,
   Stalker,
   Citadel,
