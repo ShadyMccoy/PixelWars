@@ -92,4 +92,5 @@ export const ARCHIVED = [
   "Tactician",
   "Turtle",
   "Vampire",
+  "Wildfire",
 ];
