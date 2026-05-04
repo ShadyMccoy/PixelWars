@@ -5,6 +5,15 @@ export default {
   author: "core",
   version: 1,
   description: "Reinforces the friendliest neighbor; expands only when nearly full.",
+  summary: `Turtle. Each army looks at its four neighbors and counts how many
+friendlies sit on each; whichever tile has the most friendlies gets half
+our strength as reinforcement (provided we have at least 4 to spare).
+The hypothesis is that PixelWars rewards thick stacks over wide thin
+fronts — once a tile has 3+ friendly armies it is essentially
+unbreakable to a single attacker. We only expand (via SlowAndSteady)
+when over 85% of maxStrength, so most ticks we just thicken. This bot
+loses to anyone who can starve us of contact, but it is very hard to
+kill in a head-on brawl.`,
   act(army, game) {
     const neighbors = army.tile ? army.tile.neighbors : null;
     const pid = army.player.id;
