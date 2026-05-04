@@ -570,15 +570,27 @@ select.dropdown {
 }
 
 @media (max-width: 1100px) {
+  html, body {
+    overflow: auto;
+    height: auto;
+  }
+
   body {
     grid-template-columns: 1fr;
-    grid-template-rows: 56px 1fr auto auto;
+    grid-template-rows: 56px auto auto auto;
     grid-template-areas:
       "header"
       "stage"
       "sidebar"
       "rightbar";
-    overflow: auto;
-    height: auto;
+  }
+
+  aside.sidebar,
+  aside.rightbar {
+    overflow-y: visible;
+  }
+
+  main.stage {
+    min-height: 60vh;
   }
 }
