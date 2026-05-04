@@ -17,6 +17,9 @@ class App {
     this.lastFrame = performance.now();
     this.tickAccumulator = 0;
     this.tickInterval = 1 / 30;
+    this.renderInterval = 200;
+    this.lastRender = 0;
+    this._needsRender = true;
     this.activePlayer = null;
     this.lastWinnerLogged = null;
 
@@ -73,6 +76,7 @@ class App {
     this.bindCanvas();
     this.playing = true;
     this.controls.setPlaying(true);
+    this.markDirty();
   }
 
   bindCanvas() {
@@ -80,9 +84,11 @@ class App {
     this._canvasBound = true;
     this.canvas.addEventListener("mousemove", (e) => {
       this.renderer.hoverTile = this.renderer.pixelToTile(e.clientX, e.clientY);
+      this.markDirty();
     });
     this.canvas.addEventListener("mouseleave", () => {
       this.renderer.hoverTile = null;
+      this.markDirty();
     });
     this.canvas.addEventListener("click", (e) => {
       const tile = this.renderer.pixelToTile(e.clientX, e.clientY);
@@ -92,25 +98,33 @@ class App {
         this.game.placeArmy({ x: tile.pos.x, y: tile.pos.y, player: this.activePlayer, strength: 2 });
         this.controls.log(`Spawned ${this.activePlayer.name} army at (${tile.pos.x}, ${tile.pos.y})`);
       }
+      this.markDirty();
     });
   }
 
   setActivePlayer(player) {
     this.activePlayer = player;
     this.hud.update();
+    this.markDirty();
   }
 
   togglePlay() {
     this.playing = !this.playing;
     this.controls.setPlaying(this.playing);
+    this.markDirty();
   }
 
   stepOnce() {
     this.game.step(this.tickInterval);
+    this.markDirty();
   }
 
   reload() {
     this.loadMode(this.modeKey);
+  }
+
+  markDirty() {
+    this._needsRender = true;
   }
 
   startLoop() {
@@ -125,11 +139,17 @@ class App {
           this.tickAccumulator -= this.tickInterval;
         }
       }
-      this.game.recomputeTerritory();
-      this.renderer.draw(now);
-      this.chart.draw();
-      this.hud.update();
-      this.controls.setTick(this.game.tick);
+      const shouldRender =
+        this._needsRender || (this.playing && now - this.lastRender >= this.renderInterval);
+      if (shouldRender) {
+        if (this.game._territoryDirty) this.game.recomputeTerritory();
+        this.renderer.draw(now);
+        this.chart.draw();
+        this.hud.update();
+        this.controls.setTick(this.game.tick);
+        this.lastRender = now;
+        this._needsRender = false;
+      }
       this.checkWinner();
       requestAnimationFrame(loop);
     };
