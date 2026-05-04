@@ -3,16 +3,17 @@ import { GamePos } from "./GamePos.js";
 let nextId = 1;
 
 export class Army {
-  constructor({ pos, player, strength, game, maxStrength = 10 }) {
+  constructor({ pos, player, strength, game, maxStrength = 10, tile = null }) {
     this.id = nextId++;
     this.pos = pos;
     this.player = player;
     this.strength = strength;
     this.maxStrength = maxStrength;
     this.game = game;
+    this.tile = tile;
     this.alive = true;
     this.lastTick = 0;
-    this.bornAt = performance.now();
+    this.bornAt = 0;
   }
 
   fight(amount) {
@@ -29,14 +30,15 @@ export class Army {
   die() {
     if (!this.alive) return;
     this.alive = false;
-    const tile = this.game.map.getTileFromPos(this.pos);
+    const tile = this.tile || this.game.map.getTileFromPos(this.pos);
     if (tile) tile.removeArmy(this);
+    this.tile = null;
     this.game.removeArmy(this);
   }
 
   isAttackValid(tile, power) {
     if (!tile) return false;
-    if (this.pos.equals(tile.pos)) return false;
+    if (this.tile === tile) return false;
     if (power <= 0.5) return false;
     if (this.strength - power < 1) return false;
     return true;
@@ -51,24 +53,32 @@ export class Army {
       strength: power,
       game: this.game,
       maxStrength: this.maxStrength,
+      tile,
     });
     this.game.spawnArmy(newArmy, tile);
     return true;
   }
 
   run(interval, growth) {
-    this.strength += interval * growth;
-    if (this.strength > this.maxStrength) this.strength = this.maxStrength;
+    let s = this.strength + interval * growth;
+    const max = this.maxStrength;
+    if (s > max) s = max;
+    this.strength = s;
     this.player.strategy(this, this.game);
   }
 
-  weakestAdjacent(gradient = [0, 0, 0, 0]) {
+  weakestAdjacent(gradient = null) {
+    const tile = this.tile;
+    if (!tile) return null;
+    const neighbors = tile.neighbors;
+    const viewer = this.player;
     let best = null;
     let bestScore = Infinity;
     for (let i = 0; i < 4; i++) {
-      const t = this.game.map.adjacent(this.pos, i);
+      const t = neighbors[i];
       if (!t) continue;
-      const score = sumStrength(t.armies, this.player) - gradient[i];
+      let score = sumStrength(t.armies, viewer);
+      if (gradient) score -= gradient[i];
       if (score < bestScore) {
         bestScore = score;
         best = t;
@@ -80,12 +90,15 @@ export class Army {
 
 export function sumStrength(armies, viewer) {
   let s = 0;
+  const n = armies.length;
   if (!viewer) {
-    for (const a of armies) s += a.strength;
+    for (let i = 0; i < n; i++) s += armies[i].strength;
     return s;
   }
-  for (const a of armies) {
-    if (a.player.equals(viewer)) s += a.strength;
+  const vid = viewer.id;
+  for (let i = 0; i < n; i++) {
+    const a = armies[i];
+    if (a.player.id === vid) s += a.strength;
     else s -= a.strength;
   }
   return s;
@@ -93,6 +106,7 @@ export function sumStrength(armies, viewer) {
 
 export function totalStrength(armies) {
   let s = 0;
-  for (const a of armies) s += a.strength;
+  const n = armies.length;
+  for (let i = 0; i < n; i++) s += armies[i].strength;
   return s;
 }
