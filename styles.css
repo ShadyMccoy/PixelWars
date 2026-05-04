@@ -265,6 +265,37 @@ select.dropdown {
   gap: 6px;
 }
 
+.strat-tooltip {
+  position: fixed;
+  width: 300px;
+  max-height: 360px;
+  overflow-y: auto;
+  background: var(--bg-1);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--player-color, var(--accent));
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.strat-tooltip-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--player-color, var(--accent));
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.strat-tooltip-body {
+  color: var(--text-dim);
+  white-space: pre-wrap;
+}
+
 .player-head {
   display: flex;
   align-items: center;
