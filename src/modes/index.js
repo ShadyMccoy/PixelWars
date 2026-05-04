@@ -38,7 +38,7 @@ export const MODES = {
       game.placeArmy({ x: Math.floor(map.width * 0.5), y: Math.floor(map.height * 0.2), player: players[1], strength: 1 });
       game.placeArmy({ x: Math.floor(map.width * 0.8), y: Math.floor(map.height * 0.7), player: players[2], strength: 1 });
     },
-    config: { width: 40, height: 30, growth: 1, maxArmy: 10, wrap: true },
+    config: { width: 40, height: 30, growth: 1, maxArmy: 6, wrap: true },
   },
 
   arena: {
@@ -67,7 +67,7 @@ export const MODES = {
         game.placeArmy({ x, y, player: p, strength: 2 });
       });
     },
-    config: { width: 30, height: 22, growth: 2, maxArmy: 12, wrap: true },
+    config: { width: 30, height: 22, growth: 2, maxArmy: 6, wrap: true },
   },
 
   sandbox: {
@@ -82,7 +82,7 @@ export const MODES = {
       ];
       players.forEach((p) => game.addPlayer(p));
     },
-    config: { width: 50, height: 36, growth: 0.8, maxArmy: 10, wrap: true },
+    config: { width: 50, height: 36, growth: 0.8, maxArmy: 6, wrap: true },
   },
 
   royale: {
@@ -113,6 +113,6 @@ export const MODES = {
         game.placeArmy({ x, y, player: p, strength: 1 });
       });
     },
-    config: { width: 44, height: 32, growth: 1.2, maxArmy: 10, wrap: false },
+    config: { width: 44, height: 32, growth: 1.2, maxArmy: 6, wrap: false },
   },
 };

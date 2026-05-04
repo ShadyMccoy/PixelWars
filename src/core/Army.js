@@ -12,6 +12,7 @@ export class Army {
     this.game = game;
     this.tile = tile;
     this.alive = true;
+    this.isAttacker = false;
     this.lastTick = 0;
     this.bornAt = 0;
   }
@@ -70,14 +71,17 @@ export class Army {
       maxStrength: this.maxStrength,
       tile,
     });
+    newArmy.isAttacker = true;
     this.game.spawnArmy(newArmy, tile);
     return true;
   }
 
-  run(interval, growth) {
-    let s = this.strength + interval * growth;
+  run(interval, growth, decay = 0) {
+    const cur = this.strength;
+    let s = cur + interval * (growth - decay * cur);
     const max = this.maxStrength;
     if (s > max) s = max;
+    if (s < 0) s = 0;
     this.strength = s;
     const strat = this.player.strategy;
     if (!strat) return;

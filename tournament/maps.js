@@ -23,22 +23,22 @@ function clamp(v, lo, hi) {
 export const MAPS = {
   arena: {
     name: "arena",
-    config: { width: 30, height: 22, growth: 2, maxArmy: 12, wrap: true },
+    config: { width: 30, height: 22, growth: 2, maxArmy: 6, wrap: true },
     positions: (n) => ringPositions(n, { width: 30, height: 22, radiusFactor: 0.4 }),
   },
   classic: {
     name: "classic",
-    config: { width: 40, height: 30, growth: 1, maxArmy: 10, wrap: true },
+    config: { width: 40, height: 30, growth: 1, maxArmy: 6, wrap: true },
     positions: (n) => ringPositions(n, { width: 40, height: 30, radiusFactor: 0.42 }),
   },
   royale: {
     name: "royale",
-    config: { width: 44, height: 32, growth: 1.2, maxArmy: 10, wrap: false },
+    config: { width: 44, height: 32, growth: 1.2, maxArmy: 6, wrap: false },
     positions: (n) => ringPositions(n, { width: 44, height: 32, radiusFactor: 0.45, edgePad: 2 }),
   },
   tight: {
     name: "tight",
-    config: { width: 22, height: 16, growth: 2.2, maxArmy: 12, wrap: true },
+    config: { width: 22, height: 16, growth: 2.2, maxArmy: 6, wrap: true },
     positions: (n) => ringPositions(n, { width: 22, height: 16, radiusFactor: 0.38 }),
   },
 };

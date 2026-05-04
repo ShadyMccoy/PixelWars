@@ -45,7 +45,12 @@ export class Tile {
       let merged = false;
       for (let g = 0; g < groupedPids.length; g++) {
         if (groupedPids[g] === pid) {
-          grouped[g].joinForces(a);
+          const head = grouped[g];
+          // A group is "attacking" if any contributing army arrived this
+          // tick as an attacker.
+          const wasAttacker = head.isAttacker || a.isAttacker;
+          head.joinForces(a);
+          head.isAttacker = wasAttacker;
           merged = true;
           break;
         }
@@ -56,6 +61,13 @@ export class Tile {
       }
     }
 
+    // Risk-style: attackers fight with bonus effective strength, so even
+    // a slightly-smaller attacker can dislodge a defender, and a
+    // larger attacker keeps more troops after a successful conquest.
+    const bonus = (grouped[0] && grouped[0].game && grouped[0].game.attackerBonus) || 1;
+    const eff = (army) => (army.isAttacker ? army.strength * bonus : army.strength);
+    const realLoss = (army, effLoss) => (army.isAttacker ? effLoss / bonus : effLoss);
+
     let survivor = null;
     for (let i = 0; i < grouped.length; i++) {
       const army = grouped[i];
@@ -64,18 +76,23 @@ export class Tile {
         survivor = army;
         continue;
       }
-      if (army.strength > survivor.strength) {
-        army.fight(survivor.strength);
+      const aE = eff(army);
+      const sE = eff(survivor);
+      if (aE > sE) {
+        army.strength -= realLoss(army, sE);
+        if (army.strength < 0.5) army.die();
         survivor.die();
         survivor = army.alive ? army : null;
       } else {
-        survivor.fight(army.strength);
+        survivor.strength -= realLoss(survivor, aE);
+        if (survivor.strength < 0.5) survivor.die();
         army.die();
         if (!survivor.alive) survivor = null;
       }
     }
 
     if (survivor && survivor.alive) {
+      survivor.isAttacker = false;
       this.armies.push(survivor);
       survivor.tile = this;
     }

@@ -9,7 +9,9 @@ export class Game {
     height = 30,
     wrap = true,
     growth = 1,
-    maxArmy = 10,
+    maxArmy = 6,
+    decay = 0.05,
+    attackerBonus = 1.4,
     maxHistory = 240,
     seed = null,
   } = {}) {
@@ -22,6 +24,8 @@ export class Game {
     this.elapsed = 0;
     this.growth = growth;
     this.maxArmy = maxArmy;
+    this.decay = decay;
+    this.attackerBonus = attackerBonus;
     this.history = [];
     this.maxHistory = maxHistory;
     this.seed = seed;
@@ -112,11 +116,12 @@ export class Game {
     const armies = this.armies;
     const tick = this.tick;
     const growth = this.growth;
+    const decay = this.decay;
     for (let i = 0; i < armies.length; i++) {
       const a = armies[i];
       if (!a.alive) continue;
       if (a.lastTick < tick) {
-        a.run(interval, growth);
+        a.run(interval, growth, decay);
         a.lastTick = tick;
       }
     }
