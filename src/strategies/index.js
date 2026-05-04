@@ -24,6 +24,9 @@ import Spearhead from "./Spearhead.js";
 import Surge from "./Surge.js";
 import Wildfire from "./Wildfire.js";
 import Bulwark from "./Bulwark.js";
+import Conqueror from "./Conqueror.js";
+import Stalker from "./Stalker.js";
+import Citadel from "./Citadel.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
 
@@ -56,6 +59,9 @@ export const ALL_STRATEGY_LIST = [
   Surge,
   Wildfire,
   Bulwark,
+  Conqueror,
+  Stalker,
+  Citadel,
   ...GENERATED,
 ];
 
