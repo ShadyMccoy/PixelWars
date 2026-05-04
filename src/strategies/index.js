@@ -18,6 +18,8 @@ import Avalanche from "./Avalanche.js";
 import Bully from "./Bully.js";
 import Adaptive from "./Adaptive.js";
 import Membrane from "./Membrane.js";
+import Lance from "./Lance.js";
+import Spearhead from "./Spearhead.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
 
@@ -44,6 +46,8 @@ export const ALL_STRATEGY_LIST = [
   Bully,
   Adaptive,
   Membrane,
+  Lance,
+  Spearhead,
   ...GENERATED,
 ];
 
