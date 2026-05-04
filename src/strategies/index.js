@@ -25,7 +25,6 @@ import Surge from "./Surge.js";
 import Wildfire from "./Wildfire.js";
 import Bulwark from "./Bulwark.js";
 import Lance from "./Lance.js";
-import Column from "./Column.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
 
@@ -59,7 +58,6 @@ export const ALL_STRATEGY_LIST = [
   Wildfire,
   Bulwark,
   Lance,
-  Column,
   ...GENERATED,
 ];
 
