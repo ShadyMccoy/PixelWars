@@ -17,6 +17,7 @@ import Scout from "./Scout.js";
 import Avalanche from "./Avalanche.js";
 import Bully from "./Bully.js";
 import Adaptive from "./Adaptive.js";
+import Membrane from "./Membrane.js";
 import { GENERATED } from "./generated.js";
 
 export const STRATEGY_LIST = [
@@ -39,6 +40,7 @@ export const STRATEGY_LIST = [
   Avalanche,
   Bully,
   Adaptive,
+  Membrane,
   ...GENERATED,
 ];
 
