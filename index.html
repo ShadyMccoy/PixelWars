@@ -1,38 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PixelWars · Tile Strategy Sandbox</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='4' y='4' width='10' height='10' fill='%23ff4d6d'/><rect x='18' y='4' width='10' height='10' fill='%233ea6ff'/><rect x='4' y='18' width='10' height='10' fill='%23a16bff'/><rect x='18' y='18' width='10' height='10' fill='%2352e0a4'/></svg>" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">PixelWars</div>
+      <div class="brand-sub">Tile Strategy Sandbox</div>
+      <div class="header-spacer"></div>
+      <span class="tick-pill" id="tick-label">t=0</span>
+      <span class="kbd">Space</span><span class="brand-sub">play</span>
+      <span class="kbd">.</span><span class="brand-sub">step</span>
+      <span class="kbd">R</span><span class="brand-sub">reset</span>
+    </header>
 
-<head>
-	<title>Screeps AI</title>
-	<script src="./node_modules/systemjs/dist/system.js"></script>
-	<script src="./node_modules/lodash/lodash.min.js"></script>
-	<script src="./built/tsc.js"></script>
-	<script src="./main.js"></script>
-</head>
+    <aside class="sidebar">
+      <div>
+        <div class="section-title">Mode</div>
+        <select id="mode-select" class="dropdown"></select>
+        <p id="mode-description"></p>
+      </div>
 
-<body onload="initGame();">
-	<div id="canvasesdiv" style="position:relative; width:400px; height:300px">
-		<canvas id="BackgroundCanvas" style="z-index: 1;
-				position:absolute;
-				left:0px;
-				top:0px;
-				" height="300px" width="400">
-			This text is displayed if your browser does not support HTML5 Canvas.
-		</canvas>
-		<canvas id="AgentsCanvas" style="z-index: 2;
-				position:absolute;
-				left:0px;
-				top:0px;
-				" height="300px" width="400">
-			This text is displayed if your browser does not support HTML5 Canvas.
-		</canvas>
-		<canvas id="ControllerCanvas" style="z-index: 3;
-				position:absolute;
-				left:0px;
-				top:0px;
-				" height="300px" width="400">
-			This text is displayed if your browser does not support HTML5 Canvas.
-		</canvas>
-	</div>
-</body>
+      <div>
+        <div class="section-title">Simulation</div>
+        <div class="controls">
+          <button id="btn-play" class="btn primary">⏸ Pause</button>
+          <button id="btn-step" class="btn">⏭ Step</button>
+          <button id="btn-reset" class="btn">↻ Reset</button>
+        </div>
+        <div class="slider-row" style="margin-top:10px;">
+          <span class="brand-sub">Speed</span>
+          <input id="speed" type="range" min="0.1" max="5" step="0.1" value="1" />
+          <span id="speed-label" class="label">1.0x</span>
+        </div>
+      </div>
 
+      <div>
+        <div class="section-title">View</div>
+        <div class="toggles">
+          <label><input id="toggle-grid" type="checkbox" checked />Grid</label>
+          <label><input id="toggle-territory" type="checkbox" checked />Territory shading</label>
+          <label><input id="toggle-glow" type="checkbox" checked />Army glow</label>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title">Legend</div>
+        <div class="legend">
+          <div>⚔ army count · ⬢ total strength · ▣ tiles owned</div>
+          <div>Click a tile in Sandbox to spawn an army for the active player.</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <canvas id="game-canvas"></canvas>
+      <div class="stage-overlay">
+        <div class="mode-name" id="mode-name-overlay"></div>
+      </div>
+    </main>
+
+    <aside class="rightbar">
+      <div>
+        <div class="section-title">Players</div>
+        <div id="hud-root"></div>
+      </div>
+      <div>
+        <div class="section-title">Strength over time</div>
+        <canvas id="chart-canvas"></canvas>
+      </div>
+      <div>
+        <div class="section-title">Event log</div>
+        <div id="event-log" class="event-log"></div>
+      </div>
+    </aside>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
 </html>
