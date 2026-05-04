@@ -23,6 +23,13 @@ export class GameMap {
         for (let d = 0; d < 4; d++) {
           n[d] = this.getTile(x + DIR_DX[d], y + DIR_DY[d]);
         }
+        const stencil = new Array(25);
+        for (let di = -2; di <= 2; di++) {
+          for (let dj = -2; dj <= 2; dj++) {
+            stencil[(di + 2) * 5 + (dj + 2)] = this.getTile(x + dj, y + di);
+          }
+        }
+        t.stencil5 = stencil;
       }
     }
   }

@@ -5,6 +5,7 @@ export class Tile {
     this.pos = pos;
     this.armies = [];
     this.neighbors = [null, null, null, null];
+    this.stencil5 = null;
     this.lastOwner = null;
     this.ownership = 0;
     this.ownerId = 0;
@@ -25,15 +26,21 @@ export class Tile {
   }
 
   resolveConflicts() {
-    const armies = this.armies;
-    if (armies.length <= 1) return;
+    const all = this.armies;
+    if (all.length <= 1) return;
 
-    let survivor = null;
-    let survivorPid = 0;
+    // Detach the live list so joinForces/die -> tile.removeArmy can't
+    // truncate the array we are iterating. The dying armies will try to
+    // remove themselves from this.armies (now empty) which is a noop;
+    // the engine still sees them die via game.removeArmy.
+    const list = all.slice();
+    this.armies = [];
+
     const grouped = [];
     const groupedPids = [];
-    for (let k = 0; k < armies.length; k++) {
-      const a = armies[k];
+    for (let k = 0; k < list.length; k++) {
+      const a = list[k];
+      if (!a.alive) continue;
       const pid = a.player.id;
       let merged = false;
       for (let g = 0; g < groupedPids.length; g++) {
@@ -44,37 +51,34 @@ export class Tile {
         }
       }
       if (!merged) {
-        groupedPids.push(pid);
         grouped.push(a);
+        groupedPids.push(pid);
       }
     }
 
+    let survivor = null;
     for (let i = 0; i < grouped.length; i++) {
       const army = grouped[i];
+      if (!army.alive) continue;
       if (!survivor) {
         survivor = army;
-        survivorPid = groupedPids[i];
         continue;
       }
       if (army.strength > survivor.strength) {
         army.fight(survivor.strength);
         survivor.die();
-        survivor = army;
-        survivorPid = groupedPids[i];
+        survivor = army.alive ? army : null;
       } else {
         survivor.fight(army.strength);
         army.die();
+        if (!survivor.alive) survivor = null;
       }
     }
 
     if (survivor && survivor.alive) {
-      armies.length = 1;
-      armies[0] = survivor;
-    } else {
-      armies.length = 0;
-      survivorPid = 0;
+      this.armies.push(survivor);
+      survivor.tile = this;
     }
-    return survivorPid;
   }
 
   ownerArmy() {

@@ -44,6 +44,25 @@ export class Game {
   }
 
   spawnArmy(army, tile) {
+    // Engine invariant: at most one alive army per (tile, player). If a
+    // friendly already holds the tile, fold strength into it rather than
+    // adding a duplicate. Keeps tile.armies bounded by player count and
+    // prevents Trinity-style stacking regardless of strategy choice.
+    const existing = tile.armies;
+    const pid = army.player.id;
+    for (let i = 0; i < existing.length; i++) {
+      const other = existing[i];
+      if (other.alive && other.player.id === pid) {
+        let s = other.strength + army.strength;
+        const max = other.maxStrength;
+        if (s > max) s = max;
+        other.strength = s;
+        army.alive = false;
+        army.tile = null;
+        this._territoryDirty = true;
+        return other;
+      }
+    }
     this.armies.push(army);
     army.tile = tile;
     tile.registerArmy(army);
@@ -52,6 +71,7 @@ export class Game {
       this._dirtyTiles.push(tile);
     }
     this._territoryDirty = true;
+    return army;
   }
 
   placeArmy({ x, y, player, strength = 1 }) {

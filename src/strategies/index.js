@@ -57,40 +57,41 @@ const TRINITY_KERNELS = [
   ],
 ];
 
-// Precompute (di, dj, weight) tuples for each kernel, dropping zero entries.
+// Precompute (stencilIdx, weight) tuples for each kernel, dropping zero entries.
+// stencilIdx matches Tile.stencil5 layout: row-major over [-2..2] x [-2..2].
 const TRINITY_OFFSETS = TRINITY_KERNELS.map((k) => {
   const out = [];
   for (let i = 0; i < 5; i++) {
     for (let j = 0; j < 5; j++) {
       const w = k[i][j];
-      if (w !== 0) out.push(i - 2, j - 2, w);
+      if (w !== 0) out.push(i * 5 + j, w);
     }
   }
   return out;
 });
 
 export function Trinity(army, game) {
-  const map = game.map;
-  const ax = army.pos.x;
-  const ay = army.pos.y;
+  const tile = army.tile;
+  if (!tile) return;
+  const stencil = tile.stencil5;
   const viewer = army.player;
   let bestDir = 0;
   let bestScore = -Infinity;
   for (let k = 0; k < 4; k++) {
     const offs = TRINITY_OFFSETS[k];
     let score = 0;
-    for (let n = 0; n < offs.length; n += 3) {
-      const tile = map.getTile(ax + offs[n + 1], ay + offs[n]);
-      if (!tile) continue;
-      score += offs[n + 2] * sumStrength(tile.armies, viewer);
+    for (let n = 0; n < offs.length; n += 2) {
+      const t = stencil[offs[n]];
+      if (!t) continue;
+      score += offs[n + 1] * sumStrength(t.armies, viewer);
     }
     if (score > bestScore) {
       bestScore = score;
       bestDir = k;
     }
   }
-  const tile = army.tile ? army.tile.neighbors[bestDir] : map.adjacent(army.pos, bestDir);
-  if (tile) army.attack(tile, army.strength - 1);
+  const target = tile.neighbors[bestDir];
+  if (target) army.attack(target, army.strength - 1);
 }
 
 export function Aggressive(army, game) {

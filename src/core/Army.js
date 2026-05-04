@@ -47,6 +47,21 @@ export class Army {
   attack(tile, power) {
     if (!this.isAttackValid(tile, power)) return false;
     this.strength -= power;
+    // Fast-path: if a friendly already holds the target tile, transfer
+    // strength directly without allocating a new Army. Mirrors the
+    // engine-level invariant in Game.spawnArmy.
+    const pid = this.player.id;
+    const existing = tile.armies;
+    for (let i = 0; i < existing.length; i++) {
+      const other = existing[i];
+      if (other.alive && other.player.id === pid) {
+        let s = other.strength + power;
+        const max = other.maxStrength;
+        if (s > max) s = max;
+        other.strength = s;
+        return true;
+      }
+    }
     const newArmy = new Army({
       pos: tile.pos,
       player: this.player,
