@@ -7,6 +7,16 @@ import Random from "./Random.js";
 import Berserker from "./Berserker.js";
 import Cautious from "./Cautious.js";
 import Swarm from "./Swarm.js";
+import Opportunist from "./Opportunist.js";
+import Hunter from "./Hunter.js";
+import Turtle from "./Turtle.js";
+import Phalanx from "./Phalanx.js";
+import Vampire from "./Vampire.js";
+import Tactician from "./Tactician.js";
+import Scout from "./Scout.js";
+import Avalanche from "./Avalanche.js";
+import Bully from "./Bully.js";
+import Adaptive from "./Adaptive.js";
 
 export const STRATEGY_LIST = [
   SlowAndSteady,
@@ -18,6 +28,16 @@ export const STRATEGY_LIST = [
   Berserker,
   Cautious,
   Swarm,
+  Opportunist,
+  Hunter,
+  Turtle,
+  Phalanx,
+  Vampire,
+  Tactician,
+  Scout,
+  Avalanche,
+  Bully,
+  Adaptive,
 ];
 
 export const STRATEGIES = Object.fromEntries(STRATEGY_LIST.map((s) => [s.name, s]));
