@@ -75,9 +75,9 @@ export class HUD {
       head.innerHTML = `
         <span class="player-dot" style="background:${player.color}"></span>
         <span class="player-name">${escapeHtml(player.name)}</span>
-        <span class="player-stat">⚔ <b data-stat="armies">0</b></span>
-        <span class="player-stat">⬢ <b data-stat="strength">0</b></span>
-        <span class="player-stat">▣ <b data-stat="territory">0</b></span>
+        <span class="player-stat" title="Armies">⚔ <b data-stat="armies">0</b></span>
+        <span class="player-stat" title="Strength">⬢ <b data-stat="strength">0</b></span>
+        <span class="player-stat" title="Territory">▣ <b data-stat="territory">0</b></span>
       `;
 
       const select = document.createElement("select");
