@@ -24,6 +24,16 @@ export default {
   author: "core",
   version: 1,
   description: "Scans the 5x5 view, locks onto the nearest enemy, and pushes that direction.",
+  summary: `Pursuit predator. Where SlowAndSteady only sees its four neighbors,
+Hunter aggregates the whole 5x5 stencil into four directional votes,
+each weighted by 1/distance so closer enemies dominate. Whatever
+direction has the highest enemy mass wins, and we shove strength - 1
+that way. Idea: empty buffer tiles between us and an enemy are wasted —
+moving toward them now means we hit contact already at near-full
+strength rather than dragging a half-built stack into a fight later.
+Pairs poorly with itself (two Hunters spiral toward each other and
+both die); shines against Cautious and Turtle, which sit at home
+waiting to be found.`,
   act(army) {
     const tile = army.tile;
     if (!tile || !tile.stencil5) return;

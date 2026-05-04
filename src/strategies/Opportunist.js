@@ -5,6 +5,15 @@ export default {
   author: "core",
   version: 1,
   description: "Only takes free or weakly-held tiles; sits tight when surrounded by strong enemies.",
+  summary: `Risk-averse expansion. We only commit when the neighbor has less
+than half our strength in enemies (and no friendlies competing for the
+same tile, since balanceAttack-style reinforcement is not what this bot
+is for). Otherwise we hoard. Thesis: PixelWars punishes failed attacks
+much more than it rewards marginal wins — a bot that never trades
+unfavorably stays alive long enough for neighbors to bleed each other.
+Fares well in crowded maps like arena where weaker enemies are always
+appearing somewhere; struggles on royale where holding still means
+being ignored while neighbors snowball.`,
   act(army) {
     const tile = army.tile;
     if (!tile) return;

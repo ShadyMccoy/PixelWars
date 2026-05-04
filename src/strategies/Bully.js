@@ -5,6 +5,17 @@ export default {
   author: "core",
   version: 1,
   description: "Targets the current territory leader; ignores stragglers unless they're underfoot.",
+  summary: `Anti-runaway. Each tick we read game.players.list to find which
+*other* player owns the most territory and only attack tiles that
+contain one of their armies; everyone else is invisible to us
+unless we've got nothing better to do (then SlowAndSteady fallback).
+Thesis: in free-for-alls the leader compounds — more territory means
+more spawning, which means more territory — and the only counter is
+focused, coordinated pressure. Even if every Bully army independently
+picks the leader, they all converge on the same player by name and
+share the load. Weakness: target-fixation. If the "leader" is an
+unbeatable Trinity we waste our offense bouncing off them while a
+Berserker quietly accumulates in the corner.`,
   act(army, game) {
     const neighbors = army.tile ? army.tile.neighbors : null;
     if (!neighbors) {

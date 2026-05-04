@@ -3,6 +3,16 @@ export default {
   author: "core",
   version: 1,
   description: "Sprays thin probes into empty tiles, hoarding the rest at home.",
+  summary: `Land-grab. We commit a flat 1.2 strength into any empty neighbor —
+just enough to clear the attack-validity floor and plant a flag —
+and otherwise hit the weakest enemy with enemyTotal + 1.5 if
+affordable. Everything else stays home and grows. Thesis: territory
+is the scoring currency, and an empty tile claimed for 1.2 strength
+is the cheapest possible point. Most ticks we don't act because we
+already touch all our neighbors; on the rare tick a frontier opens
+up we sprint into it. Easy to bully — those 1.2-strength outposts
+die to a single Aggressive — but in the early game the territory
+swing is enormous.`,
   act(army) {
     if (army.strength < 2.5) return;
     const neighbors = army.tile ? army.tile.neighbors : null;

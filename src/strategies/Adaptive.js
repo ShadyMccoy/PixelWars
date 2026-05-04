@@ -7,6 +7,16 @@ export default {
   author: "core",
   version: 1,
   description: "Reads local enemy pressure and switches between Defender, SlowAndSteady, and Aggressive.",
+  summary: `Mode switcher. Sum the friendly and enemy strength across the four
+neighbors and pick a personality from the result: outnumbered (enemy >
+1.5x our strength) -> Defender; clearly winning the local skirmish
+(friendly > enemy + half our strength) -> Aggressive; otherwise the
+neutral SlowAndSteady. Thesis: no single posture is right at every
+phase of a match, but the right posture is mostly a function of
+*local* numbers. Composes its three sub-bots rather than reimplementing
+their logic, so it inherits their strengths and weaknesses too —
+notably Defender's tendency to hoard forever once it triggers, which
+can leave Adaptive frozen in defense even after the threat passes.`,
   act(army, game) {
     const neighbors = army.tile ? army.tile.neighbors : null;
     if (!neighbors) return;

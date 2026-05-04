@@ -28,6 +28,17 @@ export default {
   author: "core",
   version: 1,
   description: "Picks the direction whose half of the 5x5 view has the best friendly-vs-enemy net.",
+  summary: `Positional. For each cardinal direction we sum the friendly-minus-enemy
+net of every stencil cell in that half-plane, weighted by 1/distance,
+and move toward the half with the strongest friendly tilt. The intent
+is to migrate toward "our side" of the local board so we always
+fight at a numerical advantage; conversely we drift away from
+half-planes dominated by enemies. Then we attack with just enough
+power to overwhelm the immediate target plus a small surplus, rather
+than full-committing or under-committing. Closer in spirit to Trinity
+than to Aggressive — both use the 5x5 stencil — but Tactician is
+strictly defensive in its directional pick where Trinity rewards
+offensive alignment.`,
   act(army) {
     const tile = army.tile;
     if (!tile || !tile.stencil5) return;
