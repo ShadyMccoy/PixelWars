@@ -26,6 +26,10 @@ import Wildfire from "./Wildfire.js";
 import Bulwark from "./Bulwark.js";
 import TideWall from "./TideWall.js";
 import Conductor from "./Conductor.js";
+import Conqueror from "./Conqueror.js";
+import Stalker from "./Stalker.js";
+import Citadel from "./Citadel.js";
+import Lance from "./Lance.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
 
@@ -60,6 +64,10 @@ export const ALL_STRATEGY_LIST = [
   Bulwark,
   TideWall,
   Conductor,
+  Conqueror,
+  Stalker,
+  Citadel,
+  Lance,
   ...GENERATED,
 ];
 
