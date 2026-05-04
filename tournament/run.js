@@ -24,6 +24,7 @@ import { runLeague } from "./league.js";
 import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
+import { saveLeague, getLeagueStorePath } from "./leagueStore.js";
 
 const HELP = `Usage: node tournament/run.js [options]
 
@@ -364,6 +365,21 @@ async function cmdLeague(opts) {
     console.log(`Saved ${added.length} new entr${added.length === 1 ? "y" : "ies"} to ${getStorePath()}.`);
     console.log(`  Replay any with: node tournament/run.js --replay <id>`);
   }
+
+  // Persist the final tier composition for the browser's League viewer.
+  await saveLeague({
+    map: opts.map,
+    mapConfig: { ...map.config },
+    tierSize: opts.tierSize,
+    seasons: opts.seasons,
+    matchesPerSeason: opts.matchesPerSeason,
+    poolSize: opts.pool,
+    promote: opts.promote,
+    relegate: opts.relegate,
+    tiers: league.tiers,
+    final: league.final,
+  });
+  if (!opts.json) console.log(`League standings saved to ${getLeagueStorePath()}.`);
 }
 
 // ---------------------------------------------------------- main

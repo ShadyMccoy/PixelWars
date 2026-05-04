@@ -1,12 +1,15 @@
 import { Game } from "./core/Game.js";
 import { Player } from "./core/Player.js";
+import { mulberry32 } from "./core/rng.js";
 import { MODES } from "./modes/index.js";
 import { Renderer } from "./render/Renderer.js";
 import { StatsChart } from "./render/StatsChart.js";
 import { HUD } from "./ui/HUD.js";
 import { Controls } from "./ui/Controls.js";
 import { MatchPicker } from "./ui/MatchPicker.js";
+import { LeagueViewer } from "./ui/LeagueViewer.js";
 import { STRATEGIES } from "./strategies/index.js";
+import { MAPS } from "../tournament/maps.js";
 
 // Mirrors tournament/arena.js so a replayed match looks the same on screen
 // as the headless run.
@@ -41,12 +44,22 @@ class App {
 
     this.controls = new Controls({ app: this });
     this.replayEntry = null;
+    // Auto-stop applies in any "watch one match end-to-end" context —
+    // replays of saved matches and live league-tier matches. In sandbox
+    // / classic / arena / royale the user usually wants to keep watching
+    // past the first elimination, so it stays off there.
+    this.autoStopOnWinner = false;
 
     this.populateModeSelect();
     this.loadMode(this.modeKey);
     this.matchPicker = new MatchPicker({
       root: document.getElementById("match-picker"),
       refreshButton: document.getElementById("btn-matches-refresh"),
+      app: this,
+    });
+    this.leagueViewer = new LeagueViewer({
+      root: document.getElementById("league-viewer"),
+      refreshButton: document.getElementById("btn-leagues-refresh"),
       app: this,
     });
     this.startLoop();
@@ -67,6 +80,7 @@ class App {
   loadMode(key) {
     this.modeKey = key;
     this.replayEntry = null;
+    this.autoStopOnWinner = false;
     const def = MODES[key];
     this.mode = { key, ...def };
     this.game = new Game(def.config);
@@ -115,6 +129,7 @@ class App {
     });
 
     this.replayEntry = entry;
+    this.autoStopOnWinner = true;
     this.modeKey = "replay";
     this.mode = { key: "replay", name: `Replay #${entry.id}` };
     this.game = new Game({ ...entry.mapConfig, seed: entry.seed });
@@ -157,6 +172,79 @@ class App {
     this.lastWinnerLogged = null;
     this.matchPicker?.setActive(entry.id);
     this.controls.log(`▶ Replay #${entry.id} · ${entry.lineup.join(", ")}`);
+    this.bindCanvas();
+    this.playing = true;
+    this.controls.setPlaying(true);
+    this.markDirty();
+  }
+
+  loadLeagueMatch({ leagueMap, mapConfig, tierIndex, tierBots, poolSize, seed }) {
+    // Pick a deterministic K-of-tier sample from the seed, then play the
+    // match using the league's map config. Uses the same seed for both the
+    // sampling RNG and the game RNG so a (tier, seed) pair fully determines
+    // what the user watches.
+    const k = Math.min(poolSize ?? 6, tierBots.length);
+    const sampleRng = mulberry32(seed);
+    const pool = tierBots.slice();
+    const sampled = [];
+    for (let i = 0; i < k; i++) {
+      const j = Math.floor(sampleRng() * pool.length);
+      sampled.push(pool.splice(j, 1)[0]);
+    }
+    const strategies = sampled.map((name) => {
+      const s = STRATEGIES[name];
+      if (!s) throw new Error(`League references unknown strategy: ${name}`);
+      return s;
+    });
+
+    this.replayEntry = null;
+    this.autoStopOnWinner = true;
+    this.modeKey = "league";
+    this.mode = { key: "league", name: `League · Tier ${tierIndex + 1}` };
+    this.game = new Game({ ...mapConfig, seed });
+    // The headless arena uses ringPositions per the map preset; we mirror
+    // it exactly so the visible match matches what runMatch would produce
+    // for the same (lineup, seed).
+    const positions = MAPS[leagueMap].positions(strategies.length);
+
+    const players = strategies.map((s, i) => {
+      const palette = REPLAY_PALETTE[i % REPLAY_PALETTE.length];
+      return new Player({
+        name: `${s.name}#${i + 1}`,
+        color: palette.color,
+        accent: palette.accent,
+        strategy: s,
+      });
+    });
+    players.forEach((p) => this.game.addPlayer(p));
+    positions.forEach((pos, i) => {
+      this.game.placeArmy({ x: pos.x, y: pos.y, player: players[i], strength: pos.strength ?? 1 });
+    });
+
+    document.getElementById("mode-description").textContent =
+      `League · ${leagueMap} · Tier ${tierIndex + 1} · seed=${seed} · ${sampled.length} bots`;
+    this.lastLeagueArgs = { leagueMap, mapConfig, tierIndex, tierBots, poolSize, seed };
+
+    if (!this.renderer) {
+      this.renderer = new Renderer({ canvas: this.canvas, game: this.game });
+    } else {
+      this.renderer.setGame(this.game);
+    }
+    if (!this.chart) {
+      this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
+    } else {
+      this.chart.setGame(this.game);
+    }
+    if (!this.hud) {
+      this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
+    } else {
+      this.hud.setGame(this.game);
+    }
+
+    this.activePlayer = this.game.players.list[0] ?? null;
+    this.lastWinnerLogged = null;
+    this.matchPicker?.setActive(null);
+    this.controls.log(`🏆 League Tier ${tierIndex + 1} · ${sampled.join(", ")}`);
     this.bindCanvas();
     this.playing = true;
     this.controls.setPlaying(true);
@@ -206,6 +294,8 @@ class App {
   reload() {
     if (this.replayEntry) {
       this.loadReplay(this.replayEntry);
+    } else if (this.modeKey === "league" && this.lastLeagueArgs) {
+      this.loadLeagueMatch(this.lastLeagueArgs);
     } else {
       this.loadMode(this.modeKey);
     }
@@ -249,18 +339,14 @@ class App {
     if (alive.length === 1 && this.game.tick > 30 && this.lastWinnerLogged !== alive[0].id) {
       this.lastWinnerLogged = alive[0].id;
       this.controls.log(`👑 ${alive[0].name} wins!`);
-      // In replay mode the match ended; freezing the visible state matches
-      // what the headless arena does (it stops stepping). Outside replay
-      // (sandbox / live modes) we keep playing because the user may still
-      // be experimenting.
-      if (this.replayEntry && this.playing) {
+      if (this.autoStopOnWinner && this.playing) {
         this.playing = false;
         this.controls.setPlaying(false);
       }
     } else if (alive.length === 0 && this.game.tick > 30 && this.lastWinnerLogged !== "draw") {
       this.lastWinnerLogged = "draw";
       this.controls.log(`💀 Mutual destruction.`);
-      if (this.replayEntry && this.playing) {
+      if (this.autoStopOnWinner && this.playing) {
         this.playing = false;
         this.controls.setPlaying(false);
       }

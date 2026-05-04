@@ -448,6 +448,96 @@ select.dropdown {
   text-overflow: ellipsis;
 }
 
+.league-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.league-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.league-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.league-map {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.league-meta {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.tier-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.tier-tab {
+  font-size: 10px;
+  padding: 3px 6px;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  transition: all 0.12s;
+}
+
+.tier-tab:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.tier-tab.active {
+  background: var(--accent-2);
+  color: #000;
+  border-color: var(--accent-2);
+}
+
+.tier-list {
+  margin: 0;
+  padding-left: 24px;
+  font-size: 11px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: var(--text);
+  list-style: decimal;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px 8px;
+}
+
+.tier-list li {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-watch {
+  font-size: 12px;
+  padding: 6px;
+  text-align: center;
+}
+
 @media (max-width: 1100px) {
   body {
     grid-template-columns: 1fr;
