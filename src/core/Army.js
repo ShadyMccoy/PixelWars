@@ -79,7 +79,10 @@ export class Army {
     const max = this.maxStrength;
     if (s > max) s = max;
     this.strength = s;
-    this.player.strategy(this, this.game);
+    const strat = this.player.strategy;
+    if (!strat) return;
+    if (typeof strat === "function") strat(this, this.game);
+    else if (typeof strat.act === "function") strat.act(this, this.game);
   }
 
   weakestAdjacent(gradient = null) {

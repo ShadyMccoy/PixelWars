@@ -41,14 +41,18 @@ export class HUD {
       const select = document.createElement("select");
       select.className = "strat-select";
       for (const name of Object.keys(STRATEGIES)) {
+        const strat = STRATEGIES[name];
         const opt = document.createElement("option");
         opt.value = name;
         opt.textContent = name;
-        if (player.strategy === STRATEGIES[name]) opt.selected = true;
+        if (strat.description) opt.title = strat.description;
+        if (player.strategy === strat) opt.selected = true;
         select.appendChild(opt);
       }
+      if (player.strategy?.description) select.title = player.strategy.description;
       select.addEventListener("change", () => {
         player.strategy = STRATEGIES[select.value];
+        select.title = player.strategy?.description ?? "";
       });
 
       const bar = document.createElement("div");
