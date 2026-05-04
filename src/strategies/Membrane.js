@@ -1,4 +1,3 @@
-import { balanceAttack } from "./helpers.js";
 import SlowAndSteady from "./SlowAndSteady.js";
 
 function computeCentroid(game, player) {
@@ -50,7 +49,8 @@ function computeCentroid(game, player) {
   return centroid;
 }
 
-function outwardGradient(army, game, centroid) {
+// Neighbor index order (matches GameMap DIR_DX/DIR_DY): 0=left, 1=right, 2=up, 3=down.
+function outwardScores(army, game, centroid) {
   const map = game.map;
   let dx = army.pos.x - centroid.x;
   let dy = army.pos.y - centroid.y;
@@ -62,23 +62,7 @@ function outwardGradient(army, game, centroid) {
     if (dy > h / 2) dy -= h;
     else if (dy < -h / 2) dy += h;
   }
-  const ax = Math.abs(dx);
-  const ay = Math.abs(dy);
-  const total = ax + ay;
-  if (total < 1e-3) {
-    const r = Math.floor(game.rng() * 4);
-    const g = [0, 0, 0, 0];
-    g[r] = 2;
-    return g;
-  }
-  const wx = (ax / total) * 3;
-  const wy = (ay / total) * 3;
-  return [
-    dx < 0 ? wx : 0,
-    dx > 0 ? wx : 0,
-    dy < 0 ? wy : 0,
-    dy > 0 ? wy : 0,
-  ];
+  return [-dx, dx, -dy, dy];
 }
 
 export default {
@@ -92,10 +76,11 @@ compute the centroid of all friendly armies (circular mean on wrap
 maps so the wrap seam doesn't break it). An army with any
 non-friendly neighbor — empty tile or enemy — is on the membrane and
 plays SlowAndSteady, doing the actual fighting and expansion. An
-army that is fully enclosed by friendlies is "cytoplasm" and gets
-pushed toward whichever outward neighbor has the least resistance,
-biased by a gradient pointing away from the centroid (proportional
-to its signed offset on each axis). The thesis: most strategies
+army that is fully enclosed by friendlies is "cytoplasm" and pumps
+nearly all of its strength into whichever neighbor lies furthest
+outward from the centroid, leaving itself at minimum strength to
+regrow next tick. The interior visibly hollows out while the
+perimeter fattens — a cell, not a blob. The thesis: most strategies
 either go thin-and-wide (easily overrun) or fat-and-small (easily
 starved); the membrane wins both axes by letting interior strength
 migrate naturally to wherever the front is.
@@ -134,9 +119,22 @@ breach itself still has to be patched by border-mode fighting.`,
       SlowAndSteady.act(army, game);
       return;
     }
-    const gradient = outwardGradient(army, game, centroid);
-    const target = army.weakestAdjacent(gradient);
-    if (!target) return;
-    balanceAttack(army, target);
+    // Cytoplasm: pump strength outward into the membrane. Pick the most
+    // outward friendly neighbor and dump (strength - 1) into it. This
+    // drains the interior to ~1 strength while feeding the perimeter,
+    // giving the territory a visibly hollow, cell-like appearance.
+    const scores = outwardScores(army, game, centroid);
+    let bestIdx = -1;
+    let bestScore = -Infinity;
+    for (let i = 0; i < 4; i++) {
+      if (!neighbors[i]) continue;
+      if (scores[i] > bestScore) {
+        bestScore = scores[i];
+        bestIdx = i;
+      }
+    }
+    if (bestIdx < 0) return;
+    const power = army.strength - 1;
+    if (power > 0.5) army.attack(neighbors[bestIdx], power);
   },
 };
