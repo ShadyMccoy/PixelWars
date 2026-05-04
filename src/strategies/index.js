@@ -18,6 +18,10 @@ import Avalanche from "./Avalanche.js";
 import Bully from "./Bully.js";
 import Adaptive from "./Adaptive.js";
 import Membrane from "./Membrane.js";
+import Crusader from "./Crusader.js";
+import Conqueror from "./Conqueror.js";
+import Stalker from "./Stalker.js";
+import Citadel from "./Citadel.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
 
@@ -44,6 +48,10 @@ export const ALL_STRATEGY_LIST = [
   Bully,
   Adaptive,
   Membrane,
+  Crusader,
+  Conqueror,
+  Stalker,
+  Citadel,
   ...GENERATED,
 ];
 
