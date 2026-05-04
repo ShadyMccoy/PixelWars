@@ -62,6 +62,7 @@ export function makeBot(cfg) {
     forceAbsolute = null,
     pickMode = "min",
     fallbackName = null,
+    summary = "",
   } = cfg;
 
   return {
@@ -69,6 +70,7 @@ export function makeBot(cfg) {
     description,
     author,
     version: 1,
+    summary,
     act(army, game) {
       if (army.strength < minStrengthAbs) return;
       if (minStrengthFrac > 0 && army.strength < army.maxStrength * minStrengthFrac) return;
@@ -150,6 +152,7 @@ export function makeStencilBot(cfg) {
     forceFrac = 1.0,
     forceMode = "frac",
     fallbackName = null,
+    summary = "",
   } = cfg;
 
   const OFFSETS = kernels.map((k) => {
@@ -168,6 +171,7 @@ export function makeStencilBot(cfg) {
     description,
     author,
     version: 1,
+    summary,
     act(army, game) {
       const tile = army.tile;
       if (!tile) return;
