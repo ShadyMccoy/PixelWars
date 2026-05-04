@@ -5,6 +5,16 @@ export default {
   author: "core",
   version: 1,
   description: "Picks the strongest enemy it can still beat; otherwise plays SlowAndSteady.",
+  summary: `Greedy on contact. When at least one neighbor has enemies, pick
+the *strongest* enemy stack we can still beat with margin (their total <
+our strength - 1) and commit strength - 1 into it. The intuition: SlowAndSteady
+will happily punch the weakest enemy first, but the weakest enemy is
+usually irrelevant — taking out the biggest threat we can afford to take
+out swings the board harder. With no enemies adjacent, we fall back to
+SlowAndSteady so we don't sit idle in our own backfield. Weakness: the
+"can I beat them with margin 1" check is local and ignores enemy
+reinforcements arriving the same tick, so this bot occasionally walks
+into trades it expected to win.`,
   act(army, game) {
     const neighbors = army.tile ? army.tile.neighbors : null;
     const pid = army.player.id;

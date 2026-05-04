@@ -16,11 +16,22 @@ export default {
   author: "shady",        // freeform
   version: 1,
   description: "Always misses, but with great enthusiasm.",
+  summary: `Optional. Free-text thesis / design notes for human readers.
+Explain *why* the bot plays the way it does, what matchups you expect
+it to win or lose, and any tunables a future reader might want to
+revisit. Multi-line template literals are fine.`,
   act(army, game) {
     // your logic here
   },
 };
 ```
+
+`description` is the one-line tooltip shown in the HUD and tournament
+listing; `summary` is the long form you'd write in a commit message — a
+thesis, rationale, known weaknesses, anything that helps the next reader
+understand the design. Nothing in the engine reads `summary`; it is
+documentation that lives next to the code that implements it. See the
+core bots in `src/strategies/` for examples.
 
 Then add it to the registry list in `src/strategies/index.js`:
 
