@@ -49,6 +49,16 @@ export default {
   author: "core",
   version: 1,
   description: "Convolves friendly density with three-in-a-row kernels and pushes that way.",
+  summary: `Thesis: in PixelWars, three friendlies in a line is structurally
+strong — the middle tile gets reinforced from both sides while the ends
+project pressure forward. So instead of looking at immediate neighbors,
+each army inspects its 5x5 stencil and runs four diagonal "knight-ish"
+kernels that score how much friendly mass would be aligned with it if it
+moved in each cardinal direction. Pick the direction with the best
+alignment score and shove almost everything (strength - 1) that way. This
+makes Trinity behave like a flocking bot without any explicit
+communication between armies — the alignment is emergent from each army
+independently optimizing the same convolution.`,
   act(army) {
     const tile = army.tile;
     if (!tile) return;
