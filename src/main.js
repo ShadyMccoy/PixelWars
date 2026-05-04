@@ -125,6 +125,7 @@ class App {
           this.tickAccumulator -= this.tickInterval;
         }
       }
+      this.game.recomputeTerritory();
       this.renderer.draw(now);
       this.chart.draw();
       this.hud.update();

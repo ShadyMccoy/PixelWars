@@ -4,8 +4,12 @@ export class Tile {
   constructor(pos) {
     this.pos = pos;
     this.armies = [];
+    this.neighbors = [null, null, null, null];
+    this.stencil5 = null;
     this.lastOwner = null;
     this.ownership = 0;
+    this.ownerId = 0;
+    this.dirty = false;
   }
 
   registerArmy(army) {
@@ -13,23 +17,49 @@ export class Tile {
   }
 
   removeArmy(army) {
-    const i = this.armies.indexOf(army);
-    if (i >= 0) this.armies.splice(i, 1);
+    const arr = this.armies;
+    const i = arr.indexOf(army);
+    if (i < 0) return;
+    const last = arr.length - 1;
+    if (i !== last) arr[i] = arr[last];
+    arr.length = last;
   }
 
   resolveConflicts() {
-    if (this.armies.length <= 1) return;
+    const all = this.armies;
+    if (all.length <= 1) return;
 
-    const grouped = new Map();
-    for (const a of this.armies) {
-      const key = a.player.id;
-      const existing = grouped.get(key);
-      if (existing) existing.joinForces(a);
-      else grouped.set(key, a);
+    // Detach the live list so joinForces/die -> tile.removeArmy can't
+    // truncate the array we are iterating. The dying armies will try to
+    // remove themselves from this.armies (now empty) which is a noop;
+    // the engine still sees them die via game.removeArmy.
+    const list = all.slice();
+    this.armies = [];
+
+    const grouped = [];
+    const groupedPids = [];
+    for (let k = 0; k < list.length; k++) {
+      const a = list[k];
+      if (!a.alive) continue;
+      const pid = a.player.id;
+      let merged = false;
+      for (let g = 0; g < groupedPids.length; g++) {
+        if (groupedPids[g] === pid) {
+          grouped[g].joinForces(a);
+          merged = true;
+          break;
+        }
+      }
+      if (!merged) {
+        grouped.push(a);
+        groupedPids.push(pid);
+      }
     }
 
     let survivor = null;
-    for (const army of grouped.values()) {
+    for (let i = 0; i < grouped.length; i++) {
+      const army = grouped[i];
+      if (!army.alive) continue;
       if (!survivor) {
         survivor = army;
         continue;
@@ -37,18 +67,22 @@ export class Tile {
       if (army.strength > survivor.strength) {
         army.fight(survivor.strength);
         survivor.die();
-        survivor = army;
+        survivor = army.alive ? army : null;
       } else {
         survivor.fight(army.strength);
         army.die();
+        if (!survivor.alive) survivor = null;
       }
     }
 
-    this.armies = survivor && survivor.alive ? [survivor] : [];
+    if (survivor && survivor.alive) {
+      this.armies.push(survivor);
+      survivor.tile = this;
+    }
   }
 
   ownerArmy() {
-    return this.armies[0] ?? null;
+    return this.armies.length > 0 ? this.armies[0] : null;
   }
 
   equals(other) {

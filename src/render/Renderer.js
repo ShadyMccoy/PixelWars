@@ -97,6 +97,7 @@ export class Renderer {
     const ts = this.tileSize;
     for (const army of this.game.armies) {
       if (!army.alive) continue;
+      if (!army.bornAt) army.bornAt = now;
       const ratio = army.strength / army.maxStrength;
       const size = ts * (0.4 + 0.55 * ratio);
       const cx = (army.pos.x + 0.5) * ts;

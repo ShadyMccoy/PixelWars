@@ -2,7 +2,7 @@ import { sumStrength, totalStrength } from "../core/Army.js";
 
 function balanceAttack(army, tile) {
   const armies = tile.armies;
-  if (armies.length > 0 && armies[0].player.equals(army.player)) {
+  if (armies.length > 0 && armies[0].player.id === army.player.id) {
     const enemyStrength = totalStrength(armies);
     army.attack(tile, army.strength - (army.strength + enemyStrength) / 2);
     return;
@@ -19,79 +19,102 @@ export function SlowAndSteady(army) {
   balanceAttack(army, tile);
 }
 
+const REPEL_GRADIENT = [-2, 2, -2, 3];
 export function Repel(army) {
-  const gradient = [-2, 2, -2, 3];
-  const tile = army.weakestAdjacent(gradient);
+  const tile = army.weakestAdjacent(REPEL_GRADIENT);
   if (!tile) return;
   balanceAttack(army, tile);
 }
 
-export function Trinity(army, game) {
-  const inputs = [];
-  for (let i = -2; i <= 2; i++) {
-    const row = [];
-    for (let j = -2; j <= 2; j++) {
-      const tile = game.map.getTile(army.pos.x + j, army.pos.y + i);
-      row.push(tile ? sumStrength(tile.armies, army.player) : 0);
+const TRINITY_KERNELS = [
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 1, 0, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 0, 1, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
+];
+
+// Precompute (stencilIdx, weight) tuples for each kernel, dropping zero entries.
+// stencilIdx matches Tile.stencil5 layout: row-major over [-2..2] x [-2..2].
+const TRINITY_OFFSETS = TRINITY_KERNELS.map((k) => {
+  const out = [];
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      const w = k[i][j];
+      if (w !== 0) out.push(i * 5 + j, w);
     }
-    inputs.push(row);
   }
-  const kernels = [
-    [
-      [0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 0, 1, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0],
-    ],
-    [
-      [0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 1, 0, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0],
-    ],
-    [
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-      [0, 1, 0, 1, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0],
-    ],
-    [
-      [0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 1, 0, 1, 0],
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-    ],
-  ];
+  return out;
+});
+
+export function Trinity(army, game) {
+  const tile = army.tile;
+  if (!tile) return;
+  const stencil = tile.stencil5;
+  const viewer = army.player;
   let bestDir = 0;
   let bestScore = -Infinity;
   for (let k = 0; k < 4; k++) {
+    const offs = TRINITY_OFFSETS[k];
     let score = 0;
-    for (let i = 0; i < 5; i++)
-      for (let j = 0; j < 5; j++) score += inputs[i][j] * kernels[k][i][j];
+    for (let n = 0; n < offs.length; n += 2) {
+      const t = stencil[offs[n]];
+      if (!t) continue;
+      score += offs[n + 1] * sumStrength(t.armies, viewer);
+    }
     if (score > bestScore) {
       bestScore = score;
       bestDir = k;
     }
   }
-  const tile = game.map.adjacent(army.pos, bestDir);
-  if (tile) army.attack(tile, army.strength - 1);
+  const target = tile.neighbors[bestDir];
+  if (target) army.attack(target, army.strength - 1);
 }
 
 export function Aggressive(army, game) {
+  const neighbors = army.tile ? army.tile.neighbors : null;
+  const pid = army.player.id;
   let best = null;
   let bestScore = -Infinity;
   for (let i = 0; i < 4; i++) {
-    const t = game.map.adjacent(army.pos, i);
+    const t = neighbors ? neighbors[i] : game.map.adjacent(army.pos, i);
     if (!t) continue;
-    const enemy = t.armies.filter((a) => !a.player.equals(army.player));
-    if (enemy.length === 0) continue;
-    const score = totalStrength(enemy);
-    if (score > bestScore && score < army.strength - 1) {
-      bestScore = score;
+    const armies = t.armies;
+    let enemyTotal = 0;
+    let hasEnemy = false;
+    for (let k = 0; k < armies.length; k++) {
+      const a = armies[k];
+      if (a.player.id !== pid) {
+        enemyTotal += a.strength;
+        hasEnemy = true;
+      }
+    }
+    if (!hasEnemy) continue;
+    if (enemyTotal > bestScore && enemyTotal < army.strength - 1) {
+      bestScore = enemyTotal;
       best = t;
     }
   }
@@ -100,12 +123,18 @@ export function Aggressive(army, game) {
 }
 
 export function Defender(army, game) {
+  const neighbors = army.tile ? army.tile.neighbors : null;
+  const pid = army.player.id;
   let friendliest = null;
   let count = 0;
   for (let i = 0; i < 4; i++) {
-    const t = game.map.adjacent(army.pos, i);
+    const t = neighbors ? neighbors[i] : game.map.adjacent(army.pos, i);
     if (!t) continue;
-    const friendly = t.armies.filter((a) => a.player.equals(army.player)).length;
+    const armies = t.armies;
+    let friendly = 0;
+    for (let k = 0; k < armies.length; k++) {
+      if (armies[k].player.id === pid) friendly++;
+    }
     if (friendly > count) {
       count = friendly;
       friendliest = t;
@@ -119,16 +148,16 @@ export function Defender(army, game) {
 }
 
 export function Random(army, game) {
-  const dir = Math.floor(Math.random() * 4);
-  const tile = game.map.adjacent(army.pos, dir);
+  const dir = (Math.random() * 4) | 0;
+  const tile = army.tile ? army.tile.neighbors[dir] : game.map.adjacent(army.pos, dir);
   if (!tile) return;
   army.attack(tile, Math.random() * (army.strength - 1));
 }
 
 export function Berserker(army, game) {
   if (army.strength < 2) return;
-  const dir = Math.floor(Math.random() * 4);
-  const tile = game.map.adjacent(army.pos, dir);
+  const dir = (Math.random() * 4) | 0;
+  const tile = army.tile ? army.tile.neighbors[dir] : game.map.adjacent(army.pos, dir);
   if (!tile) return;
   army.attack(tile, army.strength - 1);
 }
@@ -139,14 +168,21 @@ export function Cautious(army, game) {
 }
 
 export function Swarm(army, game) {
+  const neighbors = army.tile ? army.tile.neighbors : null;
+  const pid = army.player.id;
   let best = null;
   let bestScore = Infinity;
   for (let i = 0; i < 4; i++) {
-    const t = game.map.adjacent(army.pos, i);
+    const t = neighbors ? neighbors[i] : game.map.adjacent(army.pos, i);
     if (!t) continue;
-    const friendly = t.armies.filter((a) => a.player.equals(army.player)).length;
-    const enemy = t.armies.filter((a) => !a.player.equals(army.player));
-    const enemyS = totalStrength(enemy);
+    const armies = t.armies;
+    let friendly = 0;
+    let enemyS = 0;
+    for (let k = 0; k < armies.length; k++) {
+      const a = armies[k];
+      if (a.player.id === pid) friendly++;
+      else enemyS += a.strength;
+    }
     const score = enemyS - friendly * 0.5;
     if (score < bestScore && enemyS < army.strength - 0.5) {
       bestScore = score;

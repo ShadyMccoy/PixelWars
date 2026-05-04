@@ -1,15 +1,35 @@
 import { GamePos } from "./GamePos.js";
 import { Tile } from "./Tile.js";
 
+const DIR_DX = [-1, 1, 0, 0];
+const DIR_DY = [0, 0, -1, 1];
+
 export class GameMap {
   constructor({ width, height, wrap = true }) {
     this.width = width;
     this.height = height;
     this.wrap = wrap;
-    this.tiles = new Array(width * height);
+    const tiles = new Array(width * height);
+    this.tiles = tiles;
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        this.tiles[this.index(x, y)] = new Tile(new GamePos(x, y));
+        tiles[y * width + x] = new Tile(new GamePos(x, y));
+      }
+    }
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const t = tiles[y * width + x];
+        const n = t.neighbors;
+        for (let d = 0; d < 4; d++) {
+          n[d] = this.getTile(x + DIR_DX[d], y + DIR_DY[d]);
+        }
+        const stencil = new Array(25);
+        for (let di = -2; di <= 2; di++) {
+          for (let dj = -2; dj <= 2; dj++) {
+            stencil[(di + 2) * 5 + (dj + 2)] = this.getTile(x + dj, y + di);
+          }
+        }
+        t.stencil5 = stencil;
       }
     }
   }
@@ -22,6 +42,18 @@ export class GameMap {
     return x >= 0 && y >= 0 && x < this.width && y < this.height;
   }
 
+  getTile(x, y) {
+    const w = this.width;
+    const h = this.height;
+    if (this.wrap) {
+      if (x < 0 || x >= w) x = ((x % w) + w) % w;
+      if (y < 0 || y >= h) y = ((y % h) + h) % h;
+    } else if (x < 0 || y < 0 || x >= w || y >= h) {
+      return null;
+    }
+    return this.tiles[y * w + x];
+  }
+
   normalize(x, y) {
     if (this.wrap) {
       x = ((x % this.width) + this.width) % this.width;
@@ -31,41 +63,39 @@ export class GameMap {
     return this.inBounds(x, y) ? { x, y } : null;
   }
 
-  getTile(x, y) {
-    const n = this.normalize(x, y);
-    if (!n) return null;
-    return this.tiles[this.index(n.x, n.y)];
-  }
-
   getTileFromPos(pos) {
     return this.getTile(pos.x, pos.y);
   }
 
   adjacent(pos, dir) {
-    const offsets = [
-      [-1, 0],
-      [1, 0],
-      [0, -1],
-      [0, 1],
-    ];
-    const [dx, dy] = offsets[dir];
-    return this.getTile(pos.x + dx, pos.y + dy);
+    return this.getTile(pos.x + DIR_DX[dir], pos.y + DIR_DY[dir]);
   }
 
   neighbors(pos) {
+    const t = this.getTile(pos.x, pos.y);
+    if (!t) return [];
     const out = [];
-    for (let i = 0; i < 4; i++) {
-      const t = this.adjacent(pos, i);
-      if (t) out.push(t);
-    }
+    const n = t.neighbors;
+    for (let i = 0; i < 4; i++) if (n[i]) out.push(n[i]);
     return out;
   }
 
-  resolveConflicts() {
-    for (const t of this.tiles) t.resolveConflicts();
+  resolveConflicts(dirty) {
+    if (dirty) {
+      for (let i = 0; i < dirty.length; i++) {
+        const t = dirty[i];
+        t.dirty = false;
+        t.resolveConflicts();
+      }
+      dirty.length = 0;
+      return;
+    }
+    const tiles = this.tiles;
+    for (let i = 0; i < tiles.length; i++) tiles[i].resolveConflicts();
   }
 
   forEachTile(fn) {
-    for (const t of this.tiles) fn(t);
+    const tiles = this.tiles;
+    for (let i = 0; i < tiles.length; i++) fn(tiles[i]);
   }
 }
