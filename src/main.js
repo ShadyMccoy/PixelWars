@@ -1,9 +1,25 @@
 import { Game } from "./core/Game.js";
+import { Player } from "./core/Player.js";
 import { MODES } from "./modes/index.js";
 import { Renderer } from "./render/Renderer.js";
 import { StatsChart } from "./render/StatsChart.js";
 import { HUD } from "./ui/HUD.js";
 import { Controls } from "./ui/Controls.js";
+import { MatchPicker } from "./ui/MatchPicker.js";
+import { STRATEGIES } from "./strategies/index.js";
+
+// Mirrors tournament/arena.js so a replayed match looks the same on screen
+// as the headless run.
+const REPLAY_PALETTE = [
+  { color: "#ff4d6d", accent: "#ff8fa3" },
+  { color: "#3ea6ff", accent: "#8ecbff" },
+  { color: "#a16bff", accent: "#cdb4ff" },
+  { color: "#52e0a4", accent: "#a8f3d2" },
+  { color: "#ffb84d", accent: "#ffd699" },
+  { color: "#f97aff", accent: "#fbc2ff" },
+  { color: "#ffe066", accent: "#fff3a3" },
+  { color: "#7cffb2", accent: "#bbffd6" },
+];
 
 class App {
   constructor() {
@@ -24,9 +40,15 @@ class App {
     this.lastWinnerLogged = null;
 
     this.controls = new Controls({ app: this });
+    this.replayEntry = null;
 
     this.populateModeSelect();
     this.loadMode(this.modeKey);
+    this.matchPicker = new MatchPicker({
+      root: document.getElementById("match-picker"),
+      refreshButton: document.getElementById("btn-matches-refresh"),
+      app: this,
+    });
     this.startLoop();
   }
 
@@ -44,6 +66,7 @@ class App {
 
   loadMode(key) {
     this.modeKey = key;
+    this.replayEntry = null;
     const def = MODES[key];
     this.mode = { key, ...def };
     this.game = new Game(def.config);
@@ -72,7 +95,68 @@ class App {
     this.activePlayer = this.game.players.list[0] ?? null;
     this.lastWinnerLogged = null;
     this.controls.setMode(key);
+    this.matchPicker?.setActive(null);
     this.controls.log(`Loaded "${def.name}"`);
+    this.bindCanvas();
+    this.playing = true;
+    this.controls.setPlaying(true);
+    this.markDirty();
+  }
+
+  loadReplay(entry) {
+    // Saved entries are self-contained: mapConfig + lineup + startPositions
+    // + seed are all the inputs runMatch (and Game) need. Reproducing the
+    // headless result in the browser is a matter of feeding the same
+    // values into a Game instance.
+    const strategies = entry.lineup.map((name) => {
+      const s = STRATEGIES[name];
+      if (!s) throw new Error(`Replay references unknown strategy: ${name}`);
+      return s;
+    });
+
+    this.replayEntry = entry;
+    this.modeKey = "replay";
+    this.mode = { key: "replay", name: `Replay #${entry.id}` };
+    this.game = new Game({ ...entry.mapConfig, seed: entry.seed });
+
+    const players = strategies.map((s, i) => {
+      const palette = REPLAY_PALETTE[i % REPLAY_PALETTE.length];
+      return new Player({
+        name: `${s.name}#${i + 1}`,
+        color: palette.color,
+        accent: palette.accent,
+        strategy: s,
+      });
+    });
+    players.forEach((p) => this.game.addPlayer(p));
+    entry.startPositions.forEach((pos, i) => {
+      this.game.placeArmy({ x: pos.x, y: pos.y, player: players[i], strength: pos.strength ?? 1 });
+    });
+
+    const flagText = (entry.flags ?? []).map((f) => f.tag).join(" · ") || "saved";
+    document.getElementById("mode-description").textContent =
+      `Replay #${entry.id} · ${entry.map} · seed=${entry.seed} · ${flagText}`;
+
+    if (!this.renderer) {
+      this.renderer = new Renderer({ canvas: this.canvas, game: this.game });
+    } else {
+      this.renderer.setGame(this.game);
+    }
+    if (!this.chart) {
+      this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
+    } else {
+      this.chart.setGame(this.game);
+    }
+    if (!this.hud) {
+      this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
+    } else {
+      this.hud.setGame(this.game);
+    }
+
+    this.activePlayer = this.game.players.list[0] ?? null;
+    this.lastWinnerLogged = null;
+    this.matchPicker?.setActive(entry.id);
+    this.controls.log(`▶ Replay #${entry.id} · ${entry.lineup.join(", ")}`);
     this.bindCanvas();
     this.playing = true;
     this.controls.setPlaying(true);
@@ -120,7 +204,11 @@ class App {
   }
 
   reload() {
-    this.loadMode(this.modeKey);
+    if (this.replayEntry) {
+      this.loadReplay(this.replayEntry);
+    } else {
+      this.loadMode(this.modeKey);
+    }
   }
 
   markDirty() {
@@ -161,9 +249,21 @@ class App {
     if (alive.length === 1 && this.game.tick > 30 && this.lastWinnerLogged !== alive[0].id) {
       this.lastWinnerLogged = alive[0].id;
       this.controls.log(`👑 ${alive[0].name} wins!`);
+      // In replay mode the match ended; freezing the visible state matches
+      // what the headless arena does (it stops stepping). Outside replay
+      // (sandbox / live modes) we keep playing because the user may still
+      // be experimenting.
+      if (this.replayEntry && this.playing) {
+        this.playing = false;
+        this.controls.setPlaying(false);
+      }
     } else if (alive.length === 0 && this.game.tick > 30 && this.lastWinnerLogged !== "draw") {
       this.lastWinnerLogged = "draw";
       this.controls.log(`💀 Mutual destruction.`);
+      if (this.replayEntry && this.playing) {
+        this.playing = false;
+        this.controls.setPlaying(false);
+      }
     }
   }
 }

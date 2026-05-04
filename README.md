@@ -41,18 +41,70 @@ for the bot-author guide.
 
 ## Tournaments
 
-Headless bot tournaments run on Node (>= 19):
+Headless bot tournaments run on Node (>= 19). Default mode is **pool play**:
+each match draws K random strategies from the pool, repeat M times, rank by
+points-per-game. Designed for ranking large strategy populations.
 
 ```bash
-node tournament/run.js                              # all bots, arena, 10 rounds
-node tournament/run.js --bots Aggressive,Trinity    # specific lineup
-node tournament/run.js --map royale --rounds 30     # different map / longer
-node tournament/run.js --list                       # what's available
+node tournament/run.js                                       # all bots, arena, K=6, 200 matches
+node tournament/run.js --pool 8 --matches 500 --map royale   # bigger pool, longer
+node tournament/run.js --bots Aggressive,Trinity,Vampire     # restricted pool
+node tournament/run.js --list                                # what's available
 node tournament/run.js --help
 ```
 
-Matches are reproducible: `node tournament/run.js --seed 42` always produces
-the same standings.
+Matches are reproducible: same `--seed`, same standings.
+
+### League play
+
+For sharper rankings, run a **league** — bots are sorted into fixed-size
+tiers, each tier plays a pool-play mini-tournament against itself, and at
+the end of every season the top of each tier promotes up while the bottom
+relegates down. After a few seasons the rankings sort themselves: strong
+bots float to the top tier, weak bots sink to the bottom, and every match
+pits same-skill opponents against each other.
+
+```bash
+node tournament/run.js --league                    # all defaults: tier=10, 3 seasons, 20 matches/tier
+node tournament/run.js --league --seasons 5
+node tournament/run.js --league --tier-size 8 --promote 1 --relegate 1
+node tournament/run.js --league --bootstrap 0      # skip the warm-up; start from listed order
+```
+
+Defaults: tier-size 10, 3 seasons, 20 matches/tier/season, K=6 bots per
+match, top-2/bottom-2 swap each season, plus a 50-match bootstrap
+pool-play to seed initial tiers (otherwise season 1 is just an arbitrary
+slicing of the strategy list). On 119 bots that's roughly 770 matches and
+~3 minutes on a modern laptop.
+
+### Flag and replay interesting matches
+
+The runner auto-detects interesting matches (close finishes, crowded
+endgames, runaways, mutual destruction) and saves them to
+`tournament/interesting.json`. Each saved entry is a self-contained replay
+record — map config, lineup, seed, and starting positions — so it survives
+changes elsewhere in the codebase.
+
+```bash
+node tournament/run.js --list-interesting          # browse what was flagged
+node tournament/run.js --replay 12                 # rerun saved match #12
+node tournament/run.js --replay last               # rerun the most recent
+node tournament/run.js --list-interesting --flags close-finish,runaway
+node tournament/run.js --lineup A,B,C --seed 42    # run one specific matchup
+node tournament/run.js --no-save                   # tournament without persisting
+```
+
+### Watch a flagged match in the browser
+
+The sidebar's **Saved Matches** panel lists every entry from
+`tournament/interesting.json`. Click one to load it as a deterministic
+replay — same seed, same lineup, same starting positions as the headless
+match. Reset re-runs that same match. Pick another entry, or change the
+mode dropdown, to leave replay mode.
+
+The scheduler, arena, and flag detection are plain ES modules with no Node
+dependencies — when a browser-side tournament runner lands, it will share
+the same code paths.
 
 ## Architecture
 
