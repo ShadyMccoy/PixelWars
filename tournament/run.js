@@ -25,6 +25,12 @@ import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
 import { saveLeague, loadLeagues, getLeagueStorePath } from "./leagueStore.js";
+import {
+  loadLineages,
+  ensureFoundersForNames,
+  familiesByName,
+  getLineageStorePath,
+} from "./lineageStore.js";
 import { techFromPartial } from "../src/core/Tech.js";
 import { writeFile, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -82,6 +88,11 @@ Archive (exclude weak bots from default tournament pool):
   --archive-clear     Clear the archive (everyone competes again)
   --archive-list      Print the current archive and exit
 
+Lineage (genetic descendant feature):
+  --list-lineages     Print every bot's family/parent/generation and exit
+  --backfill-lineages Add gen-0 founder records for any bot missing one
+                      (idempotent; safe to run after adding new bots)
+
 Misc:
   --list              List active strategies and exit
   --list-all          List every strategy (active + archived) and exit
@@ -121,6 +132,8 @@ function parseArgs(argv) {
     seedFromLeague: null,
     insertTier: 3,
     rating: false,
+    listLineages: false,
+    backfillLineages: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -151,6 +164,8 @@ function parseArgs(argv) {
       case "--seed-from-league": opts.seedFromLeague = next(); break;
       case "--insert-tier": opts.insertTier = parseInt(next(), 10); break;
       case "--rating": opts.rating = true; break;
+      case "--list-lineages": opts.listLineages = true; break;
+      case "--backfill-lineages": opts.backfillLineages = true; break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
@@ -455,6 +470,44 @@ async function cmdArchiveBottom(opts) {
   console.log(`(re-import the strategies module — i.e. re-run anything else — to pick up the change)`);
 }
 
+// ---------------------------------------------------------- lineage
+
+async function cmdListLineages() {
+  const fams = await familiesByName();
+  if (fams.size === 0) {
+    console.log(`No lineage records yet. Run --backfill-lineages to seed founders.`);
+    console.log(`Store path: ${getLineageStorePath()}`);
+    return;
+  }
+  // Sort families by size (descending) then by name for stable output.
+  const sorted = [...fams.entries()].sort((a, b) =>
+    b[1].length - a[1].length || a[0].localeCompare(b[0]),
+  );
+  console.log(`Lineages (${sorted.length} famil${sorted.length === 1 ? "y" : "ies"}, ${[...fams.values()].reduce((n, l) => n + l.length, 0)} bots):\n`);
+  for (const [family, members] of sorted) {
+    const tag = members.length === 1 ? "" : `  (${members.length} members)`;
+    console.log(`Family ${family}${tag}`);
+    for (const b of members) {
+      const status = b.active ? "active" : "archived";
+      const parent = b.parent ?? "—";
+      const born = b.birthSeason == null ? "founder" : `S${b.birthSeason}`;
+      console.log(`  gen ${b.generation}  ${b.name.padEnd(20)} parent=${parent.padEnd(20)} born=${born.padEnd(8)} [${status}]`);
+    }
+    console.log("");
+  }
+}
+
+async function cmdBackfillLineages() {
+  const names = ALL_STRATEGY_LIST.map((s) => s.name);
+  const added = await ensureFoundersForNames(names);
+  const all = await loadLineages();
+  console.log(`Backfilled ${added.length} founder${added.length === 1 ? "" : "s"} → ${all.length} total lineage record${all.length === 1 ? "" : "s"}.`);
+  if (added.length) {
+    console.log(`New founders: ${added.join(", ")}`);
+  }
+  console.log(`Store: ${getLineageStorePath()}`);
+}
+
 // ---------------------------------------------------------- league
 
 async function cmdLeague(opts) {
@@ -637,6 +690,8 @@ async function main() {
   if (opts.archiveAdd) return cmdArchiveAdd(opts);
   if (opts.archiveRemove) return cmdArchiveRemove(opts);
   if (opts.archiveBottom != null) return cmdArchiveBottom(opts);
+  if (opts.listLineages) return cmdListLineages();
+  if (opts.backfillLineages) return cmdBackfillLineages();
   if (opts.replay) return cmdReplay(opts);
   if (opts.league) return cmdLeague(opts);
 

@@ -1,0 +1,1394 @@
+{
+  "bots": [
+    {
+      "name": "SlowAndSteady",
+      "family": "SlowAndSteady",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Repel",
+      "family": "Repel",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Trinity",
+      "family": "Trinity",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Aggressive",
+      "family": "Aggressive",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Defender",
+      "family": "Defender",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Random",
+      "family": "Random",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Berserker",
+      "family": "Berserker",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cautious",
+      "family": "Cautious",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Swarm",
+      "family": "Swarm",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Opportunist",
+      "family": "Opportunist",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter",
+      "family": "Hunter",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Turtle",
+      "family": "Turtle",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Phalanx",
+      "family": "Phalanx",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Vampire",
+      "family": "Vampire",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Tactician",
+      "family": "Tactician",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scout",
+      "family": "Scout",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Avalanche",
+      "family": "Avalanche",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully",
+      "family": "Bully",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Adaptive",
+      "family": "Adaptive",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Membrane",
+      "family": "Membrane",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Crusader",
+      "family": "Crusader",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Vanguard",
+      "family": "Vanguard",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead",
+      "family": "Spearhead",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Surge",
+      "family": "Surge",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Wildfire",
+      "family": "Wildfire",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bulwark",
+      "family": "Bulwark",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "TideWall",
+      "family": "TideWall",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conductor",
+      "family": "Conductor",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror",
+      "family": "Conqueror",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stalker",
+      "family": "Stalker",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Citadel",
+      "family": "Citadel",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Lance",
+      "family": "Lance",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier",
+      "family": "Frontier",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "PressureSink",
+      "family": "PressureSink",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "CitadelSortie",
+      "family": "CitadelSortie",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pinwheel",
+      "family": "Pinwheel",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Anvil",
+      "family": "Anvil",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Skirmisher",
+      "family": "Skirmisher",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Tempo",
+      "family": "Tempo",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_01",
+      "family": "Hunter_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_02",
+      "family": "Hunter_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_03",
+      "family": "Hunter_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_04",
+      "family": "Hunter_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_05",
+      "family": "Hunter_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_06",
+      "family": "Hunter_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_07",
+      "family": "Hunter_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_08",
+      "family": "Hunter_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_09",
+      "family": "Hunter_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Hunter_10",
+      "family": "Hunter_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_01",
+      "family": "Probe_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_02",
+      "family": "Probe_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_03",
+      "family": "Probe_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_04",
+      "family": "Probe_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_05",
+      "family": "Probe_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_06",
+      "family": "Probe_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_07",
+      "family": "Probe_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_08",
+      "family": "Probe_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_09",
+      "family": "Probe_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Probe_10",
+      "family": "Probe_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_01",
+      "family": "Patient_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_02",
+      "family": "Patient_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_03",
+      "family": "Patient_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_04",
+      "family": "Patient_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_05",
+      "family": "Patient_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_06",
+      "family": "Patient_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_07",
+      "family": "Patient_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_08",
+      "family": "Patient_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_09",
+      "family": "Patient_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Patient_10",
+      "family": "Patient_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_E",
+      "family": "Drift_E",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_W",
+      "family": "Drift_W",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_N",
+      "family": "Drift_N",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_S",
+      "family": "Drift_S",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_NE",
+      "family": "Drift_NE",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_NW",
+      "family": "Drift_NW",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_SE",
+      "family": "Drift_SE",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_SW",
+      "family": "Drift_SW",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_EvN",
+      "family": "Drift_EvN",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Drift_WvS",
+      "family": "Drift_WvS",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_01",
+      "family": "Pacifist_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_02",
+      "family": "Pacifist_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_03",
+      "family": "Pacifist_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_04",
+      "family": "Pacifist_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_05",
+      "family": "Pacifist_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_06",
+      "family": "Pacifist_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_07",
+      "family": "Pacifist_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_08",
+      "family": "Pacifist_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_09",
+      "family": "Pacifist_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pacifist_10",
+      "family": "Pacifist_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_01",
+      "family": "Bully_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_02",
+      "family": "Bully_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_03",
+      "family": "Bully_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_04",
+      "family": "Bully_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_05",
+      "family": "Bully_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_06",
+      "family": "Bully_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_07",
+      "family": "Bully_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_08",
+      "family": "Bully_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_09",
+      "family": "Bully_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Bully_10",
+      "family": "Bully_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_01",
+      "family": "Cluster_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_02",
+      "family": "Cluster_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_03",
+      "family": "Cluster_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_04",
+      "family": "Cluster_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_05",
+      "family": "Cluster_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_06",
+      "family": "Cluster_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_07",
+      "family": "Cluster_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_08",
+      "family": "Cluster_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_09",
+      "family": "Cluster_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Cluster_10",
+      "family": "Cluster_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_01",
+      "family": "Scatter_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_02",
+      "family": "Scatter_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_03",
+      "family": "Scatter_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_04",
+      "family": "Scatter_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_05",
+      "family": "Scatter_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_06",
+      "family": "Scatter_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_07",
+      "family": "Scatter_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_08",
+      "family": "Scatter_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_09",
+      "family": "Scatter_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Scatter_10",
+      "family": "Scatter_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_01",
+      "family": "Pulse_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_02",
+      "family": "Pulse_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_03",
+      "family": "Pulse_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_04",
+      "family": "Pulse_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_05",
+      "family": "Pulse_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_06",
+      "family": "Pulse_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_07",
+      "family": "Pulse_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_08",
+      "family": "Pulse_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_09",
+      "family": "Pulse_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pulse_10",
+      "family": "Pulse_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_01",
+      "family": "Stencil_01",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_02",
+      "family": "Stencil_02",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_03",
+      "family": "Stencil_03",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_04",
+      "family": "Stencil_04",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_05",
+      "family": "Stencil_05",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_06",
+      "family": "Stencil_06",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_07",
+      "family": "Stencil_07",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_08",
+      "family": "Stencil_08",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_09",
+      "family": "Stencil_09",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stencil_10",
+      "family": "Stencil_10",
+      "parent": null,
+      "generation": 0,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T05:27:00.755Z",
+      "archivedAt": null
+    }
+  ]
+}
