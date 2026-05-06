@@ -33,6 +33,10 @@ import Lance from "./Lance.js";
 import Frontier from "./Frontier.js";
 import PressureSink from "./PressureSink.js";
 import CitadelSortie from "./CitadelSortie.js";
+import Pinwheel from "./Pinwheel.js";
+import Anvil from "./Anvil.js";
+import Skirmisher from "./Skirmisher.js";
+import Tempo from "./Tempo.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
 import { CHARACTER_TECHS } from "./characterTechs.js";
@@ -75,6 +79,10 @@ export const ALL_STRATEGY_LIST = [
   Frontier,
   PressureSink,
   CitadelSortie,
+  Pinwheel,
+  Anvil,
+  Skirmisher,
+  Tempo,
   ...GENERATED,
 ];
 
