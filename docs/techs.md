@@ -1,0 +1,54 @@
+# Techs: Asymmetric Bot Loadouts
+
+## Concept
+
+Each tournament entry pairs a **strategy** (the existing behavior code in `src/strategies/`) with a **tech loadout**: a fixed allocation of 100 points across a small set of qualitative knobs. Techs are the asymmetry layer — they make the same strategy play meaningfully differently, and they make different strategies viable in different ways.
+
+The same strategy can appear in a tournament multiple times under different loadouts (`Berserker-Blitz`, `Berserker-Fortress`), and tournaments can include same-strategy mirror matches with different techs to isolate tech effects from strategy noise.
+
+## Knobs
+
+Five knobs, integer-valued, summing to exactly 100:
+
+| knob   | mechanism                                              | archetype |
+|--------|--------------------------------------------------------|-----------|
+| `move` | speed of armies in transit                             | Blitz     |
+| `stack`| max strength a tile/army can hold                      | Hoarder   |
+| `prod` | rate at which owned tiles generate strength            | Engine    |
+| `atk`  | multiplier on effective strength when attacking        | Berserker |
+| `def`  | divisor on incoming effective strength when defending  | Fortress  |
+
+`atk` and `def` extend the existing global `attackerBonus` (`src/core/Game.js:14`) as per-army modifiers; the other three modify per-tick game logic that already exists.
+
+## Trade-off, not pure buff
+
+Tech 0 in a knob means **worse than baseline**, not "baseline." Tech 50 is roughly baseline. Tech 100 is the ceiling. This is what makes 100 points feel meaningful and what produces sharp archetypes — picking atk costs you somewhere else.
+
+Each knob has a single tunable scale constant (e.g. `MOVE_RANGE = [0.7, 1.3]`) mapping the 0–100 tech value linearly to a multiplier. These constants are the only things touched during balance passes.
+
+## Configuration
+
+A `Tech` is a plain object: `{ move, stack, prod, atk, def }` with non-negative integers summing to 100. A tournament entry becomes:
+
+```
+{ strategy: 'Berserker', tech: { atk: 60, move: 40 }, name: 'Berserker-Blitz' }
+```
+
+Missing keys default to 0. Validation rejects non-integers, negatives, or sums ≠ 100. A neutral default `{ 20, 20, 20, 20, 20 }` is applied to legacy entries that don't specify a tech, so existing tournaments keep working.
+
+## Balance analysis
+
+The point of the system is to be tunable, which means we need feedback from tournament results. Two analyses, both run against tournament output:
+
+1. **Mirror-match regression.** Same strategy on both sides, different techs. Fit `winrate ~ Δtech` (linear, then quadratic + interactions). Positive coefficient with a positive gradient across the simplex ⇒ that knob is OP. Cleanest possible signal, since strategy is held constant.
+2. **Marginal-substitution sweep.** For each pair of knobs, sweep mirror matches that shift 10 points at a time from one to the other. Plot winrate vs allocation. Monotonic curves identify dominant knobs operationally.
+
+Cross-strategy aggregation (with strategy fixed-effects) comes later if needed; mirror analysis answers the immediate "is anything OP" question with far less noise.
+
+A neural net is explicitly **not** the tool here — 5 dimensions and bounded sample sizes are well within regression's range, and regression coefficients are directly interpretable as "how much each knob is worth."
+
+## Out of scope (for now)
+
+- Per-game tech changes (techs are fixed for the duration of a match).
+- Knobs that overlap existing ones (e.g. "capture-keep ratio" is just `def`; "spawn cost" is just `prod`). New knobs must change *play feel*, not be another lever on the same dial.
+- UI for human players to pick a tech. This is bot-only initially.
