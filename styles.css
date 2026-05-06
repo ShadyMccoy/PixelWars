@@ -641,6 +641,37 @@ select.dropdown {
   gap: 6px 8px;
 }
 
+.preset-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.preset-tab {
+  font-size: 10px;
+  padding: 3px 6px;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  transition: all 0.12s;
+}
+
+.preset-tab:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.status-line {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-style: italic;
+  margin: 0;
+  line-height: 1.4;
+}
+
 .map-editor label {
   display: flex;
   align-items: center;

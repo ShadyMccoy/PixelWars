@@ -127,17 +127,6 @@ export class HUD {
       row.appendChild(techChips);
       row.appendChild(bar);
 
-      if (this.app.mode?.key === "sandbox") {
-        const select2 = document.createElement("button");
-        select2.className = "btn-mini";
-        select2.textContent = this.app.activePlayer === player ? "● Active" : "Set Active";
-        select2.addEventListener("click", () => {
-          this.app.setActivePlayer(player);
-        });
-        select2.addEventListener("mousedown", (e) => e.stopPropagation());
-        row.appendChild(select2);
-      }
-
       row.addEventListener("mouseenter", () => {
         if (this.pinnedPlayerId == null) this.showTooltip(player, row);
       });
@@ -168,11 +157,6 @@ export class HUD {
       const fill = row.querySelector(".strength-fill");
       const pct = totalStrength > 0 ? (player.totals.strength / totalStrength) * 100 : 0;
       fill.style.width = `${pct}%`;
-
-      if (this.app.mode?.key === "sandbox") {
-        const btn = row.querySelector(".btn-mini");
-        if (btn) btn.textContent = this.app.activePlayer === player ? "● Active" : "Set Active";
-      }
     }
   }
 }

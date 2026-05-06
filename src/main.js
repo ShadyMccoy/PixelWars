@@ -1,8 +1,6 @@
 import { Game } from "./core/Game.js";
 import { Player } from "./core/Player.js";
-import { mulberry32 } from "./core/rng.js";
 import { startingBlobSide, placeStartingBlob } from "./core/startup.js";
-import { MODES } from "./modes/index.js";
 import { Renderer } from "./render/Renderer.js";
 import { StatsChart } from "./render/StatsChart.js";
 import { HUD } from "./ui/HUD.js";
@@ -11,7 +9,6 @@ import { MatchPicker } from "./ui/MatchPicker.js";
 import { LeagueViewer } from "./ui/LeagueViewer.js";
 import { MapEditor } from "./ui/MapEditor.js";
 import { ALL_STRATEGIES, STRATEGY_LIST } from "./strategies/index.js";
-import { MAPS } from "../tournament/maps.js";
 
 // Mirrors tournament/arena.js so a replayed match looks the same on screen
 // as the headless run.
@@ -31,7 +28,7 @@ class App {
     this.canvas = document.getElementById("game-canvas");
     this.chartCanvas = document.getElementById("chart-canvas");
     this.hudRoot = document.getElementById("hud-root");
-    this.modeKey = "classic";
+    this.modeKey = "custom";
     this.mode = null;
     this.playing = true;
     this.speed = 1;
@@ -47,32 +44,30 @@ class App {
     this.controls = new Controls({ app: this });
     this.replayEntry = null;
     // Auto-stop applies in any "watch one match end-to-end" context —
-    // replays of saved matches and live league-tier matches. In sandbox
-    // / classic / arena the user usually wants to keep watching past
-    // the first elimination, so it stays off there.
+    // saved replays and ranking-driven matches. Stays off for ad-hoc
+    // custom-map runs so users can keep watching past the first
+    // elimination.
     this.autoStopOnWinner = false;
-    // Tracks whether the user has already changed mode / picked a match
-    // so the async league loader doesn't yank them out of an active view.
+    // Tracks whether the user has already touched the controls so the
+    // async rankings loader doesn't yank them out of an active view.
     this._userChoseMode = false;
 
-    this.populateModeSelect();
-    this.loadMode(this.modeKey);
     this.matchPicker = new MatchPicker({
       root: document.getElementById("match-picker"),
       refreshButton: document.getElementById("btn-matches-refresh"),
       app: this,
     });
     this.mapEditor = new MapEditor({ app: this });
+    // Initial match: load the default Custom Map fields with random bots
+    // from STRATEGY_LIST so the canvas isn't blank before rankings load.
+    this.loadCustomMap(this.mapEditor.read());
+    // Reset the override flag so the rankings loader can replace the
+    // initial canvas with a top-tier match if rankings.json exists.
+    this._userChoseMode = false;
     this.leagueViewer = new LeagueViewer({
       root: document.getElementById("league-viewer"),
       refreshButton: document.getElementById("btn-leagues-refresh"),
       app: this,
-      // First time leagues finish loading, default to a top-tier match
-      // so visitors land on the marquee competition rather than Classic
-      // (unless they've already clicked something).
-      // First time rankings finish loading, drop into a top-tier match
-      // so visitors land on the marquee competition rather than Classic
-      // (unless they've already clicked something).
       onFirstLoad: (rankings) => {
         if (this._userChoseMode) return;
         if (!rankings) return;
@@ -80,58 +75,6 @@ class App {
       },
     });
     this.startLoop();
-  }
-
-  populateModeSelect() {
-    const sel = document.getElementById("mode-select");
-    sel.innerHTML = "";
-    for (const [key, m] of Object.entries(MODES)) {
-      const opt = document.createElement("option");
-      opt.value = key;
-      opt.textContent = m.name;
-      sel.appendChild(opt);
-    }
-    sel.value = this.modeKey;
-  }
-
-  loadMode(key) {
-    this.modeKey = key;
-    this.replayEntry = null;
-    this.autoStopOnWinner = false;
-    const def = MODES[key];
-    this.mode = { key, ...def };
-    this.game = new Game(def.config);
-    def.setup(this.game);
-
-    document.getElementById("mode-description").textContent = def.description;
-
-    if (!this.renderer) {
-      this.renderer = new Renderer({ canvas: this.canvas, game: this.game });
-    } else {
-      this.renderer.setGame(this.game);
-    }
-
-    if (!this.chart) {
-      this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
-    } else {
-      this.chart.setGame(this.game);
-    }
-
-    if (!this.hud) {
-      this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
-    } else {
-      this.hud.setGame(this.game);
-    }
-
-    this.activePlayer = this.game.players.list[0] ?? null;
-    this.lastWinnerLogged = null;
-    this.controls.setMode(key);
-    this.matchPicker?.setActive(null);
-    this.controls.log(`Loaded "${def.name}"`);
-    this.bindCanvas();
-    this.playing = true;
-    this.controls.setPlaying(true);
-    this.markDirty();
   }
 
   loadReplay(entry) {
@@ -230,7 +173,6 @@ class App {
     const seed = (Date.now() & 0x7fffffff) >>> 0;
 
     this.replayEntry = null;
-    this.lastLeagueArgs = null;
     this.autoStopOnWinner = false;
     this.modeKey = "custom";
     this.mode = { key: "custom", name: "Custom Map" };
@@ -295,83 +237,6 @@ class App {
     this.markDirty();
   }
 
-  loadLeagueMatch({ leagueMap, mapConfig, tierIndex, tierBots, poolSize, seed }) {
-    // Pick a deterministic K-of-tier sample from the seed, then play the
-    // match using the league's map config. Uses the same seed for both the
-    // sampling RNG and the game RNG so a (tier, seed) pair fully determines
-    // what the user watches.
-    const k = Math.min(poolSize ?? 6, tierBots.length);
-    const sampleRng = mulberry32(seed);
-    const pool = tierBots.slice();
-    const sampled = [];
-    for (let i = 0; i < k; i++) {
-      const j = Math.floor(sampleRng() * pool.length);
-      sampled.push(pool.splice(j, 1)[0]);
-    }
-    const strategies = sampled.map((name) => {
-      const s = ALL_STRATEGIES[name];
-      if (!s) throw new Error(`League references unknown strategy: ${name}`);
-      return s;
-    });
-
-    this.replayEntry = null;
-    this.autoStopOnWinner = true;
-    this.modeKey = "league";
-    this.mode = { key: "league", name: `League · Tier ${tierIndex + 1}` };
-    this.game = new Game({ ...mapConfig, seed });
-    // The headless arena uses ringPositions per the map preset; we mirror
-    // it exactly so the visible match matches what runMatch would produce
-    // for the same (lineup, seed).
-    const positions = MAPS[leagueMap].positions(strategies.length);
-
-    const players = strategies.map((s, i) => {
-      const palette = REPLAY_PALETTE[i % REPLAY_PALETTE.length];
-      return new Player({
-        name: `${s.name}#${i + 1}`,
-        color: palette.color,
-        accent: palette.accent,
-        strategy: s,
-        tech: s.tech,
-      });
-    });
-    players.forEach((p) => this.game.addPlayer(p));
-    {
-      const side = startingBlobSide(this.game.map, positions.length);
-      positions.forEach((pos, i) => {
-        placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
-      });
-    }
-
-    document.getElementById("mode-description").textContent =
-      `League · ${leagueMap} · Tier ${tierIndex + 1} · seed=${seed} · ${sampled.length} bots`;
-    this.lastLeagueArgs = { leagueMap, mapConfig, tierIndex, tierBots, poolSize, seed };
-
-    if (!this.renderer) {
-      this.renderer = new Renderer({ canvas: this.canvas, game: this.game });
-    } else {
-      this.renderer.setGame(this.game);
-    }
-    if (!this.chart) {
-      this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
-    } else {
-      this.chart.setGame(this.game);
-    }
-    if (!this.hud) {
-      this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
-    } else {
-      this.hud.setGame(this.game);
-    }
-
-    this.activePlayer = this.game.players.list[0] ?? null;
-    this.lastWinnerLogged = null;
-    this.matchPicker?.setActive(null);
-    this.controls.log(`🏆 League Tier ${tierIndex + 1} · ${sampled.join(", ")}`);
-    this.bindCanvas();
-    this.playing = true;
-    this.controls.setPlaying(true);
-    this.markDirty();
-  }
-
   bindCanvas() {
     if (this._canvasBound) return;
     this._canvasBound = true;
@@ -389,10 +254,6 @@ class App {
       const tile = this.renderer.pixelToTile(e.clientX, e.clientY);
       if (!tile) return;
       this.renderer.selectedTile = tile;
-      if (this.mode.key === "sandbox" && this.activePlayer) {
-        this.game.placeArmy({ x: tile.pos.x, y: tile.pos.y, player: this.activePlayer, strength: 2 });
-        this.controls.log(`Spawned ${this.activePlayer.name} army at (${tile.pos.x}, ${tile.pos.y})`);
-      }
       this.markDirty();
     });
   }
@@ -443,12 +304,6 @@ class App {
     if (this._tileTooltip) this._tileTooltip.style.display = "none";
   }
 
-  setActivePlayer(player) {
-    this.activePlayer = player;
-    this.hud.update();
-    this.markDirty();
-  }
-
   togglePlay() {
     this.playing = !this.playing;
     this.controls.setPlaying(this.playing);
@@ -463,12 +318,10 @@ class App {
   reload() {
     if (this.replayEntry) {
       this.loadReplay(this.replayEntry);
-    } else if (this.modeKey === "league" && this.lastLeagueArgs) {
-      this.loadLeagueMatch(this.lastLeagueArgs);
-    } else if (this.modeKey === "custom" && this.lastCustomArgs) {
+    } else if (this.lastCustomArgs) {
       this.loadCustomMap(this.lastCustomArgs);
     } else {
-      this.loadMode(this.modeKey);
+      this.loadCustomMap(this.mapEditor.read());
     }
   }
 
