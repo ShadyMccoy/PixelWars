@@ -26,6 +26,8 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, "..");
 const STRATEGIES_DIR = resolve(REPO_ROOT, "src", "strategies");
 const DESCENDANTS_REGISTRY = resolve(STRATEGIES_DIR, "descendants.js");
+const DOCS_DIR = resolve(REPO_ROOT, "docs");
+const MAX_WINNER_SOURCES = 3;
 
 // Try a few likely paths for the parent's source. Most bots live as
 // `src/strategies/<Name>.js`; descendants are also there. Returns null
@@ -85,12 +87,30 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
   const season = await loadLatestSeason();
   const losses = (season?.losses?.[parentName] ?? []).slice(0, lossLimit);
 
+  // Source files of bots that beat the parent — the agent can read
+  // these to think about counters. Skips factory-generated bots that
+  // don't have their own .js file.
+  const winnerSources = await collectWinnerSources(losses, parentName);
+
+  // Map config the parent was actually rated on. Numbers like growth
+  // and wrap matter for tuning constants like commitment fractions.
+  const mapInfo = season ? {
+    name: season.map ?? null,
+    config: season.mapConfig ?? null,
+  } : null;
+
+  // Engine docs — the agent has no way to discover the API otherwise.
+  const docs = await loadDocs();
+
   const prompt = buildPrompt({
     parentName,
     newName,
     parentSource: parentSrc.source,
     parentPath: parentSrc.path,
     losses,
+    winnerSources,
+    mapInfo,
+    docs,
     seasonId: season?.id ?? null,
   });
 
@@ -104,7 +124,49 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
   };
 }
 
-function buildPrompt({ parentName, newName, parentSource, parentPath, losses, seasonId }) {
+async function loadDocs() {
+  const out = {};
+  for (const name of ["strategies.md", "engine-api.md"]) {
+    try {
+      out[name] = await readFile(resolve(DOCS_DIR, name), "utf8");
+    } catch {
+      out[name] = null;
+    }
+  }
+  return out;
+}
+
+// Walk recent losses, dedupe winners (skipping the parent and any
+// duplicates), and load source for each whose strategy has a dedicated
+// file. Factory-generated bots (Hunter_01, Pulse_05, etc.) don't have
+// their own files — those get listed by name only.
+async function collectWinnerSources(losses, parentName) {
+  const seenNames = new Set();
+  const withSource = [];
+  const namesOnly = [];
+  for (const L of losses) {
+    const w = L.winner;
+    if (!w || w === parentName) continue;
+    if (seenNames.has(w)) continue;
+    seenNames.add(w);
+    const path = resolve(STRATEGIES_DIR, `${w}.js`);
+    try {
+      await access(path);
+      if (withSource.length < MAX_WINNER_SOURCES) {
+        const src = await readFile(path, "utf8");
+        withSource.push({ name: w, source: src, path });
+        continue;
+      }
+    } catch { /* fall through to names-only */ }
+    namesOnly.push(w);
+  }
+  return { withSource, namesOnly };
+}
+
+function buildPrompt({
+  parentName, newName, parentSource, parentPath,
+  losses, winnerSources, mapInfo, docs, seasonId,
+}) {
   const parentRel = parentPath.replace(REPO_ROOT + "/", "");
   const lossSection = losses.length === 0
     ? `(no recent losses recorded — the parent dominated its season)`
@@ -113,6 +175,37 @@ function buildPrompt({ parentName, newName, parentSource, parentPath, losses, se
         `finished #${L.finishedRank} of ${L.lineup.length} ` +
         `(winner: ${L.winner}, ${L.endReason}, ticks=${L.ticks})`
       ).join("\n");
+
+  const mapSection = mapInfo?.config
+    ? `Map: \`${mapInfo.name ?? "?"}\` — ${formatMapConfig(mapInfo.config)}`
+    : `(map config not recorded for this season)`;
+
+  const winnerSrcSection = (() => {
+    if (!winnerSources) return "";
+    const blocks = [];
+    for (const w of winnerSources.withSource) {
+      const rel = w.path.replace(REPO_ROOT + "/", "");
+      blocks.push(`### \`${rel}\` (beat the parent)\n\n\`\`\`js\n${w.source.trim()}\n\`\`\``);
+    }
+    if (winnerSources.namesOnly.length) {
+      blocks.push(
+        `### Other winners without dedicated source files\n\n` +
+        winnerSources.namesOnly.map((n) => `- \`${n}\` (factory-generated; see \`src/strategies/factory.js\` and \`generated.js\` for shape)`).join("\n"),
+      );
+    }
+    return blocks.length ? `\n## Bots that beat the parent\n\n${blocks.join("\n\n")}\n` : "";
+  })();
+
+  const docsSection = (() => {
+    const blocks = [];
+    if (docs["strategies.md"]) {
+      blocks.push(`### \`docs/strategies.md\`\n\n${docs["strategies.md"].trim()}`);
+    }
+    if (docs["engine-api.md"]) {
+      blocks.push(`### \`docs/engine-api.md\`\n\n${docs["engine-api.md"].trim()}`);
+    }
+    return blocks.length ? `\n## Game / API reference\n\n${blocks.join("\n\n---\n\n")}\n` : "";
+  })();
 
   return `# Spawn descendant: ${newName}
 
@@ -126,6 +219,10 @@ constant, swap a tiebreaker, refine a heuristic, change the threshold at
 which it commits force. Do **not** rewrite from scratch. Do **not** add
 new infrastructure. The smaller the change, the better the comparison.
 
+## Test environment
+
+${mapSection}
+
 ## Parent source — \`${parentRel}\`
 
 \`\`\`js
@@ -135,7 +232,7 @@ ${parentSource.trim()}
 ## Parent's recent losses${seasonId != null ? ` (season #${seasonId})` : ""}
 
 ${lossSection}
-
+${winnerSrcSection}${docsSection}
 ## Output requirements
 
 1. Produce ONE JavaScript file at \`src/strategies/${newName}.js\`.
@@ -144,7 +241,7 @@ ${lossSection}
    sometimes \`description\`, \`summary\`).
 3. The exported \`name\` MUST be \`"${newName}"\` exactly.
 4. Keep the change tiny and reviewable. Comment WHY the change is
-   expected to help — referencing the loss context above is ideal.
+   expected to help — reference the loss context above when possible.
 5. Do not edit any other file. Registration into the engine and
    lineage store happens via:
        \`\`\`
@@ -153,6 +250,15 @@ ${lossSection}
          --file src/strategies/${newName}.js
        \`\`\`
 `;
+}
+
+function formatMapConfig(cfg) {
+  const parts = [];
+  if (cfg.width != null && cfg.height != null) parts.push(`${cfg.width}×${cfg.height}`);
+  if (cfg.growth != null) parts.push(`growth ${cfg.growth}`);
+  if (cfg.maxArmy != null) parts.push(`maxArmy ${cfg.maxArmy}`);
+  if (cfg.wrap != null) parts.push(cfg.wrap ? "wrap" : "no-wrap");
+  return parts.join(", ") || JSON.stringify(cfg);
 }
 
 // ---------------------------------------------------------- archival on spawn
