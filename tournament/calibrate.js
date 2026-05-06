@@ -31,7 +31,8 @@ Modes (pick one):
   --pure                 Pure-knob duels: {A:100} vs {B:100}.
 
 Options:
-  --strategy NAME        Strategy used in mirror matches (default Berserker)
+  --strategy NAME        Strategy(ies); comma-separated for batch.
+                         Default: Berserker
   --map NAME             Map preset (default arena)
   --matches N            Random tech vector pairs (regress only, default 400)
   --seeds N              Seeds per matchup (default 5)
@@ -285,12 +286,53 @@ async function writeCsv(path, rows) {
 
 // ---------------------------------------------------------- main
 
+function aggregateBetas(perStrategy) {
+  // Average per-strategy coefficients to surface the cross-strategy
+  // valuation of each knob. Equal weighting per strategy (no
+  // weighting by R² yet — kept simple).
+  const FEAT = ["intercept", "dmove", "dstack", "dprod", "datk"];
+  const avg = Array(5).fill(0);
+  for (const { beta } of perStrategy) for (let i = 0; i < 5; i++) avg[i] += beta[i];
+  for (let i = 0; i < 5; i++) avg[i] /= perStrategy.length;
+  console.log(`\n=== Cross-strategy average (${perStrategy.length} bots) ===`);
+  console.log(`  intercept = ${avg[0].toFixed(4)}`);
+  console.log(`  per-point coefficients (averaged across strategies):`);
+  for (let i = 1; i < 5; i++) {
+    console.log(`    ${FEAT[i].padEnd(8)} = ${avg[i] >= 0 ? "+" : ""}${avg[i].toFixed(5)}`);
+  }
+  const implied = -(avg[1] + avg[2] + avg[3] + avg[4]);
+  console.log(`    ddef     = ${implied >= 0 ? "+" : ""}${implied.toFixed(5)}  (implied)`);
+}
+
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
+  const strategies = opts.strategy.split(",").map((s) => s.trim()).filter(Boolean);
+
+  if (opts.mode === "regress" && strategies.length > 1) {
+    const perStrategy = [];
+    for (const name of strategies) {
+      console.log(`\n--- ${name} ---`);
+      perStrategy.push(runRegress({ ...opts, strategy: name }));
+    }
+    aggregateBetas(perStrategy);
+    if (opts.csv) {
+      const allRows = [];
+      perStrategy.forEach((r, i) => {
+        for (const row of r.rows) allRows.push({ strategy: strategies[i], ...row });
+      });
+      await writeCsv(`${opts.csv}/regress.csv`, allRows);
+    }
+    return;
+  }
+
+  // Single-strategy modes
   let result;
-  if (opts.mode === "regress") result = runRegress(opts);
-  else if (opts.mode === "substitute") result = runSubstitute(opts);
-  else if (opts.mode === "pure") result = runPure(opts);
+  for (const name of strategies) {
+    if (strategies.length > 1) console.log(`\n--- ${name} ---`);
+    if (opts.mode === "regress") result = runRegress({ ...opts, strategy: name });
+    else if (opts.mode === "substitute") result = runSubstitute({ ...opts, strategy: name });
+    else if (opts.mode === "pure") result = runPure({ ...opts, strategy: name });
+  }
   if (opts.csv && result?.rows) {
     await writeCsv(`${opts.csv}/${opts.mode}.csv`, result.rows);
   }

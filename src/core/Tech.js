@@ -11,15 +11,16 @@ export const NEUTRAL_TECH = Object.freeze({
   move: 20, stack: 20, prod: 20, atk: 20, def: 20,
 });
 
-// Slopes are deliberately conservative initial guesses. Calibration
-// (mirror-match regression) is what dials these in. atk/def have
-// smaller slopes because they compound through the existing
-// attackerBonus and combat math.
+// Slopes calibrated against multi-strategy mirror-match regression
+// (see tournament/calibrate.js). Stack and prod were overpowered at
+// the initial 0.010 guesses; def was strictly dominated. These values
+// were tuned to bring per-point winrate coefficients close to zero
+// across Berserker, Turtle, Hunter, SlowAndSteady, and Swarm.
 export const SLOPES = Object.freeze({
-  move:  0.0075,  // tech 0 -> 0.85x, tech 100 -> 1.60x
-  stack: 0.0100,  // tech 0 -> 0.80x, tech 100 -> 1.80x
-  prod:  0.0100,  // tech 0 -> 0.80x, tech 100 -> 1.80x
-  atk:   0.0050,  // tech 0 -> 0.90x, tech 100 -> 1.40x
+  move:  0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
+  stack: 0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
+  prod:  0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
+  atk:   0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
   def:   0.0050,  // tech 0 -> 0.90x, tech 100 -> 1.40x
 });
 
