@@ -72,11 +72,101 @@ export function makeSpearheadVariant(params = {}) {
   const EMPTY = p.emptyBonus;
   const FRIENDLY = p.friendlyPenalty;
 
+  return spearheadFromOffsets({ name, OFFSETS, ATTACKER_BONUS, COMMIT, EMPTY, FRIENDLY,
+    description: `Parametric Spearhead (ab=${ATTACKER_BONUS.toFixed(2)}, k=[${p.bodyClose},${p.bodyFar},${p.flankClose}], e=${EMPTY.toFixed(0)}, f=${FRIENDLY.toFixed(0)}, c=${COMMIT.toFixed(2)})`,
+  });
+}
+
+// Variant that takes a flat 25-element kernel directly (East-facing,
+// row-major: index = (dy + 2) * 5 + (dx + 2)). The kernel is rotated
+// to four cardinals at construction. Use this when the GA is
+// optimizing the full weight matrix, not just a few constants.
+//
+// MATRIX_SCHEMA (below) describes the search space: a 25-length
+// array knob plus the four scalar knobs (attackerBonus, emptyBonus,
+// friendlyPenalty, commitThreshold). The center cell is included
+// in the array for index simplicity but contributes nothing because
+// no army moves "into itself."
+export const MATRIX_SCHEMA = Object.freeze({
+  attackerBonus:    { min: 1.0, max: 1.7, sigma: 0.04 },
+  emptyBonus:       { min: 0,   max: 60,  sigma: 4 },
+  friendlyPenalty:  { min: -40, max: 0,   sigma: 4 },
+  commitThreshold:  { min: 0.0, max: 1.5, sigma: 0.1 },
+  kernel:           { length: 25, min: -3, max: 3, sigma: 0.3 },
+});
+
+export const MATRIX_DEFAULTS = Object.freeze({
+  attackerBonus: 1.4,
+  emptyBonus: 20,
+  friendlyPenalty: -10,
+  commitThreshold: 0.5,
+  // Default kernel reproduces the original Spearhead East pattern:
+  // body-behind on axis (3 at [0,-1], 1 at [0,-2]), rear flanks (1
+  // at [-1,-1] and [1,-1]). All other cells 0.
+  kernel: (() => {
+    const k = new Array(25).fill(0);
+    const idx = (dy, dx) => (dy + 2) * 5 + (dx + 2);
+    k[idx(0, -1)] = 3;
+    k[idx(0, -2)] = 1;
+    k[idx(-1, -1)] = 1;
+    k[idx(1, -1)] = 1;
+    return Object.freeze(k);
+  })(),
+});
+
+function rotateKernelOffsets(kernel) {
+  // For each direction (0=W, 1=E, 2=N, 3=S) build a flat list
+  // [stencilIdx, weight, stencilIdx, weight, ...] of non-zero
+  // contributions. Zero weights are skipped for speed.
+  function rotateXY(dy, dx, dir) {
+    switch (dir) {
+      case 0: return [dy, -dx];
+      case 1: return [dy, dx];
+      case 2: return [-dx, dy];
+      case 3: return [dx, -dy];
+    }
+    return [dy, dx];
+  }
+  const out = [[], [], [], []];
+  for (let i = 0; i < 25; i++) {
+    const w = kernel[i];
+    if (w === 0) continue;
+    const dy = ((i / 5) | 0) - 2;
+    const dx = (i % 5) - 2;
+    if (dy === 0 && dx === 0) continue; // center has no meaning
+    for (let dir = 0; dir < 4; dir++) {
+      const [rdy, rdx] = rotateXY(dy, dx, dir);
+      const idx = (rdy + 2) * 5 + (rdx + 2);
+      if (idx < 0 || idx >= 25) continue;
+      out[dir].push(idx, w);
+    }
+  }
+  return out;
+}
+
+export function makeSpearheadFromKernel(params = {}) {
+  const p = { ...MATRIX_DEFAULTS, ...params };
+  const name = params.name ?? "MatrixSpearhead";
+  const OFFSETS = rotateKernelOffsets(p.kernel);
+  const nonzero = p.kernel.reduce((n, w) => n + (w !== 0 ? 1 : 0), 0);
+  return spearheadFromOffsets({
+    name, OFFSETS,
+    ATTACKER_BONUS: p.attackerBonus,
+    COMMIT: p.commitThreshold,
+    EMPTY: p.emptyBonus,
+    FRIENDLY: p.friendlyPenalty,
+    description: `Matrix Spearhead (ab=${p.attackerBonus.toFixed(2)}, ${nonzero}/25 cells nonzero, e=${p.emptyBonus.toFixed(0)}, f=${p.friendlyPenalty.toFixed(0)}, c=${p.commitThreshold.toFixed(2)})`,
+  });
+}
+
+// Shared act() body. Kept private so both variant constructors share
+// exactly the same control flow; only the OFFSETS / scalars differ.
+function spearheadFromOffsets({ name, OFFSETS, ATTACKER_BONUS, COMMIT, EMPTY, FRIENDLY, description }) {
   return {
     name,
     author: "ga",
     version: 1,
-    description: `Parametric Spearhead (ab=${ATTACKER_BONUS.toFixed(2)}, k=[${p.bodyClose},${p.bodyFar},${p.flankClose}], e=${EMPTY.toFixed(0)}, f=${FRIENDLY.toFixed(0)}, c=${COMMIT.toFixed(2)})`,
+    description,
     act(army, game) {
       const tile = army.tile;
       if (!tile) return;

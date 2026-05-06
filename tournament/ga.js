@@ -25,13 +25,17 @@ import { STRATEGY_LIST, getStrategy } from "../src/strategies/index.js";
 import { loadRankings } from "./rankingsStore.js";
 import {
   makeSpearheadVariant,
+  makeSpearheadFromKernel,
   SPEARHEAD_DEFAULTS,
   SPEARHEAD_SCHEMA,
+  MATRIX_DEFAULTS,
+  MATRIX_SCHEMA,
 } from "../src/strategies/parametric/Spearhead.js";
 import { writeFile } from "node:fs/promises";
 
 const SCHEMAS = {
-  Spearhead: { defaults: SPEARHEAD_DEFAULTS, schema: SPEARHEAD_SCHEMA, make: makeSpearheadVariant },
+  Spearhead:       { defaults: SPEARHEAD_DEFAULTS, schema: SPEARHEAD_SCHEMA, make: makeSpearheadVariant },
+  SpearheadMatrix: { defaults: MATRIX_DEFAULTS,    schema: MATRIX_SCHEMA,    make: makeSpearheadFromKernel },
 };
 
 const HELP = `Usage: node tournament/ga.js [options]
@@ -45,6 +49,10 @@ Search:
   --eval N            Matches per fitness eval (default: 20)
   --elite N           Top N kept unchanged each gen (default: 4)
   --mutate-prob P     Per-knob mutation probability (default: 0.3)
+  --warm F            Fraction of initial pop seeded from schema
+                      defaults + perturbation (rest random). Use 1.0
+                      for pure local search, 0.0 for pure random.
+                      (default: 0.5 — half warm-start, half explore)
   --seed N            RNG seed (default: 1)
 
 Match config:
@@ -67,6 +75,7 @@ function parseArgs(argv) {
     eval: 20,
     elite: 4,
     mutateProb: 0.3,
+    warm: 0.5,
     seed: 1,
     map: "lab1",
     pool: 6,
@@ -86,6 +95,7 @@ function parseArgs(argv) {
       case "--eval": opts.eval = parseInt(next(), 10); break;
       case "--elite": opts.elite = parseInt(next(), 10); break;
       case "--mutate-prob": opts.mutateProb = parseFloat(next()); break;
+      case "--warm": opts.warm = parseFloat(next()); break;
       case "--seed": opts.seed = parseInt(next(), 10); break;
       case "--map": opts.map = next(); break;
       case "--pool": opts.pool = parseInt(next(), 10); break;
@@ -106,16 +116,6 @@ function parseArgs(argv) {
 
 function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
-function randomVector(schema, rng) {
-  const v = {};
-  for (const [k, s] of Object.entries(schema)) {
-    let x = s.min + rng() * (s.max - s.min);
-    if (s.int) x = Math.round(x);
-    v[k] = x;
-  }
-  return v;
-}
-
 // Standard normal via Box-Muller.
 function gaussian(rng) {
   const u = Math.max(rng(), 1e-12);
@@ -123,30 +123,111 @@ function gaussian(rng) {
   return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
-function mutate(vec, schema, rng, prob) {
-  const out = { ...vec };
+function randScalar(s, rng) {
+  let x = s.min + rng() * (s.max - s.min);
+  if (s.int) x = Math.round(x);
+  return x;
+}
+
+// Each schema entry is either a scalar { min, max, sigma, int? } or
+// an array { length, min, max, sigma, int? }. Arrays are stored as
+// regular JS arrays in the vector.
+function randomVector(schema, rng) {
+  const v = {};
   for (const [k, s] of Object.entries(schema)) {
-    if (rng() >= prob) continue;
-    let x = out[k] + s.sigma * gaussian(rng);
-    x = clamp(x, s.min, s.max);
-    if (s.int) x = Math.round(x);
-    out[k] = x;
+    if (s.length != null) {
+      v[k] = Array.from({ length: s.length }, () => randScalar(s, rng));
+    } else {
+      v[k] = randScalar(s, rng);
+    }
+  }
+  return v;
+}
+
+function mutate(vec, schema, rng, prob) {
+  const out = {};
+  for (const [k, s] of Object.entries(schema)) {
+    if (s.length != null) {
+      const arr = vec[k].slice();
+      for (let i = 0; i < arr.length; i++) {
+        if (rng() >= prob) continue;
+        let x = arr[i] + s.sigma * gaussian(rng);
+        x = clamp(x, s.min, s.max);
+        if (s.int) x = Math.round(x);
+        arr[i] = x;
+      }
+      out[k] = arr;
+    } else {
+      if (rng() >= prob) { out[k] = vec[k]; continue; }
+      let x = vec[k] + s.sigma * gaussian(rng);
+      x = clamp(x, s.min, s.max);
+      if (s.int) x = Math.round(x);
+      out[k] = x;
+    }
   }
   return out;
 }
 
+// Crossover: per-cell uniform mix for arrays; per-key uniform mix
+// for scalars. Per-cell mixing is important for the matrix knob —
+// taking whole arrays at once would behave like "switch parents
+// every other generation," which kills exploration of the basin.
 function crossover(a, b, schema, rng) {
   const out = {};
-  for (const k of Object.keys(schema)) {
-    out[k] = rng() < 0.5 ? a[k] : b[k];
+  for (const [k, s] of Object.entries(schema)) {
+    if (s.length != null) {
+      const arr = new Array(s.length);
+      for (let i = 0; i < s.length; i++) {
+        arr[i] = rng() < 0.5 ? a[k][i] : b[k][i];
+      }
+      out[k] = arr;
+    } else {
+      out[k] = rng() < 0.5 ? a[k] : b[k];
+    }
   }
   return out;
+}
+
+// Deep-copy a vector so we can mutate copies without aliasing the
+// schema defaults (which contain frozen arrays).
+function deepCopyVec(vec, schema) {
+  const out = {};
+  for (const k of Object.keys(schema)) {
+    out[k] = Array.isArray(vec[k]) ? vec[k].slice() : vec[k];
+  }
+  return out;
+}
+
+function fmtScalar(x) {
+  return typeof x === "number" ? +x.toFixed(3) : x;
 }
 
 function fmtVec(v) {
   return Object.entries(v)
-    .map(([k, x]) => `${k}=${typeof x === "number" ? +x.toFixed(3) : x}`)
+    .map(([k, x]) => {
+      if (Array.isArray(x)) {
+        const nz = x.filter((w) => Math.abs(w) > 0.01).length;
+        return `${k}=[${nz}/${x.length} nonzero]`;
+      }
+      return `${k}=${fmtScalar(x)}`;
+    })
     .join(" ");
+}
+
+// Pretty-print a 5x5 matrix knob (East-facing). Center cell rendered
+// as a dot to remind that it has no behavioral meaning.
+function fmtMatrix5(arr) {
+  const lines = [];
+  for (let r = 0; r < 5; r++) {
+    const cells = [];
+    for (let c = 0; c < 5; c++) {
+      const i = r * 5 + c;
+      if (i === 12) cells.push(" .   ");
+      else cells.push(arr[i].toFixed(2).padStart(5, " "));
+    }
+    lines.push(cells.join(" "));
+  }
+  return lines.join("\n");
 }
 
 function sample(items, k, rng) {
@@ -228,7 +309,24 @@ async function main() {
   console.log(`Opponents (${opponents.length}): ${opponentNames.join(", ")}\n`);
 
   const rng = mulberry32(opts.seed);
-  let pop = Array.from({ length: opts.pop }, () => randomVector(schemaInfo.schema, rng));
+
+  // Warm-start: a fraction of the initial population starts as the
+  // schema defaults plus perturbation, the rest are random. This is
+  // important on high-dim knobs (e.g. 25-cell matrix) where pure
+  // random init is hopeless. The defaults vector itself goes in
+  // unmodified so we always carry at least one "known good" baseline.
+  const nWarm = Math.min(opts.pop, Math.max(1, Math.round(opts.pop * opts.warm)));
+  let pop = [];
+  // First slot is the unmutated defaults — guarantees the GA can't
+  // regress below the parent if elite preservation is ≥ 1.
+  pop.push(deepCopyVec(schemaInfo.defaults, schemaInfo.schema));
+  while (pop.length < nWarm) {
+    pop.push(mutate(deepCopyVec(schemaInfo.defaults, schemaInfo.schema),
+                    schemaInfo.schema, rng, 0.5));
+  }
+  while (pop.length < opts.pop) {
+    pop.push(randomVector(schemaInfo.schema, rng));
+  }
 
   const startTime = Date.now();
   let totalEvals = 0;
@@ -300,6 +398,13 @@ async function main() {
     const r = finalScored[i];
     console.log(`  #${i + 1}  fitness=${r.fitness.toFixed(3)}  wins=${r.wins}/${r.played} (${(100 * r.wins / r.played).toFixed(0)}%)`);
     console.log(`        ${fmtVec(r.vec)}`);
+    // Pretty-print any 5x5 matrix knobs.
+    for (const [k, x] of Object.entries(r.vec)) {
+      if (Array.isArray(x) && x.length === 25) {
+        console.log(`        ${k} (East-facing):`);
+        for (const line of fmtMatrix5(x).split("\n")) console.log(`          ${line}`);
+      }
+    }
   }
   console.log(`\nDefault (parent Spearhead) for reference:`);
   const defResult = evaluate({
