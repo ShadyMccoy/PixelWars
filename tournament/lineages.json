@@ -96,9 +96,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T05:36:49.778Z"
     },
     {
       "name": "Hunter",
@@ -1398,6 +1398,16 @@
       "birthSeason": 2,
       "active": true,
       "createdAt": "2026-05-06T05:32:57.425Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_859468",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": 3,
+      "active": true,
+      "createdAt": "2026-05-06T05:36:49.775Z",
       "archivedAt": null
     }
   ]

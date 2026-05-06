@@ -319,6 +319,604 @@
       "losses": {
         "Trinity": []
       }
+    },
+    {
+      "id": 3,
+      "savedAt": "2026-05-06T05:36:12.909Z",
+      "map": "lab1",
+      "rrMap": "lab3",
+      "poolSize": 4,
+      "matches": 50,
+      "baseSeed": 1,
+      "champions": [
+        {
+          "kind": "rating-leader",
+          "name": "Spearhead"
+        },
+        {
+          "kind": "round-robin",
+          "name": "Vanguard"
+        }
+      ],
+      "topField": [
+        "Spearhead",
+        "Conductor",
+        "Citadel",
+        "Vanguard",
+        "Bully_08"
+      ],
+      "ratings": [
+        {
+          "name": "Spearhead",
+          "rating": 2136.27,
+          "rd": 134.19,
+          "played": 3
+        },
+        {
+          "name": "Conductor",
+          "rating": 2126.68,
+          "rd": 115.44,
+          "played": 4
+        },
+        {
+          "name": "Citadel",
+          "rating": 1984.32,
+          "rd": 114.53,
+          "played": 4
+        },
+        {
+          "name": "Vanguard",
+          "rating": 1927.1,
+          "rd": 115,
+          "played": 4
+        },
+        {
+          "name": "Bully_08",
+          "rating": 1913.84,
+          "rd": 132.44,
+          "played": 3
+        },
+        {
+          "name": "Membrane",
+          "rating": 1899.87,
+          "rd": 115.91,
+          "played": 4
+        },
+        {
+          "name": "Lance",
+          "rating": 1876.07,
+          "rd": 134.27,
+          "played": 3
+        },
+        {
+          "name": "Hunter_10",
+          "rating": 1852.6,
+          "rd": 130.96,
+          "played": 3
+        },
+        {
+          "name": "Hunter_07",
+          "rating": 1845.23,
+          "rd": 115.33,
+          "played": 4
+        },
+        {
+          "name": "Bully_01",
+          "rating": 1784.44,
+          "rd": 134.27,
+          "played": 3
+        },
+        {
+          "name": "Hunter_01",
+          "rating": 1765.06,
+          "rd": 115.21,
+          "played": 4
+        },
+        {
+          "name": "Pinwheel",
+          "rating": 1729.84,
+          "rd": 133.58,
+          "played": 3
+        },
+        {
+          "name": "TideWall",
+          "rating": 1727.05,
+          "rd": 134.76,
+          "played": 3
+        },
+        {
+          "name": "Stencil_04",
+          "rating": 1708.01,
+          "rd": 131.13,
+          "played": 3
+        },
+        {
+          "name": "Hunter_05",
+          "rating": 1692.81,
+          "rd": 134.27,
+          "played": 3
+        },
+        {
+          "name": "PressureSink",
+          "rating": 1664.6,
+          "rd": 102.97,
+          "played": 5
+        },
+        {
+          "name": "Frontier",
+          "rating": 1660.9,
+          "rd": 137.42,
+          "played": 3
+        },
+        {
+          "name": "Aggressive",
+          "rating": 1652.25,
+          "rd": 116.4,
+          "played": 4
+        },
+        {
+          "name": "Bully_03",
+          "rating": 1647.6,
+          "rd": 132.39,
+          "played": 3
+        },
+        {
+          "name": "Bully_06",
+          "rating": 1645.91,
+          "rd": 136.12,
+          "played": 3
+        },
+        {
+          "name": "Bully_09",
+          "rating": 1645.26,
+          "rd": 117.63,
+          "played": 4
+        },
+        {
+          "name": "Trinity_g1_3786cc",
+          "rating": 1633.5,
+          "rd": 115.48,
+          "played": 4
+        },
+        {
+          "name": "Hunter_03",
+          "rating": 1581.24,
+          "rd": 133.56,
+          "played": 3
+        },
+        {
+          "name": "Bully_04",
+          "rating": 1580.53,
+          "rd": 114.72,
+          "played": 4
+        },
+        {
+          "name": "Pacifist_04",
+          "rating": 1577.53,
+          "rd": 133.43,
+          "played": 3
+        },
+        {
+          "name": "Crusader",
+          "rating": 1552.48,
+          "rd": 115.33,
+          "played": 4
+        },
+        {
+          "name": "Trinity",
+          "rating": 1544.72,
+          "rd": 102.86,
+          "played": 5
+        },
+        {
+          "name": "Conqueror",
+          "rating": 1513.47,
+          "rd": 114.84,
+          "played": 4
+        },
+        {
+          "name": "Surge",
+          "rating": 1513.39,
+          "rd": 115.54,
+          "played": 4
+        },
+        {
+          "name": "SlowAndSteady",
+          "rating": 1487.33,
+          "rd": 116.93,
+          "played": 4
+        },
+        {
+          "name": "Tempo",
+          "rating": 1483.38,
+          "rd": 114.68,
+          "played": 4
+        },
+        {
+          "name": "Skirmisher",
+          "rating": 1440.1,
+          "rd": 103.13,
+          "played": 5
+        },
+        {
+          "name": "Bully_07",
+          "rating": 1400.05,
+          "rd": 130.08,
+          "played": 3
+        },
+        {
+          "name": "Hunter_08",
+          "rating": 1396.16,
+          "rd": 133.56,
+          "played": 3
+        },
+        {
+          "name": "Repel",
+          "rating": 1384.82,
+          "rd": 114.36,
+          "played": 4
+        },
+        {
+          "name": "Scatter_08",
+          "rating": 1380.67,
+          "rd": 134.71,
+          "played": 3
+        },
+        {
+          "name": "Hunter_09",
+          "rating": 1368.73,
+          "rd": 114,
+          "played": 4
+        },
+        {
+          "name": "Bully",
+          "rating": 1366.85,
+          "rd": 116.04,
+          "played": 4
+        },
+        {
+          "name": "Bully_10",
+          "rating": 1352.12,
+          "rd": 115.27,
+          "played": 4
+        },
+        {
+          "name": "Hunter_06",
+          "rating": 1349.25,
+          "rd": 133.63,
+          "played": 3
+        },
+        {
+          "name": "CitadelSortie",
+          "rating": 1343.43,
+          "rd": 131.94,
+          "played": 3
+        },
+        {
+          "name": "Hunter_02",
+          "rating": 1306.26,
+          "rd": 113.37,
+          "played": 4
+        },
+        {
+          "name": "Scatter_01",
+          "rating": 1287.32,
+          "rd": 133.54,
+          "played": 3
+        },
+        {
+          "name": "Stalker",
+          "rating": 1274.26,
+          "rd": 134.76,
+          "played": 3
+        },
+        {
+          "name": "Adaptive",
+          "rating": 1232.67,
+          "rd": 94.03,
+          "played": 6
+        },
+        {
+          "name": "Bulwark",
+          "rating": 1192.69,
+          "rd": 114.36,
+          "played": 4
+        },
+        {
+          "name": "Bully_02",
+          "rating": 1182.61,
+          "rd": 132.43,
+          "played": 3
+        },
+        {
+          "name": "Pacifist_02",
+          "rating": 1160.76,
+          "rd": 129.67,
+          "played": 3
+        },
+        {
+          "name": "Hunter_04",
+          "rating": 1151.44,
+          "rd": 134.47,
+          "played": 3
+        },
+        {
+          "name": "Stencil_02",
+          "rating": 1126.39,
+          "rd": 134.24,
+          "played": 3
+        },
+        {
+          "name": "Random",
+          "rating": 1096.63,
+          "rd": 115.17,
+          "played": 4
+        },
+        {
+          "name": "Anvil",
+          "rating": 1089.11,
+          "rd": 134.76,
+          "played": 3
+        },
+        {
+          "name": "Pacifist_03",
+          "rating": 1059.54,
+          "rd": 134.47,
+          "played": 3
+        },
+        {
+          "name": "Scatter_10",
+          "rating": 996.81,
+          "rd": 134.76,
+          "played": 3
+        },
+        {
+          "name": "Pacifist_01",
+          "rating": 967.63,
+          "rd": 134.47,
+          "played": 3
+        },
+        {
+          "name": "Opportunist",
+          "rating": 943.97,
+          "rd": 117.98,
+          "played": 4
+        }
+      ],
+      "standings": [
+        {
+          "name": "Spearhead",
+          "rating": 2136.27,
+          "rd": 134.19,
+          "played": 3,
+          "wins": 3,
+          "pointsPerGame": 3
+        },
+        {
+          "name": "Conductor",
+          "rating": 2126.68,
+          "rd": 115.44,
+          "played": 4,
+          "wins": 3,
+          "pointsPerGame": 2.75
+        },
+        {
+          "name": "Citadel",
+          "rating": 1984.32,
+          "rd": 114.53,
+          "played": 4,
+          "wins": 2,
+          "pointsPerGame": 2.5
+        },
+        {
+          "name": "Vanguard",
+          "rating": 1927.1,
+          "rd": 115,
+          "played": 4,
+          "wins": 2,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Bully_08",
+          "rating": 1913.84,
+          "rd": 132.44,
+          "played": 3,
+          "wins": 1,
+          "pointsPerGame": 2.333
+        },
+        {
+          "name": "Membrane",
+          "rating": 1899.87,
+          "rd": 115.91,
+          "played": 4,
+          "wins": 2,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Lance",
+          "rating": 1876.07,
+          "rd": 134.27,
+          "played": 3,
+          "wins": 2,
+          "pointsPerGame": 2.333
+        },
+        {
+          "name": "Hunter_10",
+          "rating": 1852.6,
+          "rd": 130.96,
+          "played": 3,
+          "wins": 2,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Hunter_07",
+          "rating": 1845.23,
+          "rd": 115.33,
+          "played": 4,
+          "wins": 1,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Bully_01",
+          "rating": 1784.44,
+          "rd": 134.27,
+          "played": 3,
+          "wins": 1,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Hunter_01",
+          "rating": 1765.06,
+          "rd": 115.21,
+          "played": 4,
+          "wins": 1,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Pinwheel",
+          "rating": 1729.84,
+          "rd": 133.58,
+          "played": 3,
+          "wins": 2,
+          "pointsPerGame": 2.333
+        },
+        {
+          "name": "TideWall",
+          "rating": 1727.05,
+          "rd": 134.76,
+          "played": 3,
+          "wins": 1,
+          "pointsPerGame": 1.667
+        },
+        {
+          "name": "Stencil_04",
+          "rating": 1708.01,
+          "rd": 131.13,
+          "played": 3,
+          "wins": 0,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Hunter_05",
+          "rating": 1692.81,
+          "rd": 134.27,
+          "played": 3,
+          "wins": 1,
+          "pointsPerGame": 1.667
+        },
+        {
+          "name": "PressureSink",
+          "rating": 1664.6,
+          "rd": 102.97,
+          "played": 5,
+          "wins": 3,
+          "pointsPerGame": 1.8
+        },
+        {
+          "name": "Frontier",
+          "rating": 1660.9,
+          "rd": 137.42,
+          "played": 3,
+          "wins": 1,
+          "pointsPerGame": 1.667
+        },
+        {
+          "name": "Aggressive",
+          "rating": 1652.25,
+          "rd": 116.4,
+          "played": 4,
+          "wins": 2,
+          "pointsPerGame": 1.5
+        },
+        {
+          "name": "Bully_03",
+          "rating": 1647.6,
+          "rd": 132.39,
+          "played": 3,
+          "wins": 1,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Bully_06",
+          "rating": 1645.91,
+          "rd": 136.12,
+          "played": 3,
+          "wins": 1,
+          "pointsPerGame": 1.667
+        }
+      ],
+      "roundRobinStandings": [
+        {
+          "name": "Vanguard",
+          "played": 5,
+          "wins": 3,
+          "pointsPerGame": 2.8,
+          "avgRank": 2.2
+        },
+        {
+          "name": "Spearhead",
+          "played": 5,
+          "wins": 0,
+          "pointsPerGame": 2.6,
+          "avgRank": 2.4
+        },
+        {
+          "name": "Citadel",
+          "played": 5,
+          "wins": 2,
+          "pointsPerGame": 2.4,
+          "avgRank": 2.6
+        },
+        {
+          "name": "Conductor",
+          "played": 5,
+          "wins": 0,
+          "pointsPerGame": 1.6,
+          "avgRank": 3.4
+        },
+        {
+          "name": "Bully_08",
+          "played": 5,
+          "wins": 0,
+          "pointsPerGame": 0.6,
+          "avgRank": 4.4
+        }
+      ],
+      "losses": {
+        "Spearhead": [],
+        "Vanguard": [
+          {
+            "seed": 48,
+            "lineup": [
+              "Hunter_10",
+              "Conductor",
+              "Citadel",
+              "Vanguard"
+            ],
+            "finishedRank": 3,
+            "survived": false,
+            "eliminatedAt": 104,
+            "winner": "Conductor",
+            "ticks": 247,
+            "endReason": "winner"
+          },
+          {
+            "seed": 34,
+            "lineup": [
+              "Spearhead",
+              "Vanguard",
+              "Conductor",
+              "Membrane"
+            ],
+            "finishedRank": 3,
+            "survived": false,
+            "eliminatedAt": 102,
+            "winner": "Spearhead",
+            "ticks": 107,
+            "endReason": "winner"
+          }
+        ]
+      }
     }
   ]
 }

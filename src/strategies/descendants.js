@@ -4,8 +4,10 @@
 // `tournament/run.js --register-descendant` — hand edits will be
 // overwritten the next time a descendant is registered.
 
+import Spearhead_g1_859468 from "./Spearhead_g1_859468.js";
 import Trinity_g1_3786cc from "./Trinity_g1_3786cc.js";
 
 export const DESCENDANTS = [
+  Spearhead_g1_859468,
   Trinity_g1_3786cc,
 ];

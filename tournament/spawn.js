@@ -15,8 +15,12 @@
 import { readFile, writeFile, copyFile, access } from "node:fs/promises";
 import { dirname, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
-import { addDescendant, loadLineages } from "./lineageStore.js";
+import { addDescendant, loadLineages, markArchived } from "./lineageStore.js";
 import { loadLatestSeason } from "./seasonStore.js";
+import { writeArchive } from "./archiveFile.js";
+
+export const DEFAULT_FAMILY_CAP = 3;
+const ASSUMED_RATING = 1500; // for bots without a rating yet (e.g. fresh founders)
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, "..");
@@ -151,9 +155,72 @@ ${lossSection}
 `;
 }
 
+// ---------------------------------------------------------- archival on spawn
+//
+// Every spawn is zero-sum at the pool level: the globally weakest active
+// bot gets archived to make room for the descendant, except when doing
+// so would leave the spawning family with zero active members (a family
+// can't suicide on a single bad descendant). The family is also capped:
+// if the spawn would push the family above the cap, archive the family's
+// weakest sibling too.
+
+export async function applyArchivalForSpawn(newBotName, { familyCap = DEFAULT_FAMILY_CAP } = {}) {
+  const lineages = await loadLineages();
+  const newRec = lineages.find((b) => b.name === newBotName);
+  if (!newRec) throw new Error(`No lineage record for "${newBotName}"`);
+
+  const season = await loadLatestSeason();
+  const ratings = new Map();
+  for (const r of (season?.ratings ?? [])) ratings.set(r.name, r.rating);
+
+  const ratingOf = (name) => ratings.get(name) ?? ASSUMED_RATING;
+
+  // Active = lineage.active === true. The just-registered descendant is
+  // active too, but we exclude it from archival candidates (it has no
+  // rating yet, and archiving it would defeat the spawn).
+  const activeBots = lineages.filter((b) => b.active && b.name !== newBotName);
+  const familySiblings = activeBots.filter((b) => b.family === newRec.family);
+
+  const decisions = [];
+
+  // Global weakest, with family-suicide guard: if the weakest belongs to
+  // the spawning family AND is its only active sibling, skip and try the
+  // next weakest. After archival, the family must still have ≥ 1 member
+  // (excluding the new bot, which is exempt).
+  const sorted = activeBots.slice().sort((a, b) => ratingOf(a.name) - ratingOf(b.name));
+  for (const cand of sorted) {
+    if (cand.family === newRec.family && familySiblings.length <= 1) continue;
+    decisions.push({ name: cand.name, reason: "global-weakest-on-spawn", rating: ratingOf(cand.name) });
+    break;
+  }
+
+  // Family cap: count includes the new bot. If exceeds cap, archive the
+  // weakest sibling — but skip if already chosen above.
+  const familyCount = familySiblings.length + 1;
+  if (familyCount > familyCap) {
+    const sortedSiblings = familySiblings.slice().sort((a, b) => ratingOf(a.name) - ratingOf(b.name));
+    for (const cand of sortedSiblings) {
+      if (decisions.some((d) => d.name === cand.name)) continue;
+      decisions.push({ name: cand.name, reason: "family-cap", rating: ratingOf(cand.name) });
+      break;
+    }
+  }
+
+  for (const d of decisions) {
+    await markArchived(d.name);
+  }
+  if (decisions.length > 0) {
+    const post = await loadLineages();
+    const archived = post.filter((b) => !b.active).map((b) => b.name);
+    await writeArchive(archived);
+  }
+
+  return decisions;
+}
+
 // ---------------------------------------------------------- registration
 
-export async function registerDescendant({ name, parent, filePath, birthSeason = null }) {
+export async function registerDescendant({ name, parent, filePath, birthSeason = null, familyCap = DEFAULT_FAMILY_CAP }) {
   // Validate the file exists and the bot loads correctly.
   const absPath = resolve(filePath);
   await access(absPath);
@@ -186,7 +253,12 @@ export async function registerDescendant({ name, parent, filePath, birthSeason =
   // generation.
   const rec = await addDescendant({ name, parent, birthSeason });
 
-  return { name, parent, filePath: targetPath, lineage: rec };
+  // Population control: archive the globally weakest active bot, plus
+  // any family-cap overflow. Skipped silently when no season has run yet
+  // (no ratings to compare).
+  const archived = await applyArchivalForSpawn(name, { familyCap });
+
+  return { name, parent, filePath: targetPath, lineage: rec, archived };
 }
 
 async function collectDescendantNames(extra) {

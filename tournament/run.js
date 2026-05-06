@@ -34,6 +34,7 @@ import {
   getLineageStorePath,
 } from "./lineageStore.js";
 import { prepareSpawnTask, registerDescendant } from "./spawn.js";
+import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
 import { techFromPartial } from "../src/core/Tech.js";
 import { writeFile, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -110,6 +111,11 @@ Lineage (genetic descendant feature):
   --register-descendant --name NEW --parent NAME --file PATH
                         Validate the new strategy file, copy it into
                         src/strategies/, register in lineage + index.
+                        Also archives the globally weakest active bot
+                        (with a family-suicide guard) and applies the
+                        family cap.
+  --family-cap N      Max active members per family (default: 3). Used
+                      by --register-descendant.
 
 Misc:
   --list              List active strategies and exit
@@ -162,6 +168,7 @@ function parseArgs(argv) {
     descendantParent: null,
     descendantFile: null,
     descendantSeason: null,
+    familyCap: 3,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -204,6 +211,7 @@ function parseArgs(argv) {
       case "--parent": opts.descendantParent = next(); break;
       case "--file": opts.descendantFile = next(); break;
       case "--birth-season": opts.descendantSeason = parseInt(next(), 10); break;
+      case "--family-cap": opts.familyCap = parseInt(next(), 10); break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
@@ -396,32 +404,6 @@ async function cmdReplay(opts) {
 
 // ---------------------------------------------------------- archive
 
-const ARCHIVE_PATH = resolve(
-  dirname(fileURLToPath(import.meta.url)),
-  "..", "src", "strategies", "archive.js",
-);
-
-async function writeArchive(names) {
-  const sorted = [...new Set(names)].sort();
-  const body =
-`// Archived bots — excluded from new tournaments and the HUD strategy
-// dropdown, but still loadable by name for replays and league watching.
-//
-// This file is auto-managed by:
-//   node tournament/run.js --archive-bottom N      # archive bottom N tiers
-//   node tournament/run.js --archive-clear         # remove all
-//   node tournament/run.js --archive-add A,B,C
-//   node tournament/run.js --archive-remove A,B,C
-//
-// You can also hand-edit it.
-export const ARCHIVED = [
-${sorted.map((n) => `  ${JSON.stringify(n)},`).join("\n")}
-];
-`;
-  await writeFile(ARCHIVE_PATH, body, "utf8");
-  return sorted;
-}
-
 function currentArchive() {
   return ARCHIVED_STRATEGY_LIST.map((s) => s.name);
 }
@@ -607,7 +589,12 @@ async function cmdSeason(opts) {
     }
   }
 
-  // Persist condensed season record so the spawn agent can read it later.
+  // Persist full ratings + condensed standings. Full ratings drive
+  // archival decisions on spawn (need to find the globally weakest
+  // active bot, which may not be in the top-N visible standings).
+  const fullRatings = season.rating.standings.map((s) => ({
+    name: s.name, rating: s.rating, rd: s.rd, played: s.played,
+  }));
   const stored = await saveSeason({
     map: opts.map,
     rrMap: opts.seasonRrMap,
@@ -616,6 +603,7 @@ async function cmdSeason(opts) {
     baseSeed: opts.seed,
     champions: season.champions,
     topField: season.topField,
+    ratings: fullRatings,
     standings: season.rating.standings.slice(0, Math.max(opts.seasonTop, 20)).map((s) => ({
       name: s.name, rating: s.rating, rd: s.rd, played: s.played,
       wins: s.wins, pointsPerGame: +s.pointsPerGame.toFixed(3),
@@ -703,17 +691,25 @@ async function cmdPrepareSpawn(opts) {
 }
 
 async function cmdRegisterDescendant(opts) {
-  const { descendantName: name, descendantParent: parent, descendantFile: file, descendantSeason: birthSeason } = opts;
+  const { descendantName: name, descendantParent: parent, descendantFile: file, descendantSeason: birthSeason, familyCap } = opts;
   if (!name || !parent || !file) {
     console.error("--register-descendant requires --name, --parent, and --file");
     process.exit(1);
   }
   let result;
-  try { result = await registerDescendant({ name, parent, filePath: file, birthSeason }); }
+  try { result = await registerDescendant({ name, parent, filePath: file, birthSeason, familyCap }); }
   catch (e) { console.error(e.message); process.exit(1); }
   console.log(`Registered descendant ${result.name} (gen ${result.lineage.generation}, family ${result.lineage.family}) of ${parent}.`);
   console.log(`Strategy file: ${result.filePath}`);
   console.log(`Lineage record saved.`);
+  if (result.archived.length === 0) {
+    console.log(`No bots archived (no season ratings available, or pool already at minimum).`);
+  } else {
+    console.log(`Archived ${result.archived.length} bot${result.archived.length === 1 ? "" : "s"}:`);
+    for (const a of result.archived) {
+      console.log(`  ${a.name.padEnd(20)} (rating ${a.rating.toFixed(0)}, ${a.reason})`);
+    }
+  }
 }
 
 async function cmdBackfillLineages() {
