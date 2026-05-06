@@ -996,9 +996,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:18:22.486Z"
     },
     {
       "name": "Cluster_02",
@@ -1136,9 +1136,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:18:22.373Z"
     },
     {
       "name": "Scatter_06",
@@ -1468,6 +1468,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T08:15:40.265Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_bf0e20",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:18:22.369Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_4f6c9f",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:18:22.482Z",
       "archivedAt": null
     }
   ]
