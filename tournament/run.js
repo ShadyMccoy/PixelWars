@@ -25,6 +25,7 @@ import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
 import { saveLeague, loadLeagues, getLeagueStorePath } from "./leagueStore.js";
+import { buildMatchEntry, appendMatches, getMatchLogPath } from "./matchLog.js";
 import { techFromPartial } from "../src/core/Tech.js";
 import { writeFile, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -487,8 +488,10 @@ async function cmdLeague(opts) {
   }
 
   const flaggedEntries = [];
+  const matchEntries = [];
   const onMatch = (season, tier, idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
+    matchEntries.push(buildMatchEntry({ map: opts.map, result }));
     const flags = detectFlags(result, { maxTicks: opts.ticks });
     if (flags.length) {
       flaggedEntries.push(buildEntry({
@@ -599,6 +602,11 @@ async function cmdLeague(opts) {
     final: league.final,
   });
   if (!opts.json) console.log(`League standings saved to ${getLeagueStorePath()}.`);
+
+  if (matchEntries.length) {
+    await appendMatches(matchEntries);
+    if (!opts.json) console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}. Run \`npm run rank\` to refresh rankings.`);
+  }
 }
 
 // ---------------------------------------------------------- main
@@ -693,8 +701,10 @@ async function main() {
     : (opts.matches ?? opts.rounds ?? 200);
 
   const flaggedEntries = [];
+  const matchEntries = [];
   const onMatch = (idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
+    matchEntries.push(buildMatchEntry({ map: opts.map, result }));
     const flags = detectFlags(result, { maxTicks: opts.ticks });
     if (flags.length) {
       flaggedEntries.push(buildEntry({
@@ -750,6 +760,11 @@ async function main() {
   if (added.length && !opts.json) {
     console.log(`Saved ${added.length} new entr${added.length === 1 ? "y" : "ies"} to ${getStorePath()}.`);
     console.log(`  Replay any with: node tournament/run.js --replay <id>`);
+  }
+
+  if (matchEntries.length) {
+    await appendMatches(matchEntries);
+    if (!opts.json) console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}. Run \`npm run rank\` to refresh rankings.`);
   }
 }
 
