@@ -24,14 +24,20 @@ export const NEUTRAL_TECH = Object.freeze({
 // the formula is in techToMultipliers below. Baseline = 1.0 matches
 // the engine's pre-tech "always leave 1" rule.
 export const SLOPES = Object.freeze({
-  move:  0.0125,  // tech 0 -> 1.25 garrison, tech 100 -> 0.10 garrison
+  move:  0.0150,  // tech 0 -> 2.0 garrison, tech 100 -> 0.5 garrison
+                  // (linear, no clamp; "0 = double garrison, 100 = half")
   stack: 0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
   prod:  0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
   atk:   0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
   def:   0.0080,  // tech 0 -> 0.84x, tech 100 -> 1.64x
 });
 
-const MIN_GARRISON_FLOOR = 0.10;
+// Garrison floor at tech=0 in the linear move formula. Other knobs
+// pivot around 1.0 at tech=BASELINE; move pivots so its endpoints
+// land at 2.0 and 0.5 instead. That puts neutral (tech 20) at 1.7
+// garrison rather than 1.0 - investing in move is now genuinely
+// expensive to skip.
+const MOVE_INTERCEPT = 2.0;
 
 const BASELINE = 20;
 
@@ -72,11 +78,11 @@ export function techToMultipliers(tech) {
   for (const k of KNOBS) {
     if (k === "move") {
       // Move's "multiplier" is the garrison floor; high tech reduces
-      // the floor so the bot can throw more strength forward.
-      mults[k] = Math.max(
-        MIN_GARRISON_FLOOR,
-        1.0 - (t[k] - BASELINE) * SLOPES[k],
-      );
+      // the floor so the bot can throw more strength forward. Linear
+      // from MOVE_INTERCEPT (2.0) at tech 0 to MOVE_INTERCEPT - 100 *
+      // SLOPES.move (0.5) at tech 100. No clamp - the formula is the
+      // contract.
+      mults[k] = MOVE_INTERCEPT - t[k] * SLOPES[k];
     } else {
       mults[k] = 1.0 + (t[k] - BASELINE) * SLOPES[k];
     }
