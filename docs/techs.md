@@ -12,19 +12,21 @@ Five knobs, integer-valued, summing to exactly 100:
 
 | knob   | mechanism                                              | archetype |
 |--------|--------------------------------------------------------|-----------|
-| `move` | speed of armies in transit                             | Blitz     |
-| `stack`| max strength a tile/army can hold                      | Hoarder   |
-| `prod` | rate at which owned tiles generate strength            | Engine    |
+| `move` | how often the strategy gets to act per tick            | Blitz     |
+| `stack`| max strength an army can hold                          | Hoarder   |
+| `prod` | rate at which armies regrow strength per tick          | Engine    |
 | `atk`  | multiplier on effective strength when attacking        | Berserker |
 | `def`  | divisor on incoming effective strength when defending  | Fortress  |
+
+`move` is implemented as a per-army accumulator: each tick the army adds `moveMult` to a counter; while the counter ≥ 1 the strategy fires and the counter decrements. So tech 100 with `moveMult ≈ 1.6` fires roughly 1.6× per tick (sometimes twice), and tech 0 with `moveMult ≈ 0.85` fires ~85% of ticks.
 
 `atk` and `def` extend the existing global `attackerBonus` (`src/core/Game.js:14`) as per-army modifiers; the other three modify per-tick game logic that already exists.
 
 ## Trade-off, not pure buff
 
-Tech 0 in a knob means **worse than baseline**, not "baseline." Tech 50 is roughly baseline. Tech 100 is the ceiling. This is what makes 100 points feel meaningful and what produces sharp archetypes — picking atk costs you somewhere else.
+Tech 0 in a knob means **worse than baseline**, tech 100 means **better**. The baseline anchor is **tech 20** — the natural average of a 100-point split across 5 knobs. So an even peanut-butter loadout `{20,20,20,20,20}` is genuinely neutral (every multiplier = 1.0), and any deviation trades a knob below 20 for another above 20.
 
-Each knob has a single tunable scale constant (e.g. `MOVE_RANGE = [0.7, 1.3]`) mapping the 0–100 tech value linearly to a multiplier. These constants are the only things touched during balance passes.
+Each knob has a single tunable slope constant. The multiplier is `1.0 + (tech - 20) * slope`, with the slope chosen per knob so tech 0 is a meaningful penalty and tech 100 is a meaningful buff. Slopes are placeholders until calibration; they're the only thing touched during balance passes.
 
 ## Configuration
 

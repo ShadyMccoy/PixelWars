@@ -64,9 +64,18 @@ export class Tile {
     // Risk-style: attackers fight with bonus effective strength, so even
     // a slightly-smaller attacker can dislodge a defender, and a
     // larger attacker keeps more troops after a successful conquest.
+    // Per-player tech further multiplies: atkMult on attackers,
+    // defMult on defenders. realLoss inverts whichever multiplier the
+    // *winning* side carried, since effLoss is in effective-strength
+    // units.
     const bonus = (grouped[0] && grouped[0].game && grouped[0].game.attackerBonus) || 1;
-    const eff = (army) => (army.isAttacker ? army.strength * bonus : army.strength);
-    const realLoss = (army, effLoss) => (army.isAttacker ? effLoss / bonus : effLoss);
+    const armyMult = (army) => {
+      const m = army.player.techMults;
+      if (army.isAttacker) return bonus * (m ? m.atk : 1);
+      return m ? m.def : 1;
+    };
+    const eff = (army) => army.strength * armyMult(army);
+    const realLoss = (army, effLoss) => effLoss / armyMult(army);
 
     let survivor = null;
     for (let i = 0; i < grouped.length; i++) {

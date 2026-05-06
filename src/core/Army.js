@@ -8,13 +8,20 @@ export class Army {
     this.pos = pos;
     this.player = player;
     this.strength = strength;
-    this.maxStrength = maxStrength;
+    // Tech 'stack' multiplies the per-army cap. Apply at construction so
+    // every army owned by a player carries the same cap.
+    const stackMult = (player && player.techMults && player.techMults.stack) || 1;
+    this.maxStrength = maxStrength * stackMult;
     this.game = game;
     this.tile = tile;
     this.alive = true;
     this.isAttacker = false;
     this.lastTick = 0;
     this.bornAt = 0;
+    // Movement accumulator: each tick we add player.techMults.move and
+    // fire the strategy while the counter is >= 1. Seeded at 0 so a
+    // freshly-spawned army doesn't get a free extra act.
+    this.actAccum = 0;
   }
 
   fight(amount) {
@@ -63,12 +70,15 @@ export class Army {
         return true;
       }
     }
+    // Pass the engine-level base maxArmy here; the Army constructor
+    // re-applies the player's stack multiplier. Using this.maxStrength
+    // would compound the multiplier on every spawn.
     const newArmy = new Army({
       pos: tile.pos,
       player: this.player,
       strength: power,
       game: this.game,
-      maxStrength: this.maxStrength,
+      maxStrength: this.game.maxArmy,
       tile,
     });
     newArmy.isAttacker = true;
@@ -77,16 +87,26 @@ export class Army {
   }
 
   run(interval, growth, decay = 0) {
+    const mults = this.player.techMults;
+    const prodMult = mults ? mults.prod : 1;
     const cur = this.strength;
-    let s = cur + interval * (growth - decay * cur);
+    let s = cur + interval * (growth * prodMult - decay * cur);
     const max = this.maxStrength;
     if (s > max) s = max;
     if (s < 0) s = 0;
     this.strength = s;
     const strat = this.player.strategy;
     if (!strat) return;
-    if (typeof strat === "function") strat(this, this.game);
-    else if (typeof strat.act === "function") strat.act(this, this.game);
+    // Tech 'move' gates how often the strategy fires. moveMult >= 1
+    // can result in multiple acts per tick; < 1 results in skipped
+    // ticks. Default 1 keeps legacy behavior intact.
+    const moveMult = mults ? mults.move : 1;
+    this.actAccum += moveMult;
+    while (this.actAccum >= 1 && this.alive) {
+      this.actAccum -= 1;
+      if (typeof strat === "function") strat(this, this.game);
+      else if (typeof strat.act === "function") strat.act(this, this.game);
+    }
   }
 
   weakestAdjacent(gradient = null) {

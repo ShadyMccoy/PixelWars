@@ -1,6 +1,7 @@
 // Headless single-match runner. Returns a structured result with rankings.
 import { Game } from "../src/core/Game.js";
 import { Player } from "../src/core/Player.js";
+import { NEUTRAL_TECH, validateTech } from "../src/core/Tech.js";
 
 const PALETTE = [
   { color: "#ff4d6d", accent: "#ff8fa3" },
@@ -13,6 +14,23 @@ const PALETTE = [
   { color: "#7cffb2", accent: "#bbffd6" },
 ];
 
+// Normalize a "lineup item" into { strategy, tech, name }. Items may be:
+//   - a strategy object (legacy: { name, act })
+//   - an entry object: { strategy, tech?, name? }
+// Tech defaults to neutral; name defaults to strategy.name.
+export function normalizeEntry(item) {
+  if (item && typeof item === "object" && "strategy" in item) {
+    const tech = item.tech ? validateTech(item.tech) : { ...NEUTRAL_TECH };
+    return {
+      strategy: item.strategy,
+      tech,
+      name: item.name ?? item.strategy.name,
+    };
+  }
+  // Treat as bare strategy.
+  return { strategy: item, tech: { ...NEUTRAL_TECH }, name: item.name };
+}
+
 export function runMatch({
   strategies,
   mapConfig,
@@ -21,18 +39,20 @@ export function runMatch({
   maxTicks = 4000,
   tickInterval = 1 / 30,
 }) {
-  if (strategies.length !== startPositions.length) {
-    throw new Error(`runMatch: ${strategies.length} strategies but ${startPositions.length} positions`);
+  const entries = strategies.map(normalizeEntry);
+  if (entries.length !== startPositions.length) {
+    throw new Error(`runMatch: ${entries.length} entries but ${startPositions.length} positions`);
   }
 
   const game = new Game({ ...mapConfig, seed, maxHistory: 0 });
-  const players = strategies.map((s, i) => {
+  const players = entries.map((e, i) => {
     const palette = PALETTE[i % PALETTE.length];
     return new Player({
-      name: `${s.name}#${i + 1}`,
+      name: `${e.name}#${i + 1}`,
       color: palette.color,
       accent: palette.accent,
-      strategy: s,
+      strategy: e.strategy,
+      tech: e.tech,
     });
   });
   players.forEach((p) => game.addPlayer(p));
@@ -71,14 +91,19 @@ export function runMatch({
     seed,
     ticks: game.tick,
     endReason,
-    ranking: ranked.map((p) => ({
-      strategy: p.strategy.name,
-      slot: players.indexOf(p),
-      territory: p.totals.territory,
-      strength: +p.totals.strength.toFixed(2),
-      armies: p.totals.armies,
-      eliminatedAt: eliminated.get(p.id) ?? null,
-      survived: !eliminated.has(p.id),
-    })),
+    ranking: ranked.map((p) => {
+      const idx = players.indexOf(p);
+      return {
+        strategy: p.strategy.name,
+        entryName: entries[idx].name,
+        tech: { ...entries[idx].tech },
+        slot: idx,
+        territory: p.totals.territory,
+        strength: +p.totals.strength.toFixed(2),
+        armies: p.totals.armies,
+        eliminatedAt: eliminated.get(p.id) ?? null,
+        survived: !eliminated.has(p.id),
+      };
+    }),
   };
 }

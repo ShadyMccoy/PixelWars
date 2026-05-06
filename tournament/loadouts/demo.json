@@ -1,0 +1,6 @@
+[
+  { "strategy": "Berserker", "tech": { "atk": 60, "move": 40 }, "name": "Berserker-Blitz" },
+  { "strategy": "Turtle",    "tech": { "def": 60, "stack": 40 }, "name": "Turtle-Fortress" },
+  { "strategy": "Swarm",     "tech": { "prod": 60, "move": 40 }, "name": "Swarm-Engine" },
+  { "strategy": "Hunter",    "tech": { "atk": 50, "def": 50 },   "name": "Hunter-Balanced" }
+]
