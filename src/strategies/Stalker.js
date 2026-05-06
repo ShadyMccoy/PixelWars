@@ -40,7 +40,7 @@ re-evaluates — a single bot effectively running its own kill chain.`,
     if (!tile) return;
     const neighbors = tile.neighbors;
     const pid = army.player.id;
-    const sLimit = army.strength - 1;
+    const sLimit = army.attackPower;
 
     // If Conqueror has any viable adjacent move (free kill, empty, or
     // balanceable friendly), let it handle the tick. We only override

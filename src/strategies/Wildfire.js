@@ -35,7 +35,7 @@ SlowAndSteady-tier survival under pressure.`,
     if (!tile) return;
     const neighbors = tile.neighbors;
     const pid = army.player.id;
-    const myEff = (army.strength - 1) * ATTACKER_BONUS;
+    const myEff = (army.attackPower) * ATTACKER_BONUS;
 
     let threatExists = false;
     let best = null;
@@ -70,7 +70,7 @@ SlowAndSteady-tier survival under pressure.`,
       return;
     }
     if (best) {
-      army.attack(best, army.strength - 1);
+      army.attack(best, army.attackPower);
       return;
     }
     SlowAndSteady.act(army, game);

@@ -12,13 +12,13 @@ Five knobs, integer-valued, summing to exactly 100:
 
 | knob   | mechanism                                              | archetype |
 |--------|--------------------------------------------------------|-----------|
-| `move` | how often the strategy gets to act per tick            | Blitz     |
+| `move` | minimum garrison an attacking army must leave behind   | Blitz     |
 | `stack`| max strength an army can hold                          | Hoarder   |
 | `prod` | rate at which armies regrow strength per tick          | Engine    |
 | `atk`  | multiplier on effective strength when attacking        | Berserker |
 | `def`  | divisor on incoming effective strength when defending  | Fortress  |
 
-`move` is implemented as a per-army accumulator: each tick the army adds `moveMult` to a counter; while the counter ≥ 1 the strategy fires and the counter decrements. So tech 100 with `moveMult ≈ 1.6` fires roughly 1.6× per tick (sometimes twice), and tech 0 with `moveMult ≈ 0.85` fires ~85% of ticks.
+`move` is implemented as a per-player garrison floor on `Army.attack`: the engine refuses to let an army drop below its garrison, so high-move bots can throw nearly all of their strength forward in a single attack while low-move bots are forced to keep larger reserves at home. Concretely, tech 100 leaves only `0.10` strength behind (full commit), tech 20 leaves `1.0` (the engine's pre-tech default), and tech 0 leaves `1.25` (forced reserves). All strategies reach for `army.attackPower` (= `strength - garrison`) instead of hardcoding `strength - 1`, so the floor scales automatically.
 
 `atk` and `def` extend the existing global `attackerBonus` (`src/core/Game.js:14`) as per-army modifiers; the other three modify per-tick game logic that already exists.
 

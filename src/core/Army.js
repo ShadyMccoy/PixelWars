@@ -18,10 +18,16 @@ export class Army {
     this.isAttacker = false;
     this.lastTick = 0;
     this.bornAt = 0;
-    // Movement accumulator: each tick we add player.techMults.move and
-    // fire the strategy while the counter is >= 1. Seeded at 0 so a
-    // freshly-spawned army doesn't get a free extra act.
-    this.actAccum = 0;
+  }
+
+  // Maximum strength this army can commit to a single attack while
+  // still satisfying its player's tech-derived garrison floor. All
+  // strategies should reach for attackPower instead of `strength - 1`
+  // so the floor scales with the move tech automatically.
+  get attackPower() {
+    const garrison = this.player.minGarrison ?? 1;
+    const v = this.strength - garrison;
+    return v > 0 ? v : 0;
   }
 
   fight(amount) {
@@ -48,7 +54,8 @@ export class Army {
     if (!tile) return false;
     if (this.tile === tile) return false;
     if (power <= 0.5) return false;
-    if (this.strength - power < 1) return false;
+    const garrison = this.player.minGarrison ?? 1;
+    if (this.strength - power < garrison) return false;
     return true;
   }
 
@@ -98,16 +105,8 @@ export class Army {
     this.strength = s;
     const strat = this.player.strategy;
     if (!strat) return;
-    // Tech 'move' gates how often the strategy fires. moveMult >= 1
-    // can result in multiple acts per tick; < 1 results in skipped
-    // ticks. Default 1 keeps legacy behavior intact.
-    const moveMult = mults ? mults.move : 1;
-    this.actAccum += moveMult;
-    while (this.actAccum >= 1 && this.alive) {
-      this.actAccum -= 1;
-      if (typeof strat === "function") strat(this, this.game);
-      else if (typeof strat.act === "function") strat.act(this, this.game);
-    }
+    if (typeof strat === "function") strat(this, this.game);
+    else if (typeof strat.act === "function") strat.act(this, this.game);
   }
 
   weakestAdjacent(gradient = null) {

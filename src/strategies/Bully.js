@@ -63,7 +63,7 @@ Berserker quietly accumulates in the corner.`,
         target = t;
       }
     }
-    if (target) army.attack(target, army.strength - 1);
+    if (target) army.attack(target, army.attackPower);
     else SlowAndSteady.act(army, game);
   },
 };

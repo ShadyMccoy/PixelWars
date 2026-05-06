@@ -144,7 +144,7 @@ gets fed — but the patching still happens via border-mode fighting.`,
     if (dir === -1 || dir === undefined) {
       const target = pickEnemyToAttack(army, game);
       if (target && army.strength > 1) {
-        army.attack(target, army.strength - 1);
+        army.attack(target, army.attackPower);
         return;
       }
       SlowAndSteady.act(army, game);
@@ -154,7 +154,7 @@ gets fed — but the patching still happens via border-mode fighting.`,
     // Cytoplasm: pump (strength - 1) one step toward the membrane.
     const target = tile.neighbors[dir];
     if (!target) return;
-    const power = army.strength - 1;
+    const power = army.attackPower;
     if (power > 0.5) army.attack(target, power);
   },
 };

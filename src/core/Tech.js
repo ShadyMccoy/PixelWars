@@ -16,13 +16,22 @@ export const NEUTRAL_TECH = Object.freeze({
 // the initial 0.010 guesses; def was strictly dominated. These values
 // were tuned to bring per-point winrate coefficients close to zero
 // across Berserker, Turtle, Hunter, SlowAndSteady, and Swarm.
+//
+// `move` is special: its multiplier is the *minimum garrison* an
+// attacking army must leave behind in strength units. Lower garrison
+// means the bot can mobilize more of its strength to the front. So
+// the relationship is inverted (high tech -> low garrison floor) and
+// the formula is in techToMultipliers below. Baseline = 1.0 matches
+// the engine's pre-tech "always leave 1" rule.
 export const SLOPES = Object.freeze({
-  move:  0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
+  move:  0.0125,  // tech 0 -> 1.25 garrison, tech 100 -> 0.10 garrison
   stack: 0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
   prod:  0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
   atk:   0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
-  def:   0.0050,  // tech 0 -> 0.90x, tech 100 -> 1.40x
+  def:   0.0080,  // tech 0 -> 0.84x, tech 100 -> 1.64x
 });
+
+const MIN_GARRISON_FLOOR = 0.10;
 
 const BASELINE = 20;
 
@@ -61,7 +70,16 @@ export function techToMultipliers(tech) {
   const t = validateTech(tech);
   const mults = {};
   for (const k of KNOBS) {
-    mults[k] = 1.0 + (t[k] - BASELINE) * SLOPES[k];
+    if (k === "move") {
+      // Move's "multiplier" is the garrison floor; high tech reduces
+      // the floor so the bot can throw more strength forward.
+      mults[k] = Math.max(
+        MIN_GARRISON_FLOOR,
+        1.0 - (t[k] - BASELINE) * SLOPES[k],
+      );
+    } else {
+      mults[k] = 1.0 + (t[k] - BASELINE) * SLOPES[k];
+    }
   }
   return mults;
 }
