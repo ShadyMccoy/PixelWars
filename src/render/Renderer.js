@@ -11,6 +11,7 @@ export class Renderer {
     this.showTerritory = true;
     this.showGlow = true;
     this.showMoves = true;
+    this.showOverlay = false;
     this.hoverTile = null;
     this.selectedTile = null;
     this.resize();
@@ -78,6 +79,8 @@ export class Renderer {
     if (this.showMoves) this.drawMoves();
 
     this.drawArmies(now);
+
+    if (this.showOverlay) this.drawStrategyOverlay();
 
     if (this.hoverTile) this.outlineTile(this.hoverTile, "rgba(255,255,255,0.35)", 2);
     if (this.selectedTile) this.outlineTile(this.selectedTile, "#ffffff", 3);
@@ -178,6 +181,132 @@ export class Renderer {
       ctx.strokeStyle = army.player.accent;
       ctx.lineWidth = Math.max(1, ts * 0.04);
       ctx.stroke();
+    }
+  }
+
+  // Sparse strategic overlay. For every player whose strategy paints a
+  // plan into game[`_<bot>Plan_<pid>`], draw a small marker on
+  // exceptional roles (SINK = hold, SORTIE = attack lance) and a faint
+  // flow tick on interior tiles within 2 steps of a front. The default
+  // FRONT/INTERIOR roles get nothing — the territory tint already
+  // shows ownership; we only mark what the painter has decided is
+  // *unusual*.
+  drawStrategyOverlay() {
+    const ctx = this.ctx;
+    const game = this.game;
+    const map = game.map;
+    const ts = this.tileSize;
+    const tick = game.tick;
+
+    const PLAN_KEYS = ["_frontierPlan_", "_pressureSinkPlan_", "_citadelSortiePlan_"];
+
+    // ROLE_SINK = 3, ROLE_SORTIE = 4 (mirroring painter.js codes —
+    // duplicated as constants here so the renderer doesn't need to
+    // import strategy code).
+    const ROLE_SINK = 3;
+    const ROLE_SORTIE = 4;
+
+    for (const player of game.players.list) {
+      let plan = null;
+      for (const prefix of PLAN_KEYS) {
+        const cached = game[`${prefix}${player.id}`];
+        if (cached && cached.tick === tick) { plan = cached.plan; break; }
+      }
+      if (!plan) continue;
+
+      const accent = player.accent;
+      const roles = plan.roles;
+      const depth = plan.depth;
+      const friendly = plan.friendly;
+      const w = map.width;
+      const tiles = map.tiles;
+
+      ctx.save();
+      ctx.lineWidth = Math.max(1, ts * 0.06);
+
+      for (let i = 0; i < tiles.length; i++) {
+        const role = roles[i];
+        const t = tiles[i];
+        const cx = (t.pos.x + 0.5) * ts;
+        const cy = (t.pos.y + 0.5) * ts;
+
+        if (role === ROLE_SINK) {
+          // Small inward-pointing chevron at the tile's outward edge —
+          // reads as a shield mark. Use a desaturated tone so it
+          // doesn't compete with the territory tint.
+          ctx.strokeStyle = "rgba(255,200,120,0.55)";
+          const r = ts * 0.18;
+          ctx.beginPath();
+          ctx.moveTo(cx - r, cy + r * 0.6);
+          ctx.lineTo(cx, cy - r * 0.4);
+          ctx.lineTo(cx + r, cy + r * 0.6);
+          ctx.stroke();
+        } else if (role === ROLE_SORTIE) {
+          // Outward-pointing chevron in player accent. Direction =
+          // average vector to non-friendly neighbors.
+          let dx = 0, dy = 0, n = 0;
+          const nbs = t.neighbors;
+          for (let k = 0; k < 4; k++) {
+            const nb = nbs[k];
+            if (!nb) continue;
+            const ni = nb.pos.y * w + nb.pos.x;
+            if (friendly[ni]) continue;
+            dx += nb.pos.x - t.pos.x;
+            dy += nb.pos.y - t.pos.y;
+            n++;
+          }
+          if (n === 0) continue;
+          const len = Math.hypot(dx, dy) || 1;
+          dx /= len; dy /= len;
+          const r = ts * 0.28;
+          // Tip at the outward edge, two wings behind.
+          const tipX = cx + dx * r;
+          const tipY = cy + dy * r;
+          const baseX = cx - dx * r * 0.4;
+          const baseY = cy - dy * r * 0.4;
+          // Perpendicular for wings.
+          const perpX = -dy;
+          const perpY = dx;
+          const wingR = r * 0.7;
+          ctx.strokeStyle = accent;
+          ctx.lineWidth = Math.max(1.5, ts * 0.08);
+          ctx.beginPath();
+          ctx.moveTo(baseX + perpX * wingR, baseY + perpY * wingR);
+          ctx.lineTo(tipX, tipY);
+          ctx.lineTo(baseX - perpX * wingR, baseY - perpY * wingR);
+          ctx.stroke();
+          ctx.lineWidth = Math.max(1, ts * 0.06);
+        } else if (depth && depth[i] >= 1 && depth[i] <= 2) {
+          // Faint flow tick: short line from tile center toward the
+          // friendly neighbor with the lowest BFS depth. Only drawn
+          // for tiles at depth 1–2 (just behind the front), so a big
+          // territory doesn't fill with arrows.
+          let bestDx = 0, bestDy = 0, bestDepth = depth[i];
+          const nbs = t.neighbors;
+          for (let k = 0; k < 4; k++) {
+            const nb = nbs[k];
+            if (!nb) continue;
+            const ni = nb.pos.y * w + nb.pos.x;
+            if (!friendly[ni]) continue;
+            const d = depth[ni];
+            if (d < 0) continue;
+            if (d < bestDepth) {
+              bestDepth = d;
+              bestDx = nb.pos.x - t.pos.x;
+              bestDy = nb.pos.y - t.pos.y;
+            }
+          }
+          if (bestDx === 0 && bestDy === 0) continue;
+          const r = ts * 0.22;
+          ctx.strokeStyle = hexToRgba(accent, 0.35);
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(cx + bestDx * r, cy + bestDy * r);
+          ctx.stroke();
+        }
+      }
+
+      ctx.restore();
     }
   }
 

@@ -30,6 +30,9 @@ import Conqueror from "./Conqueror.js";
 import Stalker from "./Stalker.js";
 import Citadel from "./Citadel.js";
 import Lance from "./Lance.js";
+import Frontier from "./Frontier.js";
+import PressureSink from "./PressureSink.js";
+import CitadelSortie from "./CitadelSortie.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
 
@@ -68,6 +71,9 @@ export const ALL_STRATEGY_LIST = [
   Stalker,
   Citadel,
   Lance,
+  Frontier,
+  PressureSink,
+  CitadelSortie,
   ...GENERATED,
 ];
 
