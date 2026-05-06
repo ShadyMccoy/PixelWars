@@ -616,9 +616,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T07:59:26.545Z"
     },
     {
       "name": "Patient_04",
@@ -1266,9 +1266,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T07:59:31.388Z"
     },
     {
       "name": "Pulse_09",
@@ -1408,6 +1408,26 @@
       "birthSeason": 3,
       "active": true,
       "createdAt": "2026-05-06T05:36:49.775Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_3f955f",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T07:59:26.541Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Crusader_g1_5ae640",
+      "family": "Crusader",
+      "parent": "Crusader",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T07:59:31.383Z",
       "archivedAt": null
     }
   ]

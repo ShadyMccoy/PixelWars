@@ -17,7 +17,7 @@ import { dirname, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { addDescendant, loadLineages, markArchived } from "./lineageStore.js";
 import { loadLatestSeason } from "./seasonStore.js";
-import { writeArchive } from "./archiveFile.js";
+import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
 
 export const DEFAULT_FAMILY_CAP = 3;
 const ASSUMED_RATING = 1500; // for bots without a rating yet (e.g. fresh founders)
@@ -316,12 +316,37 @@ export async function applyArchivalForSpawn(newBotName, { familyCap = DEFAULT_FA
     await markArchived(d.name);
   }
   if (decisions.length > 0) {
+    // Union the lineage-derived archived names with whatever is already
+    // in archive.js. Manual --archive-add entries don't flip the
+    // lineage active flag, so we'd otherwise clobber them on every
+    // spawn. archive.js is the source of truth for STRATEGY_LIST
+    // filtering; lineage.active is auxiliary.
+    const existing = await readExistingArchive();
     const post = await loadLineages();
-    const archived = post.filter((b) => !b.active).map((b) => b.name);
-    await writeArchive(archived);
+    const fromLineage = post.filter((b) => !b.active).map((b) => b.name);
+    const merged = [...new Set([...existing, ...fromLineage])];
+    await writeArchive(merged);
   }
 
   return decisions;
+}
+
+// Parse the names out of src/strategies/archive.js without importing
+// it (avoids ESM module-cache staleness when spawning multiple
+// descendants in one process).
+async function readExistingArchive() {
+  try {
+    const txt = await readFile(ARCHIVE_PATH, "utf8");
+    const m = txt.match(/export const ARCHIVED\s*=\s*\[([\s\S]*?)\]/);
+    if (!m) return [];
+    const out = [];
+    const re = /"([^"]+)"|'([^']+)'/g;
+    let mm;
+    while ((mm = re.exec(m[1])) !== null) out.push(mm[1] ?? mm[2]);
+    return out;
+  } catch {
+    return [];
+  }
 }
 
 // ---------------------------------------------------------- registration
