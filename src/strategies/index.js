@@ -38,6 +38,7 @@ import Anvil from "./Anvil.js";
 import Skirmisher from "./Skirmisher.js";
 import Tempo from "./Tempo.js";
 import { GENERATED } from "./generated.js";
+import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
 import { CHARACTER_TECHS } from "./characterTechs.js";
 
@@ -84,6 +85,7 @@ export const ALL_STRATEGY_LIST = [
   Skirmisher,
   Tempo,
   ...GENERATED,
+  ...DESCENDANTS,
 ];
 
 // Attach character techs in place. Strategies are plain objects with
