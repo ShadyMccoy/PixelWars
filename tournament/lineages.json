@@ -436,9 +436,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:40:34.472Z"
     },
     {
       "name": "Hunter_06",
@@ -646,9 +646,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:40:34.590Z"
     },
     {
       "name": "Patient_07",
@@ -1568,6 +1568,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T08:34:44.250Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_36d9c1",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:40:34.468Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_7f5793",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:40:34.585Z",
       "archivedAt": null
     }
   ]
