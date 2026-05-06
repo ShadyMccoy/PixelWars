@@ -1,885 +1,901 @@
 {
-  "generatedAt": "2026-05-06T09:18:55.448Z",
-  "matchCount": 8256,
+  "generatedAt": "2026-05-06T09:20:58.705Z",
+  "matchCount": 8467,
   "iterations": 31,
   "converged": true,
   "players": [
     {
       "name": "Spearhead",
-      "rating": 1297,
-      "skill": 5.530538,
-      "matches": 653,
-      "wins": 441,
-      "avgFinish": 0.219
+      "rating": 1298,
+      "skill": 5.563448,
+      "matches": 670,
+      "wins": 447,
+      "avgFinish": 0.218
     },
     {
       "name": "Stalker",
-      "rating": 1254,
-      "skill": 4.322576,
-      "matches": 655,
-      "wins": 381,
-      "avgFinish": 0.269
-    },
-    {
-      "name": "Spearhead_g1_e91678",
-      "rating": 1215,
-      "skill": 3.448394,
-      "matches": 21,
-      "wins": 4,
-      "avgFinish": 0.423
-    },
-    {
-      "name": "Crusader",
-      "rating": 1199,
-      "skill": 3.143521,
-      "matches": 636,
-      "wins": 371,
-      "avgFinish": 0.285
+      "rating": 1256,
+      "skill": 4.37213,
+      "matches": 673,
+      "wins": 395,
+      "avgFinish": 0.264
     },
     {
       "name": "Pinwheel",
-      "rating": 1196,
-      "skill": 3.093135,
-      "matches": 661,
-      "wins": 343,
-      "avgFinish": 0.317
+      "rating": 1198,
+      "skill": 3.134466,
+      "matches": 685,
+      "wins": 350,
+      "avgFinish": 0.316
     },
     {
-      "name": "Spearhead_g1_1a87fc",
-      "rating": 1196,
-      "skill": 3.098216,
-      "matches": 10,
-      "wins": 4,
-      "avgFinish": 0.26
+      "name": "Crusader",
+      "rating": 1197,
+      "skill": 3.100671,
+      "matches": 645,
+      "wins": 376,
+      "avgFinish": 0.286
+    },
+    {
+      "name": "Spearhead_g1_e91678",
+      "rating": 1180,
+      "skill": 2.81763,
+      "matches": 50,
+      "wins": 12,
+      "avgFinish": 0.388
     },
     {
       "name": "Trinity",
-      "rating": 1179,
-      "skill": 2.7961,
-      "matches": 653,
-      "wins": 318,
-      "avgFinish": 0.374
-    },
-    {
-      "name": "Spearhead_g1_7a4f15",
-      "rating": 1167,
-      "skill": 2.616697,
-      "matches": 235,
-      "wins": 89,
-      "avgFinish": 0.393
-    },
-    {
-      "name": "Spearhead_g1_72c4f8",
-      "rating": 1166,
-      "skill": 2.600183,
-      "matches": 267,
-      "wins": 100,
+      "rating": 1174,
+      "skill": 2.718373,
+      "matches": 663,
+      "wins": 323,
       "avgFinish": 0.376
     },
     {
-      "name": "Spearhead_g1_bf0e20",
+      "name": "Spearhead_g1_72c4f8",
       "rating": 1165,
-      "skill": 2.582207,
-      "matches": 393,
-      "wins": 146,
-      "avgFinish": 0.369
+      "skill": 2.583081,
+      "matches": 274,
+      "wins": 103,
+      "avgFinish": 0.375
+    },
+    {
+      "name": "Spearhead_g1_bf0e20",
+      "rating": 1162,
+      "skill": 2.535795,
+      "matches": 402,
+      "wins": 150,
+      "avgFinish": 0.371
     },
     {
       "name": "Spearhead_g1_fbedc2",
-      "rating": 1165,
-      "skill": 2.585015,
-      "matches": 496,
-      "wins": 191,
-      "avgFinish": 0.41
+      "rating": 1161,
+      "skill": 2.52854,
+      "matches": 504,
+      "wins": 194,
+      "avgFinish": 0.411
     },
     {
-      "name": "Pinwheel_g1_24119c",
-      "rating": 1157,
-      "skill": 2.466861,
-      "matches": 159,
-      "wins": 48,
-      "avgFinish": 0.36
+      "name": "Spearhead_g1_7a4f15",
+      "rating": 1158,
+      "skill": 2.47672,
+      "matches": 243,
+      "wins": 92,
+      "avgFinish": 0.397
     },
     {
       "name": "Membrane",
       "rating": 1156,
-      "skill": 2.456202,
-      "matches": 555,
-      "wins": 277,
-      "avgFinish": 0.332
+      "skill": 2.447913,
+      "matches": 579,
+      "wins": 286,
+      "avgFinish": 0.339
     },
     {
-      "name": "Stalker_g1_8767f6",
-      "rating": 1150,
-      "skill": 2.37336,
-      "matches": 475,
-      "wins": 172,
-      "avgFinish": 0.393
-    },
-    {
-      "name": "Spearhead_g1_1f0d47",
-      "rating": 1144,
-      "skill": 2.297377,
-      "matches": 309,
-      "wins": 116,
-      "avgFinish": 0.413
-    },
-    {
-      "name": "Vanguard",
-      "rating": 1144,
-      "skill": 2.293648,
-      "matches": 574,
-      "wins": 315,
-      "avgFinish": 0.353
-    },
-    {
-      "name": "Spearhead_g1_dc0148",
-      "rating": 1141,
-      "skill": 2.253402,
-      "matches": 367,
-      "wins": 144,
-      "avgFinish": 0.364
+      "name": "Pinwheel_g1_24119c",
+      "rating": 1155,
+      "skill": 2.446117,
+      "matches": 162,
+      "wins": 49,
+      "avgFinish": 0.361
     },
     {
       "name": "Stalker_g1_bfb56c",
-      "rating": 1139,
-      "skill": 2.228362,
-      "matches": 116,
-      "wins": 41,
-      "avgFinish": 0.403
+      "rating": 1155,
+      "skill": 2.444968,
+      "matches": 136,
+      "wins": 46,
+      "avgFinish": 0.391
+    },
+    {
+      "name": "Stalker_g1_8767f6",
+      "rating": 1149,
+      "skill": 2.360289,
+      "matches": 491,
+      "wins": 181,
+      "avgFinish": 0.39
+    },
+    {
+      "name": "Vanguard",
+      "rating": 1143,
+      "skill": 2.283709,
+      "matches": 599,
+      "wins": 323,
+      "avgFinish": 0.359
     },
     {
       "name": "Spearhead_g1_1b59ef",
+      "rating": 1139,
+      "skill": 2.225566,
+      "matches": 230,
+      "wins": 84,
+      "avgFinish": 0.386
+    },
+    {
+      "name": "Spearhead_g1_1f0d47",
       "rating": 1138,
-      "skill": 2.211349,
-      "matches": 213,
-      "wins": 81,
-      "avgFinish": 0.379
+      "skill": 2.215126,
+      "matches": 321,
+      "wins": 121,
+      "avgFinish": 0.415
+    },
+    {
+      "name": "Spearhead_g1_dc0148",
+      "rating": 1138,
+      "skill": 2.212303,
+      "matches": 380,
+      "wins": 148,
+      "avgFinish": 0.367
     },
     {
       "name": "Stalker_g1_86aa0f",
       "rating": 1136,
-      "skill": 2.192733,
-      "matches": 164,
-      "wins": 61,
-      "avgFinish": 0.392
+      "skill": 2.183417,
+      "matches": 174,
+      "wins": 63,
+      "avgFinish": 0.394
     },
     {
-      "name": "Spearhead_g1_36d9c1",
+      "name": "Spearhead_g1_1a87fc",
       "rating": 1132,
-      "skill": 2.142748,
-      "matches": 48,
-      "wins": 15,
-      "avgFinish": 0.388
+      "skill": 2.136123,
+      "matches": 51,
+      "wins": 23,
+      "avgFinish": 0.349
     },
     {
       "name": "Spearhead_g1_859468",
-      "rating": 1128,
-      "skill": 2.08358,
-      "matches": 551,
-      "wins": 239,
-      "avgFinish": 0.359
+      "rating": 1127,
+      "skill": 2.080228,
+      "matches": 574,
+      "wins": 245,
+      "avgFinish": 0.367
     },
     {
       "name": "Spearhead_g1_3f955f",
-      "rating": 1124,
-      "skill": 2.043361,
-      "matches": 481,
-      "wins": 181,
-      "avgFinish": 0.398
+      "rating": 1122,
+      "skill": 2.019665,
+      "matches": 490,
+      "wins": 184,
+      "avgFinish": 0.399
     },
     {
       "name": "Lance",
-      "rating": 1122,
-      "skill": 2.024064,
-      "matches": 541,
-      "wins": 226,
-      "avgFinish": 0.39
+      "rating": 1119,
+      "skill": 1.98634,
+      "matches": 548,
+      "wins": 228,
+      "avgFinish": 0.393
+    },
+    {
+      "name": "Spearhead_g1_36d9c1",
+      "rating": 1119,
+      "skill": 1.988716,
+      "matches": 56,
+      "wins": 16,
+      "avgFinish": 0.407
+    },
+    {
+      "name": "Pinwheel_g2_ae8180",
+      "rating": 1118,
+      "skill": 1.968148,
+      "matches": 49,
+      "wins": 19,
+      "avgFinish": 0.38
     },
     {
       "name": "Citadel",
-      "rating": 1113,
-      "skill": 1.917844,
-      "matches": 473,
-      "wins": 166,
-      "avgFinish": 0.381
+      "rating": 1110,
+      "skill": 1.883155,
+      "matches": 486,
+      "wins": 168,
+      "avgFinish": 0.384
     },
     {
-      "name": "Conqueror",
-      "rating": 1096,
-      "skill": 1.735373,
-      "matches": 496,
-      "wins": 153,
-      "avgFinish": 0.419
+      "name": "Pinwheel_g2_22a2a2",
+      "rating": 1097,
+      "skill": 1.746566,
+      "matches": 49,
+      "wins": 14,
+      "avgFinish": 0.42
     },
     {
       "name": "Trinity_g1_3786cc",
+      "rating": 1096,
+      "skill": 1.737093,
+      "matches": 521,
+      "wins": 185,
+      "avgFinish": 0.409
+    },
+    {
+      "name": "Conqueror",
       "rating": 1095,
-      "skill": 1.724932,
-      "matches": 502,
-      "wins": 180,
-      "avgFinish": 0.402
+      "skill": 1.728748,
+      "matches": 505,
+      "wins": 155,
+      "avgFinish": 0.42
     },
     {
       "name": "Conductor",
-      "rating": 1090,
-      "skill": 1.683317,
-      "matches": 500,
-      "wins": 176,
-      "avgFinish": 0.41
+      "rating": 1089,
+      "skill": 1.669064,
+      "matches": 512,
+      "wins": 179,
+      "avgFinish": 0.411
     },
     {
       "name": "Spearhead_g1_7f5793",
-      "rating": 1087,
-      "skill": 1.649552,
+      "rating": 1085,
+      "skill": 1.634263,
       "matches": 49,
       "wins": 9,
       "avgFinish": 0.486
     },
     {
       "name": "Spearhead_g1_d8bf0f",
-      "rating": 1086,
-      "skill": 1.64231,
-      "matches": 100,
-      "wins": 27,
-      "avgFinish": 0.434
+      "rating": 1084,
+      "skill": 1.617887,
+      "matches": 114,
+      "wins": 30,
+      "avgFinish": 0.44
     },
     {
       "name": "Crusader_g1_5ae640",
-      "rating": 1084,
-      "skill": 1.624465,
-      "matches": 421,
-      "wins": 160,
-      "avgFinish": 0.409
+      "rating": 1081,
+      "skill": 1.593455,
+      "matches": 426,
+      "wins": 161,
+      "avgFinish": 0.412
     },
     {
-      "name": "Frontier",
-      "rating": 1078,
-      "skill": 1.566219,
-      "matches": 470,
-      "wins": 162,
-      "avgFinish": 0.412
+      "name": "Phalanx",
+      "rating": 1076,
+      "skill": 1.545874,
+      "matches": 440,
+      "wins": 39,
+      "avgFinish": 0.446
     },
     {
       "name": "Pacifist_04",
       "rating": 1075,
-      "skill": 1.541218,
-      "matches": 502,
+      "skill": 1.538229,
+      "matches": 510,
       "wins": 10,
       "avgFinish": 0.456
     },
     {
-      "name": "Phalanx",
-      "rating": 1075,
-      "skill": 1.541924,
-      "matches": 430,
-      "wins": 38,
-      "avgFinish": 0.447
-    },
-    {
-      "name": "PressureSink",
-      "rating": 1075,
-      "skill": 1.540497,
-      "matches": 491,
-      "wins": 185,
-      "avgFinish": 0.405
+      "name": "Frontier",
+      "rating": 1073,
+      "skill": 1.520027,
+      "matches": 485,
+      "wins": 165,
+      "avgFinish": 0.418
     },
     {
       "name": "Crusader_g1_5f8b45",
-      "rating": 1073,
-      "skill": 1.521721,
-      "matches": 328,
-      "wins": 122,
-      "avgFinish": 0.417
+      "rating": 1071,
+      "skill": 1.505878,
+      "matches": 336,
+      "wins": 123,
+      "avgFinish": 0.42
     },
     {
-      "name": "Spearhead_g1_4f6c9f",
+      "name": "PressureSink",
       "rating": 1071,
-      "skill": 1.502761,
-      "matches": 312,
-      "wins": 68,
-      "avgFinish": 0.439
+      "skill": 1.504662,
+      "matches": 500,
+      "wins": 186,
+      "avgFinish": 0.41
     },
     {
       "name": "Pacifist_02",
-      "rating": 1068,
-      "skill": 1.482796,
-      "matches": 468,
+      "rating": 1069,
+      "skill": 1.486604,
+      "matches": 491,
       "wins": 9,
-      "avgFinish": 0.471
+      "avgFinish": 0.48
+    },
+    {
+      "name": "Spearhead_g1_4f6c9f",
+      "rating": 1069,
+      "skill": 1.485604,
+      "matches": 323,
+      "wins": 69,
+      "avgFinish": 0.443
     },
     {
       "name": "Bully",
-      "rating": 1059,
-      "skill": 1.401702,
-      "matches": 443,
-      "wins": 68,
-      "avgFinish": 0.464
+      "rating": 1060,
+      "skill": 1.410559,
+      "matches": 451,
+      "wins": 69,
+      "avgFinish": 0.462
     },
     {
       "name": "Pacifist_01",
-      "rating": 1058,
-      "skill": 1.397499,
-      "matches": 498,
+      "rating": 1057,
+      "skill": 1.385144,
+      "matches": 512,
       "wins": 7,
-      "avgFinish": 0.504
+      "avgFinish": 0.505
     },
     {
       "name": "Pacifist_03",
-      "rating": 1058,
-      "skill": 1.394634,
-      "matches": 445,
+      "rating": 1057,
+      "skill": 1.388953,
+      "matches": 460,
       "wins": 9,
-      "avgFinish": 0.488
+      "avgFinish": 0.489
     },
     {
       "name": "SlowAndSteady",
-      "rating": 1057,
-      "skill": 1.392174,
-      "matches": 490,
-      "wins": 44,
-      "avgFinish": 0.482
+      "rating": 1054,
+      "skill": 1.368177,
+      "matches": 540,
+      "wins": 47,
+      "avgFinish": 0.488
     },
     {
       "name": "Skirmisher",
-      "rating": 1051,
-      "skill": 1.338321,
-      "matches": 440,
+      "rating": 1052,
+      "skill": 1.349367,
+      "matches": 452,
       "wins": 11,
-      "avgFinish": 0.49
+      "avgFinish": 0.488
     },
     {
       "name": "Bully_05",
       "rating": 1048,
-      "skill": 1.317972,
-      "matches": 458,
-      "wins": 110,
-      "avgFinish": 0.463
+      "skill": 1.319124,
+      "matches": 472,
+      "wins": 111,
+      "avgFinish": 0.465
     },
     {
       "name": "CitadelSortie",
-      "rating": 1048,
-      "skill": 1.314723,
-      "matches": 466,
-      "wins": 122,
-      "avgFinish": 0.458
+      "rating": 1047,
+      "skill": 1.313165,
+      "matches": 476,
+      "wins": 123,
+      "avgFinish": 0.459
     },
     {
       "name": "Wildfire",
-      "rating": 1044,
-      "skill": 1.28903,
-      "matches": 452,
-      "wins": 83,
-      "avgFinish": 0.485
+      "rating": 1045,
+      "skill": 1.297252,
+      "matches": 462,
+      "wins": 86,
+      "avgFinish": 0.483
     },
     {
       "name": "Bulwark",
-      "rating": 1043,
-      "skill": 1.280901,
-      "matches": 514,
+      "rating": 1042,
+      "skill": 1.2732,
+      "matches": 523,
       "wins": 91,
-      "avgFinish": 0.477
+      "avgFinish": 0.478
     },
     {
       "name": "Bully_01",
       "rating": 1041,
-      "skill": 1.269606,
-      "matches": 461,
-      "wins": 92,
-      "avgFinish": 0.476
+      "skill": 1.263422,
+      "matches": 469,
+      "wins": 93,
+      "avgFinish": 0.477
     },
     {
       "name": "Pacifist_06",
-      "rating": 1040,
-      "skill": 1.256982,
-      "matches": 486,
+      "rating": 1038,
+      "skill": 1.247046,
+      "matches": 491,
       "wins": 5,
-      "avgFinish": 0.513
+      "avgFinish": 0.514
     },
     {
       "name": "Bully_07",
-      "rating": 1037,
-      "skill": 1.234089,
+      "rating": 1036,
+      "skill": 1.228935,
       "matches": 495,
       "wins": 103,
       "avgFinish": 0.479
     },
     {
       "name": "Aggressive",
-      "rating": 1032,
-      "skill": 1.201897,
-      "matches": 432,
+      "rating": 1030,
+      "skill": 1.190499,
+      "matches": 441,
       "wins": 79,
-      "avgFinish": 0.482
+      "avgFinish": 0.487
     },
     {
       "name": "Repel",
-      "rating": 1031,
-      "skill": 1.193012,
-      "matches": 465,
+      "rating": 1028,
+      "skill": 1.172995,
+      "matches": 477,
       "wins": 11,
+      "avgFinish": 0.535
+    },
+    {
+      "name": "Turtle",
+      "rating": 1028,
+      "skill": 1.173525,
+      "matches": 500,
+      "wins": 1,
       "avgFinish": 0.531
     },
     {
       "name": "Bully_06",
-      "rating": 1029,
-      "skill": 1.179552,
-      "matches": 455,
+      "rating": 1026,
+      "skill": 1.162289,
+      "matches": 465,
       "wins": 63,
-      "avgFinish": 0.506
+      "avgFinish": 0.51
     },
     {
       "name": "Bully_08",
-      "rating": 1027,
-      "skill": 1.170543,
-      "matches": 495,
+      "rating": 1026,
+      "skill": 1.162604,
+      "matches": 502,
       "wins": 63,
-      "avgFinish": 0.509
+      "avgFinish": 0.511
+    },
+    {
+      "name": "Bully_04",
+      "rating": 1025,
+      "skill": 1.152312,
+      "matches": 449,
+      "wins": 63,
+      "avgFinish": 0.517
     },
     {
       "name": "Bully_09",
-      "rating": 1027,
-      "skill": 1.16854,
-      "matches": 459,
+      "rating": 1025,
+      "skill": 1.157528,
+      "matches": 471,
       "wins": 106,
-      "avgFinish": 0.491
-    },
-    {
-      "name": "Turtle",
-      "rating": 1027,
-      "skill": 1.170782,
-      "matches": 490,
-      "wins": 1,
-      "avgFinish": 0.532
-    },
-    {
-      "name": "Hunter_03",
-      "rating": 1026,
-      "skill": 1.162294,
-      "matches": 483,
-      "wins": 66,
-      "avgFinish": 0.507
+      "avgFinish": 0.494
     },
     {
       "name": "Stencil_04",
-      "rating": 1026,
-      "skill": 1.158321,
+      "rating": 1025,
+      "skill": 1.153115,
       "matches": 508,
       "wins": 83,
       "avgFinish": 0.505
     },
     {
+      "name": "Hunter_03",
+      "rating": 1024,
+      "skill": 1.1477,
+      "matches": 494,
+      "wins": 66,
+      "avgFinish": 0.511
+    },
+    {
       "name": "Adaptive",
       "rating": 1023,
-      "skill": 1.140154,
-      "matches": 463,
+      "skill": 1.13835,
+      "matches": 471,
       "wins": 34,
       "avgFinish": 0.537
     },
     {
-      "name": "Bully_04",
-      "rating": 1023,
-      "skill": 1.140631,
-      "matches": 436,
-      "wins": 62,
-      "avgFinish": 0.517
-    },
-    {
       "name": "Pacifist_05",
-      "rating": 1018,
-      "skill": 1.106218,
-      "matches": 478,
+      "rating": 1017,
+      "skill": 1.102664,
+      "matches": 493,
       "wins": 4,
-      "avgFinish": 0.553
+      "avgFinish": 0.554
     },
     {
       "name": "Hunter_05",
-      "rating": 1017,
-      "skill": 1.101589,
+      "rating": 1016,
+      "skill": 1.097021,
       "matches": 434,
       "wins": 65,
       "avgFinish": 0.507
     },
     {
       "name": "Hunter_10",
-      "rating": 1017,
-      "skill": 1.105825,
-      "matches": 485,
+      "rating": 1015,
+      "skill": 1.093111,
+      "matches": 494,
       "wins": 55,
-      "avgFinish": 0.527
+      "avgFinish": 0.531
+    },
+    {
+      "name": "Scatter_01",
+      "rating": 1015,
+      "skill": 1.087336,
+      "matches": 496,
+      "wins": 14,
+      "avgFinish": 0.56
     },
     {
       "name": "Hunter_07",
       "rating": 1014,
-      "skill": 1.085774,
-      "matches": 498,
+      "skill": 1.085055,
+      "matches": 505,
       "wins": 66,
-      "avgFinish": 0.534
-    },
-    {
-      "name": "Scatter_01",
-      "rating": 1014,
-      "skill": 1.083675,
-      "matches": 484,
-      "wins": 14,
-      "avgFinish": 0.561
+      "avgFinish": 0.533
     },
     {
       "name": "Random",
       "rating": 1013,
-      "skill": 1.075204,
-      "matches": 519,
+      "skill": 1.079877,
+      "matches": 531,
       "wins": 39,
       "avgFinish": 0.551
     },
     {
       "name": "Bully_10",
       "rating": 1012,
-      "skill": 1.074185,
-      "matches": 487,
-      "wins": 74,
-      "avgFinish": 0.532
-    },
-    {
-      "name": "Pacifist_08",
-      "rating": 1012,
-      "skill": 1.073502,
-      "matches": 459,
-      "wins": 3,
-      "avgFinish": 0.557
-    },
-    {
-      "name": "Bully_03",
-      "rating": 1011,
-      "skill": 1.062339,
-      "matches": 472,
-      "wins": 99,
-      "avgFinish": 0.502
+      "skill": 1.071935,
+      "matches": 501,
+      "wins": 75,
+      "avgFinish": 0.533
     },
     {
       "name": "Hunter_01",
-      "rating": 1010,
-      "skill": 1.061811,
-      "matches": 512,
-      "wins": 57,
-      "avgFinish": 0.538
+      "rating": 1011,
+      "skill": 1.06483,
+      "matches": 528,
+      "wins": 59,
+      "avgFinish": 0.539
     },
     {
-      "name": "Hunter_09",
-      "rating": 1010,
-      "skill": 1.058975,
-      "matches": 497,
-      "wins": 70,
-      "avgFinish": 0.536
+      "name": "Pacifist_08",
+      "rating": 1011,
+      "skill": 1.067036,
+      "matches": 469,
+      "wins": 3,
+      "avgFinish": 0.558
     },
     {
-      "name": "Cautious",
-      "rating": 1008,
-      "skill": 1.045305,
-      "matches": 425,
-      "wins": 7,
-      "avgFinish": 0.567
+      "name": "Bully_03",
+      "rating": 1010,
+      "skill": 1.056707,
+      "matches": 481,
+      "wins": 99,
+      "avgFinish": 0.504
     },
     {
       "name": "Hunter_08",
+      "rating": 1010,
+      "skill": 1.056516,
+      "matches": 452,
+      "wins": 55,
+      "avgFinish": 0.542
+    },
+    {
+      "name": "Cautious",
+      "rating": 1009,
+      "skill": 1.054497,
+      "matches": 435,
+      "wins": 8,
+      "avgFinish": 0.565
+    },
+    {
+      "name": "Hunter_09",
       "rating": 1008,
-      "skill": 1.048461,
-      "matches": 440,
-      "wins": 54,
-      "avgFinish": 0.543
+      "skill": 1.046329,
+      "matches": 512,
+      "wins": 71,
+      "avgFinish": 0.539
+    },
+    {
+      "name": "Bully_02",
+      "rating": 1005,
+      "skill": 1.028208,
+      "matches": 497,
+      "wins": 61,
+      "avgFinish": 0.541
     },
     {
       "name": "Scatter_10",
       "rating": 1005,
-      "skill": 1.027627,
-      "matches": 457,
+      "skill": 1.031133,
+      "matches": 470,
       "wins": 14,
-      "avgFinish": 0.572
+      "avgFinish": 0.573
     },
     {
-      "name": "Hunter_04",
-      "rating": 1004,
-      "skill": 1.023237,
-      "matches": 439,
-      "wins": 45,
-      "avgFinish": 0.55
-    },
-    {
-      "name": "Hunter_06",
-      "rating": 1004,
-      "skill": 1.021041,
-      "matches": 478,
-      "wins": 71,
-      "avgFinish": 0.537
-    },
-    {
-      "name": "Bully_02",
+      "name": "Cluster_06",
       "rating": 1003,
-      "skill": 1.016219,
-      "matches": 488,
-      "wins": 60,
-      "avgFinish": 0.545
+      "skill": 1.016692,
+      "matches": 499,
+      "wins": 0,
+      "avgFinish": 0.583
+    },
+    {
+      "name": "Cluster_08",
+      "rating": 1003,
+      "skill": 1.014565,
+      "matches": 484,
+      "wins": 0,
+      "avgFinish": 0.571
     },
     {
       "name": "Hunter_02",
       "rating": 1003,
-      "skill": 1.01925,
+      "skill": 1.015219,
       "matches": 387,
       "wins": 60,
       "avgFinish": 0.53
     },
     {
-      "name": "Pacifist_09",
+      "name": "Hunter_06",
       "rating": 1003,
-      "skill": 1.015515,
-      "matches": 473,
+      "skill": 1.016569,
+      "matches": 478,
+      "wins": 71,
+      "avgFinish": 0.537
+    },
+    {
+      "name": "Hunter_04",
+      "rating": 1002,
+      "skill": 1.011802,
+      "matches": 452,
+      "wins": 46,
+      "avgFinish": 0.554
+    },
+    {
+      "name": "Pacifist_10",
+      "rating": 1002,
+      "skill": 1.012749,
+      "matches": 431,
+      "wins": 1,
+      "avgFinish": 0.578
+    },
+    {
+      "name": "Pacifist_09",
+      "rating": 1001,
+      "skill": 1.008373,
+      "matches": 480,
       "wins": 1,
       "avgFinish": 0.583
     },
     {
-      "name": "Scatter_08",
-      "rating": 1003,
-      "skill": 1.015206,
-      "matches": 448,
-      "wins": 17,
-      "avgFinish": 0.576
-    },
-    {
-      "name": "Cluster_08",
-      "rating": 1002,
-      "skill": 1.011752,
-      "matches": 474,
-      "wins": 0,
-      "avgFinish": 0.573
-    },
-    {
-      "name": "Cluster_06",
-      "rating": 1001,
-      "skill": 1.006822,
-      "matches": 484,
-      "wins": 0,
-      "avgFinish": 0.587
-    },
-    {
-      "name": "Pacifist_10",
-      "rating": 1000,
-      "skill": 0.998453,
-      "matches": 421,
-      "wins": 1,
-      "avgFinish": 0.581
-    },
-    {
       "name": "Patient_10",
-      "rating": 1000,
-      "skill": 0.998549,
-      "matches": 476,
+      "rating": 1001,
+      "skill": 1.003296,
+      "matches": 492,
       "wins": 0,
-      "avgFinish": 0.578
+      "avgFinish": 0.577
     },
     {
       "name": "Scatter_07",
-      "rating": 999,
-      "skill": 0.9921,
-      "matches": 468,
+      "rating": 1000,
+      "skill": 0.997963,
+      "matches": 476,
       "wins": 4,
-      "avgFinish": 0.585
+      "avgFinish": 0.583
     },
     {
       "name": "Drift_S",
-      "rating": 998,
-      "skill": 0.991062,
-      "matches": 449,
+      "rating": 999,
+      "skill": 0.994076,
+      "matches": 457,
       "wins": 1,
-      "avgFinish": 0.604
+      "avgFinish": 0.603
+    },
+    {
+      "name": "Scatter_08",
+      "rating": 998,
+      "skill": 0.986071,
+      "matches": 458,
+      "wins": 17,
+      "avgFinish": 0.581
     },
     {
       "name": "Cluster_05",
-      "rating": 997,
-      "skill": 0.984493,
-      "matches": 453,
+      "rating": 996,
+      "skill": 0.976306,
+      "matches": 459,
       "wins": 0,
-      "avgFinish": 0.597
+      "avgFinish": 0.599
     },
     {
       "name": "Scatter_04",
       "rating": 996,
-      "skill": 0.979103,
-      "matches": 469,
+      "skill": 0.977601,
+      "matches": 477,
       "wins": 12,
       "avgFinish": 0.595
     },
     {
       "name": "Scatter_02",
-      "rating": 993,
-      "skill": 0.961437,
-      "matches": 486,
+      "rating": 992,
+      "skill": 0.954243,
+      "matches": 495,
       "wins": 11,
-      "avgFinish": 0.601
+      "avgFinish": 0.602
     },
     {
       "name": "Scatter_06",
-      "rating": 993,
-      "skill": 0.958108,
+      "rating": 992,
+      "skill": 0.954655,
       "matches": 351,
       "wins": 7,
       "avgFinish": 0.589
     },
     {
-      "name": "Stencil_07",
+      "name": "Patient_02",
       "rating": 990,
-      "skill": 0.945191,
-      "matches": 453,
-      "wins": 46,
-      "avgFinish": 0.552
+      "skill": 0.943575,
+      "matches": 516,
+      "wins": 0,
+      "avgFinish": 0.601
     },
     {
-      "name": "Patient_02",
-      "rating": 989,
-      "skill": 0.941,
-      "matches": 507,
+      "name": "Drift_N",
+      "rating": 988,
+      "skill": 0.931739,
+      "matches": 458,
       "wins": 0,
-      "avgFinish": 0.6
+      "avgFinish": 0.613
     },
     {
       "name": "Patient_08",
-      "rating": 989,
-      "skill": 0.940893,
-      "matches": 418,
+      "rating": 988,
+      "skill": 0.935864,
+      "matches": 424,
       "wins": 0,
-      "avgFinish": 0.596
+      "avgFinish": 0.597
     },
     {
       "name": "Stencil_02",
-      "rating": 989,
-      "skill": 0.938532,
+      "rating": 988,
+      "skill": 0.935572,
       "matches": 297,
       "wins": 15,
       "avgFinish": 0.562
     },
     {
       "name": "Drift_EvN",
-      "rating": 988,
-      "skill": 0.93261,
-      "matches": 471,
-      "wins": 0,
-      "avgFinish": 0.621
-    },
-    {
-      "name": "Drift_N",
-      "rating": 988,
-      "skill": 0.933925,
-      "matches": 446,
-      "wins": 0,
-      "avgFinish": 0.613
-    },
-    {
-      "name": "TideWall",
       "rating": 987,
-      "skill": 0.9256,
-      "matches": 487,
-      "wins": 74,
-      "avgFinish": 0.558
+      "skill": 0.928764,
+      "matches": 479,
+      "wins": 0,
+      "avgFinish": 0.622
     },
     {
       "name": "Scatter_09",
-      "rating": 986,
-      "skill": 0.920557,
-      "matches": 456,
+      "rating": 987,
+      "skill": 0.927421,
+      "matches": 467,
       "wins": 8,
-      "avgFinish": 0.6
+      "avgFinish": 0.598
+    },
+    {
+      "name": "Stencil_07",
+      "rating": 987,
+      "skill": 0.929513,
+      "matches": 464,
+      "wins": 46,
+      "avgFinish": 0.556
     },
     {
       "name": "Pulse_04",
+      "rating": 986,
+      "skill": 0.92158,
+      "matches": 481,
+      "wins": 0,
+      "avgFinish": 0.598
+    },
+    {
+      "name": "Cluster_07",
       "rating": 985,
-      "skill": 0.91627,
-      "matches": 470,
+      "skill": 0.915168,
+      "matches": 473,
       "wins": 0,
       "avgFinish": 0.599
     },
     {
-      "name": "Cluster_07",
-      "rating": 984,
-      "skill": 0.913258,
-      "matches": 460,
+      "name": "TideWall",
+      "rating": 985,
+      "skill": 0.914646,
+      "matches": 495,
+      "wins": 74,
+      "avgFinish": 0.561
+    },
+    {
+      "name": "Cluster_02",
+      "rating": 982,
+      "skill": 0.899502,
+      "matches": 467,
       "wins": 0,
-      "avgFinish": 0.6
+      "avgFinish": 0.61
+    },
+    {
+      "name": "Cluster_09",
+      "rating": 982,
+      "skill": 0.902032,
+      "matches": 456,
+      "wins": 0,
+      "avgFinish": 0.603
     },
     {
       "name": "Surge",
       "rating": 982,
-      "skill": 0.903938,
+      "skill": 0.900313,
       "matches": 246,
       "wins": 37,
       "avgFinish": 0.546
     },
     {
       "name": "Tempo",
-      "rating": 982,
-      "skill": 0.902392,
-      "matches": 449,
-      "wins": 47,
-      "avgFinish": 0.585
-    },
-    {
-      "name": "Cluster_02",
-      "rating": 980,
-      "skill": 0.890331,
-      "matches": 455,
-      "wins": 0,
-      "avgFinish": 0.615
-    },
-    {
-      "name": "Cluster_09",
-      "rating": 980,
-      "skill": 0.89282,
-      "matches": 441,
-      "wins": 0,
-      "avgFinish": 0.604
+      "rating": 981,
+      "skill": 0.896231,
+      "matches": 464,
+      "wins": 48,
+      "avgFinish": 0.588
     },
     {
       "name": "Patient_06",
       "rating": 978,
-      "skill": 0.882525,
+      "skill": 0.879477,
       "matches": 437,
       "wins": 0,
       "avgFinish": 0.612
     },
     {
-      "name": "Drift_NE",
-      "rating": 977,
-      "skill": 0.873671,
-      "matches": 444,
-      "wins": 0,
-      "avgFinish": 0.633
-    },
-    {
       "name": "Drift_SE",
-      "rating": 977,
-      "skill": 0.875062,
+      "rating": 976,
+      "skill": 0.871608,
       "matches": 298,
       "wins": 0,
       "avgFinish": 0.623
     },
     {
-      "name": "Drift_WvS",
-      "rating": 977,
-      "skill": 0.874509,
-      "matches": 473,
-      "wins": 0,
-      "avgFinish": 0.628
-    },
-    {
       "name": "Patient_01",
-      "rating": 977,
-      "skill": 0.873853,
+      "rating": 976,
+      "skill": 0.870778,
       "matches": 335,
       "wins": 0,
       "avgFinish": 0.606
     },
     {
+      "name": "Drift_NE",
+      "rating": 975,
+      "skill": 0.867701,
+      "matches": 456,
+      "wins": 0,
+      "avgFinish": 0.635
+    },
+    {
+      "name": "Drift_WvS",
+      "rating": 975,
+      "skill": 0.867592,
+      "matches": 489,
+      "wins": 0,
+      "avgFinish": 0.631
+    },
+    {
       "name": "Patient_07",
-      "rating": 976,
-      "skill": 0.869925,
+      "rating": 975,
+      "skill": 0.866813,
       "matches": 381,
       "wins": 0,
       "avgFinish": 0.609
@@ -887,7 +903,7 @@
     {
       "name": "Drift_E",
       "rating": 954,
-      "skill": 0.767567,
+      "skill": 0.765174,
       "matches": 152,
       "wins": 0,
       "avgFinish": 0.63
@@ -895,23 +911,23 @@
     {
       "name": "Scatter_05",
       "rating": 953,
-      "skill": 0.764489,
+      "skill": 0.762057,
       "matches": 181,
       "wins": 11,
       "avgFinish": 0.613
     },
     {
       "name": "Scout",
-      "rating": 953,
-      "skill": 0.763048,
+      "rating": 952,
+      "skill": 0.760254,
       "matches": 253,
       "wins": 3,
       "avgFinish": 0.639
     },
     {
       "name": "Defender",
-      "rating": 952,
-      "skill": 0.758038,
+      "rating": 951,
+      "skill": 0.755975,
       "matches": 130,
       "wins": 0,
       "avgFinish": 0.62
@@ -919,7 +935,7 @@
     {
       "name": "Patient_03",
       "rating": 950,
-      "skill": 0.751244,
+      "skill": 0.749652,
       "matches": 43,
       "wins": 0,
       "avgFinish": 0.563
@@ -927,7 +943,7 @@
     {
       "name": "Cluster_01",
       "rating": 949,
-      "skill": 0.747328,
+      "skill": 0.745308,
       "matches": 163,
       "wins": 0,
       "avgFinish": 0.645
@@ -935,55 +951,39 @@
     {
       "name": "Drift_W",
       "rating": 937,
-      "skill": 0.695751,
+      "skill": 0.693872,
       "matches": 87,
       "wins": 0,
       "avgFinish": 0.625
     },
     {
       "name": "Patient_05",
-      "rating": 935,
-      "skill": 0.685995,
+      "rating": 934,
+      "skill": 0.683909,
       "matches": 42,
       "wins": 0,
       "avgFinish": 0.59
     },
     {
       "name": "Patient_09",
-      "rating": 934,
-      "skill": 0.68278,
+      "rating": 933,
+      "skill": 0.680438,
       "matches": 42,
       "wins": 0,
       "avgFinish": 0.59
     },
     {
       "name": "Pulse_08",
-      "rating": 933,
-      "skill": 0.67958,
+      "rating": 932,
+      "skill": 0.677656,
       "matches": 39,
       "wins": 0,
       "avgFinish": 0.585
     },
     {
-      "name": "Drift_NW",
-      "rating": 931,
-      "skill": 0.670483,
-      "matches": 94,
-      "wins": 0,
-      "avgFinish": 0.64
-    },
-    {
-      "name": "Pacifist_07",
-      "rating": 931,
-      "skill": 0.671372,
-      "matches": 32,
-      "wins": 1,
-      "avgFinish": 0.575
-    },
-    {
       "name": "Vampire",
       "rating": 931,
-      "skill": 0.673701,
+      "skill": 0.671959,
       "matches": 43,
       "wins": 1,
       "avgFinish": 0.614
@@ -991,31 +991,47 @@
     {
       "name": "Cluster_03",
       "rating": 930,
-      "skill": 0.669232,
+      "skill": 0.667419,
       "matches": 38,
       "wins": 0,
       "avgFinish": 0.574
     },
     {
+      "name": "Drift_NW",
+      "rating": 930,
+      "skill": 0.668135,
+      "matches": 94,
+      "wins": 0,
+      "avgFinish": 0.64
+    },
+    {
+      "name": "Pacifist_07",
+      "rating": 930,
+      "skill": 0.670096,
+      "matches": 32,
+      "wins": 1,
+      "avgFinish": 0.575
+    },
+    {
       "name": "Berserker",
-      "rating": 929,
-      "skill": 0.663405,
+      "rating": 928,
+      "skill": 0.661227,
       "matches": 33,
       "wins": 1,
       "avgFinish": 0.588
     },
     {
       "name": "Probe_03",
-      "rating": 929,
-      "skill": 0.664287,
+      "rating": 928,
+      "skill": 0.66246,
       "matches": 50,
       "wins": 0,
       "avgFinish": 0.624
     },
     {
       "name": "Scatter_03",
-      "rating": 929,
-      "skill": 0.664653,
+      "rating": 928,
+      "skill": 0.662532,
       "matches": 40,
       "wins": 3,
       "avgFinish": 0.57
@@ -1023,7 +1039,7 @@
     {
       "name": "Cluster_04",
       "rating": 925,
-      "skill": 0.650445,
+      "skill": 0.649123,
       "matches": 37,
       "wins": 0,
       "avgFinish": 0.589
@@ -1031,15 +1047,15 @@
     {
       "name": "Drift_SW",
       "rating": 919,
-      "skill": 0.629144,
+      "skill": 0.627788,
       "matches": 34,
       "wins": 0,
       "avgFinish": 0.618
     },
     {
       "name": "Probe_02",
-      "rating": 919,
-      "skill": 0.625864,
+      "rating": 918,
+      "skill": 0.624228,
       "matches": 27,
       "wins": 0,
       "avgFinish": 0.6
@@ -1047,7 +1063,7 @@
     {
       "name": "Hunter",
       "rating": 916,
-      "skill": 0.61745,
+      "skill": 0.615743,
       "matches": 41,
       "wins": 5,
       "avgFinish": 0.6
@@ -1055,7 +1071,7 @@
     {
       "name": "Avalanche",
       "rating": 914,
-      "skill": 0.610506,
+      "skill": 0.609151,
       "matches": 35,
       "wins": 2,
       "avgFinish": 0.64
@@ -1063,23 +1079,23 @@
     {
       "name": "Probe_07",
       "rating": 909,
-      "skill": 0.592886,
+      "skill": 0.591341,
       "matches": 37,
       "wins": 0,
       "avgFinish": 0.638
     },
     {
       "name": "Patient_04",
-      "rating": 908,
-      "skill": 0.588947,
+      "rating": 907,
+      "skill": 0.586826,
       "matches": 32,
       "wins": 0,
       "avgFinish": 0.644
     },
     {
       "name": "Probe_01",
-      "rating": 906,
-      "skill": 0.581721,
+      "rating": 905,
+      "skill": 0.579658,
       "matches": 59,
       "wins": 0,
       "avgFinish": 0.62
@@ -1087,7 +1103,7 @@
     {
       "name": "Probe_06",
       "rating": 905,
-      "skill": 0.578862,
+      "skill": 0.577693,
       "matches": 38,
       "wins": 0,
       "avgFinish": 0.637
@@ -1095,7 +1111,7 @@
     {
       "name": "Cluster_10",
       "rating": 899,
-      "skill": 0.559669,
+      "skill": 0.557809,
       "matches": 42,
       "wins": 0,
       "avgFinish": 0.657
@@ -1103,7 +1119,7 @@
     {
       "name": "Pulse_06",
       "rating": 898,
-      "skill": 0.557252,
+      "skill": 0.555883,
       "matches": 43,
       "wins": 0,
       "avgFinish": 0.614
@@ -1111,15 +1127,15 @@
     {
       "name": "Probe_04",
       "rating": 892,
-      "skill": 0.538435,
+      "skill": 0.537192,
       "matches": 53,
       "wins": 0,
       "avgFinish": 0.649
     },
     {
       "name": "Anvil",
-      "rating": 882,
-      "skill": 0.505577,
+      "rating": 881,
+      "skill": 0.504065,
       "matches": 56,
       "wins": 1,
       "avgFinish": 0.657
@@ -1127,15 +1143,15 @@
     {
       "name": "Probe_05",
       "rating": 879,
-      "skill": 0.498942,
+      "skill": 0.497823,
       "matches": 44,
       "wins": 0,
       "avgFinish": 0.668
     },
     {
       "name": "Pulse_01",
-      "rating": 879,
-      "skill": 0.497721,
+      "rating": 878,
+      "skill": 0.495771,
       "matches": 40,
       "wins": 0,
       "avgFinish": 0.68
@@ -1143,23 +1159,23 @@
     {
       "name": "Stencil_01",
       "rating": 872,
-      "skill": 0.479618,
+      "skill": 0.47874,
       "matches": 46,
       "wins": 0,
       "avgFinish": 0.704
     },
     {
       "name": "Stencil_09",
-      "rating": 868,
-      "skill": 0.467175,
+      "rating": 867,
+      "skill": 0.466067,
       "matches": 47,
       "wins": 1,
       "avgFinish": 0.664
     },
     {
       "name": "Stencil_10",
-      "rating": 863,
-      "skill": 0.454224,
+      "rating": 862,
+      "skill": 0.452825,
       "matches": 46,
       "wins": 2,
       "avgFinish": 0.7
@@ -1167,23 +1183,23 @@
     {
       "name": "Stencil_08",
       "rating": 860,
-      "skill": 0.447792,
+      "skill": 0.44634,
       "matches": 36,
       "wins": 2,
       "avgFinish": 0.661
     },
     {
       "name": "Probe_09",
-      "rating": 859,
-      "skill": 0.443741,
+      "rating": 858,
+      "skill": 0.442519,
       "matches": 56,
       "wins": 0,
       "avgFinish": 0.732
     },
     {
       "name": "Stencil_06",
-      "rating": 839,
-      "skill": 0.395458,
+      "rating": 838,
+      "skill": 0.394323,
       "matches": 39,
       "wins": 1,
       "avgFinish": 0.723
@@ -1191,39 +1207,39 @@
     {
       "name": "Probe_10",
       "rating": 834,
-      "skill": 0.38554,
+      "skill": 0.384784,
       "matches": 41,
       "wins": 0,
       "avgFinish": 0.741
     },
     {
       "name": "Pulse_10",
-      "rating": 829,
-      "skill": 0.37359,
+      "rating": 828,
+      "skill": 0.372475,
       "matches": 47,
       "wins": 0,
       "avgFinish": 0.757
     },
     {
       "name": "Probe_08",
-      "rating": 812,
-      "skill": 0.338542,
+      "rating": 811,
+      "skill": 0.337643,
       "matches": 46,
       "wins": 0,
       "avgFinish": 0.765
     },
     {
       "name": "Stencil_05",
-      "rating": 811,
-      "skill": 0.337068,
+      "rating": 810,
+      "skill": 0.335908,
       "matches": 49,
       "wins": 2,
       "avgFinish": 0.747
     },
     {
       "name": "Pulse_02",
-      "rating": 809,
-      "skill": 0.332339,
+      "rating": 808,
+      "skill": 0.331486,
       "matches": 37,
       "wins": 0,
       "avgFinish": 0.757
@@ -1231,7 +1247,7 @@
     {
       "name": "Stencil_03",
       "rating": 806,
-      "skill": 0.328124,
+      "skill": 0.327118,
       "matches": 61,
       "wins": 0,
       "avgFinish": 0.767
@@ -1239,15 +1255,15 @@
     {
       "name": "Pulse_09",
       "rating": 791,
-      "skill": 0.300893,
+      "skill": 0.300351,
       "matches": 42,
       "wins": 0,
       "avgFinish": 0.781
     },
     {
       "name": "Pulse_05",
-      "rating": 770,
-      "skill": 0.265658,
+      "rating": 769,
+      "skill": 0.264857,
       "matches": 44,
       "wins": 0,
       "avgFinish": 0.805
@@ -1255,15 +1271,15 @@
     {
       "name": "Pulse_07",
       "rating": 768,
-      "skill": 0.263763,
+      "skill": 0.262975,
       "matches": 46,
       "wins": 0,
       "avgFinish": 0.796
     },
     {
       "name": "Pulse_03",
-      "rating": 759,
-      "skill": 0.249661,
+      "rating": 758,
+      "skill": 0.248931,
       "matches": 29,
       "wins": 0,
       "avgFinish": 0.8
@@ -1271,7 +1287,7 @@
     {
       "name": "Swarm",
       "rating": 738,
-      "skill": 0.221894,
+      "skill": 0.221226,
       "matches": 37,
       "wins": 0,
       "avgFinish": 0.832
@@ -1279,7 +1295,7 @@
     {
       "name": "Tactician",
       "rating": 738,
-      "skill": 0.221848,
+      "skill": 0.221399,
       "matches": 31,
       "wins": 0,
       "avgFinish": 0.845
