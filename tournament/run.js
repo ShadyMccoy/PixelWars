@@ -19,7 +19,7 @@
 
 import { STRATEGY_LIST, ALL_STRATEGY_LIST, ARCHIVED_STRATEGY_LIST, getStrategy } from "../src/strategies/index.js";
 import { MAPS } from "./maps.js";
-import { runFfaTournament, runPoolTournament } from "./scheduler.js";
+import { runFfaTournament, runPoolTournament, runRatingTournament } from "./scheduler.js";
 import { runLeague } from "./league.js";
 import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
@@ -40,6 +40,9 @@ Tournament options:
   --rounds N          Legacy alias for --matches in FFA mode (default: 10)
   --ticks N           Max ticks per match (default: 4000)
   --seed N            Base seed (default: 1)
+  --rating            Use rating-driven scheduler (Glicko + info-gain
+                      matchmaker). Replaces flat random pool play with
+                      similar-skill matchups, no tiers required.
   --no-save           Don't auto-save flagged matches
   --json              Emit standings as JSON
   --verbose           Print per-match results
@@ -117,6 +120,7 @@ function parseArgs(argv) {
     listAll: false,
     seedFromLeague: null,
     insertTier: 3,
+    rating: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -146,6 +150,7 @@ function parseArgs(argv) {
       case "--bootstrap": opts.bootstrap = parseInt(next(), 10); break;
       case "--seed-from-league": opts.seedFromLeague = next(); break;
       case "--insert-tier": opts.insertTier = parseInt(next(), 10); break;
+      case "--rating": opts.rating = true; break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
@@ -177,15 +182,28 @@ function printStandings(standings, meta) {
   console.log(
     `\nFinal standings · map=${meta.map} · ${meta.modeLabel} · maxTicks=${meta.ticks} · seed=${meta.seed}`,
   );
-  console.log(
-    `${pad("#", 4)}  ${pad("Strategy", 18)}  ${pad("PPG", 6, true)}  ${pad("Pts", 6, true)}  ${pad("Plyd", 5, true)}  ${pad("Wins", 5, true)}  ${pad("Win%", 6, true)}  ${pad("AvgRank", 8, true)}  ${pad("AvgTerr", 8, true)}  ${pad("Survive%", 9, true)}`,
-  );
-  console.log("-".repeat(94));
-  standings.forEach((s, i) => {
+  const showRating = standings.some((s) => s.rating != null);
+  if (showRating) {
     console.log(
-      `${pad(i + 1, 4)}  ${pad(s.name, 18)}  ${pad(s.pointsPerGame.toFixed(2), 6, true)}  ${pad(s.points, 6, true)}  ${pad(s.played, 5, true)}  ${pad(s.wins, 5, true)}  ${pad((s.winRate * 100).toFixed(1) + "%", 6, true)}  ${pad(s.avgRank.toFixed(2), 8, true)}  ${pad(s.avgTerritory.toFixed(1), 8, true)}  ${pad((s.survivalRate * 100).toFixed(1) + "%", 9, true)}`,
+      `${pad("#", 4)}  ${pad("Strategy", 18)}  ${pad("Rating", 7, true)}  ${pad("RD", 5, true)}  ${pad("PPG", 6, true)}  ${pad("Plyd", 5, true)}  ${pad("Wins", 5, true)}  ${pad("Win%", 6, true)}  ${pad("AvgRank", 8, true)}  ${pad("AvgTerr", 8, true)}`,
     );
-  });
+    console.log("-".repeat(94));
+    standings.forEach((s, i) => {
+      console.log(
+        `${pad(i + 1, 4)}  ${pad(s.name, 18)}  ${pad(s.rating.toFixed(0), 7, true)}  ${pad(s.rd.toFixed(0), 5, true)}  ${pad(s.pointsPerGame.toFixed(2), 6, true)}  ${pad(s.played, 5, true)}  ${pad(s.wins, 5, true)}  ${pad((s.winRate * 100).toFixed(1) + "%", 6, true)}  ${pad(s.avgRank.toFixed(2), 8, true)}  ${pad(s.avgTerritory.toFixed(1), 8, true)}`,
+      );
+    });
+  } else {
+    console.log(
+      `${pad("#", 4)}  ${pad("Strategy", 18)}  ${pad("PPG", 6, true)}  ${pad("Pts", 6, true)}  ${pad("Plyd", 5, true)}  ${pad("Wins", 5, true)}  ${pad("Win%", 6, true)}  ${pad("AvgRank", 8, true)}  ${pad("AvgTerr", 8, true)}  ${pad("Survive%", 9, true)}`,
+    );
+    console.log("-".repeat(94));
+    standings.forEach((s, i) => {
+      console.log(
+        `${pad(i + 1, 4)}  ${pad(s.name, 18)}  ${pad(s.pointsPerGame.toFixed(2), 6, true)}  ${pad(s.points, 6, true)}  ${pad(s.played, 5, true)}  ${pad(s.wins, 5, true)}  ${pad((s.winRate * 100).toFixed(1) + "%", 6, true)}  ${pad(s.avgRank.toFixed(2), 8, true)}  ${pad(s.avgTerritory.toFixed(1), 8, true)}  ${pad((s.survivalRate * 100).toFixed(1) + "%", 9, true)}`,
+      );
+    });
+  }
 }
 
 function isNeutralTech(tech) {
@@ -687,7 +705,8 @@ async function main() {
     process.exit(1);
   }
 
-  const useFfa = opts.pool === 0 || opts.pool >= strategies.length;
+  const useRating = opts.rating;
+  const useFfa = !useRating && (opts.pool === 0 || opts.pool >= strategies.length);
   const matchCount = useFfa
     ? (opts.rounds ?? opts.matches ?? 10)
     : (opts.matches ?? opts.rounds ?? 200);
@@ -714,20 +733,24 @@ async function main() {
   const params = {
     strategies, map, baseSeed: opts.seed, maxTicks: opts.ticks, onMatch,
   };
-  const tournament = useFfa
-    ? runFfaTournament({ ...params, rounds: matchCount })
-    : runPoolTournament({ ...params, poolSize: opts.pool, matches: matchCount });
+  const tournament = useRating
+    ? runRatingTournament({ ...params, poolSize: opts.pool, matches: matchCount })
+    : useFfa
+      ? runFfaTournament({ ...params, rounds: matchCount })
+      : runPoolTournament({ ...params, poolSize: opts.pool, matches: matchCount });
 
   const meta = {
     map: opts.map,
     ticks: opts.ticks,
     seed: opts.seed,
-    modeLabel: useFfa
-      ? `ffa · ${matchCount} rounds · ${strategies.length} bots`
-      : `pool · ${matchCount} matches · K=${opts.pool} · ${strategies.length} bots`,
+    modeLabel: useRating
+      ? `rating · ${matchCount} matches · K=${opts.pool} · ${strategies.length} bots`
+      : useFfa
+        ? `ffa · ${matchCount} rounds · ${strategies.length} bots`
+        : `pool · ${matchCount} matches · K=${opts.pool} · ${strategies.length} bots`,
     rounds: matchCount,
     matches: matchCount,
-    pool: useFfa ? null : opts.pool,
+    pool: (useFfa && !useRating) ? null : opts.pool,
   };
 
   if (opts.json) {

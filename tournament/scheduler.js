@@ -10,6 +10,12 @@
 
 import { runMatch } from "./arena.js";
 import { mulberry32 } from "../src/core/rng.js";
+import {
+  newRating,
+  pairwiseUpdates,
+  pickInformativeLineup,
+  ratingsToObject,
+} from "./rating.js";
 
 // ---------------------------------------------------------- aggregation
 
@@ -47,9 +53,10 @@ function recordResult(standings, result) {
   }
 }
 
-function finalizeStandings(standings) {
-  return [...standings.values()]
-    .map((s) => ({
+function finalizeStandings(standings, ratings = null) {
+  const rows = [...standings.values()].map((s) => {
+    const r = ratings?.get(s.name);
+    return {
       ...s,
       avgRank: s.played ? s.totalRank / s.played : 0,
       avgTerritory: s.played ? s.totalTerritory / s.played : 0,
@@ -57,12 +64,24 @@ function finalizeStandings(standings) {
       winRate: s.played ? s.wins / s.played : 0,
       survivalRate: s.played ? s.survived / s.played : 0,
       pointsPerGame: s.played ? s.points / s.played : 0,
-    }))
-    .sort((a, b) =>
+      rating: r ? +r.rating.toFixed(2) : null,
+      rd: r ? +r.rd.toFixed(2) : null,
+    };
+  });
+  if (ratings) {
+    rows.sort((a, b) =>
+      b.rating - a.rating ||
+      b.pointsPerGame - a.pointsPerGame ||
+      a.avgRank - b.avgRank,
+    );
+  } else {
+    rows.sort((a, b) =>
       b.pointsPerGame - a.pointsPerGame ||
       a.avgRank - b.avgRank ||
       b.points - a.points,
     );
+  }
+  return rows;
 }
 
 // ---------------------------------------------------------- FFA (legacy)
@@ -155,6 +174,64 @@ export function runPoolTournament({
   }
 
   return { standings: finalizeStandings(standings), results };
+}
+
+// ---------------------------------------------------------- rating-driven
+//
+// Glicko-style ratings + an information-gain matchmaker. Each match's
+// lineup is picked to maximize learning per match: anchor on the most
+// uncertain bot, surround it with similarly-rated peers. Replaces the
+// tier loop with a single flat ranking.
+
+export function runRatingTournament({
+  strategies,
+  map,
+  poolSize = 6,
+  matches = 200,
+  baseSeed = 1,
+  maxTicks = 4000,
+  onMatch = null,
+  initialRatings = null,
+}) {
+  const N = strategies.length;
+  if (N < 2) throw new Error("Need at least 2 strategies");
+  const k = Math.min(poolSize, N);
+  if (k < 2) throw new Error(`pool size must be >= 2 (got ${k})`);
+
+  const ratings = new Map();
+  for (const s of strategies) {
+    const seed = initialRatings?.[s.name];
+    ratings.set(s.name, newRating(seed ?? {}));
+  }
+
+  const standings = new Map(strategies.map((s) => [s.name, blankRow(s)]));
+  const positions = map.positions(k);
+  const results = [];
+  const sampleRng = mulberry32(baseSeed ^ 0x9e3779b9);
+
+  for (let m = 0; m < matches; m++) {
+    const lineup = pickInformativeLineup(strategies, ratings, k, sampleRng);
+    const seed = baseSeed + m;
+    const result = runMatch({
+      strategies: lineup,
+      mapConfig: map.config,
+      startPositions: positions,
+      seed,
+      maxTicks,
+    });
+    onMatch?.(m, result, lineup);
+    results.push({ match: m, seed, lineup: lineup.map((s) => s.name), ...result });
+    recordResult(standings, result);
+
+    const updates = pairwiseUpdates(ratings, result.ranking);
+    for (const [name, updated] of updates) ratings.set(name, updated);
+  }
+
+  return {
+    standings: finalizeStandings(standings, ratings),
+    ratings: ratingsToObject(ratings),
+    results,
+  };
 }
 
 // Back-compat alias for older callers.
