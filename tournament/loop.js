@@ -44,7 +44,6 @@ Options:
                         Override with PIXELWARS_AGENT_CMD env var.
   --season-args "..."   Extra args passed through to --season (e.g.
                         "--matches 300 --pool 5 --map lab2").
-  --family-cap N        Override family cap on registration (default 3).
   --dry-run             Plan only: run the season and print what would
                         be spawned, but don't invoke the agent or
                         register anything.
@@ -56,7 +55,6 @@ function parseArgs(argv) {
     iterations: 1,
     agentCmd: process.env.PIXELWARS_AGENT_CMD ?? DEFAULT_AGENT_CMD,
     seasonArgs: "",
-    familyCap: null,
     dryRun: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -66,7 +64,6 @@ function parseArgs(argv) {
       case "--iterations": opts.iterations = parseInt(next(), 10); break;
       case "--agent-cmd": opts.agentCmd = next(); break;
       case "--season-args": opts.seasonArgs = next(); break;
-      case "--family-cap": opts.familyCap = parseInt(next(), 10); break;
       case "--dry-run": opts.dryRun = true; break;
       case "--help": case "-h": console.log(HELP); process.exit(0);
       default:
@@ -164,12 +161,11 @@ the path (the basename without \`.js\`). Once written, exit.
   await runCmd(bin, args, { input: fullPrompt });
 }
 
-async function registerDescendant({ newName, parent, filepath }, { familyCap }) {
+async function registerDescendant({ newName, parent, filepath }) {
   const args = [
     "tournament/run.js", "--register-descendant",
     "--name", newName, "--parent", parent, "--file", filepath,
   ];
-  if (familyCap != null) args.push("--family-cap", String(familyCap));
   await runCmd("node", args);
 }
 

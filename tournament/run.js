@@ -108,10 +108,7 @@ Lineage (genetic descendant feature):
                         Validate the new strategy file, copy it into
                         src/strategies/, register in lineage + index.
                         Also archives the globally weakest active bot
-                        (with a family-suicide guard) and applies the
-                        family cap.
-  --family-cap N      Max active members per family (default: 3). Used
-                      by --register-descendant.
+                        (with a family-suicide guard).
 
 Misc:
   --list              List active strategies and exit
@@ -159,7 +156,6 @@ function parseArgs(argv) {
     descendantParent: null,
     descendantFile: null,
     descendantSeason: null,
-    familyCap: 3,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -197,7 +193,6 @@ function parseArgs(argv) {
       case "--parent": opts.descendantParent = next(); break;
       case "--file": opts.descendantFile = next(); break;
       case "--birth-season": opts.descendantSeason = parseInt(next(), 10); break;
-      case "--family-cap": opts.familyCap = parseInt(next(), 10); break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
@@ -691,13 +686,13 @@ async function cmdPrepareSpawn(opts) {
 }
 
 async function cmdRegisterDescendant(opts) {
-  const { descendantName: name, descendantParent: parent, descendantFile: file, descendantSeason: birthSeason, familyCap } = opts;
+  const { descendantName: name, descendantParent: parent, descendantFile: file, descendantSeason: birthSeason } = opts;
   if (!name || !parent || !file) {
     console.error("--register-descendant requires --name, --parent, and --file");
     process.exit(1);
   }
   let result;
-  try { result = await registerDescendant({ name, parent, filePath: file, birthSeason, familyCap }); }
+  try { result = await registerDescendant({ name, parent, filePath: file, birthSeason }); }
   catch (e) { console.error(e.message); process.exit(1); }
   console.log(`Registered descendant ${result.name} (gen ${result.lineage.generation}, family ${result.lineage.family}) of ${parent}.`);
   console.log(`Strategy file: ${result.filePath}`);
