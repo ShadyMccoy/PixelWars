@@ -468,7 +468,8 @@ select.dropdown {
   grid-area: rightbar;
 }
 
-#chart-canvas {
+#chart-canvas,
+#territory-chart-canvas {
   width: 100%;
   height: 140px;
   display: block;

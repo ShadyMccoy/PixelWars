@@ -217,12 +217,16 @@ export class Game {
   }
 
   recordHistory() {
+    if (this._territoryDirty) this.recomputeTerritory();
     const sample = { t: this.elapsed };
+    const terr = {};
     const list = this.players.list;
     for (let i = 0; i < list.length; i++) {
       const p = list[i];
       sample[p.id] = p.totals.strength;
+      terr[p.id] = p.totals.territory;
     }
+    sample.terr = terr;
     this.history.push(sample);
     if (this.history.length > this.maxHistory) this.history.shift();
   }
