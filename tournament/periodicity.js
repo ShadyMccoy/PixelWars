@@ -307,6 +307,14 @@ async function main() {
       const window = r.series.slice(start, start + winLen);
       console.log(`zoomed (${winLen} ticks starting at t=${start}):`);
       console.log(ascii(window, Math.min(120, winLen), 8));
+      // Per-tick delta over the same window. Sharp negative spikes here
+      // are the "sudden drops" the strength curve shows: synchronized
+      // cytoplasm tiles all fire on the same tick, dumping into membrane
+      // tiles that are already at maxArmy, so the surplus is clamped away.
+      const deltas = [];
+      for (let i = 1; i < window.length; i++) deltas.push(window[i] - window[i - 1]);
+      console.log(`per-tick delta (same window — sharp negatives = clamp-loss bursts):`);
+      console.log(ascii(deltas, Math.min(120, deltas.length), 8));
       // Spectrum: log-magnitude, in the periodic band.
       const kMin = Math.max(1, Math.floor(r.N / opts.maxPeriod));
       const kMax = Math.min(r.mags.length - 1, Math.ceil(r.N / opts.minPeriod));
