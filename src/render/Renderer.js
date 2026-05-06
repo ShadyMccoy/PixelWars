@@ -95,18 +95,18 @@ export class Renderer {
   drawArmies(now) {
     const ctx = this.ctx;
     const ts = this.tileSize;
-    // Radius (not diameter) as a fraction of the tile. Area scales
-    // linearly with strength so the circle's visible bulk matches
-    // intuition; sqrt avoids the tiny-army-looks-huge effect that
-    // pure linear-radius scaling produces. minRadius keeps weak
-    // armies clearly visible.
-    const minRadius = 0.22;
+    // Radius scales as ratio^0.7 — between area-linear (sqrt) and
+    // diameter-linear (linear). A 10x strength change yields ~3x
+    // diameter / ~9x area, big enough to read at a glance without
+    // making weak armies invisible.
+    const minRadius = 0.08;
     const maxRadius = 0.46;
+    const exponent = 0.7;
     for (const army of this.game.armies) {
       if (!army.alive) continue;
       if (!army.bornAt) army.bornAt = now;
       const ratio = Math.max(0, Math.min(1, army.strength / army.maxStrength));
-      const radiusFactor = minRadius + (maxRadius - minRadius) * Math.sqrt(ratio);
+      const radiusFactor = minRadius + (maxRadius - minRadius) * Math.pow(ratio, exponent);
       const cx = (army.pos.x + 0.5) * ts;
       const cy = (army.pos.y + 0.5) * ts;
       const age = (now - army.bornAt) / 1000;
