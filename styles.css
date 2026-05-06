@@ -451,6 +451,41 @@ select.dropdown {
   padding: 2px 0;
 }
 
+.tech-chips {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.tech-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: var(--bg-2);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+  line-height: 1.2;
+  flex: 1 1 0;
+  justify-content: center;
+}
+
+.tech-chip-label {
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.tech-chip-val {
+  color: var(--text);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.tech-chip.tech-up .tech-chip-val { color: #7fd182; }
+.tech-chip.tech-down .tech-chip-val { color: #d18a7f; }
+.tech-chip.tech-neutral { opacity: 0.55; }
+
 .strength-bar {
   height: 4px;
   background: var(--bg-3);
@@ -607,6 +642,37 @@ select.dropdown {
   gap: 6px 8px;
 }
 
+.preset-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.preset-tab {
+  font-size: 10px;
+  padding: 3px 6px;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  transition: all 0.12s;
+}
+
+.preset-tab:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.status-line {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-style: italic;
+  margin: 0;
+  line-height: 1.4;
+}
+
 .map-editor label {
   display: flex;
   align-items: center;
@@ -737,6 +803,84 @@ select.dropdown {
   font-size: 12px;
   padding: 6px;
   text-align: center;
+}
+
+.btn-watch:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.league-selection-sum {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2px;
+  background: var(--bg-1);
+}
+
+.ranking-row {
+  display: grid;
+  grid-template-columns: 28px 14px 1fr auto;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: left;
+  transition: background 0.1s, color 0.1s;
+}
+
+.ranking-row:hover {
+  background: var(--bg-3);
+  color: var(--text);
+}
+
+.ranking-row.selected {
+  background: var(--bg-3);
+  color: var(--text);
+}
+
+.ranking-row .rr-rank {
+  text-align: right;
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+.ranking-row .rr-mark {
+  color: var(--text-dim);
+}
+
+.ranking-row.selected .rr-mark {
+  color: var(--accent);
+}
+
+.ranking-row .rr-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ranking-row .rr-rating {
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .season-champions {

@@ -10,12 +10,27 @@
 
 import { runMatch } from "./arena.js";
 import { mulberry32 } from "../src/core/rng.js";
-import {
-  newRating,
-  pairwiseUpdates,
-  pickInformativeLineup,
-  ratingsToObject,
-} from "./rating.js";
+import { fitPlackettLuce } from "./plackettLuce.js";
+
+// Rating shape mirrors the original Glicko output (rating, rd, played)
+// so downstream consumers — season.js, spawn.js, SeasonViewer.js —
+// don't need to know we swapped the underlying model. RD is a synthetic
+// uncertainty derived from match count: 350 for unplayed bots, falling
+// to ~50 once a bot has many games. PL itself doesn't expose RD; this
+// is a stand-in that preserves the "new bots are uncertain" semantics.
+const RATING_BASE = 1000;
+const RATING_SCALE = 400;
+const NEW_RD = 350;
+const MIN_RD = 50;
+
+function skillToRating(skill) {
+  return RATING_BASE + RATING_SCALE * Math.log10(skill);
+}
+
+function rdFromPlayed(played) {
+  if (played <= 0) return NEW_RD;
+  return Math.max(MIN_RD, NEW_RD / Math.sqrt(played + 1));
+}
 
 // ---------------------------------------------------------- aggregation
 
@@ -191,18 +206,16 @@ export function runRatingTournament({
   baseSeed = 1,
   maxTicks = 4000,
   onMatch = null,
-  initialRatings = null,
 }) {
+  // Plackett-Luce-driven analog of the previous Glicko runner. Plays
+  // random K-bot matches, then fits PL across all results to produce
+  // the final rating. The return shape (standings with rating + rd,
+  // ratings object, raw results) matches the old Glicko output so
+  // downstream consumers don't need to change.
   const N = strategies.length;
   if (N < 2) throw new Error("Need at least 2 strategies");
   const k = Math.min(poolSize, N);
   if (k < 2) throw new Error(`pool size must be >= 2 (got ${k})`);
-
-  const ratings = new Map();
-  for (const s of strategies) {
-    const seed = initialRatings?.[s.name];
-    ratings.set(s.name, newRating(seed ?? {}));
-  }
 
   const standings = new Map(strategies.map((s) => [s.name, blankRow(s)]));
   const positions = map.positions(k);
@@ -210,7 +223,7 @@ export function runRatingTournament({
   const sampleRng = mulberry32(baseSeed ^ 0x9e3779b9);
 
   for (let m = 0; m < matches; m++) {
-    const lineup = pickInformativeLineup(strategies, ratings, k, sampleRng);
+    const lineup = sample(strategies, k, sampleRng);
     const seed = baseSeed + m;
     const result = runMatch({
       strategies: lineup,
@@ -222,14 +235,29 @@ export function runRatingTournament({
     onMatch?.(m, result, lineup);
     results.push({ match: m, seed, lineup: lineup.map((s) => s.name), ...result });
     recordResult(standings, result);
+  }
 
-    const updates = pairwiseUpdates(ratings, result.ranking);
-    for (const [name, updated] of updates) ratings.set(name, updated);
+  // Fit PL on every match's full finish order.
+  const orderings = results.map((r) => r.ranking.map((e) => e.strategy));
+  const { skill } = fitPlackettLuce(orderings);
+
+  const ratings = new Map();
+  const ratingsObj = {};
+  for (const s of strategies) {
+    const sk = skill[s.name] ?? 1;
+    const played = standings.get(s.name)?.played ?? 0;
+    const r = {
+      rating: skillToRating(sk),
+      rd: rdFromPlayed(played),
+      played,
+    };
+    ratings.set(s.name, r);
+    ratingsObj[s.name] = { ...r };
   }
 
   return {
     standings: finalizeStandings(standings, ratings),
-    ratings: ratingsToObject(ratings),
+    ratings: ratingsObj,
     results,
   };
 }
