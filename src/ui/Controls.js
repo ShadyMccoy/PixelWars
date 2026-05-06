@@ -23,8 +23,9 @@ export class Controls {
     this.btnStep.addEventListener("click", () => this.app.stepOnce());
     this.btnReset.addEventListener("click", () => this.app.reload());
     this.speed.addEventListener("input", () => {
-      this.app.speed = parseFloat(this.speed.value);
-      this.speedLabel.textContent = `${this.app.speed.toFixed(1)}x`;
+      const v = parseFloat(this.speed.value);
+      this.app.setSpeed(v);
+      this.speedLabel.textContent = `${v.toFixed(1)}x`;
     });
     this.toggleGrid.addEventListener("change", () => {
       this.app.renderer.showGrid = this.toggleGrid.checked;
