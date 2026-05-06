@@ -32,6 +32,30 @@ export class Game {
     this.rng = makeRng(seed);
     this.eventBus = typeof EventTarget !== "undefined" ? new EventTarget() : null;
     this._territoryDirty = true;
+    this.recentMoves = [];
+    this.moveFadeTicks = 8;
+  }
+
+  recordMove(fromTile, toTile, player, power) {
+    if (!fromTile || !toTile) return;
+    let dx = toTile.pos.x - fromTile.pos.x;
+    let dy = toTile.pos.y - fromTile.pos.y;
+    const w = this.map.width;
+    const h = this.map.height;
+    if (dx > 1) dx -= w;
+    else if (dx < -1) dx += w;
+    if (dy > 1) dy -= h;
+    else if (dy < -1) dy += h;
+    this.recentMoves.push({
+      x: fromTile.pos.x,
+      y: fromTile.pos.y,
+      dx,
+      dy,
+      color: player.color,
+      accent: player.accent,
+      power,
+      tick: this.tick,
+    });
   }
 
   on(event, fn) {
@@ -127,6 +151,16 @@ export class Game {
     }
     this.map.resolveConflicts(this._dirtyTiles);
 
+    if (this.recentMoves.length > 0) {
+      const moves = this.recentMoves;
+      const cutoff = tick - this.moveFadeTicks;
+      let w = 0;
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].tick > cutoff) moves[w++] = moves[i];
+      }
+      moves.length = w;
+    }
+
     if (this._deadCount > 32 && this._deadCount * 4 > armies.length) {
       this._compactArmies();
     }
@@ -202,6 +236,7 @@ export class Game {
     this.armies.length = 0;
     this._deadCount = 0;
     this._dirtyTiles.length = 0;
+    this.recentMoves.length = 0;
     this.tick = 0;
     this.elapsed = 0;
     this.history.length = 0;

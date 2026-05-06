@@ -296,6 +296,62 @@ select.dropdown {
   white-space: pre-wrap;
 }
 
+.tile-tooltip {
+  position: fixed;
+  background: var(--bg-1);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 1000;
+  min-width: 160px;
+}
+
+.tile-tooltip-head {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.tile-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tile-tooltip-row + .tile-tooltip-row {
+  margin-top: 3px;
+}
+
+.tile-tooltip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.tile-tooltip-name {
+  font-weight: 600;
+  flex: 1;
+}
+
+.tile-tooltip-num {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: var(--text);
+}
+
+.tile-tooltip-dim {
+  color: var(--text-dim);
+}
+
 .player-head {
   display: flex;
   align-items: center;
