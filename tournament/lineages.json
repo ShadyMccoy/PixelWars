@@ -736,9 +736,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T17:14:26.509Z"
     },
     {
       "name": "Drift_NW",
@@ -1406,9 +1406,9 @@
       "parent": "Spearhead",
       "generation": 1,
       "birthSeason": 3,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:36:49.775Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T17:14:26.409Z"
     },
     {
       "name": "Spearhead_g1_3f955f",
@@ -1656,9 +1656,9 @@
       "parent": "Spearhead",
       "generation": 1,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T09:24:14.325Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T17:14:26.608Z"
     },
     {
       "name": "Pinwheel_g1_0ca9c3",
@@ -1688,6 +1688,36 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T09:25:36.029Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_7089d3",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T17:14:26.403Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Membrane_g1_b9f1d5",
+      "family": "Membrane",
+      "parent": "Membrane",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T17:14:26.503Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g1_879a88",
+      "family": "Conqueror",
+      "parent": "Conqueror",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T17:14:26.602Z",
       "archivedAt": null
     }
   ]
