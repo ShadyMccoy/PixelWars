@@ -10,6 +10,7 @@ export class Renderer {
     this.showGrid = true;
     this.showTerritory = true;
     this.showGlow = true;
+    this.showMoves = true;
     this.hoverTile = null;
     this.selectedTile = null;
     this.resize();
@@ -74,6 +75,8 @@ export class Renderer {
       ctx.stroke();
     }
 
+    if (this.showMoves) this.drawMoves();
+
     this.drawArmies(now);
 
     if (this.hoverTile) this.outlineTile(this.hoverTile, "rgba(255,255,255,0.35)", 2);
@@ -89,6 +92,45 @@ export class Renderer {
       const alpha = 0.10 + 0.20 * (owner.strength / owner.maxStrength);
       ctx.fillStyle = hexToRgba(owner.player.color, alpha);
       ctx.fillRect(tile.pos.x * ts, tile.pos.y * ts, ts, ts);
+    }
+  }
+
+  drawMoves() {
+    const ctx = this.ctx;
+    const ts = this.tileSize;
+    const game = this.game;
+    const moves = game.recentMoves;
+    if (!moves || moves.length === 0) return;
+    const fade = game.moveFadeTicks || 8;
+    const tick = game.tick;
+    const lineWidth = Math.max(1, ts * 0.09);
+    const headLen = ts * 0.22;
+    ctx.lineCap = "round";
+    for (let i = 0; i < moves.length; i++) {
+      const m = moves[i];
+      const age = tick - m.tick;
+      if (age >= fade || age < 0) continue;
+      const alpha = (1 - age / fade) * 0.5;
+      const sx = (m.x + 0.5) * ts;
+      const sy = (m.y + 0.5) * ts;
+      const tx = (m.x + 0.5 + m.dx) * ts;
+      const ty = (m.y + 0.5 + m.dy) * ts;
+      const stroke = hexToRgba(m.accent, alpha);
+      ctx.strokeStyle = stroke;
+      ctx.fillStyle = stroke;
+      ctx.lineWidth = lineWidth;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(tx, ty);
+      ctx.stroke();
+      const ang = Math.atan2(ty - sy, tx - sx);
+      const back = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(tx + Math.cos(ang + back) * headLen, ty + Math.sin(ang + back) * headLen);
+      ctx.lineTo(tx + Math.cos(ang - back) * headLen, ty + Math.sin(ang - back) * headLen);
+      ctx.closePath();
+      ctx.fill();
     }
   }
 
