@@ -110,14 +110,20 @@ export class Renderer {
       const m = moves[i];
       const age = tick - m.tick;
       if (age >= fade || age < 0) continue;
-      const alpha = (1 - age / fade) * 0.5;
+      const alpha = (1 - age / fade) * 0.6;
       const sx = (m.x + 0.5) * ts;
       const sy = (m.y + 0.5) * ts;
       const tx = (m.x + 0.5 + m.dx) * ts;
       const ty = (m.y + 0.5 + m.dy) * ts;
-      const stroke = hexToRgba(m.accent, alpha);
-      ctx.strokeStyle = stroke;
-      ctx.fillStyle = stroke;
+      // Comet-style taper: transparent at the origin, full accent at the
+      // destination. The gradient itself encodes direction, so a westbound
+      // and an eastbound move are never mirror images of each other.
+      const grad = ctx.createLinearGradient(sx, sy, tx, ty);
+      grad.addColorStop(0, hexToRgba(m.accent, 0));
+      grad.addColorStop(0.6, hexToRgba(m.accent, alpha * 0.5));
+      grad.addColorStop(1, hexToRgba(m.accent, alpha));
+      ctx.strokeStyle = grad;
+      ctx.fillStyle = hexToRgba(m.accent, alpha);
       ctx.lineWidth = lineWidth;
       ctx.beginPath();
       ctx.moveTo(sx, sy);
