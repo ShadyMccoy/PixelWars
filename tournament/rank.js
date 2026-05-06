@@ -9,23 +9,20 @@
 
 import { loadMatches } from "./matchLog.js";
 import { fitPlackettLuce } from "./plackettLuce.js";
+import { saveRankings, getRankingsPath } from "./rankingsStore.js";
 import { RULES_VERSION } from "../src/core/version.js";
-import { writeFile, mkdir } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-
-const HERE = dirname(fileURLToPath(import.meta.url));
-const RANKINGS_PATH = resolve(HERE, "rankings.json");
 
 const RATING_BASE = 1000;
 const RATING_SCALE = 400;
 
-export function getRankingsPath() {
-  return RANKINGS_PATH;
-}
-
 export function skillToRating(skill) {
   return Math.round(RATING_BASE + RATING_SCALE * Math.log10(skill));
+}
+
+export function filterCurrentVersion(matches) {
+  return matches.filter((m) => m.rulesVersion === RULES_VERSION);
 }
 
 export function buildRankings(matches) {
@@ -93,9 +90,8 @@ async function main() {
   const dt = Date.now() - t0;
   console.log(`  ${rankings.iterations} iterations in ${dt}ms (converged=${rankings.converged})`);
 
-  await mkdir(dirname(RANKINGS_PATH), { recursive: true });
-  await writeFile(RANKINGS_PATH, JSON.stringify(rankings, null, 2) + "\n", "utf8");
-  console.log(`Wrote ${RANKINGS_PATH}: ${rankings.players.length} players`);
+  await saveRankings(rankings);
+  console.log(`Wrote ${getRankingsPath()}: ${rankings.players.length} players`);
   console.log(`\nTop 15:`);
   for (const p of rankings.players.slice(0, 15)) {
     console.log(`  ${String(p.rating).padStart(5)}  ${p.name.padEnd(20)} (${p.matches}m, ${p.wins}w, avgFin=${p.avgFinish ?? "-"})`);

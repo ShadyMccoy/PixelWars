@@ -39,7 +39,6 @@ if (requested) {
 const seasons = parseInt(arg("--seasons", "2"), 10);
 const matchesPerSeason = parseInt(arg("--matches-per-season", "15"), 10);
 const tierSize = parseInt(arg("--tier-size", "8"), 10);
-const bootstrap = parseInt(arg("--bootstrap", "30"), 10);
 
 // Use a representative pool: 24 active bots covering the league spread.
 const data = JSON.parse(readFileSync("tournament/leagues.json", "utf8"));
@@ -51,6 +50,18 @@ const poolNames = [...new Set([
   ...flat.slice(-8),
 ])];
 const strategies = poolNames.map(getStrategy);
+
+// Seed initial tier composition from leagues.json position (top of file =
+// strongest). Without a real rankings.json for this map-search config we
+// can't use PL ratings; the linearly-scaled position is a decent proxy
+// to start with, and the league runner's between-season refit takes
+// over from there.
+const N = flat.length;
+const ratingByName = new Map(flat.map((name, i) => [name, 2000 - (1500 * i) / Math.max(1, N - 1)]));
+const seedRatings = {
+  get: (name) => (ratingByName.has(name) ? ratingByName.get(name) : 1000),
+  has: (name) => ratingByName.has(name),
+};
 
 console.log(`Spot-check league on config: ${cfg.name}`);
 console.log(`  config: ${JSON.stringify(cfg.config)} k=${cfg.spec?.k ?? 4} topology=${cfg.spec?.topology ?? "ring"}`);
@@ -64,11 +75,9 @@ const result = runLeague({
   seasons,
   matchesPerSeason,
   poolSize: cfg.spec?.k ?? 4,
-  promote: 1,
-  relegate: 1,
-  bootstrapMatches: bootstrap,
   baseSeed: 7777,
   maxTicks: 1500,
+  seedRatings,
 });
 console.log(`\nelapsed: ${((Date.now() - t0) / 1000).toFixed(0)}s`);
 
