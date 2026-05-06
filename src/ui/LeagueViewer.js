@@ -6,11 +6,12 @@
 //   - Click a row to toggle it in/out of the selection.
 //   - Tier shortcut buttons (T1, T2, …) replace the selection with a
 //     band of the ranking (T1 = ranks 1-10, T2 = 11-20, etc.).
-//   - "Watch random match" reads the Custom Map sidebar fields, samples
+//   - "Watch random match" reads the Map sidebar fields, samples
 //     numPlayers bots from the current selection, and asks the app to
-//     load that match. Map config and player count come from the Custom
-//     Map form — the rankings list only owns "which bots are in the
-//     pool."
+//     load that match. Map config and player count come from the Map
+//     form — the rankings list only owns "which bots are in the pool."
+//   - Any change to the Map form auto-reloads through this same path
+//     (see App.applyMapForm).
 //
 // If tournament/rankings.json is missing, we show a hint to run
 // `npm run tournament -- --league` to generate it.
@@ -74,13 +75,8 @@ export class LeagueViewer {
     this.render();
   }
 
-  // Suggested first match args for the auto-loader on first load. Picks
-  // numPlayers random bots from the top tier — the most intuitive default.
-  topTierArgs(numPlayers = 4) {
-    if (!this.rankings) return null;
-    const pool = this.rankings.players.slice(0, TIER_SIZE).map((p) => p.name);
-    if (pool.length < numPlayers) return null;
-    return { botNames: pool, numPlayers };
+  canWatch() {
+    return !!this.rankings && this.selection.size >= 2;
   }
 
   render() {
@@ -168,41 +164,13 @@ export class LeagueViewer {
   }
 
   watchMatch() {
-    const cfg = readMapEditor();
+    const cfg = this.app.mapEditor.read();
     const pool = [...this.selection];
     if (pool.length < 2) return;
     const numPlayers = Math.min(cfg.numPlayers, pool.length);
     this.app._userChoseMode = true;
     this.app.loadCustomMap({ ...cfg, numPlayers, botNames: pool });
   }
-}
-
-function readMapEditor() {
-  const w = document.getElementById("me-width");
-  const h = document.getElementById("me-height");
-  const g = document.getElementById("me-growth");
-  const m = document.getElementById("me-max-army");
-  const p = document.getElementById("me-players");
-  const wr = document.getElementById("me-wrap");
-  return {
-    width: clampInt(w?.value, 6, 120, 30),
-    height: clampInt(h?.value, 6, 120, 22),
-    growth: clampFloat(g?.value, 0.1, 5, 1.8),
-    maxArmy: clampInt(m?.value, 1, 20, 6),
-    numPlayers: clampInt(p?.value, 2, 8, 4),
-    wrap: !!wr?.checked,
-  };
-}
-
-function clampInt(raw, lo, hi, fallback) {
-  const n = parseInt(raw, 10);
-  if (!Number.isFinite(n)) return fallback;
-  return Math.max(lo, Math.min(hi, n));
-}
-function clampFloat(raw, lo, hi, fallback) {
-  const n = parseFloat(raw);
-  if (!Number.isFinite(n)) return fallback;
-  return Math.max(lo, Math.min(hi, n));
 }
 
 function escapeHtml(s) {
