@@ -1,0 +1,176 @@
+{
+  "seasons": [
+    {
+      "id": 1,
+      "savedAt": "2026-05-06T05:29:32.945Z",
+      "map": "lab1",
+      "rrMap": "lab3",
+      "poolSize": 4,
+      "matches": 50,
+      "baseSeed": 1,
+      "champions": [
+        {
+          "kind": "rating-leader",
+          "name": "Crusader"
+        },
+        {
+          "kind": "round-robin",
+          "name": "Crusader"
+        }
+      ],
+      "topField": [
+        "Crusader",
+        "Cautious",
+        "Aggressive",
+        "Trinity",
+        "Bully",
+        "SlowAndSteady"
+      ],
+      "standings": [
+        {
+          "name": "Crusader",
+          "rating": 2315.26,
+          "rd": 74.91,
+          "played": 20,
+          "wins": 20,
+          "pointsPerGame": 3
+        },
+        {
+          "name": "Cautious",
+          "rating": 1994.18,
+          "rd": 59.8,
+          "played": 20,
+          "wins": 1,
+          "pointsPerGame": 2.05
+        },
+        {
+          "name": "Aggressive",
+          "rating": 1734.76,
+          "rd": 57.31,
+          "played": 20,
+          "wins": 2,
+          "pointsPerGame": 1.25
+        },
+        {
+          "name": "Trinity",
+          "rating": 1577.91,
+          "rd": 56.39,
+          "played": 21,
+          "wins": 5,
+          "pointsPerGame": 0.857
+        },
+        {
+          "name": "Bully",
+          "rating": 1548.98,
+          "rd": 64.59,
+          "played": 14,
+          "wins": 2,
+          "pointsPerGame": 1.214
+        },
+        {
+          "name": "SlowAndSteady",
+          "rating": 1504.54,
+          "rd": 56.64,
+          "played": 16,
+          "wins": 3,
+          "pointsPerGame": 1.188
+        },
+        {
+          "name": "Hunter",
+          "rating": 1461.82,
+          "rd": 61.15,
+          "played": 13,
+          "wins": 4,
+          "pointsPerGame": 1.538
+        },
+        {
+          "name": "Berserker",
+          "rating": 1454.9,
+          "rd": 61.62,
+          "played": 15,
+          "wins": 5,
+          "pointsPerGame": 1.8
+        },
+        {
+          "name": "Vampire",
+          "rating": 1417.78,
+          "rd": 60.76,
+          "played": 16,
+          "wins": 8,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Tactician",
+          "rating": 1125.95,
+          "rd": 60.97,
+          "played": 15,
+          "wins": 0,
+          "pointsPerGame": 1.333
+        },
+        {
+          "name": "Defender",
+          "rating": 1092.57,
+          "rd": 60.69,
+          "played": 15,
+          "wins": 0,
+          "pointsPerGame": 1.067
+        },
+        {
+          "name": "Swarm",
+          "rating": 884.22,
+          "rd": 68.54,
+          "played": 15,
+          "wins": 0,
+          "pointsPerGame": 0.333
+        }
+      ],
+      "roundRobinStandings": [
+        {
+          "name": "Crusader",
+          "played": 8,
+          "wins": 5,
+          "pointsPerGame": 3.625,
+          "avgRank": 2.375
+        },
+        {
+          "name": "Trinity",
+          "played": 8,
+          "wins": 3,
+          "pointsPerGame": 3.375,
+          "avgRank": 2.625
+        },
+        {
+          "name": "Cautious",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 2.5,
+          "avgRank": 3.5
+        },
+        {
+          "name": "Bully",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 2.125,
+          "avgRank": 3.875
+        },
+        {
+          "name": "Aggressive",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 2,
+          "avgRank": 4
+        },
+        {
+          "name": "SlowAndSteady",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 1.375,
+          "avgRank": 4.625
+        }
+      ],
+      "losses": {
+        "Crusader": []
+      }
+    }
+  ]
+}

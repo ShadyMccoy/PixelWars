@@ -21,6 +21,8 @@ import { STRATEGY_LIST, ALL_STRATEGY_LIST, ARCHIVED_STRATEGY_LIST, getStrategy }
 import { MAPS } from "./maps.js";
 import { runFfaTournament, runPoolTournament, runRatingTournament } from "./scheduler.js";
 import { runLeague } from "./league.js";
+import { runSeason } from "./season.js";
+import { saveSeason, getSeasonStorePath } from "./seasonStore.js";
 import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
@@ -88,6 +90,14 @@ Archive (exclude weak bots from default tournament pool):
   --archive-clear     Clear the archive (everyone competes again)
   --archive-list      Print the current archive and exit
 
+Season mode (rating tournament + top-N round robin → champions):
+  --season            Run a season; emits two champions (rating leader
+                      + round-robin winner). Saves to seasons.json.
+  --season-rr-map NAME    Map for the round-robin phase (default: lab3,
+                          which fits 10 players comfortably)
+  --season-top N      Number of top bots in the round robin (default: 10)
+  --season-rr-rounds N    Round-robin rounds (default: 21)
+
 Lineage (genetic descendant feature):
   --list-lineages     Print every bot's family/parent/generation and exit
   --backfill-lineages Add gen-0 founder records for any bot missing one
@@ -132,6 +142,10 @@ function parseArgs(argv) {
     seedFromLeague: null,
     insertTier: 3,
     rating: false,
+    season: false,
+    seasonRrMap: "lab3",
+    seasonTop: 10,
+    seasonRrRounds: 21,
     listLineages: false,
     backfillLineages: false,
   };
@@ -164,6 +178,10 @@ function parseArgs(argv) {
       case "--seed-from-league": opts.seedFromLeague = next(); break;
       case "--insert-tier": opts.insertTier = parseInt(next(), 10); break;
       case "--rating": opts.rating = true; break;
+      case "--season": opts.season = true; break;
+      case "--season-rr-map": opts.seasonRrMap = next(); break;
+      case "--season-top": opts.seasonTop = parseInt(next(), 10); break;
+      case "--season-rr-rounds": opts.seasonRrRounds = parseInt(next(), 10); break;
       case "--list-lineages": opts.listLineages = true; break;
       case "--backfill-lineages": opts.backfillLineages = true; break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
@@ -470,6 +488,161 @@ async function cmdArchiveBottom(opts) {
   console.log(`(re-import the strategies module — i.e. re-run anything else — to pick up the change)`);
 }
 
+// ---------------------------------------------------------- season
+
+async function cmdSeason(opts) {
+  const map = MAPS[opts.map];
+  if (!map) {
+    console.error(`Unknown map: ${opts.map}. Choose from: ${Object.keys(MAPS).join(", ")}`);
+    process.exit(1);
+  }
+  const rrMap = MAPS[opts.seasonRrMap];
+  if (!rrMap) {
+    console.error(`Unknown round-robin map: ${opts.seasonRrMap}. Choose from: ${Object.keys(MAPS).join(", ")}`);
+    process.exit(1);
+  }
+
+  const names = opts.bots ?? STRATEGY_LIST.map((s) => s.name);
+  let strategies;
+  try { strategies = names.map(getStrategy); }
+  catch (e) { console.error(e.message); process.exit(1); }
+
+  if (strategies.length < 2) {
+    console.error("Season needs at least 2 bots.");
+    process.exit(1);
+  }
+
+  const matchCount = opts.matches ?? 200;
+  const flaggedEntries = [];
+  const onMatch = (phase, idx, result, lineup) => {
+    const lineupNames = lineup.map((s) => s.name);
+    const flags = detectFlags(result, { maxTicks: opts.ticks });
+    if (flags.length) {
+      flaggedEntries.push(buildEntry({
+        map: phase === "round-robin" ? rrMap : map,
+        mapPreset: phase === "round-robin" ? opts.seasonRrMap : opts.map,
+        seed: result.seed, maxTicks: opts.ticks,
+        lineupNames, result, flags,
+      }));
+    }
+    if (opts.verbose) {
+      printMatchSummary(`${phase} #${idx + 1}`, result, lineup);
+    }
+  };
+
+  if (!opts.json) {
+    console.log(
+      `Season: rating phase (${matchCount} matches, K=${opts.pool}, map=${opts.map}) ` +
+      `+ round-robin (top ${opts.seasonTop}, ${opts.seasonRrRounds} rounds, map=${opts.seasonRrMap})\n`,
+    );
+  }
+
+  const season = runSeason({
+    strategies,
+    map,
+    poolSize: opts.pool,
+    matches: matchCount,
+    baseSeed: opts.seed,
+    maxTicks: opts.ticks,
+    rrMap,
+    rrTopN: opts.seasonTop,
+    rrRounds: opts.seasonRrRounds,
+    onMatch,
+  });
+
+  // Per-champion recent loss context — useful for the spawn agent.
+  const losses = {};
+  const championNames = new Set(season.champions.map((c) => c.name));
+  for (const name of championNames) {
+    losses[name] = recentLossesFor(name, season.rating.results, 5);
+  }
+
+  if (opts.json) {
+    process.stdout.write(JSON.stringify({
+      meta: { map: opts.map, rrMap: opts.seasonRrMap, ticks: opts.ticks, seed: opts.seed, pool: opts.pool, matches: matchCount },
+      champions: season.champions,
+      topField: season.topField,
+      ratingStandings: season.rating.standings,
+      roundRobinStandings: season.roundRobin?.standings ?? null,
+      flagged: flaggedEntries,
+      losses,
+    }, null, 2) + "\n");
+  } else {
+    printStandings(season.rating.standings.slice(0, Math.max(opts.seasonTop, 10)), {
+      map: opts.map, ticks: opts.ticks, seed: opts.seed,
+      modeLabel: `season · rating phase · ${matchCount} matches · K=${opts.pool} · ${strategies.length} bots`,
+    });
+    if (season.roundRobin) {
+      console.log(`\nRound-robin (top ${season.topField.length} on ${opts.seasonRrMap}, ${opts.seasonRrRounds} rounds):`);
+      season.roundRobin.standings.slice(0, 10).forEach((s, i) => {
+        console.log(`  ${String(i + 1).padStart(2)}. ${s.name.padEnd(18)} PPG=${s.pointsPerGame.toFixed(2)} Wins=${s.wins} AvgRank=${s.avgRank.toFixed(2)}`);
+      });
+    }
+    console.log(`\nChampions:`);
+    for (const c of season.champions) {
+      console.log(`  ${c.kind.padEnd(16)} → ${c.name}`);
+    }
+    if (flaggedEntries.length) {
+      console.log(`\n${flaggedEntries.length} match${flaggedEntries.length === 1 ? "" : "es"} flagged as interesting.`);
+    }
+  }
+
+  // Persist condensed season record so the spawn agent can read it later.
+  const stored = await saveSeason({
+    map: opts.map,
+    rrMap: opts.seasonRrMap,
+    poolSize: opts.pool,
+    matches: matchCount,
+    baseSeed: opts.seed,
+    champions: season.champions,
+    topField: season.topField,
+    standings: season.rating.standings.slice(0, Math.max(opts.seasonTop, 20)).map((s) => ({
+      name: s.name, rating: s.rating, rd: s.rd, played: s.played,
+      wins: s.wins, pointsPerGame: +s.pointsPerGame.toFixed(3),
+    })),
+    roundRobinStandings: season.roundRobin
+      ? season.roundRobin.standings.map((s) => ({
+          name: s.name, played: s.played, wins: s.wins,
+          pointsPerGame: +s.pointsPerGame.toFixed(3),
+          avgRank: +s.avgRank.toFixed(3),
+        }))
+      : null,
+    losses,
+  });
+  if (!opts.json) {
+    console.log(`\nSeason #${stored.id} saved to ${getSeasonStorePath()}.`);
+  }
+
+  const added = await maybeSaveFlagged(flaggedEntries, opts);
+  if (added.length && !opts.json) {
+    console.log(`Saved ${added.length} new entr${added.length === 1 ? "y" : "ies"} to ${getStorePath()}.`);
+  }
+}
+
+// Pull up to `limit` recent matches where `name` did *not* win, with
+// just enough context for the spawn agent (lineup + finishing rank +
+// seed for replay). Returns [] if the bot won everything.
+function recentLossesFor(name, results, limit) {
+  const losses = [];
+  for (let i = results.length - 1; i >= 0 && losses.length < limit; i--) {
+    const r = results[i];
+    const myRank = r.ranking.findIndex((row) => row.strategy === name);
+    if (myRank < 0) continue;
+    if (myRank === 0 && r.ranking[0].survived) continue;
+    losses.push({
+      seed: r.seed,
+      lineup: r.lineup,
+      finishedRank: myRank + 1,
+      survived: r.ranking[myRank].survived,
+      eliminatedAt: r.ranking[myRank].eliminatedAt,
+      winner: r.ranking[0].strategy,
+      ticks: r.ticks,
+      endReason: r.endReason,
+    });
+  }
+  return losses;
+}
+
 // ---------------------------------------------------------- lineage
 
 async function cmdListLineages() {
@@ -694,6 +867,7 @@ async function main() {
   if (opts.backfillLineages) return cmdBackfillLineages();
   if (opts.replay) return cmdReplay(opts);
   if (opts.league) return cmdLeague(opts);
+  if (opts.season) return cmdSeason(opts);
 
   const map = MAPS[opts.map];
   if (!map) {
