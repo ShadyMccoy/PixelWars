@@ -9,6 +9,7 @@ import { HUD } from "./ui/HUD.js";
 import { Controls } from "./ui/Controls.js";
 import { MatchPicker } from "./ui/MatchPicker.js";
 import { LeagueViewer } from "./ui/LeagueViewer.js";
+import { SeasonViewer } from "./ui/SeasonViewer.js";
 import { MapEditor } from "./ui/MapEditor.js";
 import { ALL_STRATEGIES, STRATEGY_LIST } from "./strategies/index.js";
 import { MAPS } from "../tournament/maps.js";
@@ -60,6 +61,11 @@ class App {
     this.matchPicker = new MatchPicker({
       root: document.getElementById("match-picker"),
       refreshButton: document.getElementById("btn-matches-refresh"),
+      app: this,
+    });
+    this.seasonViewer = new SeasonViewer({
+      root: document.getElementById("season-viewer"),
+      refreshButton: document.getElementById("btn-seasons-refresh"),
       app: this,
     });
     this.mapEditor = new MapEditor({ app: this });
