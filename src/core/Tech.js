@@ -80,7 +80,7 @@ export function techToMultipliers(tech) {
     if (k === "move") {
       // Move's "multiplier" is the garrison floor; high tech reduces
       // the floor so the bot can throw more strength forward. Linear
-      // from MOVE_INTERCEPT (2.0) at tech 0 to MOVE_INTERCEPT - 100 *
+      // from MOVE_INTERCEPT (1.5) at tech 0 to MOVE_INTERCEPT - 100 *
       // SLOPES.move (0.5) at tech 100. No clamp - the formula is the
       // contract.
       mults[k] = MOVE_INTERCEPT - t[k] * SLOPES[k];
