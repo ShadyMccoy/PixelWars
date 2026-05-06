@@ -451,6 +451,41 @@ select.dropdown {
   padding: 2px 0;
 }
 
+.tech-chips {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.tech-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: var(--bg-2);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+  line-height: 1.2;
+  flex: 1 1 0;
+  justify-content: center;
+}
+
+.tech-chip-label {
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.tech-chip-val {
+  color: var(--text);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.tech-chip.tech-up .tech-chip-val { color: #7fd182; }
+.tech-chip.tech-down .tech-chip-val { color: #d18a7f; }
+.tech-chip.tech-neutral { opacity: 0.55; }
+
 .strength-bar {
   height: 4px;
   background: var(--bg-3);

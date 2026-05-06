@@ -111,6 +111,10 @@ export class HUD {
       stratLabel.textContent = player.strategy?.name ?? "";
       if (player.strategy?.description) stratLabel.title = player.strategy.description;
 
+      const techChips = document.createElement("div");
+      techChips.className = "tech-chips";
+      techChips.innerHTML = renderTechChips(player);
+
       const bar = document.createElement("div");
       bar.className = "strength-bar";
       const fill = document.createElement("div");
@@ -120,6 +124,7 @@ export class HUD {
 
       row.appendChild(head);
       row.appendChild(stratLabel);
+      row.appendChild(techChips);
       row.appendChild(bar);
 
       if (this.app.mode?.key === "sandbox") {
@@ -177,6 +182,22 @@ function escapeHtml(s) {
 }
 
 const KNOB_LABELS = { move: "Move", stack: "Stack", prod: "Prod", atk: "Atk", def: "Def" };
+const KNOB_SHORT = { move: "MOV", stack: "STK", prod: "PRD", atk: "ATK", def: "DEF" };
+
+function renderTechChips(player) {
+  const tech = player?.tech ?? NEUTRAL_TECH;
+  return KNOBS.map((k) => {
+    const v = tech[k] ?? 0;
+    const baseline = NEUTRAL_TECH[k];
+    const cls = v > baseline ? "up" : v < baseline ? "down" : "neutral";
+    return `
+      <span class="tech-chip tech-${cls}" title="${KNOB_LABELS[k]} ${v}">
+        <span class="tech-chip-label">${KNOB_SHORT[k]}</span>
+        <span class="tech-chip-val">${v}</span>
+      </span>
+    `;
+  }).join("");
+}
 
 function renderTechLoadout(player) {
   const tech = player?.tech ?? NEUTRAL_TECH;
