@@ -446,9 +446,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:18:40.796Z"
     },
     {
       "name": "Hunter_07",
@@ -956,9 +956,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:18:40.904Z"
     },
     {
       "name": "Bully_08",
@@ -1588,6 +1588,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T08:40:34.585Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_1a87fc",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:18:40.790Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_e91678",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:18:40.899Z",
       "archivedAt": null
     }
   ]

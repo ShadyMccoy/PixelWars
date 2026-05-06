@@ -7,6 +7,7 @@
 import Crusader_g1_5ae640 from "./Crusader_g1_5ae640.js";
 import Crusader_g1_5f8b45 from "./Crusader_g1_5f8b45.js";
 import Pinwheel_g1_24119c from "./Pinwheel_g1_24119c.js";
+import Spearhead_g1_1a87fc from "./Spearhead_g1_1a87fc.js";
 import Spearhead_g1_1b59ef from "./Spearhead_g1_1b59ef.js";
 import Spearhead_g1_1f0d47 from "./Spearhead_g1_1f0d47.js";
 import Spearhead_g1_36d9c1 from "./Spearhead_g1_36d9c1.js";
@@ -19,6 +20,7 @@ import Spearhead_g1_859468 from "./Spearhead_g1_859468.js";
 import Spearhead_g1_bf0e20 from "./Spearhead_g1_bf0e20.js";
 import Spearhead_g1_d8bf0f from "./Spearhead_g1_d8bf0f.js";
 import Spearhead_g1_dc0148 from "./Spearhead_g1_dc0148.js";
+import Spearhead_g1_e91678 from "./Spearhead_g1_e91678.js";
 import Spearhead_g1_fbedc2 from "./Spearhead_g1_fbedc2.js";
 import Stalker_g1_86aa0f from "./Stalker_g1_86aa0f.js";
 import Stalker_g1_8767f6 from "./Stalker_g1_8767f6.js";
@@ -29,6 +31,7 @@ export const DESCENDANTS = [
   Crusader_g1_5ae640,
   Crusader_g1_5f8b45,
   Pinwheel_g1_24119c,
+  Spearhead_g1_1a87fc,
   Spearhead_g1_1b59ef,
   Spearhead_g1_1f0d47,
   Spearhead_g1_36d9c1,
@@ -41,6 +44,7 @@ export const DESCENDANTS = [
   Spearhead_g1_bf0e20,
   Spearhead_g1_d8bf0f,
   Spearhead_g1_dc0148,
+  Spearhead_g1_e91678,
   Spearhead_g1_fbedc2,
   Stalker_g1_86aa0f,
   Stalker_g1_8767f6,
