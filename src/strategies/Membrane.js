@@ -1,142 +1,108 @@
 import SlowAndSteady from "./SlowAndSteady.js";
 
-function computeCentroid(game, player) {
-  const cacheKey = `_membraneCentroid_${player.id}`;
+const OPPOSITE = [1, 0, 3, 2]; // left<->right, up<->down
+
+// For each owned tile, compute the index of the neighbor that is one
+// step closer to the membrane (a friendly tile with a non-friendly
+// neighbor). Tiles on the membrane themselves get -1. The result is
+// purely topological — no coordinates, no centroid, no dependence on
+// where x=0 happens to fall.
+function computeMembraneFlow(game, player) {
+  const cacheKey = `_membraneFlow_${player.id}`;
   const cache = game[cacheKey];
-  if (cache && cache.tick === game.tick) return cache.centroid;
+  if (cache && cache.tick === game.tick) return cache.flow;
 
-  const map = game.map;
-  const w = map.width;
-  const h = map.height;
-  const armies = game.armies;
-  let count = 0;
-  let centroid = null;
+  const pid = player.id;
+  const tiles = game.map.tiles;
+  const flow = new Map();
+  const queue = [];
 
-  if (map.wrap) {
-    const TAU = Math.PI * 2;
-    let xCos = 0, xSin = 0, yCos = 0, ySin = 0;
-    for (let i = 0; i < armies.length; i++) {
-      const a = armies[i];
-      if (!a.alive || a.player.id !== player.id) continue;
-      const tx = (a.pos.x / w) * TAU;
-      const ty = (a.pos.y / h) * TAU;
-      xCos += Math.cos(tx);
-      xSin += Math.sin(tx);
-      yCos += Math.cos(ty);
-      ySin += Math.sin(ty);
-      count++;
+  for (let i = 0; i < tiles.length; i++) {
+    const t = tiles[i];
+    if (!hasFriendlyArmy(t, pid)) continue;
+    const n = t.neighbors;
+    let isMembrane = false;
+    for (let d = 0; d < 4; d++) {
+      const nt = n[d];
+      if (!nt) continue; // map edge isn't a threat
+      if (!hasFriendlyArmy(nt, pid)) { isMembrane = true; break; }
     }
-    if (count > 0) {
-      const ax = Math.atan2(xSin, xCos);
-      const ay = Math.atan2(ySin, yCos);
-      const cx = (((ax / TAU) * w) % w + w) % w;
-      const cy = (((ay / TAU) * h) % h + h) % h;
-      centroid = { x: cx, y: cy };
+    if (isMembrane) {
+      flow.set(t, -1);
+      queue.push(t);
     }
-  } else {
-    let sx = 0, sy = 0;
-    for (let i = 0; i < armies.length; i++) {
-      const a = armies[i];
-      if (!a.alive || a.player.id !== player.id) continue;
-      sx += a.pos.x;
-      sy += a.pos.y;
-      count++;
-    }
-    if (count > 0) centroid = { x: sx / count, y: sy / count };
   }
 
-  game[cacheKey] = { tick: game.tick, centroid };
-  return centroid;
+  for (let head = 0; head < queue.length; head++) {
+    const cur = queue[head];
+    const n = cur.neighbors;
+    for (let d = 0; d < 4; d++) {
+      const nt = n[d];
+      if (!nt || flow.has(nt)) continue;
+      if (!hasFriendlyArmy(nt, pid)) continue;
+      // nt is a cytoplasm tile; from nt, the direction back to cur (one
+      // step closer to membrane) is the opposite of d.
+      flow.set(nt, OPPOSITE[d]);
+      queue.push(nt);
+    }
+  }
+
+  game[cacheKey] = { tick: game.tick, flow };
+  return flow;
 }
 
-// Neighbor index order (matches GameMap DIR_DX/DIR_DY): 0=left, 1=right, 2=up, 3=down.
-function outwardScores(army, game, centroid) {
-  const map = game.map;
-  let dx = army.pos.x - centroid.x;
-  let dy = army.pos.y - centroid.y;
-  if (map.wrap) {
-    const w = map.width;
-    const h = map.height;
-    if (dx > w / 2) dx -= w;
-    else if (dx < -w / 2) dx += w;
-    if (dy > h / 2) dy -= h;
-    else if (dy < -h / 2) dy += h;
+function hasFriendlyArmy(tile, pid) {
+  const a = tile.armies;
+  for (let k = 0; k < a.length; k++) {
+    if (a[k].player.id === pid) return true;
   }
-  return [-dx, dx, -dy, dy];
+  return false;
 }
 
 export default {
   name: "Membrane",
   author: "shady",
-  version: 1,
-  description: "Cell-membrane: interior armies repel from the centroid; border armies hold and fight.",
-  summary: `Inspired by a cell: keep mass on the borders to deter attack, but
-spread the body across as much territory as possible. Each tick we
-compute the centroid of all friendly armies (circular mean on wrap
-maps so the wrap seam doesn't break it). An army with any
-non-friendly neighbor — empty tile or enemy — is on the membrane and
-plays SlowAndSteady, doing the actual fighting and expansion. An
-army that is fully enclosed by friendlies is "cytoplasm" and pumps
-nearly all of its strength into whichever neighbor lies furthest
-outward from the centroid, leaving itself at minimum strength to
-regrow next tick. The interior visibly hollows out while the
-perimeter fattens — a cell, not a blob. The thesis: most strategies
-either go thin-and-wide (easily overrun) or fat-and-small (easily
-starved); the membrane wins both axes by letting interior strength
-migrate naturally to wherever the front is.
+  version: 2,
+  description: "Cell-membrane: interior armies push outward to the membrane; border armies hold and fight.",
+  summary: `Inspired by a cell: keep mass on the borders to deter attack,
+but spread the body across as much territory as possible. An army
+with any non-friendly neighbor — empty tile or enemy — is on the
+membrane and plays SlowAndSteady, doing the actual fighting and
+expansion. An army fully enclosed by friendlies is "cytoplasm" and
+pumps nearly all of its strength one step toward the nearest
+membrane tile, leaving itself at minimum strength to regrow next
+tick. Direction is found by a per-tick BFS from the membrane
+inward, so it depends only on the cluster's topology — there is no
+centroid, no notion of "outward from a point", and the map's
+coordinate origin / wrap seam is irrelevant. The interior visibly
+hollows out while the perimeter fattens — a cell, not a blob. The
+thesis: most strategies either go thin-and-wide (easily overrun)
+or fat-and-small (easily starved); the membrane wins both axes by
+letting interior strength migrate naturally to wherever the front
+is.
 
 Known weaknesses: early game, almost every army is a border army,
 so before we have a real interior we are just SlowAndSteady. Against
-a Berserker that punches a hole through the membrane, the centroid
-shifts toward the breach and outward flow re-routes — but the
-breach itself still has to be patched by border-mode fighting.`,
+a Berserker that punches a hole through the membrane, the breach
+itself becomes the nearest membrane for nearby cytoplasm and gets
+fed — but the patching still happens via border-mode fighting.`,
   act(army, game) {
     const tile = army.tile;
     if (!tile) return;
-    const neighbors = tile.neighbors;
-    const pid = army.player.id;
+    const flow = computeMembraneFlow(game, army.player);
+    const dir = flow.get(tile);
 
-    let isBorder = false;
-    for (let i = 0; i < 4; i++) {
-      const t = neighbors[i];
-      // Map edge (non-wrap) is not a threat — treat like a friendly side so
-      // we don't form a membrane against the wall.
-      if (!t) continue;
-      const tArmies = t.armies;
-      if (tArmies.length === 0) { isBorder = true; break; }
-      let friendly = false;
-      for (let k = 0; k < tArmies.length; k++) {
-        if (tArmies[k].player.id === pid) { friendly = true; break; }
-      }
-      if (!friendly) { isBorder = true; break; }
-    }
-
-    if (isBorder) {
+    // -1 = membrane, undefined = not in flow (shouldn't happen for an
+    // alive army's own tile, but be safe).
+    if (dir === -1 || dir === undefined) {
       SlowAndSteady.act(army, game);
       return;
     }
 
-    const centroid = computeCentroid(game, army.player);
-    if (!centroid) {
-      SlowAndSteady.act(army, game);
-      return;
-    }
-    // Cytoplasm: pump strength outward into the membrane. Pick the most
-    // outward friendly neighbor and dump (strength - 1) into it. This
-    // drains the interior to ~1 strength while feeding the perimeter,
-    // giving the territory a visibly hollow, cell-like appearance.
-    const scores = outwardScores(army, game, centroid);
-    let bestIdx = -1;
-    let bestScore = -Infinity;
-    for (let i = 0; i < 4; i++) {
-      if (!neighbors[i]) continue;
-      if (scores[i] > bestScore) {
-        bestScore = scores[i];
-        bestIdx = i;
-      }
-    }
-    if (bestIdx < 0) return;
+    // Cytoplasm: pump (strength - 1) one step toward the membrane.
+    const target = tile.neighbors[dir];
+    if (!target) return;
     const power = army.strength - 1;
-    if (power > 0.5) army.attack(neighbors[bestIdx], power);
+    if (power > 0.5) army.attack(target, power);
   },
 };
