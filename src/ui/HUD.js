@@ -1,5 +1,4 @@
 import { hexToRgba } from "../render/Renderer.js";
-import { STRATEGIES } from "../strategies/index.js";
 import { KNOBS, NEUTRAL_TECH } from "../core/Tech.js";
 
 export class HUD {
@@ -107,24 +106,10 @@ export class HUD {
         <span class="player-stat" title="Territory">▣ <b data-stat="territory">0</b></span>
       `;
 
-      const select = document.createElement("select");
-      select.className = "strat-select";
-      for (const name of Object.keys(STRATEGIES)) {
-        const strat = STRATEGIES[name];
-        const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
-        if (strat.description) opt.title = strat.description;
-        if (player.strategy === strat) opt.selected = true;
-        select.appendChild(opt);
-      }
-      if (player.strategy?.description) select.title = player.strategy.description;
-      select.addEventListener("change", () => {
-        player.strategy = STRATEGIES[select.value];
-        select.title = player.strategy?.description ?? "";
-        if (this.tooltip.style.display === "block") this.showTooltip(player, row);
-      });
-      select.addEventListener("mousedown", (e) => e.stopPropagation());
+      const stratLabel = document.createElement("div");
+      stratLabel.className = "strat-label";
+      stratLabel.textContent = player.strategy?.name ?? "";
+      if (player.strategy?.description) stratLabel.title = player.strategy.description;
 
       const bar = document.createElement("div");
       bar.className = "strength-bar";
@@ -134,7 +119,7 @@ export class HUD {
       bar.appendChild(fill);
 
       row.appendChild(head);
-      row.appendChild(select);
+      row.appendChild(stratLabel);
       row.appendChild(bar);
 
       if (this.app.mode?.key === "sandbox") {

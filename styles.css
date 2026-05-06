@@ -445,14 +445,10 @@ select.dropdown {
   font-weight: 600;
 }
 
-.strat-select {
-  background: var(--bg-2);
-  color: var(--text);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 4px 6px;
+.strat-label {
+  color: var(--text-dim);
   font-size: 11px;
-  cursor: pointer;
+  padding: 2px 0;
 }
 
 .strength-bar {

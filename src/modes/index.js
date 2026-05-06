@@ -20,6 +20,7 @@ function makePlayer(i, strategy, name) {
     color: p.color,
     accent: p.accent,
     strategy,
+    tech: strategy.tech,
   });
 }
 
