@@ -3,6 +3,7 @@ import { Player } from "./core/Player.js";
 import { startingBlobSide, placeStartingBlob } from "./core/startup.js";
 import { Renderer } from "./render/Renderer.js";
 import { StatsChart } from "./render/StatsChart.js";
+import { TerritoryChart } from "./render/TerritoryChart.js";
 import { HUD } from "./ui/HUD.js";
 import { Controls } from "./ui/Controls.js";
 import { MatchPicker } from "./ui/MatchPicker.js";
@@ -28,6 +29,7 @@ class App {
   constructor() {
     this.canvas = document.getElementById("game-canvas");
     this.chartCanvas = document.getElementById("chart-canvas");
+    this.territoryChartCanvas = document.getElementById("territory-chart-canvas");
     this.hudRoot = document.getElementById("hud-root");
     this.modeKey = "custom";
     this.mode = null;
@@ -135,6 +137,12 @@ class App {
     } else {
       this.chart.setGame(this.game);
     }
+
+    if (!this.territoryChart) {
+      this.territoryChart = new TerritoryChart({ canvas: this.territoryChartCanvas, game: this.game });
+    } else {
+      this.territoryChart.setGame(this.game);
+    }
     if (!this.hud) {
       this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
     } else {
@@ -226,6 +234,12 @@ class App {
       this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
     } else {
       this.chart.setGame(this.game);
+    }
+
+    if (!this.territoryChart) {
+      this.territoryChart = new TerritoryChart({ canvas: this.territoryChartCanvas, game: this.game });
+    } else {
+      this.territoryChart.setGame(this.game);
     }
     if (!this.hud) {
       this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
@@ -353,6 +367,7 @@ class App {
         if (this.game._territoryDirty) this.game.recomputeTerritory();
         this.renderer.draw(now);
         this.chart.draw();
+        this.territoryChart.draw();
         this.hud.update();
         this.controls.setTick(this.game.tick);
         this.lastRender = now;
