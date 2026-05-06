@@ -1166,9 +1166,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:22:33.435Z"
     },
     {
       "name": "Scatter_09",
@@ -1356,9 +1356,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:22:33.527Z"
     },
     {
       "name": "Stencil_08",
@@ -1628,6 +1628,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T09:20:39.773Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_90ef9e",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:22:33.430Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stalker_g1_363a00",
+      "family": "Stalker",
+      "parent": "Stalker",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:22:33.522Z",
       "archivedAt": null
     }
   ]
