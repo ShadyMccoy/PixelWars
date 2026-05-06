@@ -95,28 +95,36 @@ export class Renderer {
   drawArmies(now) {
     const ctx = this.ctx;
     const ts = this.tileSize;
+    // Radius scales as ratio^0.7 — between area-linear (sqrt) and
+    // diameter-linear (linear). A 10x strength change yields ~3x
+    // diameter / ~9x area, big enough to read at a glance without
+    // making weak armies invisible.
+    const minRadius = 0.08;
+    const maxRadius = 0.46;
+    const exponent = 0.7;
     for (const army of this.game.armies) {
       if (!army.alive) continue;
       if (!army.bornAt) army.bornAt = now;
-      const ratio = army.strength / army.maxStrength;
-      const size = ts * (0.4 + 0.55 * ratio);
+      const ratio = Math.max(0, Math.min(1, army.strength / army.maxStrength));
+      const radiusFactor = minRadius + (maxRadius - minRadius) * Math.pow(ratio, exponent);
       const cx = (army.pos.x + 0.5) * ts;
       const cy = (army.pos.y + 0.5) * ts;
       const age = (now - army.bornAt) / 1000;
       const pulse = 1 + Math.sin(age * 4 + army.id) * 0.04;
-      const drawSize = size * pulse;
+      const drawRadius = ts * radiusFactor * pulse;
 
       if (this.showGlow) {
-        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, drawSize);
+        const glowR = drawRadius * 2;
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
         grad.addColorStop(0, hexToRgba(army.player.accent, 0.85));
         grad.addColorStop(1, hexToRgba(army.player.color, 0));
         ctx.fillStyle = grad;
-        ctx.fillRect(cx - drawSize, cy - drawSize, drawSize * 2, drawSize * 2);
+        ctx.fillRect(cx - glowR, cy - glowR, glowR * 2, glowR * 2);
       }
 
       ctx.fillStyle = army.player.color;
       ctx.beginPath();
-      ctx.arc(cx, cy, drawSize / 2, 0, Math.PI * 2);
+      ctx.arc(cx, cy, drawRadius, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.strokeStyle = army.player.accent;
