@@ -406,9 +406,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:34:44.127Z"
     },
     {
       "name": "Hunter_03",
@@ -656,9 +656,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:34:44.255Z"
     },
     {
       "name": "Patient_08",
@@ -1548,6 +1548,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T08:31:52.113Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stalker_g1_bfb56c",
+      "family": "Stalker",
+      "parent": "Stalker",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:34:44.122Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_d8bf0f",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:34:44.250Z",
       "archivedAt": null
     }
   ]
