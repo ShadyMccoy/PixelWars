@@ -70,11 +70,13 @@ class App {
       // First time leagues finish loading, default to a top-tier match
       // so visitors land on the marquee competition rather than Classic
       // (unless they've already clicked something).
-      onFirstLoad: (leagues) => {
+      // First time rankings finish loading, drop into a top-tier match
+      // so visitors land on the marquee competition rather than Classic
+      // (unless they've already clicked something).
+      onFirstLoad: (rankings) => {
         if (this._userChoseMode) return;
-        if (!leagues.length) return;
-        const args = this.leagueViewer.topTierArgs();
-        if (args) this.loadLeagueMatch(args);
+        if (!rankings) return;
+        this.leagueViewer.watchMatch();
       },
     });
     this.startLoop();
@@ -200,14 +202,30 @@ class App {
     this.markDirty();
   }
 
-  loadCustomMap({ width, height, growth, maxArmy, wrap, numPlayers }) {
+  loadCustomMap({ width, height, growth, maxArmy, wrap, numPlayers, botNames = null }) {
     // Transient ad-hoc map: build a Game with the user's config and seat
-    // N bots in a ring. Strategies come from the top of STRATEGY_LIST so
-    // hits like "spawn 5 players" Just Work without exposing a per-slot
-    // strategy picker.
-    const strategies = STRATEGY_LIST.slice(0, numPlayers);
-    if (strategies.length < numPlayers) {
-      throw new Error(`Not enough strategies for ${numPlayers} players`);
+    // N bots in a ring. If `botNames` is given, sample numPlayers from
+    // that pool (random — this is a UI affordance, not a deterministic
+    // tournament match); otherwise default to the top of STRATEGY_LIST.
+    let strategies;
+    if (botNames) {
+      const pool = botNames
+        .map((n) => ALL_STRATEGIES[n])
+        .filter(Boolean);
+      if (pool.length < numPlayers) {
+        throw new Error(`Pool has ${pool.length} valid bots; need ${numPlayers}`);
+      }
+      strategies = [];
+      const remaining = pool.slice();
+      for (let i = 0; i < numPlayers; i++) {
+        const j = Math.floor(Math.random() * remaining.length);
+        strategies.push(remaining.splice(j, 1)[0]);
+      }
+    } else {
+      strategies = STRATEGY_LIST.slice(0, numPlayers);
+      if (strategies.length < numPlayers) {
+        throw new Error(`Not enough strategies for ${numPlayers} players`);
+      }
     }
     const seed = (Date.now() & 0x7fffffff) >>> 0;
 
