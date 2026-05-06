@@ -1,0 +1,86 @@
+{
+  "schema": "Spearhead",
+  "params": {
+    "pop": 24,
+    "gens": 15,
+    "eval": 20,
+    "elite": 4,
+    "mutateProb": 0.3,
+    "seed": 1,
+    "map": "lab1",
+    "pool": 6,
+    "ticks": 4000,
+    "opponents": [
+      "Spearhead",
+      "Stalker",
+      "Crusader",
+      "Pinwheel",
+      "Stalker_g1_363a00",
+      "Trinity",
+      "Spearhead_g1_bf0e20",
+      "Spearhead_g1_fbedc2",
+      "Spearhead_g1_72c4f8",
+      "Membrane"
+    ]
+  },
+  "finalEval": 60,
+  "defaultFitness": 2.7,
+  "top": [
+    {
+      "vec": {
+        "attackerBonus": 1.445200042032104,
+        "bodyClose": 4,
+        "bodyFar": 2,
+        "flankClose": 4,
+        "emptyBonus": 50.42729805629777,
+        "friendlyPenalty": -2.853658182372898,
+        "commitThreshold": 0.3518042107967496
+      },
+      "fitness": 2.6333333333333333,
+      "wins": 3,
+      "played": 60
+    },
+    {
+      "vec": {
+        "attackerBonus": 1.445200042032104,
+        "bodyClose": 4,
+        "bodyFar": 3,
+        "flankClose": 3,
+        "emptyBonus": 50.42729805629777,
+        "friendlyPenalty": -2.853658182372898,
+        "commitThreshold": 0.3637900813205221
+      },
+      "fitness": 2.683333333333333,
+      "wins": 2,
+      "played": 60
+    },
+    {
+      "vec": {
+        "attackerBonus": 1.4034403510390627,
+        "bodyClose": 4,
+        "bodyFar": 1,
+        "flankClose": 4,
+        "emptyBonus": 44.738719187161024,
+        "friendlyPenalty": -20.184074164764354,
+        "commitThreshold": 0.5519612725648053
+      },
+      "fitness": 2.8333333333333335,
+      "wins": 2,
+      "played": 60
+    },
+    {
+      "vec": {
+        "attackerBonus": 1.52668214776343,
+        "bodyClose": 4,
+        "bodyFar": 2,
+        "flankClose": 4,
+        "emptyBonus": 50.42729805629777,
+        "friendlyPenalty": -21.116439318419694,
+        "commitThreshold": 0.3518042107967496
+      },
+      "fitness": 3,
+      "wins": 3,
+      "played": 60
+    }
+  ]
+}

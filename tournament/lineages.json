@@ -46,9 +46,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:15:40.163Z"
     },
     {
       "name": "Random",
@@ -156,9 +156,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:24:26.581Z"
     },
     {
       "name": "Avalanche",
@@ -236,9 +236,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:24:26.695Z"
     },
     {
       "name": "Wildfire",
@@ -406,9 +406,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:34:44.127Z"
     },
     {
       "name": "Hunter_03",
@@ -426,9 +426,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:24:14.332Z"
     },
     {
       "name": "Hunter_05",
@@ -436,9 +436,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:40:34.472Z"
     },
     {
       "name": "Hunter_06",
@@ -446,9 +446,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:18:40.796Z"
     },
     {
       "name": "Hunter_07",
@@ -596,9 +596,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:31:52.117Z"
     },
     {
       "name": "Patient_02",
@@ -616,9 +616,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T07:59:26.545Z"
     },
     {
       "name": "Patient_04",
@@ -646,9 +646,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:40:34.590Z"
     },
     {
       "name": "Patient_07",
@@ -656,9 +656,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:34:44.255Z"
     },
     {
       "name": "Patient_08",
@@ -696,9 +696,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:15:40.270Z"
     },
     {
       "name": "Drift_W",
@@ -706,9 +706,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:12:49.074Z"
     },
     {
       "name": "Drift_N",
@@ -716,9 +716,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:25:35.946Z"
     },
     {
       "name": "Drift_S",
@@ -736,9 +736,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T17:14:26.509Z"
     },
     {
       "name": "Drift_NW",
@@ -746,9 +746,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:12:49.181Z"
     },
     {
       "name": "Drift_SE",
@@ -756,9 +756,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:29:28.213Z"
     },
     {
       "name": "Drift_SW",
@@ -956,9 +956,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:18:40.904Z"
     },
     {
       "name": "Bully_08",
@@ -976,9 +976,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:25:36.035Z"
     },
     {
       "name": "Bully_10",
@@ -996,9 +996,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:18:22.486Z"
     },
     {
       "name": "Cluster_02",
@@ -1136,9 +1136,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:18:22.373Z"
     },
     {
       "name": "Scatter_06",
@@ -1146,9 +1146,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:31:51.990Z"
     },
     {
       "name": "Scatter_07",
@@ -1166,9 +1166,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:22:33.435Z"
     },
     {
       "name": "Scatter_09",
@@ -1226,9 +1226,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:24:14.432Z"
     },
     {
       "name": "Pulse_05",
@@ -1266,9 +1266,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T07:59:31.388Z"
     },
     {
       "name": "Pulse_09",
@@ -1306,9 +1306,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:29:28.096Z"
     },
     {
       "name": "Stencil_03",
@@ -1326,9 +1326,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:20:39.687Z"
     },
     {
       "name": "Stencil_05",
@@ -1356,9 +1356,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:22:33.527Z"
     },
     {
       "name": "Stencil_08",
@@ -1406,8 +1406,318 @@
       "parent": "Spearhead",
       "generation": 1,
       "birthSeason": 3,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:36:49.775Z",
+      "archivedAt": "2026-05-06T17:14:26.409Z"
+    },
+    {
+      "name": "Spearhead_g1_3f955f",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T07:59:26.541Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Crusader_g1_5ae640",
+      "family": "Crusader",
+      "parent": "Crusader",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T07:59:31.383Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_fbedc2",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:12:49.070Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stalker_g1_8767f6",
+      "family": "Stalker",
+      "parent": "Stalker",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:12:49.177Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_dc0148",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:15:40.159Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Crusader_g1_5f8b45",
+      "family": "Crusader",
+      "parent": "Crusader",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:15:40.265Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_bf0e20",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:18:22.369Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_4f6c9f",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:18:22.482Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_1f0d47",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:24:26.577Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_72c4f8",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:24:26.691Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_1b59ef",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:29:28.091Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_7a4f15",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:29:28.209Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stalker_g1_86aa0f",
+      "family": "Stalker",
+      "parent": "Stalker",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:31:51.985Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pinwheel_g1_24119c",
+      "family": "Pinwheel",
+      "parent": "Pinwheel",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:31:52.113Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stalker_g1_bfb56c",
+      "family": "Stalker",
+      "parent": "Stalker",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:34:44.122Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_d8bf0f",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:34:44.250Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_36d9c1",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:40:34.468Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_7f5793",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-06T08:40:34.585Z",
+      "archivedAt": "2026-05-06T09:20:39.778Z"
+    },
+    {
+      "name": "Spearhead_g1_1a87fc",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:18:40.790Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_e91678",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:18:40.899Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pinwheel_g2_ae8180",
+      "family": "Pinwheel",
+      "parent": "Pinwheel_g1_24119c",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:20:39.682Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pinwheel_g2_22a2a2",
+      "family": "Pinwheel",
+      "parent": "Pinwheel_g1_24119c",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:20:39.773Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_90ef9e",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:22:33.430Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Stalker_g1_363a00",
+      "family": "Stalker",
+      "parent": "Stalker",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:22:33.522Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_171465",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-06T09:24:14.325Z",
+      "archivedAt": "2026-05-06T17:14:26.608Z"
+    },
+    {
+      "name": "Pinwheel_g1_0ca9c3",
+      "family": "Pinwheel",
+      "parent": "Pinwheel",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:24:14.427Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g2_1b3e2d",
+      "family": "Spearhead",
+      "parent": "Spearhead_g1_4f6c9f",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:25:35.940Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Crusader_g1_352d0a",
+      "family": "Crusader",
+      "parent": "Crusader",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:25:36.029Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_7089d3",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T17:14:26.403Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Membrane_g1_b9f1d5",
+      "family": "Membrane",
+      "parent": "Membrane",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T17:14:26.503Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g1_879a88",
+      "family": "Conqueror",
+      "parent": "Conqueror",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T17:14:26.602Z",
       "archivedAt": null
     }
   ]

@@ -28,7 +28,7 @@ import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
 import { saveLeague, loadLeagues, getLeagueStorePath } from "./leagueStore.js";
 import { buildMatchEntry, appendMatches, loadMatches, getMatchLogPath } from "./matchLog.js";
-import { loadRankings, saveRankings, ratingMap, getRankingsPath } from "./rankingsStore.js";
+import { loadRankings, saveRankings, ratingMap, priorMap, getRankingsPath } from "./rankingsStore.js";
 import { buildRankings, filterCurrentVersion } from "./rank.js";
 import {
   loadLineages,
@@ -108,10 +108,7 @@ Lineage (genetic descendant feature):
                         Validate the new strategy file, copy it into
                         src/strategies/, register in lineage + index.
                         Also archives the globally weakest active bot
-                        (with a family-suicide guard) and applies the
-                        family cap.
-  --family-cap N      Max active members per family (default: 3). Used
-                      by --register-descendant.
+                        (with a family-suicide guard).
 
 Misc:
   --list              List active strategies and exit
@@ -159,7 +156,6 @@ function parseArgs(argv) {
     descendantParent: null,
     descendantFile: null,
     descendantSeason: null,
-    familyCap: 3,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -197,7 +193,6 @@ function parseArgs(argv) {
       case "--parent": opts.descendantParent = next(); break;
       case "--file": opts.descendantFile = next(); break;
       case "--birth-season": opts.descendantSeason = parseInt(next(), 10); break;
-      case "--family-cap": opts.familyCap = parseInt(next(), 10); break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
@@ -502,8 +497,13 @@ async function cmdSeason(opts) {
 
   const matchCount = opts.matches ?? 200;
   const flaggedEntries = [];
+  const matchEntries = [];
   const onMatch = (phase, idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
+    matchEntries.push(buildMatchEntry({
+      map: phase === "round-robin" ? opts.seasonRrMap : opts.map,
+      result,
+    }));
     const flags = detectFlags(result, { maxTicks: opts.ticks });
     if (flags.length) {
       flaggedEntries.push(buildEntry({
@@ -518,9 +518,24 @@ async function cmdSeason(opts) {
     }
   };
 
+  // Load persisted ratings + match counts from rankings.json so the
+  // info-gain matchmaker can anchor lineups on uncertain (newly
+  // spawned) bots and surround them with rating-similar opponents.
+  // First-ever run with no rankings.json falls back to random sampling.
+  const seedRankings = await loadRankings();
+  const priors = seedRankings ? priorMap(seedRankings) : null;
+  const knownNames = priors ? new Set(Object.keys(priors)) : null;
+  const newCount = priors
+    ? strategies.filter((s) => !knownNames.has(s.name)).length
+    : null;
+
   if (!opts.json) {
+    const matchmaker = priors ? "info-gain" : "random";
+    const newNote = newCount != null && newCount > 0
+      ? ` · ${newCount} bot${newCount === 1 ? "" : "s"} new (no prior matches)`
+      : "";
     console.log(
-      `Season: rating phase (${matchCount} matches, K=${opts.pool}, map=${opts.map}) ` +
+      `Season: rating phase (${matchCount} matches, K=${opts.pool}, map=${opts.map}, matchmaker=${matchmaker}${newNote}) ` +
       `+ round-robin (top ${opts.seasonTop}, ${opts.seasonRrRounds} rounds, map=${opts.seasonRrMap})\n`,
     );
   }
@@ -536,6 +551,7 @@ async function cmdSeason(opts) {
     rrTopN: opts.seasonTop,
     rrRounds: opts.seasonRrRounds,
     onMatch,
+    priors,
   });
 
   // Per-champion recent loss context — useful for the spawn agent.
@@ -613,6 +629,26 @@ async function cmdSeason(opts) {
   if (added.length && !opts.json) {
     console.log(`Saved ${added.length} new entr${added.length === 1 ? "y" : "ies"} to ${getStorePath()}.`);
   }
+
+  if (matchEntries.length) {
+    await appendMatches(matchEntries);
+    if (!opts.json) {
+      console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}.`);
+    }
+
+    // Refresh rankings.json so the next season's matchmaker has
+    // up-to-date priors (rating + match counts) for info-gain
+    // lineups. We refit PL on the current-rules subset of the log.
+    const allLog = await loadMatches();
+    const currentLog = filterCurrentVersion(allLog);
+    if (currentLog.length > 0) {
+      const refreshed = buildRankings(currentLog);
+      await saveRankings(refreshed);
+      if (!opts.json) {
+        console.log(`Refreshed ${getRankingsPath()} (${refreshed.players.length} players, ${refreshed.matchCount} matches).`);
+      }
+    }
+  }
 }
 
 // Pull up to `limit` recent matches where `name` did *not* win, with
@@ -679,13 +715,13 @@ async function cmdPrepareSpawn(opts) {
 }
 
 async function cmdRegisterDescendant(opts) {
-  const { descendantName: name, descendantParent: parent, descendantFile: file, descendantSeason: birthSeason, familyCap } = opts;
+  const { descendantName: name, descendantParent: parent, descendantFile: file, descendantSeason: birthSeason } = opts;
   if (!name || !parent || !file) {
     console.error("--register-descendant requires --name, --parent, and --file");
     process.exit(1);
   }
   let result;
-  try { result = await registerDescendant({ name, parent, filePath: file, birthSeason, familyCap }); }
+  try { result = await registerDescendant({ name, parent, filePath: file, birthSeason }); }
   catch (e) { console.error(e.message); process.exit(1); }
   console.log(`Registered descendant ${result.name} (gen ${result.lineage.generation}, family ${result.lineage.family}) of ${parent}.`);
   console.log(`Strategy file: ${result.filePath}`);

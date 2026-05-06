@@ -1,0 +1,82 @@
+{
+  "schema": "Stalker",
+  "params": {
+    "pop": 24,
+    "gens": 20,
+    "eval": 20,
+    "elite": 4,
+    "mutateProb": 0.3,
+    "seed": 1,
+    "map": "lab1",
+    "pool": 6,
+    "ticks": 4000,
+    "opponents": [
+      "Spearhead",
+      "Stalker",
+      "Crusader",
+      "Pinwheel",
+      "Stalker_g1_363a00",
+      "Trinity",
+      "Spearhead_g1_bf0e20",
+      "Spearhead_g1_fbedc2",
+      "Spearhead_g1_72c4f8",
+      "Membrane"
+    ]
+  },
+  "finalEval": 60,
+  "defaultFitness": 2.566666666666667,
+  "top": [
+    {
+      "vec": {
+        "attackerBonus": 1.3906392061439876,
+        "killMargin": 1.0778877394991306,
+        "growthBank": 0.1905978216074357,
+        "stencilGate": 0.11458433130757731,
+        "targetMode": 0,
+        "reinforceGap": 0.37058191430805415
+      },
+      "fitness": 2.533333333333333,
+      "wins": 4,
+      "played": 60
+    },
+    {
+      "vec": {
+        "attackerBonus": 1.3906392061439876,
+        "killMargin": 1.039741470332024,
+        "growthBank": 0.1905978216074357,
+        "stencilGate": 0.24241089448599962,
+        "targetMode": 0,
+        "reinforceGap": 0.37058191430805415
+      },
+      "fitness": 2.716666666666667,
+      "wins": 4,
+      "played": 60
+    },
+    {
+      "vec": {
+        "attackerBonus": 1.3091565124490667,
+        "killMargin": 0.8249960828824522,
+        "growthBank": 0.45918163839237014,
+        "stencilGate": 0.16019224891667283,
+        "targetMode": 0,
+        "reinforceGap": 0.37058191430805415
+      },
+      "fitness": 2.8,
+      "wins": 3,
+      "played": 60
+    },
+    {
+      "vec": {
+        "attackerBonus": 1.4161818730883313,
+        "killMargin": 1.039741470332024,
+        "growthBank": 0.24572975309958955,
+        "stencilGate": 0.16137391231764298,
+        "targetMode": 0,
+        "reinforceGap": 0.37058191430805415
+      },
+      "fitness": 2.8833333333333333,
+      "wins": 0,
+      "played": 60
+    }
+  ]
+}

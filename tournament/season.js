@@ -23,6 +23,7 @@ export function runSeason({
   rrTopN = 10,
   rrRounds = 21,
   onMatch = null,
+  priors = null,
 }) {
   if (strategies.length < 2) throw new Error("Need at least 2 strategies");
 
@@ -33,6 +34,7 @@ export function runSeason({
     matches,
     baseSeed,
     maxTicks,
+    priors,
     onMatch: onMatch
       ? (m, result, lineup) => onMatch("rating", m, result, lineup)
       : null,

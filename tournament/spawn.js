@@ -17,9 +17,10 @@ import { dirname, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { addDescendant, loadLineages, markArchived } from "./lineageStore.js";
 import { loadLatestSeason } from "./seasonStore.js";
-import { writeArchive } from "./archiveFile.js";
+import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
+import { CHARACTER_TECHS } from "../src/strategies/characterTechs.js";
+import { NEUTRAL_TECH } from "../src/core/Tech.js";
 
-export const DEFAULT_FAMILY_CAP = 3;
 const ASSUMED_RATING = 1500; // for bots without a rating yet (e.g. fresh founders)
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -102,11 +103,17 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
   // Engine docs — the agent has no way to discover the API otherwise.
   const docs = await loadDocs();
 
+  // Parent's character tech (if any). Without this in the prompt, the
+  // spawn agent has no way to know that tech is a tunable axis - it
+  // defaults to inheriting the parent's allocation via spread.
+  const parentTech = CHARACTER_TECHS[parentName] ?? { ...NEUTRAL_TECH };
+
   const prompt = buildPrompt({
     parentName,
     newName,
     parentSource: parentSrc.source,
     parentPath: parentSrc.path,
+    parentTech,
     losses,
     winnerSources,
     mapInfo,
@@ -126,7 +133,7 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
 
 async function loadDocs() {
   const out = {};
-  for (const name of ["strategies.md", "engine-api.md"]) {
+  for (const name of ["strategies.md", "engine-api.md", "techs.md"]) {
     try {
       out[name] = await readFile(resolve(DOCS_DIR, name), "utf8");
     } catch {
@@ -164,7 +171,7 @@ async function collectWinnerSources(losses, parentName) {
 }
 
 function buildPrompt({
-  parentName, newName, parentSource, parentPath,
+  parentName, newName, parentSource, parentPath, parentTech,
   losses, winnerSources, mapInfo, docs, seasonId,
 }) {
   const parentRel = parentPath.replace(REPO_ROOT + "/", "");
@@ -204,20 +211,38 @@ function buildPrompt({
     if (docs["engine-api.md"]) {
       blocks.push(`### \`docs/engine-api.md\`\n\n${docs["engine-api.md"].trim()}`);
     }
+    if (docs["techs.md"]) {
+      blocks.push(`### \`docs/techs.md\`\n\n${docs["techs.md"].trim()}`);
+    }
     return blocks.length ? `\n## Game / API reference\n\n${blocks.join("\n\n---\n\n")}\n` : "";
   })();
 
+  const techSection = parentTech
+    ? `\n## Parent's character tech\n\nThe parent currently runs:\n\n` +
+      `\`\`\`json\n${JSON.stringify(parentTech, null, 2)}\n\`\`\`\n\n` +
+      `Tech allocates 100 points across {move, stack, prod, atk, def}; ` +
+      `each knob shifts a per-turn multiplier (move = garrison floor, ` +
+      `others = output multipliers). The descendant can override this ` +
+      `by adding a \`tech\` field to the exported object — see ` +
+      `\`docs/techs.md\` for slopes and effects. Inheriting via spread ` +
+      `from the parent keeps the parent's tech; adding \`tech: { ... }\` ` +
+      `replaces it.\n`
+    : "";
+
   return `# Spawn descendant: ${newName}
 
-You are creating a small variation of the bot **${parentName}** — its
-descendant — in the PixelWars tournament. The task is exactly:
+You are creating a descendant of the bot **${parentName}** in the
+PixelWars tournament. The task is exactly:
 
-> Improve this bot one tiny bit.
+> Improve this bot.
 
-The descendant should be **a small modification** of the parent: tweak a
-constant, swap a tiebreaker, refine a heuristic, change the threshold at
-which it commits force. Do **not** rewrite from scratch. Do **not** add
-new infrastructure. The smaller the change, the better the comparison.
+The descendant takes inspiration from the parent but is free to
+diverge. Tune a constant, restructure the kernel, swap the fallback
+strategy, change the thesis entirely — whatever you think will rank
+higher than the parent in the next season. Loosely related is fine;
+this is exploration, not a minimal A/B test. The only hard rules are
+that the file must be self-contained, default-export a working
+strategy with the right \`name\`, and not break the engine API.
 
 ## Test environment
 
@@ -232,7 +257,7 @@ ${parentSource.trim()}
 ## Parent's recent losses${seasonId != null ? ` (season #${seasonId})` : ""}
 
 ${lossSection}
-${winnerSrcSection}${docsSection}
+${techSection}${winnerSrcSection}${docsSection}
 ## Output requirements
 
 1. Produce ONE JavaScript file at \`src/strategies/${newName}.js\`.
@@ -266,11 +291,9 @@ function formatMapConfig(cfg) {
 // Every spawn is zero-sum at the pool level: the globally weakest active
 // bot gets archived to make room for the descendant, except when doing
 // so would leave the spawning family with zero active members (a family
-// can't suicide on a single bad descendant). The family is also capped:
-// if the spawn would push the family above the cap, archive the family's
-// weakest sibling too.
+// can't suicide on a single bad descendant).
 
-export async function applyArchivalForSpawn(newBotName, { familyCap = DEFAULT_FAMILY_CAP } = {}) {
+export async function applyArchivalForSpawn(newBotName) {
   const lineages = await loadLineages();
   const newRec = lineages.find((b) => b.name === newBotName);
   if (!newRec) throw new Error(`No lineage record for "${newBotName}"`);
@@ -300,33 +323,46 @@ export async function applyArchivalForSpawn(newBotName, { familyCap = DEFAULT_FA
     break;
   }
 
-  // Family cap: count includes the new bot. If exceeds cap, archive the
-  // weakest sibling — but skip if already chosen above.
-  const familyCount = familySiblings.length + 1;
-  if (familyCount > familyCap) {
-    const sortedSiblings = familySiblings.slice().sort((a, b) => ratingOf(a.name) - ratingOf(b.name));
-    for (const cand of sortedSiblings) {
-      if (decisions.some((d) => d.name === cand.name)) continue;
-      decisions.push({ name: cand.name, reason: "family-cap", rating: ratingOf(cand.name) });
-      break;
-    }
-  }
-
   for (const d of decisions) {
     await markArchived(d.name);
   }
   if (decisions.length > 0) {
+    // Union the lineage-derived archived names with whatever is already
+    // in archive.js. Manual --archive-add entries don't flip the
+    // lineage active flag, so we'd otherwise clobber them on every
+    // spawn. archive.js is the source of truth for STRATEGY_LIST
+    // filtering; lineage.active is auxiliary.
+    const existing = await readExistingArchive();
     const post = await loadLineages();
-    const archived = post.filter((b) => !b.active).map((b) => b.name);
-    await writeArchive(archived);
+    const fromLineage = post.filter((b) => !b.active).map((b) => b.name);
+    const merged = [...new Set([...existing, ...fromLineage])];
+    await writeArchive(merged);
   }
 
   return decisions;
 }
 
+// Parse the names out of src/strategies/archive.js without importing
+// it (avoids ESM module-cache staleness when spawning multiple
+// descendants in one process).
+async function readExistingArchive() {
+  try {
+    const txt = await readFile(ARCHIVE_PATH, "utf8");
+    const m = txt.match(/export const ARCHIVED\s*=\s*\[([\s\S]*?)\]/);
+    if (!m) return [];
+    const out = [];
+    const re = /"([^"]+)"|'([^']+)'/g;
+    let mm;
+    while ((mm = re.exec(m[1])) !== null) out.push(mm[1] ?? mm[2]);
+    return out;
+  } catch {
+    return [];
+  }
+}
+
 // ---------------------------------------------------------- registration
 
-export async function registerDescendant({ name, parent, filePath, birthSeason = null, familyCap = DEFAULT_FAMILY_CAP }) {
+export async function registerDescendant({ name, parent, filePath, birthSeason = null }) {
   // Validate the file exists and the bot loads correctly.
   const absPath = resolve(filePath);
   await access(absPath);
@@ -359,10 +395,9 @@ export async function registerDescendant({ name, parent, filePath, birthSeason =
   // generation.
   const rec = await addDescendant({ name, parent, birthSeason });
 
-  // Population control: archive the globally weakest active bot, plus
-  // any family-cap overflow. Skipped silently when no season has run yet
-  // (no ratings to compare).
-  const archived = await applyArchivalForSpawn(name, { familyCap });
+  // Population control: archive the globally weakest active bot.
+  // Skipped silently when no season has run yet (no ratings to compare).
+  const archived = await applyArchivalForSpawn(name);
 
   return { name, parent, filePath: targetPath, lineage: rec, archived };
 }
