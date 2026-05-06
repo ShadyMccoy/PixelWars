@@ -1,6 +1,7 @@
 import { Game } from "./core/Game.js";
 import { Player } from "./core/Player.js";
 import { mulberry32 } from "./core/rng.js";
+import { startingBlobSide, placeStartingBlob } from "./core/startup.js";
 import { MODES } from "./modes/index.js";
 import { Renderer } from "./render/Renderer.js";
 import { StatsChart } from "./render/StatsChart.js";
@@ -156,9 +157,12 @@ class App {
       });
     });
     players.forEach((p) => this.game.addPlayer(p));
-    entry.startPositions.forEach((pos, i) => {
-      this.game.placeArmy({ x: pos.x, y: pos.y, player: players[i], strength: pos.strength ?? 1 });
-    });
+    {
+      const side = startingBlobSide(this.game.map, entry.startPositions.length);
+      entry.startPositions.forEach((pos, i) => {
+        placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
+      });
+    }
 
     const flagText = (entry.flags ?? []).map((f) => f.tag).join(" · ") || "saved";
     document.getElementById("mode-description").textContent =
@@ -229,9 +233,12 @@ class App {
       });
     });
     players.forEach((p) => this.game.addPlayer(p));
-    positions.forEach((pos, i) => {
-      this.game.placeArmy({ x: pos.x, y: pos.y, player: players[i], strength: pos.strength ?? 1 });
-    });
+    {
+      const side = startingBlobSide(this.game.map, positions.length);
+      positions.forEach((pos, i) => {
+        placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
+      });
+    }
 
     document.getElementById("mode-description").textContent =
       `League · ${leagueMap} · Tier ${tierIndex + 1} · seed=${seed} · ${sampled.length} bots`;
