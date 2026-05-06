@@ -18,6 +18,8 @@ import { fileURLToPath } from "node:url";
 import { addDescendant, loadLineages, markArchived } from "./lineageStore.js";
 import { loadLatestSeason } from "./seasonStore.js";
 import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
+import { CHARACTER_TECHS } from "../src/strategies/characterTechs.js";
+import { NEUTRAL_TECH } from "../src/core/Tech.js";
 
 const ASSUMED_RATING = 1500; // for bots without a rating yet (e.g. fresh founders)
 
@@ -101,11 +103,17 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
   // Engine docs — the agent has no way to discover the API otherwise.
   const docs = await loadDocs();
 
+  // Parent's character tech (if any). Without this in the prompt, the
+  // spawn agent has no way to know that tech is a tunable axis - it
+  // defaults to inheriting the parent's allocation via spread.
+  const parentTech = CHARACTER_TECHS[parentName] ?? { ...NEUTRAL_TECH };
+
   const prompt = buildPrompt({
     parentName,
     newName,
     parentSource: parentSrc.source,
     parentPath: parentSrc.path,
+    parentTech,
     losses,
     winnerSources,
     mapInfo,
@@ -125,7 +133,7 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
 
 async function loadDocs() {
   const out = {};
-  for (const name of ["strategies.md", "engine-api.md"]) {
+  for (const name of ["strategies.md", "engine-api.md", "techs.md"]) {
     try {
       out[name] = await readFile(resolve(DOCS_DIR, name), "utf8");
     } catch {
@@ -163,7 +171,7 @@ async function collectWinnerSources(losses, parentName) {
 }
 
 function buildPrompt({
-  parentName, newName, parentSource, parentPath,
+  parentName, newName, parentSource, parentPath, parentTech,
   losses, winnerSources, mapInfo, docs, seasonId,
 }) {
   const parentRel = parentPath.replace(REPO_ROOT + "/", "");
@@ -203,8 +211,23 @@ function buildPrompt({
     if (docs["engine-api.md"]) {
       blocks.push(`### \`docs/engine-api.md\`\n\n${docs["engine-api.md"].trim()}`);
     }
+    if (docs["techs.md"]) {
+      blocks.push(`### \`docs/techs.md\`\n\n${docs["techs.md"].trim()}`);
+    }
     return blocks.length ? `\n## Game / API reference\n\n${blocks.join("\n\n---\n\n")}\n` : "";
   })();
+
+  const techSection = parentTech
+    ? `\n## Parent's character tech\n\nThe parent currently runs:\n\n` +
+      `\`\`\`json\n${JSON.stringify(parentTech, null, 2)}\n\`\`\`\n\n` +
+      `Tech allocates 100 points across {move, stack, prod, atk, def}; ` +
+      `each knob shifts a per-turn multiplier (move = garrison floor, ` +
+      `others = output multipliers). The descendant can override this ` +
+      `by adding a \`tech\` field to the exported object — see ` +
+      `\`docs/techs.md\` for slopes and effects. Inheriting via spread ` +
+      `from the parent keeps the parent's tech; adding \`tech: { ... }\` ` +
+      `replaces it.\n`
+    : "";
 
   return `# Spawn descendant: ${newName}
 
@@ -234,7 +257,7 @@ ${parentSource.trim()}
 ## Parent's recent losses${seasonId != null ? ` (season #${seasonId})` : ""}
 
 ${lossSection}
-${winnerSrcSection}${docsSection}
+${techSection}${winnerSrcSection}${docsSection}
 ## Output requirements
 
 1. Produce ONE JavaScript file at \`src/strategies/${newName}.js\`.
