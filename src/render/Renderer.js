@@ -231,16 +231,21 @@ export class Renderer {
         const cy = (t.pos.y + 0.5) * ts;
 
         if (role === ROLE_SINK) {
-          // Small inward-pointing chevron at the tile's outward edge —
-          // reads as a shield mark. Use a desaturated tone so it
-          // doesn't compete with the territory tint.
-          ctx.strokeStyle = "rgba(255,200,120,0.55)";
-          const r = ts * 0.18;
+          // Inward-pointing chevron at the tile's outward edge — reads
+          // as a shield mark. Drawn twice: a dark base for contrast on
+          // bright territory, then the bright orange pip on top.
+          const r = ts * 0.22;
           ctx.beginPath();
           ctx.moveTo(cx - r, cy + r * 0.6);
           ctx.lineTo(cx, cy - r * 0.4);
           ctx.lineTo(cx + r, cy + r * 0.6);
+          ctx.lineWidth = Math.max(2, ts * 0.12);
+          ctx.strokeStyle = "rgba(0,0,0,0.55)";
           ctx.stroke();
+          ctx.lineWidth = Math.max(1.5, ts * 0.08);
+          ctx.strokeStyle = "rgba(255,200,120,0.95)";
+          ctx.stroke();
+          ctx.lineWidth = Math.max(1, ts * 0.06);
         } else if (role === ROLE_SORTIE) {
           // Outward-pointing chevron in player accent. Direction =
           // average vector to non-friendly neighbors.

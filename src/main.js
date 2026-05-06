@@ -149,11 +149,15 @@ class App {
 
     const players = strategies.map((s, i) => {
       const palette = REPLAY_PALETTE[i % REPLAY_PALETTE.length];
+      // Per-slot saved tech wins (legacy replays predate it; fall back
+      // to the strategy's character tech, which is what runMatch sees).
+      const tech = entry.lineupTech?.[i] ?? s.tech;
       return new Player({
         name: `${s.name}#${i + 1}`,
         color: palette.color,
         accent: palette.accent,
         strategy: s,
+        tech,
       });
     });
     players.forEach((p) => this.game.addPlayer(p));
@@ -230,6 +234,7 @@ class App {
         color: palette.color,
         accent: palette.accent,
         strategy: s,
+        tech: s.tech,
       });
     });
     players.forEach((p) => this.game.addPlayer(p));
