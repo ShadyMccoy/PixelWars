@@ -53,10 +53,24 @@ const RAW = {
   PressureSink:  { atk: 40, def: 40, prod: 20 },  // attack weak, brace strong
   CitadelSortie: { stack: 50, atk: 50 },          // stockpile + concentrated push
 
-  // Role-agnostic / generalist bots intentionally left neutral:
-  // Random, Adaptive, Tactician, Membrane, Trinity, Opportunist,
-  // Repel, SlowAndSteady, Hunter, Hunter-style, plus all factory and
-  // generated bots.
+  // Generalists — formerly neutral. The original "leave it 20/20/20/20/20"
+  // policy left half the active roster carrying no archetype, which made
+  // tech matchups boring (any neutral-vs-themed pairing was just a
+  // strategy comparison). These pull each generalist toward the slope of
+  // their thesis without giving up the strategy itself.
+  SlowAndSteady: { prod: 40, def: 30, stack: 30 }, // patient regrowth, soak losses
+  Repel:         { move: 40, prod: 30, def: 30 },  // outward bias rewards mobility
+  Trinity:       { atk: 40, move: 40, stack: 20 }, // flocking pushes strength forward
+  Random:        { move: 50, atk: 50 },            // pure chaos: more swings, faster
+  Opportunist:   { def: 40, prod: 40, stack: 20 }, // never bleeds, snowballs slow
+  Adaptive:      { stack: 30, prod: 30, def: 20, atk: 20 }, // jack-of-all-trades edge
+  Membrane:      { def: 40, move: 30, prod: 30 },  // hold borders, pump interior
+
+  // New roster bots (registered alongside)
+  Pinwheel:    { atk: 40, move: 40, stack: 20 },   // synchronous sweep
+  Anvil:       { def: 60, stack: 40 },             // counter-puncher
+  Skirmisher:  { move: 50, atk: 50 },              // chip damage, no overcommit
+  Tempo:       { stack: 50, atk: 50 },             // stockpile then blitz
 };
 
 export const CHARACTER_TECHS = Object.freeze(
