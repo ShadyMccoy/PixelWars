@@ -28,7 +28,19 @@ if (ranked.length === 0) {
   console.error(`No configs in ${inputPath} cleared --min-score=${minScore}.`);
   process.exit(1);
 }
-const winners = ranked.slice(0, topN);
+// Dedupe by physical map shape (width,height,growth,wrap,topology). The
+// preset object in maps.js doesn't carry k_players, so two configs that
+// differ only in k would write identical entries.
+const winners = [];
+const seenShape = new Set();
+for (const r of ranked) {
+  const s = r.spec;
+  const key = `${s.width}x${s.height}_g${s.growth}_${s.wrap ? "w" : "n"}_${s.topology}`;
+  if (seenShape.has(key)) continue;
+  seenShape.add(key);
+  winners.push(r);
+  if (winners.length >= topN) break;
+}
 
 console.log(`Top ${winners.length} configs (score ≥ ${minScore}):`);
 for (const w of winners) {
