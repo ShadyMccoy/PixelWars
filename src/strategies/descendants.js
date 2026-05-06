@@ -4,6 +4,7 @@
 // `tournament/run.js --register-descendant` — hand edits will be
 // overwritten the next time a descendant is registered.
 
+import Crusader_g1_352d0a from "./Crusader_g1_352d0a.js";
 import Crusader_g1_5ae640 from "./Crusader_g1_5ae640.js";
 import Crusader_g1_5f8b45 from "./Crusader_g1_5f8b45.js";
 import Pinwheel_g1_0ca9c3 from "./Pinwheel_g1_0ca9c3.js";
@@ -27,6 +28,7 @@ import Spearhead_g1_d8bf0f from "./Spearhead_g1_d8bf0f.js";
 import Spearhead_g1_dc0148 from "./Spearhead_g1_dc0148.js";
 import Spearhead_g1_e91678 from "./Spearhead_g1_e91678.js";
 import Spearhead_g1_fbedc2 from "./Spearhead_g1_fbedc2.js";
+import Spearhead_g2_1b3e2d from "./Spearhead_g2_1b3e2d.js";
 import Stalker_g1_363a00 from "./Stalker_g1_363a00.js";
 import Stalker_g1_86aa0f from "./Stalker_g1_86aa0f.js";
 import Stalker_g1_8767f6 from "./Stalker_g1_8767f6.js";
@@ -34,6 +36,7 @@ import Stalker_g1_bfb56c from "./Stalker_g1_bfb56c.js";
 import Trinity_g1_3786cc from "./Trinity_g1_3786cc.js";
 
 export const DESCENDANTS = [
+  Crusader_g1_352d0a,
   Crusader_g1_5ae640,
   Crusader_g1_5f8b45,
   Pinwheel_g1_0ca9c3,
@@ -57,6 +60,7 @@ export const DESCENDANTS = [
   Spearhead_g1_dc0148,
   Spearhead_g1_e91678,
   Spearhead_g1_fbedc2,
+  Spearhead_g2_1b3e2d,
   Stalker_g1_363a00,
   Stalker_g1_86aa0f,
   Stalker_g1_8767f6,

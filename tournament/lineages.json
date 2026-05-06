@@ -716,9 +716,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:25:35.946Z"
     },
     {
       "name": "Drift_S",
@@ -976,9 +976,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:25:36.035Z"
     },
     {
       "name": "Bully_10",
@@ -1668,6 +1668,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T09:24:14.427Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g2_1b3e2d",
+      "family": "Spearhead",
+      "parent": "Spearhead_g1_4f6c9f",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:25:35.940Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Crusader_g1_352d0a",
+      "family": "Crusader",
+      "parent": "Crusader",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:25:36.029Z",
       "archivedAt": null
     }
   ]
