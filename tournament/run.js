@@ -28,7 +28,7 @@ import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
 import { saveLeague, loadLeagues, getLeagueStorePath } from "./leagueStore.js";
 import { buildMatchEntry, appendMatches, loadMatches, getMatchLogPath } from "./matchLog.js";
-import { loadRankings, saveRankings, ratingMap, getRankingsPath } from "./rankingsStore.js";
+import { loadRankings, saveRankings, ratingMap, priorMap, getRankingsPath } from "./rankingsStore.js";
 import { buildRankings, filterCurrentVersion } from "./rank.js";
 import {
   loadLineages,
@@ -518,9 +518,24 @@ async function cmdSeason(opts) {
     }
   };
 
+  // Load persisted ratings + match counts from rankings.json so the
+  // info-gain matchmaker can anchor lineups on uncertain (newly
+  // spawned) bots and surround them with rating-similar opponents.
+  // First-ever run with no rankings.json falls back to random sampling.
+  const seedRankings = await loadRankings();
+  const priors = seedRankings ? priorMap(seedRankings) : null;
+  const knownNames = priors ? new Set(Object.keys(priors)) : null;
+  const newCount = priors
+    ? strategies.filter((s) => !knownNames.has(s.name)).length
+    : null;
+
   if (!opts.json) {
+    const matchmaker = priors ? "info-gain" : "random";
+    const newNote = newCount != null && newCount > 0
+      ? ` · ${newCount} bot${newCount === 1 ? "" : "s"} new (no prior matches)`
+      : "";
     console.log(
-      `Season: rating phase (${matchCount} matches, K=${opts.pool}, map=${opts.map}) ` +
+      `Season: rating phase (${matchCount} matches, K=${opts.pool}, map=${opts.map}, matchmaker=${matchmaker}${newNote}) ` +
       `+ round-robin (top ${opts.seasonTop}, ${opts.seasonRrRounds} rounds, map=${opts.seasonRrMap})\n`,
     );
   }
@@ -536,6 +551,7 @@ async function cmdSeason(opts) {
     rrTopN: opts.seasonTop,
     rrRounds: opts.seasonRrRounds,
     onMatch,
+    priors,
   });
 
   // Per-champion recent loss context — useful for the spawn agent.
@@ -617,7 +633,20 @@ async function cmdSeason(opts) {
   if (matchEntries.length) {
     await appendMatches(matchEntries);
     if (!opts.json) {
-      console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}. Run \`npm run rank\` to refresh rankings.`);
+      console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}.`);
+    }
+
+    // Refresh rankings.json so the next season's matchmaker has
+    // up-to-date priors (rating + match counts) for info-gain
+    // lineups. We refit PL on the current-rules subset of the log.
+    const allLog = await loadMatches();
+    const currentLog = filterCurrentVersion(allLog);
+    if (currentLog.length > 0) {
+      const refreshed = buildRankings(currentLog);
+      await saveRankings(refreshed);
+      if (!opts.json) {
+        console.log(`Refreshed ${getRankingsPath()} (${refreshed.players.length} players, ${refreshed.matchCount} matches).`);
+      }
     }
   }
 }

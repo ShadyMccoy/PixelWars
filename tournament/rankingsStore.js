@@ -46,3 +46,17 @@ export function ratingMap(rankings, defaultRating = 1000) {
     has: (name) => out.has(name),
   };
 }
+
+// Returns { name -> { rating, played } } for bots with prior data; new
+// bots are reported as null. Used by the rating tournament's info-gain
+// matchmaker to anchor on uncertain (high-RD) newcomers and surround
+// them with rating-similar opponents.
+export function priorMap(rankings) {
+  const out = {};
+  if (rankings?.players) {
+    for (const p of rankings.players) {
+      out[p.name] = { rating: p.rating, played: p.matches ?? 0 };
+    }
+  }
+  return out;
+}
