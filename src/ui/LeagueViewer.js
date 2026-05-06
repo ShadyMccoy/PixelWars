@@ -1,10 +1,16 @@
 // Sidebar widget that fetches tournament/leagues.json and lets the user
-// pick a tier from a saved league to watch live in the browser.
+// pick a tier from the saved rankings to watch live in the browser.
 //
-// Click "Watch top tier" → app.loadLeagueMatch picks K bots from the
-// tier and runs a deterministic match using the league's map config.
-// Each click bumps the seed so successive watches show different
-// matchups within the same tier.
+// Rankings (tier compositions) are rendered once, sourced from the first
+// saved league. The map selector is independent: it only chooses which
+// map config the watch button uses to play the match. This keeps tiers
+// and map type as orthogonal user choices instead of duplicating the
+// rankings panel per map.
+//
+// Click "Watch random match" → app.loadLeagueMatch picks K bots from the
+// active tier and runs a deterministic match using the active map's
+// config. Each click bumps the seed so successive watches show different
+// matchups within the same (tier, map).
 
 const STORE_URL = "tournament/leagues.json";
 
@@ -13,7 +19,8 @@ export class LeagueViewer {
     this.root = root;
     this.app = app;
     this.leagues = [];
-    this.expandedTiers = new Map(); // map -> tier index currently shown
+    this.activeMap = null;
+    this.activeTier = 0;
     this.seedCounter = Date.now() & 0x7fffffff;
     this._onFirstLoad = onFirstLoad;
     this._firstLoadDone = false;
@@ -22,17 +29,29 @@ export class LeagueViewer {
     this.load();
   }
 
+  // The canonical rankings source. Tiers shown in the UI come from here,
+  // regardless of which map is selected.
+  rankingsLeague() {
+    return this.leagues[0] ?? null;
+  }
+
+  // The league entry whose mapConfig drives the watch match.
+  activeMapLeague() {
+    return this.leagues.find((l) => l.map === this.activeMap) ?? this.rankingsLeague();
+  }
+
   // Returns args suitable for app.loadLeagueMatch with the top tier of
-  // the first saved league, or null if nothing is saved yet.
+  // the rankings, or null if nothing is saved yet.
   topTierArgs(seed) {
-    const league = this.leagues[0];
-    if (!league || !league.tiers?.length) return null;
+    const ranking = this.rankingsLeague();
+    const mapLeague = this.activeMapLeague();
+    if (!ranking || !ranking.tiers?.length || !mapLeague) return null;
     return {
-      leagueMap: league.map,
-      mapConfig: league.mapConfig,
+      leagueMap: mapLeague.map,
+      mapConfig: mapLeague.mapConfig,
       tierIndex: 0,
-      tierBots: league.tiers[0].slice(),
-      poolSize: league.poolSize,
+      tierBots: ranking.tiers[0].slice(),
+      poolSize: ranking.poolSize,
       seed: seed ?? ++this.seedCounter,
     };
   }
@@ -49,6 +68,9 @@ export class LeagueViewer {
       this._notifyFirstLoad();
       return;
     }
+    if (this.leagues.length && !this.leagues.some((l) => l.map === this.activeMap)) {
+      this.activeMap = this.leagues[0].map;
+    }
     this.render();
     this._notifyFirstLoad();
   }
@@ -64,36 +86,65 @@ export class LeagueViewer {
       this.root.innerHTML = `<div class="hud-empty">No saved leagues yet.</div>`;
       return;
     }
-    this.root.innerHTML = "";
-    for (const league of this.leagues) {
-      this.root.appendChild(this.renderLeague(league));
+    const ranking = this.rankingsLeague();
+    if (!ranking || !ranking.tiers?.length) {
+      this.root.innerHTML = `<div class="hud-empty">League data has no tiers.</div>`;
+      return;
     }
+    if (this.activeTier >= ranking.tiers.length) this.activeTier = 0;
+
+    this.root.innerHTML = "";
+    this.root.appendChild(this.renderCard(ranking));
   }
 
-  renderLeague(league) {
+  renderCard(ranking) {
     const wrap = document.createElement("div");
     wrap.className = "league-card";
 
-    // Header — map + when it was generated
+    // Header — tier/season metadata for the rankings (no map name; map is
+    // chosen independently below).
     const head = document.createElement("div");
     head.className = "league-head";
     head.innerHTML = `
-      <span class="league-map">${escapeHtml(league.map)}</span>
-      <span class="league-meta">${league.tiers.length} tiers · ${league.tierSize}/tier · ${league.seasons} seasons</span>
+      <span class="league-map">RANKINGS</span>
+      <span class="league-meta">${ranking.tiers.length} tiers · ${ranking.tierSize}/tier · ${ranking.seasons} seasons</span>
     `;
     wrap.appendChild(head);
 
-    // Tier tabs (rendered as a row of small buttons)
+    // Map selector — independent of the rankings. Only shown when more
+    // than one map has saved data; otherwise it'd just be a single inert
+    // button.
+    if (this.leagues.length > 1) {
+      const mapRow = document.createElement("div");
+      mapRow.className = "league-map-tabs";
+      const label = document.createElement("span");
+      label.className = "league-map-label";
+      label.textContent = "Map";
+      mapRow.appendChild(label);
+      for (const league of this.leagues) {
+        const btn = document.createElement("button");
+        btn.className = "tier-tab" + (league.map === this.activeMap ? " active" : "");
+        btn.textContent = league.map;
+        btn.title = `Play matches on ${league.map}`;
+        btn.addEventListener("click", () => {
+          this.activeMap = league.map;
+          this.render();
+        });
+        mapRow.appendChild(btn);
+      }
+      wrap.appendChild(mapRow);
+    }
+
+    // Tier tabs
     const tabs = document.createElement("div");
     tabs.className = "tier-tabs";
-    const activeTier = this.expandedTiers.get(league.map) ?? 0;
-    for (let t = 0; t < league.tiers.length; t++) {
+    for (let t = 0; t < ranking.tiers.length; t++) {
       const btn = document.createElement("button");
-      btn.className = "tier-tab" + (t === activeTier ? " active" : "");
+      btn.className = "tier-tab" + (t === this.activeTier ? " active" : "");
       btn.textContent = `T${t + 1}`;
-      btn.title = `Tier ${t + 1}: ${league.tiers[t].slice(0, 3).join(", ")}…`;
+      btn.title = `Tier ${t + 1}: ${ranking.tiers[t].slice(0, 3).join(", ")}…`;
       btn.addEventListener("click", () => {
-        this.expandedTiers.set(league.map, t);
+        this.activeTier = t;
         this.render();
       });
       tabs.appendChild(btn);
@@ -101,10 +152,10 @@ export class LeagueViewer {
     wrap.appendChild(tabs);
 
     // Selected tier — bot list
-    const tier = league.tiers[activeTier];
+    const tier = ranking.tiers[this.activeTier];
     const list = document.createElement("ol");
     list.className = "tier-list";
-    list.start = activeTier * league.tierSize + 1;
+    list.start = this.activeTier * ranking.tierSize + 1;
     for (const name of tier) {
       const li = document.createElement("li");
       li.textContent = name;
@@ -118,13 +169,15 @@ export class LeagueViewer {
     btn.textContent = `▶ Watch random match`;
     btn.addEventListener("click", () => {
       this.app._userChoseMode = true;
+      const mapLeague = this.activeMapLeague();
+      if (!mapLeague) return;
       const seed = ++this.seedCounter;
       this.app.loadLeagueMatch({
-        leagueMap: league.map,
-        mapConfig: league.mapConfig,
-        tierIndex: activeTier,
+        leagueMap: mapLeague.map,
+        mapConfig: mapLeague.mapConfig,
+        tierIndex: this.activeTier,
         tierBots: tier.slice(),
-        poolSize: league.poolSize,
+        poolSize: ranking.poolSize,
         seed,
       });
     });
@@ -132,8 +185,4 @@ export class LeagueViewer {
 
     return wrap;
   }
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
