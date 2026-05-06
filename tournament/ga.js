@@ -26,10 +26,13 @@ import { loadRankings } from "./rankingsStore.js";
 import {
   makeSpearheadVariant,
   makeSpearheadFromKernel,
+  makeSpearheadFromKernelWithTech,
   SPEARHEAD_DEFAULTS,
   SPEARHEAD_SCHEMA,
   MATRIX_DEFAULTS,
   MATRIX_SCHEMA,
+  MATRIX_TECH_DEFAULTS,
+  MATRIX_TECH_SCHEMA,
 } from "../src/strategies/parametric/Spearhead.js";
 import {
   makePinwheelVariant,
@@ -44,10 +47,11 @@ import {
 import { writeFile } from "node:fs/promises";
 
 const SCHEMAS = {
-  Spearhead:       { defaults: SPEARHEAD_DEFAULTS, schema: SPEARHEAD_SCHEMA, make: makeSpearheadVariant },
-  SpearheadMatrix: { defaults: MATRIX_DEFAULTS,    schema: MATRIX_SCHEMA,    make: makeSpearheadFromKernel },
-  Pinwheel:        { defaults: PINWHEEL_DEFAULTS,  schema: PINWHEEL_SCHEMA,  make: makePinwheelVariant },
-  Stalker:         { defaults: STALKER_DEFAULTS,   schema: STALKER_SCHEMA,   make: makeStalkerVariant },
+  Spearhead:           { defaults: SPEARHEAD_DEFAULTS,    schema: SPEARHEAD_SCHEMA,    make: makeSpearheadVariant },
+  SpearheadMatrix:     { defaults: MATRIX_DEFAULTS,       schema: MATRIX_SCHEMA,       make: makeSpearheadFromKernel },
+  SpearheadMatrixTech: { defaults: MATRIX_TECH_DEFAULTS,  schema: MATRIX_TECH_SCHEMA,  make: makeSpearheadFromKernelWithTech },
+  Pinwheel:            { defaults: PINWHEEL_DEFAULTS,     schema: PINWHEEL_SCHEMA,     make: makePinwheelVariant },
+  Stalker:             { defaults: STALKER_DEFAULTS,      schema: STALKER_SCHEMA,      make: makeStalkerVariant },
 };
 
 const HELP = `Usage: node tournament/ga.js [options]
@@ -218,6 +222,19 @@ function fmtVec(v) {
   return Object.entries(v)
     .map(([k, x]) => {
       if (Array.isArray(x)) {
+        // Special-case 5-element "tech" so the GA report shows the
+        // actual loadout (move/stack/prod/atk/def) instead of just
+        // the count of nonzero cells.
+        if (k === "tech" && x.length === 5) {
+          return `tech=[m=${x[0]} s=${x[1]} p=${x[2]} a=${x[3]} d=${x[4]}]`;
+        }
+        if (k === "rotation" && x.length === 4) {
+          const dirs = ["W", "E", "N", "S"];
+          return `rotation=[${x.map((d) => dirs[d] ?? "?").join(",")}]`;
+        }
+        if (k === "phaseTicks") {
+          return `phaseTicks=[${x.join(",")}]`;
+        }
         const nz = x.filter((w) => Math.abs(w) > 0.01).length;
         return `${k}=[${nz}/${x.length} nonzero]`;
       }

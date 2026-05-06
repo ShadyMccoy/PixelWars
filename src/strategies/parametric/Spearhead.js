@@ -159,6 +159,62 @@ export function makeSpearheadFromKernel(params = {}) {
   });
 }
 
+// As makeSpearheadFromKernel, but additionally takes a `tech` knob:
+// a 5-element array [move, stack, prod, atk, def]. Returns a lineup
+// entry { strategy, tech, name } that runMatch will honor. The tech
+// array gets normalized to non-negative integers summing to exactly
+// 100 (the engine's hard requirement). All-zero or negative input
+// falls back to neutral [20, 20, 20, 20, 20].
+const TECH_KEYS = ["move", "stack", "prod", "atk", "def"];
+
+export function normalizeTechArray(arr) {
+  let clipped = arr.map((x) => Math.max(0, x));
+  let sum = clipped.reduce((s, x) => s + x, 0);
+  if (sum <= 0) return [20, 20, 20, 20, 20];
+  let scaled = clipped.map((x) => Math.round((x * 100) / sum));
+  let total = scaled.reduce((s, x) => s + x, 0);
+  // Distribute rounding error onto the largest cells.
+  while (total !== 100) {
+    if (total < 100) {
+      let bestIdx = 0;
+      for (let i = 1; i < 5; i++) if (scaled[i] > scaled[bestIdx]) bestIdx = i;
+      scaled[bestIdx]++;
+      total++;
+    } else {
+      let bestIdx = -1; let bestVal = 0;
+      for (let i = 0; i < 5; i++) if (scaled[i] > bestVal) { bestVal = scaled[i]; bestIdx = i; }
+      if (bestIdx < 0) break;
+      scaled[bestIdx]--;
+      total--;
+    }
+  }
+  return scaled;
+}
+
+function arrayToTech(arr) {
+  const t = {};
+  for (let i = 0; i < TECH_KEYS.length; i++) t[TECH_KEYS[i]] = arr[i];
+  return t;
+}
+
+export const MATRIX_TECH_DEFAULTS = Object.freeze({
+  ...MATRIX_DEFAULTS,
+  tech: Object.freeze([20, 20, 20, 20, 20]), // neutral
+});
+
+export const MATRIX_TECH_SCHEMA = Object.freeze({
+  ...MATRIX_SCHEMA,
+  tech: { length: 5, min: 0, max: 50, sigma: 4, int: true },
+});
+
+export function makeSpearheadFromKernelWithTech(params = {}) {
+  const p = { ...MATRIX_TECH_DEFAULTS, ...params };
+  const name = params.name ?? "MatrixTechSpearhead";
+  const strategy = makeSpearheadFromKernel({ ...p, name });
+  const techArr = normalizeTechArray(p.tech);
+  return { strategy, tech: arrayToTech(techArr), name };
+}
+
 // Shared act() body. Kept private so both variant constructors share
 // exactly the same control flow; only the OFFSETS / scalars differ.
 function spearheadFromOffsets({ name, OFFSETS, ATTACKER_BONUS, COMMIT, EMPTY, FRIENDLY, description }) {
