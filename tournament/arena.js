@@ -27,8 +27,10 @@ export function normalizeEntry(item) {
       name: item.name ?? item.strategy.name,
     };
   }
-  // Treat as bare strategy.
-  return { strategy: item, tech: { ...NEUTRAL_TECH }, name: item.name };
+  // Treat as bare strategy. If the strategy ships with a default
+  // character tech, use it; otherwise neutral.
+  const tech = item.tech ? validateTech(item.tech) : { ...NEUTRAL_TECH };
+  return { strategy: item, tech, name: item.name };
 }
 
 export function runMatch({

@@ -32,6 +32,7 @@ import Citadel from "./Citadel.js";
 import Lance from "./Lance.js";
 import { GENERATED } from "./generated.js";
 import { ARCHIVED } from "./archive.js";
+import { CHARACTER_TECHS } from "./characterTechs.js";
 
 // Every bot ever defined. Order matters — it's the canonical listing for
 // `--list` and (after filtering) the default tournament pool.
@@ -70,6 +71,16 @@ export const ALL_STRATEGY_LIST = [
   Lance,
   ...GENERATED,
 ];
+
+// Attach character techs in place. Strategies are plain objects with
+// `name` already; we add a default `tech` field so tournament code
+// can pick it up without touching each strategy file. Entries that
+// pass an explicit tech via {strategy, tech, ...} still override.
+for (const s of ALL_STRATEGY_LIST) {
+  if (CHARACTER_TECHS[s.name] && !s.tech) {
+    s.tech = CHARACTER_TECHS[s.name];
+  }
+}
 
 const ARCHIVED_SET = new Set(ARCHIVED);
 
