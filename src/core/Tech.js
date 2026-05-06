@@ -24,8 +24,9 @@ export const NEUTRAL_TECH = Object.freeze({
 // the formula is in techToMultipliers below. Baseline = 1.0 matches
 // the engine's pre-tech "always leave 1" rule.
 export const SLOPES = Object.freeze({
-  move:  0.0150,  // tech 0 -> 2.0 garrison, tech 100 -> 0.5 garrison
-                  // (linear, no clamp; "0 = double garrison, 100 = half")
+  move:  0.0100,  // tech 0 -> 1.5 garrison, tech 100 -> 0.5 garrison
+                  // (linear, no clamp; 3x dynamic range, comparable
+                  // to def's 1.95x and atk's 1.32x)
   stack: 0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
   prod:  0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
   atk:   0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
@@ -34,10 +35,10 @@ export const SLOPES = Object.freeze({
 
 // Garrison floor at tech=0 in the linear move formula. Other knobs
 // pivot around 1.0 at tech=BASELINE; move pivots so its endpoints
-// land at 2.0 and 0.5 instead. That puts neutral (tech 20) at 1.7
-// garrison rather than 1.0 - investing in move is now genuinely
-// expensive to skip.
-const MOVE_INTERCEPT = 2.0;
+// land at 1.5 and 0.5 instead. That puts neutral (tech 20) at 1.3
+// garrison - a mild penalty for skipping move investment, similar
+// in spirit to def's 0.84 baseline at tech 0.
+const MOVE_INTERCEPT = 1.5;
 
 const BASELINE = 20;
 
