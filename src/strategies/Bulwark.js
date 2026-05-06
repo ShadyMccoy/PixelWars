@@ -90,7 +90,7 @@ beat either alone.`,
     if (!tile) return;
     const neighbors = tile.neighbors;
     const pid = army.player.id;
-    const myEff = (army.strength - 1) * ATTACKER_BONUS;
+    const myEff = (army.attackPower) * ATTACKER_BONUS;
 
     let bestKill = null;
     let bestKillStr = -1;
@@ -115,7 +115,7 @@ beat either alone.`,
     }
 
     if (bestKill) {
-      army.attack(bestKill, army.strength - 1);
+      army.attack(bestKill, army.attackPower);
       return;
     }
 
@@ -137,7 +137,7 @@ beat either alone.`,
       if (scores[i] > bestScore) { bestScore = scores[i]; bestIdx = i; }
     }
     if (bestIdx < 0) return;
-    const power = army.strength - 1;
+    const power = army.attackPower;
     if (power > 0.5) army.attack(neighbors[bestIdx], power);
   },
 };

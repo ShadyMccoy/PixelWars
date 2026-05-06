@@ -30,7 +30,7 @@ territory while waiting to recharge.`,
     if (!tile) return;
     const neighbors = tile.neighbors;
     const pid = army.player.id;
-    const myEff = (army.strength - 1) * ATTACKER_BONUS;
+    const myEff = (army.attackPower) * ATTACKER_BONUS;
 
     let bestKill = null;
     let bestKillStr = -1;
@@ -59,11 +59,11 @@ territory while waiting to recharge.`,
       }
     }
     if (bestKill) {
-      army.attack(bestKill, army.strength - 1);
+      army.attack(bestKill, army.attackPower);
       return;
     }
     if (firstEmpty) {
-      army.attack(firstEmpty, army.strength - 1);
+      army.attack(firstEmpty, army.attackPower);
       return;
     }
     SlowAndSteady.act(army, game);

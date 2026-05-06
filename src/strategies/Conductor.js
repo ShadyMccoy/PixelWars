@@ -116,7 +116,7 @@ unwinnable enemies.`,
       if (friendStr > 0 && enemy === 0) {
         const headroom = friendCap - friendStr;
         if (headroom < 0.6) continue; // friend at cap — would waste.
-        const power = Math.min(army.strength - 1, headroom);
+        const power = Math.min(army.attackPower, headroom);
         if (power > 0.5) {
           army.attack(target, power);
           return;
@@ -125,14 +125,14 @@ unwinnable enemies.`,
       }
       if (enemy === 0) {
         // Empty.
-        army.attack(target, army.strength - 1);
+        army.attack(target, army.attackPower);
         return;
       }
       // Enemy at target — commit if winnable, factoring the engine's
       // 1.4x attacker bonus.
-      const myEff = (army.strength - 1) * 1.4;
+      const myEff = (army.attackPower) * 1.4;
       if (myEff > enemy) {
-        army.attack(target, army.strength - 1);
+        army.attack(target, army.attackPower);
         return;
       }
       // Unbeatable; try next direction.

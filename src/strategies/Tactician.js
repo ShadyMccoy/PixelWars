@@ -70,7 +70,7 @@ offensive alignment.`,
       const a = armies[k];
       if (a.player.id !== pid) enemy += a.strength;
     }
-    const power = Math.min(army.strength - 1, enemy + 1.5 + army.strength * 0.25);
+    const power = Math.min(army.attackPower, enemy + 1.5 + army.strength * 0.25);
     if (power > 0.5) army.attack(target, power);
   },
 };

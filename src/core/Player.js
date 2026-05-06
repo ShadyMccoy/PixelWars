@@ -1,13 +1,21 @@
+import { NEUTRAL_TECH, techToMultipliers } from "./Tech.js";
+
 let nextId = 1;
 
 export class Player {
-  constructor({ name, color, strategy, accent }) {
+  constructor({ name, color, strategy, accent, tech }) {
     this.id = nextId++;
     this.name = name;
     this.color = color;
     this.accent = accent ?? color;
     this.strategy = strategy;
     this.totals = { armies: 0, strength: 0, territory: 0 };
+    this.tech = tech ?? { ...NEUTRAL_TECH };
+    this.techMults = techToMultipliers(this.tech);
+    // Convenience: minimum garrison an attacking army must leave at
+    // its source tile, derived from the move tech. Strategies use it
+    // via army.attackPower; the engine enforces it in isAttackValid.
+    this.minGarrison = this.techMults.move;
   }
 
   equals(other) {

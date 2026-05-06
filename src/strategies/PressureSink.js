@@ -63,7 +63,7 @@ wins more than Frontier, painter quality drove it — not tactics.`,
     if (role === ROLE_INTERIOR) {
       const next = lowestDepthFriendlyNeighbor(army, plan);
       if (next) {
-        const power = army.strength - 1;
+        const power = army.attackPower;
         if (power > 0.5) army.attack(next, power);
         return;
       }

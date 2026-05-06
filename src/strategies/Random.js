@@ -11,6 +11,6 @@ runs replay deterministically.`,
     const dir = (game.rng() * 4) | 0;
     const tile = army.tile ? army.tile.neighbors[dir] : game.map.adjacent(army.pos, dir);
     if (!tile) return;
-    army.attack(tile, game.rng() * (army.strength - 1));
+    army.attack(tile, game.rng() * (army.attackPower));
   },
 };

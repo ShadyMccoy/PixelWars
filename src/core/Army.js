@@ -8,13 +8,26 @@ export class Army {
     this.pos = pos;
     this.player = player;
     this.strength = strength;
-    this.maxStrength = maxStrength;
+    // Tech 'stack' multiplies the per-army cap. Apply at construction so
+    // every army owned by a player carries the same cap.
+    const stackMult = (player && player.techMults && player.techMults.stack) || 1;
+    this.maxStrength = maxStrength * stackMult;
     this.game = game;
     this.tile = tile;
     this.alive = true;
     this.isAttacker = false;
     this.lastTick = 0;
     this.bornAt = 0;
+  }
+
+  // Maximum strength this army can commit to a single attack while
+  // still satisfying its player's tech-derived garrison floor. All
+  // strategies should reach for attackPower instead of `strength - 1`
+  // so the floor scales with the move tech automatically.
+  get attackPower() {
+    const garrison = this.player.minGarrison ?? 1;
+    const v = this.strength - garrison;
+    return v > 0 ? v : 0;
   }
 
   fight(amount) {
@@ -41,7 +54,8 @@ export class Army {
     if (!tile) return false;
     if (this.tile === tile) return false;
     if (power <= 0.5) return false;
-    if (this.strength - power < 1) return false;
+    const garrison = this.player.minGarrison ?? 1;
+    if (this.strength - power < garrison) return false;
     return true;
   }
 
@@ -64,12 +78,15 @@ export class Army {
         return true;
       }
     }
+    // Pass the engine-level base maxArmy here; the Army constructor
+    // re-applies the player's stack multiplier. Using this.maxStrength
+    // would compound the multiplier on every spawn.
     const newArmy = new Army({
       pos: tile.pos,
       player: this.player,
       strength: power,
       game: this.game,
-      maxStrength: this.maxStrength,
+      maxStrength: this.game.maxArmy,
       tile,
     });
     newArmy.isAttacker = true;
@@ -78,8 +95,10 @@ export class Army {
   }
 
   run(interval, growth, decay = 0) {
+    const mults = this.player.techMults;
+    const prodMult = mults ? mults.prod : 1;
     const cur = this.strength;
-    let s = cur + interval * (growth - decay * cur);
+    let s = cur + interval * (growth * prodMult - decay * cur);
     const max = this.maxStrength;
     if (s > max) s = max;
     if (s < 0) s = 0;

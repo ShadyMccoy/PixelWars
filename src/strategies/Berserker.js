@@ -14,6 +14,6 @@ and predictably gets dismantled by Trinity once Trinity's lines form.`,
     const dir = (game.rng() * 4) | 0;
     const tile = army.tile ? army.tile.neighbors[dir] : game.map.adjacent(army.pos, dir);
     if (!tile) return;
-    army.attack(tile, army.strength - 1);
+    army.attack(tile, army.attackPower);
   },
 };

@@ -53,7 +53,7 @@ neighborhood arithmetic shifts.`,
     if (enemyAdj > army.strength * BONUS && fattestFriendly && army.strength > 3) {
       const room = (fattestStrength >= 0 ? army.maxStrength - fattestStrength : army.maxStrength);
       if (room > 0.6) {
-        const power = Math.min(army.strength - 1, room);
+        const power = Math.min(army.attackPower, room);
         if (power > 0.5) {
           army.attack(fattestFriendly, power);
           return;

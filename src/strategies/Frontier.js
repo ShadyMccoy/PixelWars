@@ -54,7 +54,7 @@ tile knows which way the front is, not just whether it's a border.`,
     if (role === ROLE_INTERIOR) {
       const next = lowestDepthFriendlyNeighbor(army, plan);
       if (next) {
-        const power = army.strength - 1;
+        const power = army.attackPower;
         if (power > 0.5) army.attack(next, power);
         return;
       }
