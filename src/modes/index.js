@@ -1,5 +1,6 @@
 import { Player } from "../core/Player.js";
 import { STRATEGIES } from "../strategies/index.js";
+import { startingBlobSide, placeStartingBlob } from "../core/startup.js";
 
 const PALETTE = [
   { color: "#ff4d6d", accent: "#ff8fa3" },
@@ -34,9 +35,13 @@ export const MODES = {
         makePlayer(2, STRATEGIES.Trinity, "Trinity"),
       ];
       players.forEach((p) => game.addPlayer(p));
-      game.placeArmy({ x: Math.floor(map.width * 0.2), y: Math.floor(map.height * 0.5), player: players[0], strength: 1 });
-      game.placeArmy({ x: Math.floor(map.width * 0.5), y: Math.floor(map.height * 0.2), player: players[1], strength: 1 });
-      game.placeArmy({ x: Math.floor(map.width * 0.8), y: Math.floor(map.height * 0.7), player: players[2], strength: 1 });
+      const positions = [
+        { x: Math.floor(map.width * 0.2), y: Math.floor(map.height * 0.5) },
+        { x: Math.floor(map.width * 0.5), y: Math.floor(map.height * 0.2) },
+        { x: Math.floor(map.width * 0.8), y: Math.floor(map.height * 0.7) },
+      ];
+      const side = startingBlobSide(map, players.length);
+      positions.forEach((pos, i) => placeStartingBlob(game, players[i], pos.x, pos.y, side));
     },
     config: { width: 40, height: 30, growth: 1, maxArmy: 6, wrap: true },
   },
@@ -55,7 +60,7 @@ export const MODES = {
       ];
       const names = ["Steady", "Repel", "Trinity", "Aggro", "Swarm", "Berserk"];
       const map = game.map;
-      strats.forEach((s, i) => {
+      const placements = strats.map((s, i) => {
         const p = makePlayer(i, s, names[i]);
         game.addPlayer(p);
         const angle = (i / strats.length) * Math.PI * 2;
@@ -64,8 +69,10 @@ export const MODES = {
         const r = Math.min(map.width, map.height) * 0.4;
         const x = Math.floor(cx + Math.cos(angle) * r);
         const y = Math.floor(cy + Math.sin(angle) * r);
-        game.placeArmy({ x, y, player: p, strength: 2 });
+        return { player: p, x, y };
       });
+      const side = startingBlobSide(map, placements.length);
+      for (const { player, x, y } of placements) placeStartingBlob(game, player, x, y, side);
     },
     config: { width: 30, height: 22, growth: 2, maxArmy: 6, wrap: true },
   },
@@ -84,5 +91,4 @@ export const MODES = {
     },
     config: { width: 50, height: 36, growth: 0.8, maxArmy: 6, wrap: true },
   },
-
 };

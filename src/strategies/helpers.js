@@ -9,6 +9,6 @@ export function balanceAttack(army, tile) {
   }
   const enemy = totalStrength(armies);
   if (enemy + 1 < army.strength) {
-    army.attack(tile, army.strength - 1);
+    army.attack(tile, army.attackPower);
   }
 }

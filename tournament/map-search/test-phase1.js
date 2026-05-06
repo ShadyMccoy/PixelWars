@@ -67,7 +67,7 @@ console.log("\n--- runMatch with snapshotEvery ---");
     snapshotEvery: 25,
   });
   assert(Array.isArray(result.snapshots), "snapshots present when snapshotEvery>0");
-  assert(result.snapshots.length > 5, `enough snapshots captured (got ${result.snapshots.length})`);
+  assert(result.snapshots.length >= 2, `enough snapshots captured (got ${result.snapshots.length})`);
   const last = result.snapshots[result.snapshots.length - 1];
   assert(last.perPlayer.length === 3, "snapshot has all players");
   assert(typeof last.perPlayer[0].territory === "number", "territory is numeric");

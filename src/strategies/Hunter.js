@@ -60,6 +60,6 @@ waiting to be found.`,
     }
     if (bestDir < 0) return;
     const target = tile.neighbors[bestDir];
-    if (target) army.attack(target, army.strength - 1);
+    if (target) army.attack(target, army.attackPower);
   },
 };

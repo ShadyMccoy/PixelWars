@@ -44,9 +44,9 @@ us.`,
       }
     }
     if (bestEnemy) {
-      army.attack(bestEnemy, army.strength - 1);
+      army.attack(bestEnemy, army.attackPower);
       return;
     }
-    if (firstEmpty) army.attack(firstEmpty, army.strength - 1);
+    if (firstEmpty) army.attack(firstEmpty, army.attackPower);
   },
 };

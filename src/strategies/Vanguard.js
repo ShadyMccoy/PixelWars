@@ -104,7 +104,7 @@ to SlowAndSteady.`,
     let isBorder = false;
     let bestKill = null;
     let bestKillStr = -1;
-    const myEff = (army.strength - 1) * ATTACKER_BONUS;
+    const myEff = (army.attackPower) * ATTACKER_BONUS;
 
     for (let i = 0; i < 4; i++) {
       const t = neighbors[i];
@@ -128,7 +128,7 @@ to SlowAndSteady.`,
     }
 
     if (bestKill) {
-      army.attack(bestKill, army.strength - 1);
+      army.attack(bestKill, army.attackPower);
       return;
     }
     if (isBorder) {
@@ -162,7 +162,7 @@ to SlowAndSteady.`,
       SlowAndSteady.act(army, game);
       return;
     }
-    const power = army.strength - 1;
+    const power = army.attackPower;
     if (power > 0.5) army.attack(neighbors[bestIdx], power);
   },
 };

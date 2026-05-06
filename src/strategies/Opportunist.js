@@ -39,6 +39,6 @@ being ignored while neighbors snowball.`,
         best = t;
       }
     }
-    if (best) army.attack(best, army.strength - 1);
+    if (best) army.attack(best, army.attackPower);
   },
 };

@@ -1,6 +1,7 @@
 import { Game } from "./core/Game.js";
 import { Player } from "./core/Player.js";
 import { mulberry32 } from "./core/rng.js";
+import { startingBlobSide, placeStartingBlob } from "./core/startup.js";
 import { MODES } from "./modes/index.js";
 import { Renderer } from "./render/Renderer.js";
 import { StatsChart } from "./render/StatsChart.js";
@@ -156,9 +157,12 @@ class App {
       });
     });
     players.forEach((p) => this.game.addPlayer(p));
-    entry.startPositions.forEach((pos, i) => {
-      this.game.placeArmy({ x: pos.x, y: pos.y, player: players[i], strength: pos.strength ?? 1 });
-    });
+    {
+      const side = startingBlobSide(this.game.map, entry.startPositions.length);
+      entry.startPositions.forEach((pos, i) => {
+        placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
+      });
+    }
 
     const flagText = (entry.flags ?? []).map((f) => f.tag).join(" · ") || "saved";
     document.getElementById("mode-description").textContent =
@@ -229,9 +233,12 @@ class App {
       });
     });
     players.forEach((p) => this.game.addPlayer(p));
-    positions.forEach((pos, i) => {
-      this.game.placeArmy({ x: pos.x, y: pos.y, player: players[i], strength: pos.strength ?? 1 });
-    });
+    {
+      const side = startingBlobSide(this.game.map, positions.length);
+      positions.forEach((pos, i) => {
+        placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
+      });
+    }
 
     document.getElementById("mode-description").textContent =
       `League · ${leagueMap} · Tier ${tierIndex + 1} · seed=${seed} · ${sampled.length} bots`;
@@ -268,10 +275,12 @@ class App {
     this._canvasBound = true;
     this.canvas.addEventListener("mousemove", (e) => {
       this.renderer.hoverTile = this.renderer.pixelToTile(e.clientX, e.clientY);
+      this.updateTileTooltip(e.clientX, e.clientY);
       this.markDirty();
     });
     this.canvas.addEventListener("mouseleave", () => {
       this.renderer.hoverTile = null;
+      this.hideTileTooltip();
       this.markDirty();
     });
     this.canvas.addEventListener("click", (e) => {
@@ -284,6 +293,52 @@ class App {
       }
       this.markDirty();
     });
+  }
+
+  ensureTileTooltip() {
+    if (this._tileTooltip) return this._tileTooltip;
+    const el = document.createElement("div");
+    el.className = "tile-tooltip";
+    el.style.display = "none";
+    document.body.appendChild(el);
+    this._tileTooltip = el;
+    return el;
+  }
+
+  updateTileTooltip(clientX, clientY) {
+    const tile = this.renderer.hoverTile;
+    if (!tile || !tile.armies || tile.armies.length === 0) {
+      this.hideTileTooltip();
+      return;
+    }
+    const el = this.ensureTileTooltip();
+    const rows = tile.armies
+      .filter((a) => a.alive)
+      .map((a) => {
+        const s = a.strength.toFixed(1);
+        const max = a.maxStrength;
+        const pct = Math.round((a.strength / a.maxStrength) * 100);
+        return `<div class="tile-tooltip-row"><span class="tile-tooltip-dot" style="background:${a.player.color}"></span><span class="tile-tooltip-name">${a.player.name}</span><span class="tile-tooltip-num">${s} / ${max} <span class="tile-tooltip-dim">(${pct}%)</span></span></div>`;
+      })
+      .join("");
+    if (!rows) {
+      this.hideTileTooltip();
+      return;
+    }
+    el.innerHTML = `<div class="tile-tooltip-head">Tile (${tile.pos.x}, ${tile.pos.y})</div>${rows}`;
+    el.style.display = "block";
+    const pad = 14;
+    const rect = el.getBoundingClientRect();
+    let x = clientX + pad;
+    let y = clientY + pad;
+    if (x + rect.width > window.innerWidth - 4) x = clientX - rect.width - pad;
+    if (y + rect.height > window.innerHeight - 4) y = clientY - rect.height - pad;
+    el.style.left = `${Math.max(4, x)}px`;
+    el.style.top = `${Math.max(4, y)}px`;
+  }
+
+  hideTileTooltip() {
+    if (this._tileTooltip) this._tileTooltip.style.display = "none";
   }
 
   setActivePlayer(player) {

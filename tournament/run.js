@@ -25,7 +25,8 @@ import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
 import { saveLeague, loadLeagues, getLeagueStorePath } from "./leagueStore.js";
-import { writeFile } from "node:fs/promises";
+import { techFromPartial } from "../src/core/Tech.js";
+import { writeFile, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -61,6 +62,10 @@ League mode (similar-skill matchups via tier-based promotion/relegation):
 
 Single-match / replay:
   --lineup A,B,C      Run one match with this lineup at --seed
+  --lineup-config FILE
+                      JSON file with [{strategy, tech, name}] entries.
+                      Each entry's tech is a partial {move,stack,prod,atk,def}
+                      object summing to ≤100; missing points spread evenly.
   --replay ID|last    Replay a saved interesting match by id (or "last")
   --list-interesting  Print saved interesting matches and exit
   --flags TAG[,TAG]   Filter listed/flagged-saved matches to these tags
@@ -93,6 +98,7 @@ function parseArgs(argv) {
     verbose: false,
     save: true,
     lineup: null,
+    lineupConfig: null,
     replay: null,
     listInteresting: false,
     flagFilter: null,
@@ -127,6 +133,7 @@ function parseArgs(argv) {
       case "--verbose": case "-v": opts.verbose = true; break;
       case "--no-save": opts.save = false; break;
       case "--lineup": opts.lineup = next().split(",").map((s) => s.trim()).filter(Boolean); break;
+      case "--lineup-config": opts.lineupConfig = next(); break;
       case "--replay": opts.replay = next(); break;
       case "--list-interesting": opts.listInteresting = true; break;
       case "--flags": opts.flagFilter = new Set(next().split(",").map((s) => s.trim()).filter(Boolean)); break;
@@ -181,15 +188,38 @@ function printStandings(standings, meta) {
   });
 }
 
+function isNeutralTech(tech) {
+  if (!tech) return true;
+  return tech.move === 20 && tech.stack === 20 && tech.prod === 20 &&
+         tech.atk === 20 && tech.def === 20;
+}
+
+function formatTech(tech) {
+  if (!tech || isNeutralTech(tech)) return "";
+  const parts = [];
+  for (const k of ["move", "stack", "prod", "atk", "def"]) {
+    if (tech[k] !== 20) parts.push(`${k}:${tech[k]}`);
+  }
+  return parts.length ? ` [${parts.join(",")}]` : "";
+}
+
 function printMatchSummary(label, result, lineup) {
   console.log(`${label} · seed=${result.seed} · ticks=${result.ticks} · ${result.endReason}`);
   result.ranking.forEach((r, i) => {
     const tag = r.survived ? "alive" : `eliminated@${r.eliminatedAt}`;
-    console.log(`  ${i + 1}. ${r.strategy.padEnd(18)} terr=${String(r.territory).padStart(4)} str=${String(r.strength).padStart(6)} (${tag})`);
+    const display = (r.entryName || r.strategy) + formatTech(r.tech);
+    console.log(`  ${i + 1}. ${display.padEnd(28)} terr=${String(r.territory).padStart(4)} str=${String(r.strength).padStart(6)} (${tag})`);
   });
 }
 
 function buildEntry({ map, mapPreset, seed, maxTicks, lineupNames, result, flags }) {
+  // Per-slot tech, ordered by original lineup slot, recovered from
+  // the ranking (which carries tech and slot index). Lets replays
+  // reconstitute the exact tech loadout used.
+  const techBySlot = new Array(lineupNames.length);
+  for (const r of result.ranking) {
+    if (r.slot != null) techBySlot[r.slot] = r.tech;
+  }
   return {
     map: mapPreset,
     mapConfig: { ...map.config },
@@ -197,6 +227,7 @@ function buildEntry({ map, mapPreset, seed, maxTicks, lineupNames, result, flags
     seed,
     maxTicks,
     lineup: lineupNames,
+    lineupTech: techBySlot,
     flags,
     ticks: result.ticks,
     endReason: result.endReason,
@@ -257,13 +288,22 @@ async function cmdReplay(opts) {
     }
   }
 
-  const strategies = entry.lineup.map((name) => {
-    try { return getStrategy(name); }
+  // Replay-time entry resolution: legacy saved matches stored only
+  // strategy names. Newer matches also store a per-slot tech. Pass
+  // tech through when present so replays of tech-laden matches are
+  // bit-exact.
+  const lineupEntries = entry.lineup.map((name, i) => {
+    let strategy;
+    try { strategy = getStrategy(name); }
     catch { console.error(`Saved match references missing strategy: ${name}`); process.exit(1); }
+    if (entry.lineupTech && entry.lineupTech[i]) {
+      return { strategy, tech: entry.lineupTech[i], name };
+    }
+    return strategy;
   });
 
   const result = runMatch({
-    strategies,
+    strategies: lineupEntries,
     mapConfig: entry.mapConfig,
     startPositions: entry.startPositions,
     seed: entry.seed,
@@ -594,29 +634,46 @@ async function main() {
   try { strategies = names.map(getStrategy); }
   catch (e) { console.error(e.message); process.exit(1); }
 
-  // Single-match path: --lineup runs one fixed match. Useful for replays of
-  // hand-picked matchups and for exploring a specific seed.
-  if (opts.lineup) {
-    let lineup;
-    try { lineup = opts.lineup.map(getStrategy); }
-    catch (e) { console.error(e.message); process.exit(1); }
-    if (lineup.length < 2) {
-      console.error("--lineup needs at least 2 strategies.");
+  // Single-match path: --lineup or --lineup-config runs one fixed
+  // match. Useful for replays of hand-picked matchups and for
+  // exploring a specific seed.
+  if (opts.lineup || opts.lineupConfig) {
+    let entries;
+    let lineupNames;
+    try {
+      if (opts.lineupConfig) {
+        const raw = await readFile(opts.lineupConfig, "utf8");
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) throw new Error("lineup-config must be a JSON array");
+        entries = parsed.map((row) => ({
+          strategy: getStrategy(row.strategy),
+          tech: techFromPartial(row.tech ?? {}),
+          name: row.name ?? row.strategy,
+        }));
+        lineupNames = entries.map((e) => e.name);
+      } else {
+        const strategies = opts.lineup.map(getStrategy);
+        entries = strategies;
+        lineupNames = opts.lineup;
+      }
+    } catch (e) { console.error(e.message); process.exit(1); }
+    if (entries.length < 2) {
+      console.error("Lineup needs at least 2 entries.");
       process.exit(1);
     }
     const result = runMatch({
-      strategies: lineup,
+      strategies: entries,
       mapConfig: map.config,
-      startPositions: map.positions(lineup.length),
+      startPositions: map.positions(entries.length),
       seed: opts.seed,
       maxTicks: opts.ticks,
     });
     const flags = detectFlags(result, { maxTicks: opts.ticks });
-    printMatchSummary(`Single match`, result, opts.lineup);
+    printMatchSummary(`Single match`, result, lineupNames);
     if (flags.length) {
       console.log(`\nFlags:`);
       for (const f of flags) console.log(`  - ${f.tag}: ${f.note}`);
-      const entry = buildEntry({ map, mapPreset: opts.map, seed: opts.seed, maxTicks: opts.ticks, lineupNames: opts.lineup, result, flags });
+      const entry = buildEntry({ map, mapPreset: opts.map, seed: opts.seed, maxTicks: opts.ticks, lineupNames, result, flags });
       const added = await maybeSaveFlagged([entry], opts);
       if (added.length) console.log(`\nSaved as #${added[0].id} in ${getStorePath()}.`);
     } else {

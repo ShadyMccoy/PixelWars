@@ -34,7 +34,7 @@ function applyFallback(name, army, game) {
     if (army.strength < 2) return;
     const dir = (game.rng() * 4) | 0;
     const tile = army.tile ? army.tile.neighbors[dir] : null;
-    if (tile) army.attack(tile, army.strength - 1);
+    if (tile) army.attack(tile, army.attackPower);
   }
 }
 
@@ -127,14 +127,14 @@ export function makeBot(cfg) {
 
       let power;
       if (forceMode === "all") {
-        power = army.strength - 1;
+        power = army.attackPower;
       } else if (forceMode === "absolute" && forceAbsolute != null) {
         power = forceAbsolute;
       } else {
-        power = (army.strength - 1) * forceFrac;
+        power = (army.attackPower) * forceFrac;
       }
       if (power < forceMinPower) power = forceMinPower;
-      const cap = army.strength - 1;
+      const cap = army.attackPower;
       if (power > cap) power = cap;
       if (power <= 0.6) return;
       army.attack(best, power);
@@ -198,8 +198,8 @@ export function makeStencilBot(cfg) {
       }
 
       let power;
-      if (forceMode === "all") power = army.strength - 1;
-      else power = (army.strength - 1) * forceFrac;
+      if (forceMode === "all") power = army.attackPower;
+      else power = (army.attackPower) * forceFrac;
       if (power < 1.5) {
         applyFallback(fallbackName, army, game);
         return;

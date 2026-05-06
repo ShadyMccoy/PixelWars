@@ -34,12 +34,12 @@ into trades it expected to win.`,
         }
       }
       if (!hasEnemy) continue;
-      if (enemyTotal > bestScore && enemyTotal < army.strength - 1) {
+      if (enemyTotal > bestScore && enemyTotal < army.attackPower) {
         bestScore = enemyTotal;
         best = t;
       }
     }
-    if (best) army.attack(best, army.strength - 1);
+    if (best) army.attack(best, army.attackPower);
     else SlowAndSteady.act(army, game);
   },
 };

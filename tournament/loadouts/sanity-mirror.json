@@ -1,0 +1,4 @@
+[
+  { "strategy": "Berserker", "tech": { "atk": 100 }, "name": "Berserker-PureAtk" },
+  { "strategy": "Berserker", "tech": { "def": 100 }, "name": "Berserker-PureDef" }
+]

@@ -69,7 +69,7 @@ compounds across the match. Same emergent flocking, fewer leaks.`,
     const viewer = army.player;
     const neighbors = tile.neighbors;
     const pid = army.player.id;
-    const sLimit = army.strength - 1;
+    const sLimit = army.attackPower;
     if (sLimit <= 0.5) return;
 
     // Sort directions by alignment score, then walk that order looking for

@@ -34,6 +34,6 @@ which preys on the half-strength remainders we leave behind.`,
         best = t;
       }
     }
-    if (best) army.attack(best, Math.min(army.strength - 1, army.strength * 0.4 + 0.5));
+    if (best) army.attack(best, Math.min(army.attackPower, army.strength * 0.4 + 0.5));
   },
 };
