@@ -156,9 +156,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:24:26.581Z"
     },
     {
       "name": "Avalanche",
@@ -236,9 +236,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:24:26.695Z"
     },
     {
       "name": "Wildfire",
@@ -1488,6 +1488,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T08:18:22.482Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_1f0d47",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:24:26.577Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_72c4f8",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:24:26.691Z",
       "archivedAt": null
     }
   ]
