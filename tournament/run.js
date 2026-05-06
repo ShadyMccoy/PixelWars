@@ -2,7 +2,7 @@
 // CLI entrypoint: run a headless tournament between bot strategies.
 //
 // Pool play (default — random K strategies per match, hundreds of matches):
-//   node tournament/run.js                         # all strategies, arena, K=6, 200 matches
+//   node tournament/run.js                         # all strategies, lab1, K=6, 200 matches
 //   node tournament/run.js --pool 8 --matches 500
 //   node tournament/run.js --bots Hunter,Vampire,Trinity --pool 3 --matches 100
 //
@@ -34,7 +34,7 @@ const HELP = `Usage: node tournament/run.js [options]
 
 Tournament options:
   --bots A,B,C        Comma-separated strategy names (default: all)
-  --map NAME          Map preset: ${Object.keys(MAPS).join(", ")} (default: arena)
+  --map NAME          Map preset: ${Object.keys(MAPS).join(", ")} (default: lab1)
   --pool K            Strategies per match. 0 = FFA (default: 6)
   --matches M         Number of pool-play matches (default: 200)
   --rounds N          Legacy alias for --matches in FFA mode (default: 10)
@@ -88,7 +88,7 @@ Misc:
 function parseArgs(argv) {
   const opts = {
     bots: null,
-    map: "arena",
+    map: "lab1",
     pool: 6,
     matches: null,
     rounds: null,

@@ -41,6 +41,7 @@ export function runMatch({
   seed = 1,
   maxTicks = 4000,
   tickInterval = 1 / 30,
+  snapshotEvery = 0,
 }) {
   const entries = strategies.map(normalizeEntry);
   if (entries.length !== startPositions.length) {
@@ -65,12 +66,27 @@ export function runMatch({
   });
 
   const eliminated = new Map(); // playerId -> tick
+  const snapshots = snapshotEvery > 0 ? [] : null;
   let endReason = "max-ticks";
   while (game.tick < maxTicks) {
     game.step(tickInterval);
     const alive = new Set(game.livingPlayers().map((p) => p.id));
     for (const p of players) {
       if (!alive.has(p.id) && !eliminated.has(p.id)) eliminated.set(p.id, game.tick);
+    }
+    if (snapshots && game.tick % snapshotEvery === 0) {
+      game.recomputeTerritory();
+      snapshots.push({
+        tick: game.tick,
+        perPlayer: players.map((p, slot) => ({
+          slot,
+          strategy: p.strategy.name,
+          territory: p.totals.territory,
+          strength: +p.totals.strength.toFixed(2),
+          armies: p.totals.armies,
+          alive: alive.has(p.id),
+        })),
+      });
     }
     if (alive.size <= 1) {
       endReason = alive.size === 1 ? "winner" : "mutual-destruction";
@@ -91,7 +107,7 @@ export function runMatch({
     return b.totals.strength - a.totals.strength;
   });
 
-  return {
+  const result = {
     seed,
     ticks: game.tick,
     endReason,
@@ -110,4 +126,6 @@ export function runMatch({
       };
     }),
   };
+  if (snapshots) result.snapshots = snapshots;
+  return result;
 }

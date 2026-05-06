@@ -91,37 +91,4 @@ export const MODES = {
     },
     config: { width: 50, height: 36, growth: 0.8, maxArmy: 6, wrap: true },
   },
-
-  royale: {
-    name: "Battle Royale",
-    description: "Eight contenders, no wrap. Last AI standing takes the crown.",
-    setup(game) {
-      const strats = [
-        STRATEGIES.SlowAndSteady,
-        STRATEGIES.Repel,
-        STRATEGIES.Trinity,
-        STRATEGIES.Aggressive,
-        STRATEGIES.Defender,
-        STRATEGIES.Swarm,
-        STRATEGIES.Berserker,
-        STRATEGIES.Cautious,
-      ];
-      const names = ["Steady", "Repel", "Trinity", "Aggro", "Defend", "Swarm", "Berserk", "Cautious"];
-      const map = game.map;
-      const placements = strats.map((s, i) => {
-        const p = makePlayer(i, s, names[i]);
-        game.addPlayer(p);
-        const angle = (i / strats.length) * Math.PI * 2;
-        const cx = map.width / 2;
-        const cy = map.height / 2;
-        const r = Math.min(map.width, map.height) * 0.45;
-        const x = Math.max(1, Math.min(map.width - 2, Math.floor(cx + Math.cos(angle) * r)));
-        const y = Math.max(1, Math.min(map.height - 2, Math.floor(cy + Math.sin(angle) * r)));
-        return { player: p, x, y };
-      });
-      const side = startingBlobSide(map, placements.length);
-      for (const { player, x, y } of placements) placeStartingBlob(game, player, x, y, side);
-    },
-    config: { width: 44, height: 32, growth: 1.2, maxArmy: 6, wrap: false },
-  },
 };
