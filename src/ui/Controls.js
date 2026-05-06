@@ -15,6 +15,7 @@ export class Controls {
     this.toggleGrid = $("#toggle-grid");
     this.toggleTerritory = $("#toggle-territory");
     this.toggleGlow = $("#toggle-glow");
+    this.toggleOverlay = $("#toggle-overlay");
     this.tickLabel = $("#tick-label");
     this.eventLog = $("#event-log");
 
@@ -39,6 +40,10 @@ export class Controls {
     });
     this.toggleGlow.addEventListener("change", () => {
       this.app.renderer.showGlow = this.toggleGlow.checked;
+      this.app.markDirty();
+    });
+    this.toggleOverlay.addEventListener("change", () => {
+      this.app.renderer.showOverlay = this.toggleOverlay.checked;
       this.app.markDirty();
     });
 
