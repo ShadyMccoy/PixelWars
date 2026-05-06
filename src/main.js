@@ -268,10 +268,12 @@ class App {
     this._canvasBound = true;
     this.canvas.addEventListener("mousemove", (e) => {
       this.renderer.hoverTile = this.renderer.pixelToTile(e.clientX, e.clientY);
+      this.updateTileTooltip(e.clientX, e.clientY);
       this.markDirty();
     });
     this.canvas.addEventListener("mouseleave", () => {
       this.renderer.hoverTile = null;
+      this.hideTileTooltip();
       this.markDirty();
     });
     this.canvas.addEventListener("click", (e) => {
@@ -284,6 +286,52 @@ class App {
       }
       this.markDirty();
     });
+  }
+
+  ensureTileTooltip() {
+    if (this._tileTooltip) return this._tileTooltip;
+    const el = document.createElement("div");
+    el.className = "tile-tooltip";
+    el.style.display = "none";
+    document.body.appendChild(el);
+    this._tileTooltip = el;
+    return el;
+  }
+
+  updateTileTooltip(clientX, clientY) {
+    const tile = this.renderer.hoverTile;
+    if (!tile || !tile.armies || tile.armies.length === 0) {
+      this.hideTileTooltip();
+      return;
+    }
+    const el = this.ensureTileTooltip();
+    const rows = tile.armies
+      .filter((a) => a.alive)
+      .map((a) => {
+        const s = a.strength.toFixed(1);
+        const max = a.maxStrength;
+        const pct = Math.round((a.strength / a.maxStrength) * 100);
+        return `<div class="tile-tooltip-row"><span class="tile-tooltip-dot" style="background:${a.player.color}"></span><span class="tile-tooltip-name">${a.player.name}</span><span class="tile-tooltip-num">${s} / ${max} <span class="tile-tooltip-dim">(${pct}%)</span></span></div>`;
+      })
+      .join("");
+    if (!rows) {
+      this.hideTileTooltip();
+      return;
+    }
+    el.innerHTML = `<div class="tile-tooltip-head">Tile (${tile.pos.x}, ${tile.pos.y})</div>${rows}`;
+    el.style.display = "block";
+    const pad = 14;
+    const rect = el.getBoundingClientRect();
+    let x = clientX + pad;
+    let y = clientY + pad;
+    if (x + rect.width > window.innerWidth - 4) x = clientX - rect.width - pad;
+    if (y + rect.height > window.innerHeight - 4) y = clientY - rect.height - pad;
+    el.style.left = `${Math.max(4, x)}px`;
+    el.style.top = `${Math.max(4, y)}px`;
+  }
+
+  hideTileTooltip() {
+    if (this._tileTooltip) this._tileTooltip.style.display = "none";
   }
 
   setActivePlayer(player) {
