@@ -59,33 +59,80 @@ function hasFriendlyArmy(tile, pid) {
   return false;
 }
 
+// SlowAndSteady refuses to attack unless enemy + 1 < self.strength, which
+// at maxArmy=6 means parity stalemates forever. The engine's attackerBonus
+// rule means a strength-S attacker beats a strength-D defender whenever
+// S * bonus > D, leaving S - D/bonus actual strength on the conquered tile.
+// To survive (>= 1) the threshold is S >= 1 + D/bonus. Use that here so
+// the membrane can break through equally-matched defenders instead of
+// hanging out at the edge of its cell.
+function pickEnemyToAttack(army, game) {
+  const tile = army.tile;
+  const neighbors = tile.neighbors;
+  const pid = army.player.id;
+  const bonus = game.attackerBonus || 1;
+  const myStrength = army.strength;
+  let bestTile = null;
+  let bestEnemy = -Infinity;
+  let bestEmpty = null;
+  for (let d = 0; d < 4; d++) {
+    const nt = neighbors[d];
+    if (!nt) continue;
+    const arms = nt.armies;
+    if (arms.length === 0) {
+      if (!bestEmpty) bestEmpty = nt;
+      continue;
+    }
+    let enemySum = 0;
+    let friendly = false;
+    for (let i = 0; i < arms.length; i++) {
+      const a = arms[i];
+      if (a.player.id === pid) { friendly = true; break; }
+      enemySum += a.strength;
+    }
+    if (friendly) continue;
+    // Pick the strongest enemy we can still beat with the bonus — taking
+    // out a beefy stack swings the board far harder than chipping the
+    // weakest neighbor.
+    if (myStrength >= 1 + enemySum / bonus && enemySum > bestEnemy) {
+      bestEnemy = enemySum;
+      bestTile = nt;
+    }
+  }
+  return bestTile || bestEmpty;
+}
+
 export default {
   name: "Membrane",
   author: "shady",
-  version: 2,
-  description: "Cell-membrane: interior armies push outward to the membrane; border armies hold and fight.",
+  version: 3,
+  description: "Cell-membrane: interior armies push outward to the membrane; border armies engage with attacker-bonus aggression.",
   summary: `Inspired by a cell: keep mass on the borders to deter attack,
 but spread the body across as much territory as possible. An army
 with any non-friendly neighbor — empty tile or enemy — is on the
-membrane and plays SlowAndSteady, doing the actual fighting and
-expansion. An army fully enclosed by friendlies is "cytoplasm" and
-pumps nearly all of its strength one step toward the nearest
-membrane tile, leaving itself at minimum strength to regrow next
-tick. Direction is found by a per-tick BFS from the membrane
-inward, so it depends only on the cluster's topology — there is no
-centroid, no notion of "outward from a point", and the map's
-coordinate origin / wrap seam is irrelevant. The interior visibly
-hollows out while the perimeter fattens — a cell, not a blob. The
-thesis: most strategies either go thin-and-wide (easily overrun)
-or fat-and-small (easily starved); the membrane wins both axes by
-letting interior strength migrate naturally to wherever the front
-is.
+membrane and fights the actual war. An army fully enclosed by
+friendlies is "cytoplasm" and pumps nearly all of its strength one
+step toward the nearest membrane tile, leaving itself at minimum
+strength to regrow next tick. Direction is found by a per-tick BFS
+from the membrane inward, so it depends only on the cluster's
+topology — there is no centroid, no notion of "outward from a
+point", and the map's coordinate origin / wrap seam is irrelevant.
+
+Membrane combat exploits the engine's attacker-bonus rule directly.
+SlowAndSteady refuses any attack that doesn't strictly out-strength
+the defender, so two max-strength fronts stalemate forever. Here the
+membrane attacks the strongest enemy stack it can still beat with
+the bonus (S >= 1 + D/bonus, leaving S - D/bonus alive on the
+conquered tile), so a strength-6 attacker happily punches through a
+strength-6 defender instead of hanging out at the edge of its cell.
+Falls through to SlowAndSteady's friendly-balancing only when no
+enemy or empty neighbor is available.
 
 Known weaknesses: early game, almost every army is a border army,
-so before we have a real interior we are just SlowAndSteady. Against
-a Berserker that punches a hole through the membrane, the breach
-itself becomes the nearest membrane for nearby cytoplasm and gets
-fed — but the patching still happens via border-mode fighting.`,
+so before we have a real interior we are mostly fighting locally.
+Against a Berserker that punches a hole through the membrane, the
+breach itself becomes the nearest membrane for nearby cytoplasm and
+gets fed — but the patching still happens via border-mode fighting.`,
   act(army, game) {
     const tile = army.tile;
     if (!tile) return;
@@ -95,6 +142,11 @@ fed — but the patching still happens via border-mode fighting.`,
     // -1 = membrane, undefined = not in flow (shouldn't happen for an
     // alive army's own tile, but be safe).
     if (dir === -1 || dir === undefined) {
+      const target = pickEnemyToAttack(army, game);
+      if (target && army.strength > 1) {
+        army.attack(target, army.strength - 1);
+        return;
+      }
       SlowAndSteady.act(army, game);
       return;
     }
