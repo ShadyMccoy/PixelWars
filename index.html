@@ -51,6 +51,21 @@
       </div>
 
       <div>
+        <div class="section-title">Custom Map</div>
+        <div class="map-editor">
+          <div class="me-grid">
+            <label>Width<input id="me-width" type="number" min="6" max="120" value="30" /></label>
+            <label>Height<input id="me-height" type="number" min="6" max="120" value="22" /></label>
+            <label>Growth<input id="me-growth" type="number" min="0.1" max="5" step="0.1" value="1.8" /></label>
+            <label>Max army<input id="me-max-army" type="number" min="1" max="20" value="6" /></label>
+            <label>Players<input id="me-players" type="number" min="2" max="8" value="4" /></label>
+            <label class="me-check"><input id="me-wrap" type="checkbox" checked />Wrap</label>
+          </div>
+          <button id="btn-me-apply" class="btn primary">Apply</button>
+        </div>
+      </div>
+
+      <div>
         <div class="match-picker-head">
           <div class="section-title" style="margin:0;">League</div>
           <button id="btn-leagues-refresh" class="btn-mini" title="Reload tournament/leagues.json">↻</button>
