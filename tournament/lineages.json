@@ -756,9 +756,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:29:28.213Z"
     },
     {
       "name": "Drift_SW",
@@ -1306,9 +1306,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:29:28.096Z"
     },
     {
       "name": "Stencil_03",
@@ -1508,6 +1508,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T08:24:26.691Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_1b59ef",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:29:28.091Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_7a4f15",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:29:28.209Z",
       "archivedAt": null
     }
   ]
