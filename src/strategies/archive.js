@@ -17,6 +17,8 @@ export const ARCHIVED = [
   "Cluster_03",
   "Cluster_04",
   "Cluster_10",
+  "Defender",
+  "Drift_E",
   "Drift_NW",
   "Drift_SW",
   "Drift_W",

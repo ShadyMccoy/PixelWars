@@ -46,9 +46,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:15:40.163Z"
     },
     {
       "name": "Random",
@@ -696,9 +696,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T08:15:40.270Z"
     },
     {
       "name": "Drift_W",
@@ -1448,6 +1448,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T08:12:49.177Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_dc0148",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:15:40.159Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Crusader_g1_5f8b45",
+      "family": "Crusader",
+      "parent": "Crusader",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T08:15:40.265Z",
       "archivedAt": null
     }
   ]
