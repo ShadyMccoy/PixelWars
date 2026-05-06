@@ -13,6 +13,7 @@
 import { appendFile, readFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { RULES_VERSION } from "../src/core/version.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const LOG_PATH = resolve(HERE, "matches.jsonl");
@@ -24,6 +25,7 @@ export function getMatchLogPath() {
 export function buildMatchEntry({ map, result }) {
   return {
     ts: new Date().toISOString(),
+    rulesVersion: RULES_VERSION,
     map,
     seed: result.seed,
     ticks: result.ticks,

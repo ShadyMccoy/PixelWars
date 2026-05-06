@@ -9,6 +9,7 @@
 
 import { loadMatches } from "./matchLog.js";
 import { fitPlackettLuce } from "./plackettLuce.js";
+import { RULES_VERSION } from "../src/core/version.js";
 import { writeFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -71,9 +72,18 @@ export function buildRankings(matches) {
 }
 
 async function main() {
-  const matches = await loadMatches();
-  if (!matches.length) {
+  const allMatches = await loadMatches();
+  if (!allMatches.length) {
     console.error("No matches in matches.jsonl. Run a tournament first.");
+    process.exit(1);
+  }
+  const matches = allMatches.filter((m) => m.rulesVersion === RULES_VERSION);
+  const skipped = allMatches.length - matches.length;
+  if (skipped > 0) {
+    console.log(`Skipping ${skipped} matches from previous rule versions (current: ${RULES_VERSION}).`);
+  }
+  if (!matches.length) {
+    console.error(`No matches at rules version ${RULES_VERSION}. Run a tournament to generate fresh data.`);
     process.exit(1);
   }
 
