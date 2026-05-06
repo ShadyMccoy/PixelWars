@@ -9,7 +9,8 @@ import { HUD } from "./ui/HUD.js";
 import { Controls } from "./ui/Controls.js";
 import { MatchPicker } from "./ui/MatchPicker.js";
 import { LeagueViewer } from "./ui/LeagueViewer.js";
-import { ALL_STRATEGIES } from "./strategies/index.js";
+import { MapEditor } from "./ui/MapEditor.js";
+import { ALL_STRATEGIES, STRATEGY_LIST } from "./strategies/index.js";
 import { MAPS } from "../tournament/maps.js";
 
 // Mirrors tournament/arena.js so a replayed match looks the same on screen
@@ -61,6 +62,7 @@ class App {
       refreshButton: document.getElementById("btn-matches-refresh"),
       app: this,
     });
+    this.mapEditor = new MapEditor({ app: this });
     this.leagueViewer = new LeagueViewer({
       root: document.getElementById("league-viewer"),
       refreshButton: document.getElementById("btn-leagues-refresh"),
@@ -192,6 +194,83 @@ class App {
     this.lastWinnerLogged = null;
     this.matchPicker?.setActive(entry.id);
     this.controls.log(`▶ Replay #${entry.id} · ${entry.lineup.join(", ")}`);
+    this.bindCanvas();
+    this.playing = true;
+    this.controls.setPlaying(true);
+    this.markDirty();
+  }
+
+  loadCustomMap({ width, height, growth, maxArmy, wrap, numPlayers }) {
+    // Transient ad-hoc map: build a Game with the user's config and seat
+    // N bots in a ring. Strategies come from the top of STRATEGY_LIST so
+    // hits like "spawn 5 players" Just Work without exposing a per-slot
+    // strategy picker.
+    const strategies = STRATEGY_LIST.slice(0, numPlayers);
+    if (strategies.length < numPlayers) {
+      throw new Error(`Not enough strategies for ${numPlayers} players`);
+    }
+    const seed = (Date.now() & 0x7fffffff) >>> 0;
+
+    this.replayEntry = null;
+    this.lastLeagueArgs = null;
+    this.autoStopOnWinner = false;
+    this.modeKey = "custom";
+    this.mode = { key: "custom", name: "Custom Map" };
+    this.lastCustomArgs = { width, height, growth, maxArmy, wrap, numPlayers };
+    this.game = new Game({ width, height, growth, maxArmy, wrap, seed });
+
+    const cx = width / 2;
+    const cy = height / 2;
+    const r = Math.min(width, height) * 0.4;
+    const positions = [];
+    for (let i = 0; i < numPlayers; i++) {
+      const angle = (i / numPlayers) * Math.PI * 2;
+      const x = Math.max(1, Math.min(width - 2, Math.floor(cx + Math.cos(angle) * r)));
+      const y = Math.max(1, Math.min(height - 2, Math.floor(cy + Math.sin(angle) * r)));
+      positions.push({ x, y });
+    }
+
+    const players = strategies.map((s, i) => {
+      const palette = REPLAY_PALETTE[i % REPLAY_PALETTE.length];
+      return new Player({
+        name: `${s.name}#${i + 1}`,
+        color: palette.color,
+        accent: palette.accent,
+        strategy: s,
+        tech: s.tech,
+      });
+    });
+    players.forEach((p) => this.game.addPlayer(p));
+    {
+      const side = startingBlobSide(this.game.map, positions.length);
+      positions.forEach((pos, i) => {
+        placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
+      });
+    }
+
+    document.getElementById("mode-description").textContent =
+      `Custom · ${width}×${height} · g=${growth} · maxArmy=${maxArmy}${wrap ? " · wrap" : ""} · ${numPlayers} bots`;
+
+    if (!this.renderer) {
+      this.renderer = new Renderer({ canvas: this.canvas, game: this.game });
+    } else {
+      this.renderer.setGame(this.game);
+    }
+    if (!this.chart) {
+      this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
+    } else {
+      this.chart.setGame(this.game);
+    }
+    if (!this.hud) {
+      this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
+    } else {
+      this.hud.setGame(this.game);
+    }
+
+    this.activePlayer = this.game.players.list[0] ?? null;
+    this.lastWinnerLogged = null;
+    this.matchPicker?.setActive(null);
+    this.controls.log(`🛠 Custom map · ${width}×${height} · ${numPlayers} bots`);
     this.bindCanvas();
     this.playing = true;
     this.controls.setPlaying(true);
@@ -368,6 +447,8 @@ class App {
       this.loadReplay(this.replayEntry);
     } else if (this.modeKey === "league" && this.lastLeagueArgs) {
       this.loadLeagueMatch(this.lastLeagueArgs);
+    } else if (this.modeKey === "custom" && this.lastCustomArgs) {
+      this.loadCustomMap(this.lastCustomArgs);
     } else {
       this.loadMode(this.modeKey);
     }
