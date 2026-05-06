@@ -502,8 +502,13 @@ async function cmdSeason(opts) {
 
   const matchCount = opts.matches ?? 200;
   const flaggedEntries = [];
+  const matchEntries = [];
   const onMatch = (phase, idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
+    matchEntries.push(buildMatchEntry({
+      map: phase === "round-robin" ? opts.seasonRrMap : opts.map,
+      result,
+    }));
     const flags = detectFlags(result, { maxTicks: opts.ticks });
     if (flags.length) {
       flaggedEntries.push(buildEntry({
@@ -612,6 +617,13 @@ async function cmdSeason(opts) {
   const added = await maybeSaveFlagged(flaggedEntries, opts);
   if (added.length && !opts.json) {
     console.log(`Saved ${added.length} new entr${added.length === 1 ? "y" : "ies"} to ${getStorePath()}.`);
+  }
+
+  if (matchEntries.length) {
+    await appendMatches(matchEntries);
+    if (!opts.json) {
+      console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}. Run \`npm run rank\` to refresh rankings.`);
+    }
   }
 }
 
