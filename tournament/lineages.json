@@ -426,9 +426,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:24:14.332Z"
     },
     {
       "name": "Hunter_05",
@@ -1226,9 +1226,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-06T09:24:14.432Z"
     },
     {
       "name": "Pulse_05",
@@ -1648,6 +1648,26 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-06T09:22:33.522Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Spearhead_g1_171465",
+      "family": "Spearhead",
+      "parent": "Spearhead",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:24:14.325Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Pinwheel_g1_0ca9c3",
+      "family": "Pinwheel",
+      "parent": "Pinwheel",
+      "generation": 1,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-06T09:24:14.427Z",
       "archivedAt": null
     }
   ]
