@@ -21,7 +21,6 @@ Then visit <http://localhost:8000>.
 - **Classic** — three rival civilizations on a wrapping plain
 - **Arena** — six AIs in a small ring, fast metabolism
 - **Sandbox** — empty world, click to spawn armies, swap strategies live
-- **Battle Royale** — eight contenders, no wrap, last AI standing
 
 ## Controls
 
@@ -46,14 +45,16 @@ each match draws K random strategies from the pool, repeat M times, rank by
 points-per-game. Designed for ranking large strategy populations.
 
 ```bash
-node tournament/run.js                                       # all bots, arena, K=6, 200 matches
-node tournament/run.js --pool 8 --matches 500 --map royale   # bigger pool, longer
+node tournament/run.js                                       # all bots, lab1, K=6, 200 matches
+node tournament/run.js --pool 8 --matches 500 --map lab3     # bigger map, bigger pool
 node tournament/run.js --bots Aggressive,Trinity,Vampire     # restricted pool
 node tournament/run.js --list                                # what's available
 node tournament/run.js --help
 ```
 
-Matches are reproducible: same `--seed`, same standings.
+Matches are reproducible: same `--seed`, same standings. The default
+map is `lab1`, picked by the map-search as the highest-signal preset
+for ranking bots — see [docs/map-search.md](docs/map-search.md).
 
 ### League play
 
@@ -121,8 +122,11 @@ tournament/
   scheduler.js Round-robin / FFA scheduler
   maps.js      Map presets for tournaments
   run.js       CLI entrypoint
+  map-search/  Lab framework for picking map presets (see docs/map-search.md)
 docs/
-  strategies.md  Bot-author guide
+  strategies.md   Bot-author guide
+  techs.md        Tech loadout reference
+  map-search.md   How map presets are chosen
 ```
 
 Plain ES modules. No bundler. No framework. No `npm install`.
