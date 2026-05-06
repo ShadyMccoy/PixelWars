@@ -19,11 +19,7 @@
     </header>
 
     <aside class="sidebar">
-      <div>
-        <div class="section-title">Mode</div>
-        <select id="mode-select" class="dropdown"></select>
-        <p id="mode-description"></p>
-      </div>
+      <p id="mode-description" class="status-line"></p>
 
       <div>
         <div class="section-title">Simulation</div>
@@ -51,8 +47,9 @@
       </div>
 
       <div>
-        <div class="section-title">Custom Map</div>
+        <div class="section-title">Map</div>
         <div class="map-editor">
+          <div id="me-presets" class="preset-tabs"></div>
           <div class="me-grid">
             <label>Width<input id="me-width" type="number" min="6" max="120" value="30" /></label>
             <label>Height<input id="me-height" type="number" min="6" max="120" value="22" /></label>
@@ -67,7 +64,7 @@
 
       <div>
         <div class="match-picker-head">
-          <div class="section-title" style="margin:0;">Season (rating-driven)</div>
+          <div class="section-title" style="margin:0;">Season</div>
           <button id="btn-seasons-refresh" class="btn-mini" title="Reload tournament/seasons.json">↻</button>
         </div>
         <div id="season-viewer" class="league-viewer">
@@ -77,8 +74,8 @@
 
       <div>
         <div class="match-picker-head">
-          <div class="section-title" style="margin:0;">League (legacy tiers)</div>
-          <button id="btn-leagues-refresh" class="btn-mini" title="Reload tournament/leagues.json">↻</button>
+          <div class="section-title" style="margin:0;">Rankings</div>
+          <button id="btn-leagues-refresh" class="btn-mini" title="Reload tournament/rankings.json">↻</button>
         </div>
         <div id="league-viewer" class="league-viewer">
           <div class="hud-empty">Loading…</div>
@@ -99,7 +96,6 @@
         <div class="section-title">Legend</div>
         <div class="legend">
           <div>⚔ army count · ⬢ total strength · ▣ tiles owned</div>
-          <div>Click a tile in Sandbox to spawn an army for the active player.</div>
         </div>
       </div>
     </aside>

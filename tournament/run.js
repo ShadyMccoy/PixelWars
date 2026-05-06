@@ -27,6 +27,9 @@ import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
 import { loadInteresting, appendInteresting, getStorePath } from "./store.js";
 import { saveLeague, loadLeagues, getLeagueStorePath } from "./leagueStore.js";
+import { buildMatchEntry, appendMatches, loadMatches, getMatchLogPath } from "./matchLog.js";
+import { loadRankings, saveRankings, ratingMap, getRankingsPath } from "./rankingsStore.js";
+import { buildRankings, filterCurrentVersion } from "./rank.js";
 import {
   loadLineages,
   ensureFoundersForNames,
@@ -50,28 +53,21 @@ Tournament options:
   --rounds N          Legacy alias for --matches in FFA mode (default: 10)
   --ticks N           Max ticks per match (default: 4000)
   --seed N            Base seed (default: 1)
-  --rating            Use rating-driven scheduler (Glicko + info-gain
-                      matchmaker). Replaces flat random pool play with
-                      similar-skill matchups, no tiers required.
+  --rating            Run pool play and emit Plackett-Luce ratings
+                      (Elo-scaled). Standings sort by rating instead of
+                      points-per-game. Equivalent to running pool play
+                      then \`npm run rank\` — handy when you just want
+                      ratings out of one invocation.
   --no-save           Don't auto-save flagged matches
   --json              Emit standings as JSON
   --verbose           Print per-match results
 
-League mode (similar-skill matchups via tier-based promotion/relegation):
+League mode (similar-skill matchups; tiers seeded from current ratings):
   --league            Run a league instead of flat pool play
   --tier-size N       Bots per tier (default: 10)
-  --seasons N         Number of seasons (default: 3)
+  --seasons N         Number of seasons (default: 3). Tiers re-seed from
+                      refit ratings between seasons.
   --matches-per-season N  Matches per tier per season (default: 20)
-  --promote N         Top N of each tier promote each season (default: 2)
-  --relegate N        Bottom N relegate each season (default: 2)
-  --bootstrap N       Pre-season pool-play matches to seed initial tiers
-                      (default: 50; use 0 to skip)
-  --seed-from-league NAME  Use the saved league for that map as the
-                      initial bot order (skips bootstrap). Active bots
-                      not in the saved league are slotted in at the
-                      tier given by --insert-tier.
-  --insert-tier N     1-indexed tier at which to insert previously-
-                      unranked bots (default: 3)
 
 Single-match / replay:
   --lineup A,B,C      Run one match with this lineup at --seed
@@ -144,17 +140,12 @@ function parseArgs(argv) {
     tierSize: 10,
     seasons: 3,
     matchesPerSeason: 20,
-    promote: 2,
-    relegate: 2,
-    bootstrap: 50,
     archiveBottom: null,
     archiveAdd: null,
     archiveRemove: null,
     archiveClear: false,
     archiveList: false,
     listAll: false,
-    seedFromLeague: null,
-    insertTier: 3,
     rating: false,
     season: false,
     seasonRrMap: "lab3",
@@ -193,11 +184,6 @@ function parseArgs(argv) {
       case "--tier-size": opts.tierSize = parseInt(next(), 10); break;
       case "--seasons": opts.seasons = parseInt(next(), 10); break;
       case "--matches-per-season": opts.matchesPerSeason = parseInt(next(), 10); break;
-      case "--promote": opts.promote = parseInt(next(), 10); break;
-      case "--relegate": opts.relegate = parseInt(next(), 10); break;
-      case "--bootstrap": opts.bootstrap = parseInt(next(), 10); break;
-      case "--seed-from-league": opts.seedFromLeague = next(); break;
-      case "--insert-tier": opts.insertTier = parseInt(next(), 10); break;
       case "--rating": opts.rating = true; break;
       case "--season": opts.season = true; break;
       case "--season-rr-map": opts.seasonRrMap = next(); break;
@@ -744,39 +730,37 @@ async function cmdLeague(opts) {
     process.exit(1);
   }
 
-  // If asked, seed the initial bot order from a previously-saved league —
-  // existing tier composition stays put, and any active bot the saved
-  // league didn't see (newly added strategies) gets slotted in at the
-  // chosen tier so it has a few seasons to climb or sink.
-  let bootstrap = opts.bootstrap;
-  let newBotNames = [];
-  if (opts.seedFromLeague) {
-    const leagues = await loadLeagues();
-    const src = leagues.find((l) => l.map === opts.seedFromLeague);
-    if (!src) {
-      console.error(`No saved league for map "${opts.seedFromLeague}". Run --league --map ${opts.seedFromLeague} first.`);
-      process.exit(1);
-    }
-    const knownInLeague = new Set(src.tiers.flat());
-    const activeNames = new Set(strategies.map((s) => s.name));
-    const seededOrder = src.tiers.flat().filter((n) => activeNames.has(n));
-    newBotNames = strategies.map((s) => s.name).filter((n) => !knownInLeague.has(n));
-    const insertAt = Math.max(0, (opts.insertTier - 1) * opts.tierSize);
-    const reordered = [
-      ...seededOrder.slice(0, insertAt),
-      ...newBotNames,
-      ...seededOrder.slice(insertAt),
-    ];
-    strategies = reordered.map((n) => getStrategy(n));
-    bootstrap = 0;
-    if (!opts.json) {
-      console.log(`Seeded from "${opts.seedFromLeague}" league. ${newBotNames.length} new bot${newBotNames.length === 1 ? "" : "s"} inserted at tier ${opts.insertTier}: ${newBotNames.join(", ") || "(none)"}\n`);
+  // Seed initial tier order from the global ranking. Bots without a
+  // rating (new bots, or first-ever league run) start at the median
+  // rating so they slot mid-pack and let PL pull them to true skill.
+  const seedRankings = await loadRankings();
+  const seedRatings = ratingMap(seedRankings);
+  const unrated = strategies.filter((s) => !seedRatings.has(s.name)).map((s) => s.name);
+  if (!opts.json) {
+    if (seedRankings) {
+      const ratedCount = strategies.length - unrated.length;
+      console.log(
+        `Seeding tiers from ${getRankingsPath().split("/").slice(-2).join("/")} ` +
+        `(${ratedCount} rated, ${unrated.length} new at default).`,
+      );
+      if (unrated.length && unrated.length <= 12) {
+        console.log(`  New: ${unrated.join(", ")}`);
+      }
+    } else {
+      console.log(`No rankings.json yet — all bots seeded at default rating.`);
     }
   }
 
   const flaggedEntries = [];
+  const matchEntries = [];
+  // Pre-load the existing match log once. The refit between seasons fits
+  // PL on (existing log) ∪ (this run's matches so far), filtered to the
+  // current rules version.
+  const priorLog = filterCurrentVersion(await loadMatches());
+
   const onMatch = (season, tier, idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
+    matchEntries.push(buildMatchEntry({ map: opts.map, result }));
     const flags = detectFlags(result, { maxTicks: opts.ticks });
     if (flags.length) {
       flaggedEntries.push(buildEntry({
@@ -785,7 +769,7 @@ async function cmdLeague(opts) {
       }));
     }
     if (opts.verbose) {
-      const where = season < 0 ? `Bootstrap ${idx + 1}` : `S${season + 1} T${tier + 1} M${idx + 1}`;
+      const where = `S${season + 1} T${tier + 1} M${idx + 1}`;
       printMatchSummary(where, result, lineup);
       if (flags.length) console.log(`  flags: ${flags.map((f) => f.tag).join(", ")}`);
     }
@@ -800,16 +784,23 @@ async function cmdLeague(opts) {
     }
   };
 
+  const onSeasonRefit = (seasonIdx) => {
+    const fresh = buildRankings([...priorLog, ...matchEntries]);
+    if (!opts.json) {
+      const top3 = fresh.players.slice(0, 3).map((p) => `${p.name}(${p.rating})`).join(", ");
+      console.log(`  refit → top: ${top3}  (${fresh.iterations} iter, conv=${fresh.converged})`);
+    }
+    return ratingMap(fresh);
+  };
+
   const totalEstimated =
-    bootstrap +
     opts.seasons *
-      Math.ceil(strategies.length / opts.tierSize) *
-      opts.matchesPerSeason;
+    Math.ceil(strategies.length / opts.tierSize) *
+    opts.matchesPerSeason;
   if (!opts.json) {
     console.log(
       `Running league: ${strategies.length} bots · tier-size=${opts.tierSize} · ` +
-      `seasons=${opts.seasons} · ${opts.matchesPerSeason} matches/tier/season · ` +
-      `${opts.promote}↑/${opts.relegate}↓ · bootstrap=${bootstrap}`,
+      `seasons=${opts.seasons} · ${opts.matchesPerSeason} matches/tier/season`,
     );
     console.log(`(~${totalEstimated} matches total)\n`);
   }
@@ -821,14 +812,18 @@ async function cmdLeague(opts) {
     seasons: opts.seasons,
     matchesPerSeason: opts.matchesPerSeason,
     poolSize: opts.pool,
-    promote: opts.promote,
-    relegate: opts.relegate,
-    bootstrapMatches: bootstrap,
     baseSeed: opts.seed,
     maxTicks: opts.ticks,
+    seedRatings,
     onMatch,
     onSeasonEnd,
+    onSeasonRefit,
   });
+
+  // Final refit, including this run's matches. This is the canonical
+  // post-run ranking; we write it to rankings.json so the next league
+  // (and the browser) can read it.
+  const finalRankings = buildRankings([...priorLog, ...matchEntries]);
 
   if (opts.json) {
     process.stdout.write(JSON.stringify({
@@ -839,14 +834,11 @@ async function cmdLeague(opts) {
         tierSize: opts.tierSize,
         seasons: opts.seasons,
         matchesPerSeason: opts.matchesPerSeason,
-        promote: opts.promote,
-        relegate: opts.relegate,
-        bootstrap: opts.bootstrap,
         pool: opts.pool,
       },
       final: league.final,
       tiers: league.tiers,
-      seasons: league.seasons,
+      ratings: finalRankings.players,
       flagged: flaggedEntries,
     }, null, 2) + "\n");
   } else {
@@ -856,7 +848,9 @@ async function cmdLeague(opts) {
       console.log(`Tier ${t + 1}:`);
       tier.forEach((name, i) => {
         const overall = t * opts.tierSize + i + 1;
-        console.log(`  ${String(overall).padStart(3)}. ${name}`);
+        const r = finalRankings.players.find((p) => p.name === name);
+        const tag = r ? `  (${r.rating})` : "";
+        console.log(`  ${String(overall).padStart(3)}. ${name}${tag}`);
       });
       console.log("");
     }
@@ -873,7 +867,17 @@ async function cmdLeague(opts) {
     console.log(`  Replay any with: node tournament/run.js --replay <id>`);
   }
 
-  // Persist the final tier composition for the browser's League viewer.
+  if (matchEntries.length) {
+    await appendMatches(matchEntries);
+    if (!opts.json) console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}.`);
+  }
+
+  await saveRankings(finalRankings);
+  if (!opts.json) console.log(`Rankings saved to ${getRankingsPath()}: ${finalRankings.players.length} players, ${finalRankings.matchCount} matches.`);
+
+  // Legacy: the browser League viewer still reads leagues.json. Keep
+  // writing the final tier composition there until the UI moves to
+  // rankings.json.
   await saveLeague({
     map: opts.map,
     mapConfig: { ...map.config },
@@ -881,12 +885,10 @@ async function cmdLeague(opts) {
     seasons: opts.seasons,
     matchesPerSeason: opts.matchesPerSeason,
     poolSize: opts.pool,
-    promote: opts.promote,
-    relegate: opts.relegate,
     tiers: league.tiers,
     final: league.final,
   });
-  if (!opts.json) console.log(`League standings saved to ${getLeagueStorePath()}.`);
+  if (!opts.json) console.log(`League snapshot saved to ${getLeagueStorePath()}.`);
 }
 
 // ---------------------------------------------------------- main
@@ -987,8 +989,10 @@ async function main() {
     : (opts.matches ?? opts.rounds ?? 200);
 
   const flaggedEntries = [];
+  const matchEntries = [];
   const onMatch = (idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
+    matchEntries.push(buildMatchEntry({ map: opts.map, result }));
     const flags = detectFlags(result, { maxTicks: opts.ticks });
     if (flags.length) {
       flaggedEntries.push(buildEntry({
@@ -1048,6 +1052,11 @@ async function main() {
   if (added.length && !opts.json) {
     console.log(`Saved ${added.length} new entr${added.length === 1 ? "y" : "ies"} to ${getStorePath()}.`);
     console.log(`  Replay any with: node tournament/run.js --replay <id>`);
+  }
+
+  if (matchEntries.length) {
+    await appendMatches(matchEntries);
+    if (!opts.json) console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}. Run \`npm run rank\` to refresh rankings.`);
   }
 }
 

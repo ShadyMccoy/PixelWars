@@ -11,7 +11,6 @@ export class Controls {
     this.btnReset = $("#btn-reset");
     this.speed = $("#speed");
     this.speedLabel = $("#speed-label");
-    this.modeSelect = $("#mode-select");
     this.toggleGrid = $("#toggle-grid");
     this.toggleTerritory = $("#toggle-territory");
     this.toggleGlow = $("#toggle-glow");
@@ -26,10 +25,6 @@ export class Controls {
     this.speed.addEventListener("input", () => {
       this.app.speed = parseFloat(this.speed.value);
       this.speedLabel.textContent = `${this.app.speed.toFixed(1)}x`;
-    });
-    this.modeSelect.addEventListener("change", () => {
-      this.app._userChoseMode = true;
-      this.app.loadMode(this.modeSelect.value);
     });
     this.toggleGrid.addEventListener("change", () => {
       this.app.renderer.showGrid = this.toggleGrid.checked;
@@ -67,10 +62,6 @@ export class Controls {
 
   setPlaying(playing) {
     this.btnPlay.textContent = playing ? "⏸ Pause" : "▶ Play";
-  }
-
-  setMode(key) {
-    this.modeSelect.value = key;
   }
 
   setTick(t) {
