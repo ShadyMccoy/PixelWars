@@ -208,15 +208,18 @@ function buildPrompt({
 
   return `# Spawn descendant: ${newName}
 
-You are creating a small variation of the bot **${parentName}** — its
-descendant — in the PixelWars tournament. The task is exactly:
+You are creating a descendant of the bot **${parentName}** in the
+PixelWars tournament. The task is exactly:
 
-> Improve this bot one tiny bit.
+> Improve this bot.
 
-The descendant should be **a small modification** of the parent: tweak a
-constant, swap a tiebreaker, refine a heuristic, change the threshold at
-which it commits force. Do **not** rewrite from scratch. Do **not** add
-new infrastructure. The smaller the change, the better the comparison.
+The descendant takes inspiration from the parent but is free to
+diverge. Tune a constant, restructure the kernel, swap the fallback
+strategy, change the thesis entirely — whatever you think will rank
+higher than the parent in the next season. Loosely related is fine;
+this is exploration, not a minimal A/B test. The only hard rules are
+that the file must be self-contained, default-export a working
+strategy with the right \`name\`, and not break the engine API.
 
 ## Test environment
 
