@@ -58,8 +58,31 @@ export function runMatch({
     });
   });
   players.forEach((p) => game.addPlayer(p));
+  // Seed each player with a square blob of tiles centered on their
+  // starting position, sized so all blobs together cover ~50% of the
+  // map. This compresses the empty-board phase so combat techs
+  // (atk/def) matter from tick one and pure-blitz can't snowball
+  // unopposed across an empty grid.
+  const N = startPositions.length;
+  const totalTiles = (mapConfig.width || 0) * (mapConfig.height || 0);
+  const targetTilesPerPlayer = Math.max(1, Math.floor(totalTiles / (2 * N)));
+  const side = Math.max(1, Math.round(Math.sqrt(targetTilesPerPlayer)));
+  const half = Math.floor(side / 2);
+  const STARTING_STRENGTH = 2;
   startPositions.forEach((pos, i) => {
-    game.placeArmy({ x: pos.x, y: pos.y, player: players[i], strength: pos.strength ?? 1 });
+    for (let dy = 0; dy < side; dy++) {
+      for (let dx = 0; dx < side; dx++) {
+        const x = pos.x + dx - half;
+        const y = pos.y + dy - half;
+        const tile = game.map.getTile(x, y);
+        if (!tile) continue;
+        // First-come-first-served on overlap: if another player's
+        // blob already claimed this tile, leave it alone rather than
+        // creating a contested start.
+        if (tile.armies.length > 0 && tile.armies[0].player.id !== players[i].id) continue;
+        game.placeArmy({ x, y, player: players[i], strength: STARTING_STRENGTH });
+      }
+    }
   });
 
   const eliminated = new Map(); // playerId -> tick
