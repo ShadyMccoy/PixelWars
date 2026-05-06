@@ -99,7 +99,9 @@ breach itself still has to be patched by border-mode fighting.`,
     let isBorder = false;
     for (let i = 0; i < 4; i++) {
       const t = neighbors[i];
-      if (!t) { isBorder = true; break; }
+      // Map edge (non-wrap) is not a threat — treat like a friendly side so
+      // we don't form a membrane against the wall.
+      if (!t) continue;
       const tArmies = t.armies;
       if (tArmies.length === 0) { isBorder = true; break; }
       let friendly = false;
