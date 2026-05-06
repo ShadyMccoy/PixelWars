@@ -637,6 +637,22 @@ select.dropdown {
   gap: 2px;
 }
 
+.league-map-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.league-map-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-right: 2px;
+}
+
 .tier-tab {
   font-size: 10px;
   padding: 3px 6px;
