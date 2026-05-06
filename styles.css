@@ -283,6 +283,11 @@ select.dropdown {
   z-index: 1000;
 }
 
+.strat-tooltip.pinned {
+  pointer-events: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--player-color, var(--accent));
+}
+
 .strat-tooltip-title {
   font-weight: 700;
   font-size: 13px;
@@ -295,6 +300,64 @@ select.dropdown {
   color: var(--text-dim);
   white-space: pre-wrap;
 }
+
+.tech-loadout {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.tech-loadout-head {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.tech-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 22px 80px;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+.tech-label {
+  color: var(--text-dim);
+}
+
+.tech-bar {
+  height: 6px;
+  background: var(--bg-2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.tech-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--player-color, var(--accent));
+  opacity: 0.85;
+}
+
+.tech-val {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.tech-mult {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+.tech-up .tech-val { color: #7fd182; }
+.tech-down .tech-val { color: #d18a7f; }
 
 .tile-tooltip {
   position: fixed;

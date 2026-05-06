@@ -1,5 +1,6 @@
 import { hexToRgba } from "../render/Renderer.js";
 import { STRATEGIES } from "../strategies/index.js";
+import { KNOBS, NEUTRAL_TECH } from "../core/Tech.js";
 
 export class HUD {
   constructor({ root, game, app }) {
@@ -10,6 +11,19 @@ export class HUD {
     this.tooltip.className = "strat-tooltip";
     this.tooltip.style.display = "none";
     document.body.appendChild(this.tooltip);
+    this.pinnedPlayerId = null;
+    this.pinnedRow = null;
+    this.tooltip.addEventListener("mousedown", (e) => e.stopPropagation());
+    document.addEventListener("mousedown", (e) => {
+      if (this.pinnedPlayerId == null) return;
+      if (this.tooltip.contains(e.target)) return;
+      const row = e.target.closest?.(".player-row");
+      if (row && Number(row.dataset.playerId) === this.pinnedPlayerId) return;
+      this.unpin();
+    });
+    window.addEventListener("resize", () => {
+      if (this.pinnedRow) this.positionTooltip(this.pinnedRow);
+    });
     this.render();
     game.on("players:changed", () => this.render());
   }
@@ -22,17 +36,30 @@ export class HUD {
 
   showTooltip(player, row) {
     const strat = player.strategy;
-    if (!strat) return;
-    const title = strat.name ?? "";
-    const body = strat.summary || strat.description || "";
-    if (!body) return;
+    const title = strat?.name ?? player.name ?? "";
+    const body = strat?.summary || strat?.description || "";
     this.tooltip.innerHTML = `
       <div class="strat-tooltip-title">${escapeHtml(title)}</div>
-      <div class="strat-tooltip-body">${escapeHtml(body)}</div>
+      ${body ? `<div class="strat-tooltip-body">${escapeHtml(body)}</div>` : ""}
+      ${renderTechLoadout(player)}
     `;
     this.tooltip.style.setProperty("--player-color", player.color);
     this.tooltip.style.display = "block";
     this.positionTooltip(row);
+  }
+
+  pin(player, row) {
+    this.pinnedPlayerId = player.id;
+    this.pinnedRow = row;
+    this.tooltip.classList.add("pinned");
+    this.showTooltip(player, row);
+  }
+
+  unpin() {
+    this.pinnedPlayerId = null;
+    this.pinnedRow = null;
+    this.tooltip.classList.remove("pinned");
+    this.hideTooltip();
   }
 
   positionTooltip(row) {
@@ -54,11 +81,12 @@ export class HUD {
   }
 
   hideTooltip() {
+    if (this.pinnedPlayerId != null) return;
     this.tooltip.style.display = "none";
   }
 
   render() {
-    this.hideTooltip();
+    this.unpin();
     this.root.innerHTML = "";
     if (!this.game.players.list.length) {
       this.root.innerHTML = `<div class="hud-empty">No players. Add one in Sandbox.</div>`;
@@ -96,6 +124,7 @@ export class HUD {
         select.title = player.strategy?.description ?? "";
         if (this.tooltip.style.display === "block") this.showTooltip(player, row);
       });
+      select.addEventListener("mousedown", (e) => e.stopPropagation());
 
       const bar = document.createElement("div");
       bar.className = "strength-bar";
@@ -115,11 +144,22 @@ export class HUD {
         select2.addEventListener("click", () => {
           this.app.setActivePlayer(player);
         });
+        select2.addEventListener("mousedown", (e) => e.stopPropagation());
         row.appendChild(select2);
       }
 
-      row.addEventListener("mouseenter", () => this.showTooltip(player, row));
+      row.addEventListener("mouseenter", () => {
+        if (this.pinnedPlayerId == null) this.showTooltip(player, row);
+      });
       row.addEventListener("mouseleave", () => this.hideTooltip());
+      row.addEventListener("mousedown", (e) => {
+        if (e.target.closest("select, button, input, a")) return;
+        if (this.pinnedPlayerId === player.id) {
+          this.unpin();
+        } else {
+          this.pin(player, row);
+        }
+      });
 
       row.dataset.playerId = player.id;
       this.root.appendChild(row);
@@ -149,4 +189,33 @@ export class HUD {
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+const KNOB_LABELS = { move: "Move", stack: "Stack", prod: "Prod", atk: "Atk", def: "Def" };
+
+function renderTechLoadout(player) {
+  const tech = player?.tech ?? NEUTRAL_TECH;
+  const mults = player?.techMults;
+  const rows = KNOBS.map((k) => {
+    const v = tech[k] ?? 0;
+    const pct = Math.max(0, Math.min(100, v));
+    const baseline = NEUTRAL_TECH[k];
+    const cls = v > baseline ? "up" : v < baseline ? "down" : "neutral";
+    const mult = mults?.[k];
+    const multStr = mult == null ? "" : (k === "move" ? `${mult.toFixed(2)}× garrison` : `${mult.toFixed(2)}×`);
+    return `
+      <div class="tech-row tech-${cls}">
+        <span class="tech-label">${KNOB_LABELS[k]}</span>
+        <span class="tech-bar"><span class="tech-bar-fill" style="width:${pct}%"></span></span>
+        <span class="tech-val">${v}</span>
+        <span class="tech-mult">${escapeHtml(multStr)}</span>
+      </div>
+    `;
+  }).join("");
+  return `
+    <div class="tech-loadout">
+      <div class="tech-loadout-head">Tech Loadout</div>
+      ${rows}
+    </div>
+  `;
 }
