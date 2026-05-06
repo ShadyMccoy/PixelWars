@@ -47,6 +47,7 @@ export class Army {
 
   attack(tile, power) {
     if (!this.isAttackValid(tile, power)) return false;
+    this.game.recordMove(this.tile, tile, this.player, power);
     this.strength -= power;
     // Fast-path: if a friendly already holds the target tile, transfer
     // strength directly without allocating a new Army. Mirrors the
