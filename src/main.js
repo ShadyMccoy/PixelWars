@@ -46,8 +46,8 @@ class App {
     this.replayEntry = null;
     // Auto-stop applies in any "watch one match end-to-end" context —
     // replays of saved matches and live league-tier matches. In sandbox
-    // / classic / arena / royale the user usually wants to keep watching
-    // past the first elimination, so it stays off there.
+    // / classic / arena the user usually wants to keep watching past
+    // the first elimination, so it stays off there.
     this.autoStopOnWinner = false;
     // Tracks whether the user has already changed mode / picked a match
     // so the async league loader doesn't yank them out of an active view.

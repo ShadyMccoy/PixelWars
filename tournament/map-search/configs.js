@@ -146,7 +146,7 @@ export function defaultGrid() {
     { width: 50, height: 36 },  // large
   ];
   const growths = [0.8, 1.2, 1.8];
-  const wraps = [true, false];
+  const wraps = [true];
   const topologies = ["ring", "line", "corners", "pairs"];
   const ks = [4, 6];
   const maxArmys = [6];
@@ -172,15 +172,15 @@ export function defaultGrid() {
   return out;
 }
 
-// Tiny grid for unit tests / smoke runs. ~6 configs.
+// Tiny grid for unit tests / smoke runs. ~6 configs, all wrap=true.
 export function smallGrid() {
   return [
-    makeConfig({ width: 24, height: 18, growth: 1.5, maxArmy: 6, wrap: true,  topology: "ring",    k: 4 }),
-    makeConfig({ width: 30, height: 22, growth: 1.5, maxArmy: 6, wrap: true,  topology: "ring",    k: 4 }),
-    makeConfig({ width: 30, height: 22, growth: 1.5, maxArmy: 6, wrap: true,  topology: "line",    k: 4 }),
-    makeConfig({ width: 30, height: 22, growth: 1.5, maxArmy: 6, wrap: false, topology: "corners", k: 4 }),
-    makeConfig({ width: 38, height: 28, growth: 1.0, maxArmy: 6, wrap: true,  topology: "pairs",   k: 6 }),
-    makeConfig({ width: 38, height: 28, growth: 1.0, maxArmy: 6, wrap: false, topology: "ring",    k: 6 }),
+    makeConfig({ width: 24, height: 18, growth: 1.5, maxArmy: 6, wrap: true, topology: "ring",    k: 4 }),
+    makeConfig({ width: 30, height: 22, growth: 1.5, maxArmy: 6, wrap: true, topology: "ring",    k: 4 }),
+    makeConfig({ width: 30, height: 22, growth: 1.5, maxArmy: 6, wrap: true, topology: "line",    k: 4 }),
+    makeConfig({ width: 30, height: 22, growth: 1.5, maxArmy: 6, wrap: true, topology: "corners", k: 4 }),
+    makeConfig({ width: 38, height: 28, growth: 1.0, maxArmy: 6, wrap: true, topology: "pairs",   k: 6 }),
+    makeConfig({ width: 38, height: 28, growth: 1.8, maxArmy: 6, wrap: true, topology: "ring",    k: 6 }),
   ];
 }
 
@@ -195,7 +195,7 @@ export function planted() {
   return [
     // Way too big with tiny growth — no contact, decays into noise; almost
     // every match times out. Discrimination is destroyed by the timeout cap.
-    makeConfig({ name: "PLANT_huge_slow", width: 60, height: 44, growth: 0.4, maxArmy: 6, wrap: false, topology: "ring", k: 4 }),
+    makeConfig({ name: "PLANT_huge_slow", width: 60, height: 44, growth: 0.4, maxArmy: 6, wrap: true, topology: "ring", k: 4 }),
     // Micro-arena: 9×7 with k=6 packs players elbow-to-elbow on spawn.
     // Whoever spawns adjacent to two others vs. one others has very
     // different match outcomes regardless of strategy → lottery.
@@ -204,6 +204,6 @@ export function planted() {
     // some pairs spawn 1 tile apart while others spawn diagonally; the
     // outcome is dominated by which two unlucky bots got crammed onto the
     // duplicate corner. Strategy is irrelevant.
-    makeConfig({ name: "PLANT_corner_cram", width: 18, height: 14, growth: 1.5, maxArmy: 6, wrap: false, topology: "corners", k: 6 }),
+    makeConfig({ name: "PLANT_corner_cram", width: 18, height: 14, growth: 1.5, maxArmy: 6, wrap: true, topology: "corners", k: 6 }),
   ];
 }
