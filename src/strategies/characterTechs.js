@@ -48,6 +48,11 @@ const RAW = {
   // Conductor: balanced-with-edge
   Conductor:  { stack: 40, prod: 30, def: 30 },
 
+  // Painter-based bots
+  Frontier:      { prod: 50, atk: 50 },           // interior feeds front
+  PressureSink:  { atk: 40, def: 40, prod: 20 },  // attack weak, brace strong
+  CitadelSortie: { stack: 50, atk: 50 },          // stockpile + concentrated push
+
   // Role-agnostic / generalist bots intentionally left neutral:
   // Random, Adaptive, Tactician, Membrane, Trinity, Opportunist,
   // Repel, SlowAndSteady, Hunter, Hunter-style, plus all factory and

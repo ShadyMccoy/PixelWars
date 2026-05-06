@@ -402,7 +402,7 @@ export function tryKillAdjacent(army, attackerBonus = 1.4) {
   if (!tile) return false;
   const neighbors = tile.neighbors;
   const pid = army.player.id;
-  const myEff = (army.strength - 1) * attackerBonus;
+  const myEff = (army.attackPower) * attackerBonus;
 
   let bestKill = null;
   let bestKillStr = -1;
@@ -423,7 +423,7 @@ export function tryKillAdjacent(army, attackerBonus = 1.4) {
     if (enemy > bestKillStr) { bestKillStr = enemy; bestKill = t; }
   }
   if (bestKill) {
-    army.attack(bestKill, army.strength - 1);
+    army.attack(bestKill, army.attackPower);
     return true;
   }
   return false;
