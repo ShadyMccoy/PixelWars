@@ -1389,6 +1389,16 @@
       "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
       "archivedAt": null
+    },
+    {
+      "name": "Trinity_g1_3786cc",
+      "family": "Trinity",
+      "parent": "Trinity",
+      "generation": 1,
+      "birthSeason": 2,
+      "active": true,
+      "createdAt": "2026-05-06T05:32:57.425Z",
+      "archivedAt": null
     }
   ]
 }

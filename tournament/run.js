@@ -33,6 +33,7 @@ import {
   familiesByName,
   getLineageStorePath,
 } from "./lineageStore.js";
+import { prepareSpawnTask, registerDescendant } from "./spawn.js";
 import { techFromPartial } from "../src/core/Tech.js";
 import { writeFile, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -102,6 +103,13 @@ Lineage (genetic descendant feature):
   --list-lineages     Print every bot's family/parent/generation and exit
   --backfill-lineages Add gen-0 founder records for any bot missing one
                       (idempotent; safe to run after adding new bots)
+  --prepare-spawn NAME  Print the agent prompt for spawning a descendant
+                        of NAME (parent must have its own .js file).
+                        Pipe to your LLM of choice and write the result
+                        to src/strategies/<suggested-name>.js, then run:
+  --register-descendant --name NEW --parent NAME --file PATH
+                        Validate the new strategy file, copy it into
+                        src/strategies/, register in lineage + index.
 
 Misc:
   --list              List active strategies and exit
@@ -148,6 +156,12 @@ function parseArgs(argv) {
     seasonRrRounds: 21,
     listLineages: false,
     backfillLineages: false,
+    prepareSpawn: null,
+    registerDescendant: false,
+    descendantName: null,
+    descendantParent: null,
+    descendantFile: null,
+    descendantSeason: null,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -184,6 +198,12 @@ function parseArgs(argv) {
       case "--season-rr-rounds": opts.seasonRrRounds = parseInt(next(), 10); break;
       case "--list-lineages": opts.listLineages = true; break;
       case "--backfill-lineages": opts.backfillLineages = true; break;
+      case "--prepare-spawn": opts.prepareSpawn = next(); break;
+      case "--register-descendant": opts.registerDescendant = true; break;
+      case "--name": opts.descendantName = next(); break;
+      case "--parent": opts.descendantParent = next(); break;
+      case "--file": opts.descendantFile = next(); break;
+      case "--birth-season": opts.descendantSeason = parseInt(next(), 10); break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
@@ -670,6 +690,32 @@ async function cmdListLineages() {
   }
 }
 
+async function cmdPrepareSpawn(opts) {
+  let task;
+  try { task = await prepareSpawnTask(opts.prepareSpawn); }
+  catch (e) { console.error(e.message); process.exit(1); }
+  console.log(task.prompt);
+  console.error(`\n# Suggested filename: ${task.suggestedFilePath}`);
+  console.error(`# Once written, register with:`);
+  console.error(`#   node tournament/run.js --register-descendant \\`);
+  console.error(`#     --name ${task.newName} --parent ${task.parentName} \\`);
+  console.error(`#     --file ${task.suggestedFilePath}`);
+}
+
+async function cmdRegisterDescendant(opts) {
+  const { descendantName: name, descendantParent: parent, descendantFile: file, descendantSeason: birthSeason } = opts;
+  if (!name || !parent || !file) {
+    console.error("--register-descendant requires --name, --parent, and --file");
+    process.exit(1);
+  }
+  let result;
+  try { result = await registerDescendant({ name, parent, filePath: file, birthSeason }); }
+  catch (e) { console.error(e.message); process.exit(1); }
+  console.log(`Registered descendant ${result.name} (gen ${result.lineage.generation}, family ${result.lineage.family}) of ${parent}.`);
+  console.log(`Strategy file: ${result.filePath}`);
+  console.log(`Lineage record saved.`);
+}
+
 async function cmdBackfillLineages() {
   const names = ALL_STRATEGY_LIST.map((s) => s.name);
   const added = await ensureFoundersForNames(names);
@@ -865,6 +911,8 @@ async function main() {
   if (opts.archiveBottom != null) return cmdArchiveBottom(opts);
   if (opts.listLineages) return cmdListLineages();
   if (opts.backfillLineages) return cmdBackfillLineages();
+  if (opts.prepareSpawn) return cmdPrepareSpawn(opts);
+  if (opts.registerDescendant) return cmdRegisterDescendant(opts);
   if (opts.replay) return cmdReplay(opts);
   if (opts.league) return cmdLeague(opts);
   if (opts.season) return cmdSeason(opts);
