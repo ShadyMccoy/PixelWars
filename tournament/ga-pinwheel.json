@@ -1,0 +1,114 @@
+{
+  "schema": "Pinwheel",
+  "params": {
+    "pop": 24,
+    "gens": 20,
+    "eval": 20,
+    "elite": 4,
+    "mutateProb": 0.3,
+    "seed": 1,
+    "map": "lab1",
+    "pool": 6,
+    "ticks": 4000,
+    "opponents": [
+      "Spearhead",
+      "Stalker",
+      "Crusader",
+      "Pinwheel",
+      "Stalker_g1_363a00",
+      "Trinity",
+      "Spearhead_g1_bf0e20",
+      "Spearhead_g1_fbedc2",
+      "Spearhead_g1_72c4f8",
+      "Membrane"
+    ]
+  },
+  "finalEval": 60,
+  "defaultFitness": 2.8833333333333333,
+  "top": [
+    {
+      "vec": {
+        "rotation": [
+          3,
+          0,
+          1,
+          0
+        ],
+        "phaseTicks": [
+          7,
+          6,
+          4,
+          7
+        ],
+        "killPriority": 0,
+        "attackerBonus": 1.318969176722928
+      },
+      "fitness": 1.85,
+      "wins": 5,
+      "played": 60
+    },
+    {
+      "vec": {
+        "rotation": [
+          3,
+          0,
+          0,
+          1
+        ],
+        "phaseTicks": [
+          5,
+          3,
+          7,
+          7
+        ],
+        "killPriority": 0,
+        "attackerBonus": 1.2928532818468754
+      },
+      "fitness": 1.9166666666666667,
+      "wins": 6,
+      "played": 60
+    },
+    {
+      "vec": {
+        "rotation": [
+          3,
+          0,
+          1,
+          0
+        ],
+        "phaseTicks": [
+          6,
+          5,
+          4,
+          7
+        ],
+        "killPriority": 0,
+        "attackerBonus": 1.3202717026130042
+      },
+      "fitness": 1.95,
+      "wins": 3,
+      "played": 60
+    },
+    {
+      "vec": {
+        "rotation": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "phaseTicks": [
+          6,
+          3,
+          8,
+          7
+        ],
+        "killPriority": 0,
+        "attackerBonus": 1.2593558877129276
+      },
+      "fitness": 2.1,
+      "wins": 7,
+      "played": 60
+    }
+  ]
+}
