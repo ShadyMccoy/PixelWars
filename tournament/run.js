@@ -597,7 +597,9 @@ async function cmdSeason(opts) {
   }));
   const stored = await saveSeason({
     map: opts.map,
+    mapConfig: { ...map.config },
     rrMap: opts.seasonRrMap,
+    rrMapConfig: { ...rrMap.config },
     poolSize: opts.pool,
     matches: matchCount,
     baseSeed: opts.seed,

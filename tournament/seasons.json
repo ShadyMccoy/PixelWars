@@ -917,6 +917,371 @@
           }
         ]
       }
+    },
+    {
+      "id": 4,
+      "savedAt": "2026-05-06T05:39:23.140Z",
+      "map": "lab1",
+      "mapConfig": {
+        "width": 24,
+        "height": 18,
+        "growth": 1.8,
+        "maxArmy": 6,
+        "wrap": true
+      },
+      "rrMap": "lab3",
+      "rrMapConfig": {
+        "width": 38,
+        "height": 28,
+        "growth": 1.8,
+        "maxArmy": 6,
+        "wrap": true
+      },
+      "poolSize": 4,
+      "matches": 60,
+      "baseSeed": 1,
+      "champions": [
+        {
+          "kind": "rating-leader",
+          "name": "Spearhead"
+        },
+        {
+          "kind": "round-robin",
+          "name": "Spearhead"
+        }
+      ],
+      "topField": [
+        "Spearhead",
+        "Trinity_g1_3786cc",
+        "Vanguard",
+        "Trinity",
+        "Crusader",
+        "Spearhead_g1_859468",
+        "Bully",
+        "SlowAndSteady",
+        "Aggressive",
+        "Cautious"
+      ],
+      "ratings": [
+        {
+          "name": "Spearhead",
+          "rating": 2164.9,
+          "rd": 65.8,
+          "played": 15
+        },
+        {
+          "name": "Trinity_g1_3786cc",
+          "rating": 1913.4,
+          "rd": 58.94,
+          "played": 15
+        },
+        {
+          "name": "Vanguard",
+          "rating": 1884.09,
+          "rd": 58.74,
+          "played": 15
+        },
+        {
+          "name": "Trinity",
+          "rating": 1651.57,
+          "rd": 58.18,
+          "played": 14
+        },
+        {
+          "name": "Crusader",
+          "rating": 1651.44,
+          "rd": 52.34,
+          "played": 21
+        },
+        {
+          "name": "Spearhead_g1_859468",
+          "rating": 1604.84,
+          "rd": 53.16,
+          "played": 17
+        },
+        {
+          "name": "Bully",
+          "rating": 1545.51,
+          "rd": 62.05,
+          "played": 13
+        },
+        {
+          "name": "SlowAndSteady",
+          "rating": 1497.02,
+          "rd": 52.5,
+          "played": 17
+        },
+        {
+          "name": "Aggressive",
+          "rating": 1466.74,
+          "rd": 51.31,
+          "played": 18
+        },
+        {
+          "name": "Cautious",
+          "rating": 1419.07,
+          "rd": 57.82,
+          "played": 14
+        },
+        {
+          "name": "Defender",
+          "rating": 1326.54,
+          "rd": 57.24,
+          "played": 14
+        },
+        {
+          "name": "Hunter",
+          "rating": 1315.39,
+          "rd": 54.11,
+          "played": 20
+        },
+        {
+          "name": "Berserker",
+          "rating": 1197.3,
+          "rd": 57.43,
+          "played": 17
+        },
+        {
+          "name": "Vampire",
+          "rating": 988.71,
+          "rd": 62.85,
+          "played": 15
+        },
+        {
+          "name": "Tactician",
+          "rating": 832.95,
+          "rd": 65.03,
+          "played": 15
+        }
+      ],
+      "standings": [
+        {
+          "name": "Spearhead",
+          "rating": 2164.9,
+          "rd": 65.8,
+          "played": 15,
+          "wins": 13,
+          "pointsPerGame": 2.733
+        },
+        {
+          "name": "Trinity_g1_3786cc",
+          "rating": 1913.4,
+          "rd": 58.94,
+          "played": 15,
+          "wins": 1,
+          "pointsPerGame": 1.733
+        },
+        {
+          "name": "Vanguard",
+          "rating": 1884.09,
+          "rd": 58.74,
+          "played": 15,
+          "wins": 4,
+          "pointsPerGame": 1.667
+        },
+        {
+          "name": "Trinity",
+          "rating": 1651.57,
+          "rd": 58.18,
+          "played": 14,
+          "wins": 8,
+          "pointsPerGame": 1.929
+        },
+        {
+          "name": "Crusader",
+          "rating": 1651.44,
+          "rd": 52.34,
+          "played": 21,
+          "wins": 4,
+          "pointsPerGame": 1.143
+        },
+        {
+          "name": "Spearhead_g1_859468",
+          "rating": 1604.84,
+          "rd": 53.16,
+          "played": 17,
+          "wins": 6,
+          "pointsPerGame": 1.706
+        },
+        {
+          "name": "Bully",
+          "rating": 1545.51,
+          "rd": 62.05,
+          "played": 13,
+          "wins": 2,
+          "pointsPerGame": 1.308
+        },
+        {
+          "name": "SlowAndSteady",
+          "rating": 1497.02,
+          "rd": 52.5,
+          "played": 17,
+          "wins": 4,
+          "pointsPerGame": 1.588
+        },
+        {
+          "name": "Aggressive",
+          "rating": 1466.74,
+          "rd": 51.31,
+          "played": 18,
+          "wins": 6,
+          "pointsPerGame": 1.667
+        },
+        {
+          "name": "Cautious",
+          "rating": 1419.07,
+          "rd": 57.82,
+          "played": 14,
+          "wins": 0,
+          "pointsPerGame": 1.5
+        },
+        {
+          "name": "Defender",
+          "rating": 1326.54,
+          "rd": 57.24,
+          "played": 14,
+          "wins": 0,
+          "pointsPerGame": 0.786
+        },
+        {
+          "name": "Hunter",
+          "rating": 1315.39,
+          "rd": 54.11,
+          "played": 20,
+          "wins": 11,
+          "pointsPerGame": 1.85
+        },
+        {
+          "name": "Berserker",
+          "rating": 1197.3,
+          "rd": 57.43,
+          "played": 17,
+          "wins": 1,
+          "pointsPerGame": 1.647
+        },
+        {
+          "name": "Vampire",
+          "rating": 988.71,
+          "rd": 62.85,
+          "played": 15,
+          "wins": 0,
+          "pointsPerGame": 0.8
+        },
+        {
+          "name": "Tactician",
+          "rating": 832.95,
+          "rd": 65.03,
+          "played": 15,
+          "wins": 0,
+          "pointsPerGame": 0.333
+        }
+      ],
+      "roundRobinStandings": [
+        {
+          "name": "Spearhead",
+          "played": 8,
+          "wins": 3,
+          "pointsPerGame": 7,
+          "avgRank": 3
+        },
+        {
+          "name": "Crusader",
+          "played": 8,
+          "wins": 3,
+          "pointsPerGame": 6.125,
+          "avgRank": 3.875
+        },
+        {
+          "name": "SlowAndSteady",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 6.125,
+          "avgRank": 3.875
+        },
+        {
+          "name": "Spearhead_g1_859468",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 6,
+          "avgRank": 4
+        },
+        {
+          "name": "Bully",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 5.375,
+          "avgRank": 4.625
+        },
+        {
+          "name": "Aggressive",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 3.875,
+          "avgRank": 6.125
+        },
+        {
+          "name": "Vanguard",
+          "played": 8,
+          "wins": 1,
+          "pointsPerGame": 3,
+          "avgRank": 7
+        },
+        {
+          "name": "Cautious",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 2.875,
+          "avgRank": 7.125
+        },
+        {
+          "name": "Trinity",
+          "played": 8,
+          "wins": 1,
+          "pointsPerGame": 2.625,
+          "avgRank": 7.375
+        },
+        {
+          "name": "Trinity_g1_3786cc",
+          "played": 8,
+          "wins": 0,
+          "pointsPerGame": 2,
+          "avgRank": 8
+        }
+      ],
+      "losses": {
+        "Spearhead": [
+          {
+            "seed": 23,
+            "lineup": [
+              "Vanguard",
+              "Trinity_g1_3786cc",
+              "Crusader",
+              "Spearhead"
+            ],
+            "finishedRank": 4,
+            "survived": false,
+            "eliminatedAt": 43,
+            "winner": "Vanguard",
+            "ticks": 52,
+            "endReason": "winner"
+          },
+          {
+            "seed": 15,
+            "lineup": [
+              "Spearhead",
+              "Trinity_g1_3786cc",
+              "Vanguard",
+              "Bully"
+            ],
+            "finishedRank": 2,
+            "survived": false,
+            "eliminatedAt": 89,
+            "winner": "Vanguard",
+            "ticks": 89,
+            "endReason": "winner"
+          }
+        ]
+      }
     }
   ]
 }

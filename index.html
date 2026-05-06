@@ -52,7 +52,17 @@
 
       <div>
         <div class="match-picker-head">
-          <div class="section-title" style="margin:0;">League</div>
+          <div class="section-title" style="margin:0;">Season (rating-driven)</div>
+          <button id="btn-seasons-refresh" class="btn-mini" title="Reload tournament/seasons.json">↻</button>
+        </div>
+        <div id="season-viewer" class="league-viewer">
+          <div class="hud-empty">Loading…</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="match-picker-head">
+          <div class="section-title" style="margin:0;">League (legacy tiers)</div>
           <button id="btn-leagues-refresh" class="btn-mini" title="Reload tournament/leagues.json">↻</button>
         </div>
         <div id="league-viewer" class="league-viewer">
