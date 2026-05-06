@@ -31,11 +31,23 @@ import {
   MATRIX_DEFAULTS,
   MATRIX_SCHEMA,
 } from "../src/strategies/parametric/Spearhead.js";
+import {
+  makePinwheelVariant,
+  PINWHEEL_DEFAULTS,
+  PINWHEEL_SCHEMA,
+} from "../src/strategies/parametric/Pinwheel.js";
+import {
+  makeStalkerVariant,
+  STALKER_DEFAULTS,
+  STALKER_SCHEMA,
+} from "../src/strategies/parametric/Stalker.js";
 import { writeFile } from "node:fs/promises";
 
 const SCHEMAS = {
   Spearhead:       { defaults: SPEARHEAD_DEFAULTS, schema: SPEARHEAD_SCHEMA, make: makeSpearheadVariant },
   SpearheadMatrix: { defaults: MATRIX_DEFAULTS,    schema: MATRIX_SCHEMA,    make: makeSpearheadFromKernel },
+  Pinwheel:        { defaults: PINWHEEL_DEFAULTS,  schema: PINWHEEL_SCHEMA,  make: makePinwheelVariant },
+  Stalker:         { defaults: STALKER_DEFAULTS,   schema: STALKER_SCHEMA,   make: makeStalkerVariant },
 };
 
 const HELP = `Usage: node tournament/ga.js [options]
@@ -406,7 +418,7 @@ async function main() {
       }
     }
   }
-  console.log(`\nDefault (parent Spearhead) for reference:`);
+  console.log(`\nDefault (${opts.schema} parent) for reference:`);
   const defResult = evaluate({
     individualName: "DEFAULTS",
     individual: schemaInfo.make({ ...schemaInfo.defaults, name: "DEFAULTS" }),
