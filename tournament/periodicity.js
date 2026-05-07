@@ -50,7 +50,7 @@ function parseArgs(argv) {
   const opts = {
     bot: "Membrane",
     lineup: ["Membrane", "SlowAndSteady", "Trinity", "Hunter", "Vampire", "Berserker"],
-    map: "arena",
+    map: "lab1",
     seeds: [1, 400],
     minLength: 256,
     maxTicks: 4000,

@@ -206,7 +206,7 @@ is "drop the file in `src/strategies/` and open a PR." See
 ## Running a tournament
 
 ```bash
-# All registered bots, arena map, 10 rounds
+# All registered bots, lab1 map, 10 rounds
 npm run tournament
 
 # A specific lineup

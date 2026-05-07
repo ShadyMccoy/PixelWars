@@ -1,6 +1,6 @@
 // Sidebar form for the map config used by "Watch random match". Owns
 // width / height / growth / maxArmy / wrap / numPlayers inputs plus the
-// preset tabs (arena, classic, lab1, ...). Any change re-runs the
+// preset tabs (currently just lab1). Any change re-runs the
 // current scenario through `app.applyMapForm()`; the rankings panel
 // supplies the bot pool.
 //

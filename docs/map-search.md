@@ -1,132 +1,117 @@
 # Map search
 
-How map presets are chosen — a psychometric framework that treats each
-candidate map config as an IRT test item and ranks bots on it, then scores
-the map by how well that ranking discriminates strong from weak bots.
+How the official ranking map is chosen — treat each candidate config as
+an IRT-style test item, run a fresh per-bot ranking on it, then score
+the map by how well that ranking predicts the consensus ranking
+across all other candidates.
 
 ## Why
 
 Map design used to be vibes-based: pick a width/height, pick a growth
 rate, see if matches "look interesting." That gives no answer to the
-question "is `arena` actually a better measuring stick than `royale`?"
-The map-search reframes the question as a calibration problem.
+question "is config A actually a better measuring stick than config B?"
+The map-search reframes the question as a calibration problem: which
+single map best predicts how bots would rank averaged over many maps?
 
 ## The metric
 
-Each candidate config is scored on three axes, then composed:
+Each candidate config gets a fresh Borda-points-per-game ranking on a
+balanced 24-bot pool, then is scored on:
 
-- **Discrimination** — Spearman correlation between the per-bot ranking
-  this map produces and a ground-truth ranking (the saved `lab1` league).
-  High = strong bots win, weak bots lose.
-- **Mid-band discrimination** — within-quartile pair accuracy. Penalizes
-  configs where one bot dominates and everyone else is interchangeable.
-- **Reliability** — split-half Spearman: rank bots on two disjoint halves
-  of the seeds, correlate. Low = the result depends on which seed you
-  happened to draw.
+- **Discrimination (LOO)** — Spearman correlation between this map's
+  per-bot ranking and the *leave-one-out consensus* (mean rank across
+  all OTHER configs in the grid). High = this map sorts bots the same
+  way most other maps do.
+- **Reliability** — split-half Spearman: rank bots on two disjoint
+  halves of the seeds, correlate. Low = the result depends on which
+  seed you happened to draw. K spreads more comparisons per match,
+  so larger k generally has higher reliability at the same match budget.
 - **t_stable** — earliest match tick where the in-progress ranking
   matches the final ranking with Spearman ≥ 0.9. A map that resolves
   in 200 ticks instead of 800 produces 4× the data per CPU-second.
-- **Composite** — `(0.5 disc + 0.5 mid) × reliability × 200/t_stable`,
-  clamped to zero if the unclipped info is negative (anti-correlated
-  maps are worse than useless), then multiplied by a smooth timeout
-  penalty. See `tournament/map-search/evaluator.js` for the formula.
+- **Composite** — `disc × reliability × 200/t_stable`, clamped to zero
+  if discrimination is negative (anti-correlated maps are worse than
+  useless), with a smooth timeout penalty.
 
-## Anchor calibration
-
-`tournament/map-search/anchors.json` lists ~16 hand-curated dominance
-pairs of the form `[winner, loser]`, restricted to bots that consistently
-land in the top tier vs. the bottom tier across saved leagues. A map
-that gets fewer than ~80% of these pairs right is unlikely to be
-measuring "good bot" the way we mean it. Anchors are a calibration
-sieve, not a primary score.
-
-A second `altPairs` set exists so validation can re-rank under different
-anchors and confirm the top configs are stable across the swap.
+Bot pool is sliced from `tournament/rankings.json` (the live skill
+ranking refreshed by `npm run rank` over every logged match) — fresher
+and broader than any single saved league snapshot.
 
 ## Running the search
 
 ```bash
-# Full search across the default grid (96 wrap=true configs after dropping
-# nowrap maps). Two-pass: cull, then deepen on survivors. ~30–45 min.
-node tournament/map-search/run.js --grid default --pass1-seeds 20 \
-  --pass2-seeds 80 --keep 16 --out search.json
+# Full sweep across size × growth × maxArmy × k (line + wrap=true held
+# fixed; ~192 configs at default settings; ~45 min).
+node tournament/map-search/discriminate.js \
+  --matches 60 --no-reliability \
+  --out tournament/map-search/discriminate.json
 
-# Smoke test on a 6-config grid (~30s).
-node tournament/map-search/run.js --grid small
+# Reliability spot-check on the top survivors (much smaller grid, with
+# split-half pass enabled; ~5 min).
+node tournament/map-search/discriminate.js \
+  --sizes 24x18,30x22,38x28 --growths 1.8,2.2 --max-armys 12 --ks 3,5 \
+  --matches 80 --reliability \
+  --out tournament/map-search/discriminate-top.json
 
-# Validate planted-degenerate configs land in the bottom + anchor swap
-# is stable across runs. ~5 min.
-node tournament/map-search/validate.js --seeds 50
-
-# Spot-check by running a real league on a top config and checking that
-# known-strong bots cluster in tier 1.
-node tournament/map-search/league-spotcheck.js --config 24x18_g1p8_m6_wrap_line_k4
-
-# Promote the top configs from a search run into tournament/maps.js
-# (dry-run by default; pass --apply to actually edit the file).
-node tournament/map-search/promote.js --input search.json --top 3 --apply
+# Smoke test (16 configs, no reliability, ~30s).
+node tournament/map-search/discriminate.js --grid small --no-reliability
 ```
 
-## What the search found
+## What the sweep found
 
-Across 192 candidate configs (later narrowed to 96 wrap=true configs
-after the first pass):
+Across 192 candidate configs:
 
-- **Line topology beats ring/corners/pairs at every map size** — forced
-  lateral contact prevents the kingmaker dynamics that emerge from
-  rotational spawns.
-- **growth=1.8 dominates 0.8 and 1.2** — a metabolism sweet spot:
-  fast enough that turtling decays before contact, slow enough that
-  strategy decisions still matter.
-- **wrap=true beats wrap=false everywhere** — no nowrap config made
-  the top 16. Without wrap, corners reward turtling enough to break
-  discrimination. Nowrap maps were dropped from the search.
-- **k=4 generally outscores k=6** — fewer simultaneous players means
-  less FFA noise per match.
+- **Discrimination is high (~0.83 LOO Spearman) almost everywhere.**
+  Every reasonable map ranks bots roughly the same way. Differentiation
+  comes from cost and reliability, not raw signal.
+- **k=5 wins once reliability is required.** k=3 looks 6× more efficient
+  on raw composite but per-bot ranks are seed-noisy (split-half rel
+  0.30–0.41). k=5 spreads 4 comparisons per match instead of 2 and
+  stabilizes faster (rel 0.54–0.62) at the same match budget.
+- **maxArmy=12 doubles composite vs maxArmy=4** — small army caps cause
+  stalemates that time out and destroy efficiency.
+- **growth ≥ 1.8** — fast metabolism resolves matches; growth=0.8 maps
+  time out at the cap and contribute no signal.
+- **Smaller maps win on efficiency**; raw discrimination is largely
+  size-independent.
+- **Line topology + wrap=true** were held fixed based on prior search
+  findings (line beats ring/corners/pairs; wrap=true beats wrap=false).
 
-## Promoted presets
+## Promoted preset
 
-Three lab-tested presets live in `tournament/maps.js`:
+```
+| preset | size  | growth | maxArmy | k | composite | discLOO | reliability |
+| ------ | ----- | ------ | ------- | - | --------- | ------- | ----------- |
+| lab1   | 30×22 | 1.8    | 12      | 5 | 1.01      | 0.84    | 0.56        |
+```
 
-| preset | size  | growth | k | composite | discrimination | reliability |
-| ------ | ----- | ------ | - | --------- | -------------- | ----------- |
-| `lab1` | 24×18 | 1.8    | 4 | 0.541     | 0.74           | 0.87        |
-| `lab2` | 30×22 | 1.8    | 4 | 0.512     | 0.79           | 0.89        |
-| `lab3` | 38×28 | 1.8    | 4 | 0.401     | 0.73           | 0.90        |
-
-All wrap=true, line topology. `lab1` is the bare-`node tournament/run.js`
-default — league seedings against the current bot pool naturally use the
-highest-signal map.
+Wrap=true, line topology. `lab1` is the bare-`node tournament/run.js`
+default and the official ranking map.
 
 ## Layout
 
 ```
 tournament/map-search/
   metrics.js              Spearman, t_stable, pair accuracy
-  configs.js              Config generator + 5 spawn topologies
-  anchors.json            Hand-curated dominance pairs (+ alt set)
-  evaluator.js            Per-config metrics + composite score
-  run.js                  Two-pass search driver CLI
-  validate.js             Planted-degenerate + anchor-swap validation
-  league-spotcheck.js     Sanity check via a real league run
-  promote.js              Write top configs into tournament/maps.js
-  test-phase{1,3,4}.js    Unit tests
+  configs.js              Topology generators (line/ring/corners/pairs/
+                          ringTight) used by the sweep
+  discriminate.js         Cross-map LOO-consensus sweep CLI
+  test-phase{1,3}.js      Unit tests
 ```
 
 ## Re-running after gameplay changes
 
 If something changes the engine in a way that affects match outcomes
-(growth, decay, attacker bonus, starting blob, a new tech system…) the
-saved league rankings used as ground truth go stale. Re-seed:
+(growth, decay, attacker bonus, starting blob, a new tech system…)
+the rankings drift. Re-seed:
 
 ```bash
-# 1. Run a fresh league on lab1 to produce new ground truth.
-node tournament/run.js --league --map lab1 --seasons 5
+# 1. Refresh the bot-pool source by re-ranking from logged matches.
+npm run rank
 
-# 2. Re-run the map-search; it'll pick up the refreshed leagues.json
-#    automatically as ground truth.
-node tournament/map-search/run.js --grid default --out search.json
-
-# 3. If the top configs shifted materially, promote the new winners.
-node tournament/map-search/promote.js --input search.json --top 3 --apply
+# 2. Re-run the discrimination sweep. Inspect the top configs; if the
+#    winner has shifted materially from the current lab1, update
+#    tournament/maps.js by hand.
+node tournament/map-search/discriminate.js --matches 60 --no-reliability \
+  --out tournament/map-search/discriminate.json
 ```

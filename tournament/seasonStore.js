@@ -9,7 +9,7 @@
 //         id:          1,
 //         savedAt:     ISO,
 //         map:         "lab1",
-//         rrMap:       "lab3",
+//         rrMap:       "lab1",
 //         poolSize:    6,
 //         matches:     200,
 //         baseSeed:    1,
