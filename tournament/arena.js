@@ -2,7 +2,7 @@
 import { Game } from "../src/core/Game.js";
 import { Player } from "../src/core/Player.js";
 import { NEUTRAL_TECH, validateTech } from "../src/core/Tech.js";
-import { startingBlobSide, placeStartingBlob } from "../src/core/startup.js";
+import { startingBlobSide, placeStartingBlobs } from "../src/core/startup.js";
 
 const PALETTE = [
   { color: "#ff4d6d", accent: "#ff8fa3" },
@@ -61,9 +61,7 @@ export function runMatch({
   });
   players.forEach((p) => game.addPlayer(p));
   const side = startingBlobSide(game.map, startPositions.length);
-  startPositions.forEach((pos, i) => {
-    placeStartingBlob(game, players[i], pos.x, pos.y, side);
-  });
+  placeStartingBlobs(game, players, startPositions, side);
 
   const eliminated = new Map(); // playerId -> tick
   const snapshots = snapshotEvery > 0 ? [] : null;

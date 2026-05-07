@@ -10,7 +10,7 @@
 
 import { Game } from "../core/Game.js";
 import { Player } from "../core/Player.js";
-import { startingBlobSide, placeStartingBlob } from "../core/startup.js";
+import { startingBlobSide, placeStartingBlobs } from "../core/startup.js";
 import { ALL_STRATEGIES } from "../strategies/index.js";
 import {
   EVT_SNAPSHOT,
@@ -181,9 +181,7 @@ export class EngineHost {
     });
     players.forEach((p) => this.game.addPlayer(p));
     const side = startingBlobSide(this.game.map, startPositions.length);
-    startPositions.forEach((pos, i) => {
-      placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
-    });
+    placeStartingBlobs(this.game, players, startPositions, side);
   }
 
   _buildReplay(spec) {
@@ -207,9 +205,7 @@ export class EngineHost {
     });
     players.forEach((p) => this.game.addPlayer(p));
     const side = startingBlobSide(this.game.map, startPositions.length);
-    startPositions.forEach((pos, i) => {
-      placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
-    });
+    placeStartingBlobs(this.game, players, startPositions, side);
   }
 
   _ensureLoop() {

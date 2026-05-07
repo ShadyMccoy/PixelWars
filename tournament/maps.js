@@ -1,12 +1,15 @@
 // Map presets used by the tournament runner. Each preset is map config + a
 // function that returns starting positions for `n` players.
 
-function linePositions(n, { width, height, edgePad = 1 }) {
+function linePositions(n, { width, height }) {
+  // Even-spaced on the wrap line. Spacing W/n is identical between any
+  // two neighbors *including* the pair that touches across the wrap
+  // edge — without this, the leftmost and rightmost players sit just a
+  // few columns apart on the torus and crush each other's start tiles.
   const y = Math.floor(height / 2);
-  const usable = width - 2 * edgePad - 1;
   const out = [];
   for (let i = 0; i < n; i++) {
-    const x = n === 1 ? Math.floor(width / 2) : edgePad + Math.round((usable * i) / (n - 1));
+    const x = n === 1 ? Math.floor(width / 2) : Math.round(width * (i + 0.5) / n) % width;
     out.push({ x, y, strength: 1 });
   }
   return out;

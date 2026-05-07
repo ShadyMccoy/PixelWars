@@ -12,6 +12,7 @@ import { CustomBots, loadStrategyFromCode } from "./ui/CustomBots.js";
 import { getStrategySource } from "./ui/strategySource.js";
 import { readUrlMatchInfo, updateUrl } from "./ui/shareLink.js";
 import { ALL_STRATEGIES, STRATEGY_LIST } from "./strategies/index.js";
+import { startingBlobSide } from "./core/startup.js";
 
 class App {
   constructor() {
@@ -210,14 +211,25 @@ class App {
 
     let positions = startPositions;
     if (!positions) {
+      // Place starts on a ring whose radius keeps every player's blob
+      // clear of its neighbors AND of its wrap-opposite. The naive
+      // r = 0.4·min(W,H) puts opposite players only ~0.2·W apart on
+      // the torus, less than a blob is wide — their starting tiles
+      // collide across the wrap edge and the player seated first ends
+      // up with a fatter blob, biasing matches toward whichever color
+      // sits at index 0.
       const cx = width / 2;
       const cy = height / 2;
-      const r = Math.min(width, height) * 0.4;
+      const D = Math.min(width, height);
+      const side = startingBlobSide({ width, height }, numPlayers);
+      const rMin = numPlayers >= 2 ? side / (2 * Math.sin(Math.PI / numPlayers)) : 0;
+      const rMax = Math.max(0, (D - side) / 2);
+      const r = numPlayers <= 1 ? 0 : Math.min(rMax, Math.max(rMin, (rMin + rMax) / 2));
       positions = [];
       for (let i = 0; i < numPlayers; i++) {
         const angle = (i / numPlayers) * Math.PI * 2;
-        const x = Math.max(1, Math.min(width - 2, Math.floor(cx + Math.cos(angle) * r)));
-        const y = Math.max(1, Math.min(height - 2, Math.floor(cy + Math.sin(angle) * r)));
+        const x = ((Math.round(cx + Math.cos(angle) * r) % width) + width) % width;
+        const y = ((Math.round(cy + Math.sin(angle) * r) % height) + height) % height;
         positions.push({ x, y });
       }
     }
