@@ -19,6 +19,7 @@ import { addDescendant, loadLineages, markArchived } from "./lineageStore.js";
 import { loadLatestSeason } from "./seasonStore.js";
 import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
 import { CHARACTER_TECHS } from "../src/strategies/characterTechs.js";
+import { getStrategy } from "../src/strategies/index.js";
 import { NEUTRAL_TECH } from "../src/core/Tech.js";
 
 const ASSUMED_RATING = 1500; // for bots without a rating yet (e.g. fresh founders)
@@ -30,19 +31,57 @@ const DESCENDANTS_REGISTRY = resolve(STRATEGIES_DIR, "descendants.js");
 const DOCS_DIR = resolve(REPO_ROOT, "docs");
 const MAX_WINNER_SOURCES = 3;
 
-// Try a few likely paths for the parent's source. Most bots live as
-// `src/strategies/<Name>.js`; descendants are also there. Returns null
-// if the bot is registered (e.g. via factory in generated.js) but has
-// no dedicated file — those need a different prompt path.
+// Find or synthesize the parent's source. Most bots live as
+// `src/strategies/<Name>.js`. Factory-generated bots (Pacifist_NN,
+// Hunter_NN, etc.) share their implementation via factory.js's
+// makeBot/makeStencilBot helpers and have no dedicated file — for those
+// we synthesize a one-off source string so the spawn agent has the
+// parent's exact config to riff off. Returns null only when the bot is
+// genuinely missing (no file AND no factory stamp).
 async function findParentSource(parentName) {
   const direct = resolve(STRATEGIES_DIR, `${parentName}.js`);
   try {
     await access(direct);
     const src = await readFile(direct, "utf8");
-    return { path: direct, source: src };
-  } catch {
-    return null;
-  }
+    return { path: direct, source: src, synthesized: false };
+  } catch { /* fall through to synthesis */ }
+
+  let strat;
+  try { strat = getStrategy(parentName); }
+  catch { return null; }
+  if (!strat?._factoryKind || !strat?._factoryConfig) return null;
+
+  const source = synthesizeFactorySource(parentName, strat._factoryKind, strat._factoryConfig);
+  return {
+    path: resolve(STRATEGIES_DIR, `${parentName}.factory.js`),
+    source,
+    synthesized: true,
+  };
+}
+
+function synthesizeFactorySource(name, kind, cfg) {
+  // Pretty-print: cfg values are scalars/strings/arrays of numbers, so
+  // JSON.stringify round-trips cleanly. The descendant author is told NOT
+  // to just call the same factory helper with tweaked args — the whole
+  // point of spawning from a factory bot is to leave the factory's
+  // constrained interface and write real strategy code.
+  const cfgJson = JSON.stringify(cfg, null, 2);
+  return `// Synthesized source for factory bot "${name}".
+//
+// This bot was instantiated from src/strategies/generated.js via
+// factory.js's ${kind}() helper — there is no real ${name}.js file.
+// The config below is exactly what the running bot uses.
+//
+// As a descendant author: do NOT just call ${kind} again with tweaked
+// args. Write a real strategy file (see e.g. src/strategies/Conqueror.js
+// for shape) so future descendants can iterate further. The factory's
+// parameter space is intentionally constrained; a real .js file lets
+// you encode logic the factory can't express.
+
+import { ${kind} } from "./factory.js";
+
+export default ${kind}(${cfgJson});
+`;
 }
 
 function shortId() {
@@ -74,9 +113,8 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
   const parentSrc = await findParentSource(parentName);
   if (!parentSrc) {
     throw new Error(
-      `No source file found at src/strategies/${parentName}.js. ` +
-      `Bots defined via the factory (Hunter_01, etc.) cannot yet be spawned ` +
-      `from — pick a parent with its own strategy file.`,
+      `No source file found at src/strategies/${parentName}.js, ` +
+      `and no factory config to synthesize from. Pick a real bot.`,
     );
   }
 

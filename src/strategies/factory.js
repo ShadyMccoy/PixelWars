@@ -71,6 +71,12 @@ export function makeBot(cfg) {
     author,
     version: 1,
     summary,
+    // Stamped so the spawn pipeline can synthesize a standalone .js file
+    // for this bot on demand (see tournament/spawn.js). Factory bots don't
+    // have dedicated source files, so without this stamp they'd be unable
+    // to be parents in the genetic-spawn lineage.
+    _factoryKind: "makeBot",
+    _factoryConfig: { ...cfg },
     act(army, game) {
       if (army.strength < minStrengthAbs) return;
       if (minStrengthFrac > 0 && army.strength < army.maxStrength * minStrengthFrac) return;
@@ -172,6 +178,8 @@ export function makeStencilBot(cfg) {
     author,
     version: 1,
     summary,
+    _factoryKind: "makeStencilBot",
+    _factoryConfig: { ...cfg },
     act(army, game) {
       const tile = army.tile;
       if (!tile) return;
