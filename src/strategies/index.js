@@ -37,6 +37,7 @@ import Pinwheel from "./Pinwheel.js";
 import Anvil from "./Anvil.js";
 import Skirmisher from "./Skirmisher.js";
 import Tempo from "./Tempo.js";
+import Onslaught from "./Onslaught.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -84,6 +85,7 @@ export const ALL_STRATEGY_LIST = [
   Anvil,
   Skirmisher,
   Tempo,
+  Onslaught,
   ...GENERATED,
   ...DESCENDANTS,
 ];

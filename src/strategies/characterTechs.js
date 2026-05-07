@@ -24,6 +24,7 @@ const RAW = {
   Vanguard:   { atk: 50, move: 50 },
   Bully:      { atk: 60, move: 40 },
   Conqueror:  { atk: 50, stack: 50 },
+  Onslaught:  { atk: 60, move: 40 },
 
   // Defensive / fortress
   Turtle:     { def: 50, stack: 50 },
