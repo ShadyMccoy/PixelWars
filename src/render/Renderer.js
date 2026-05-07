@@ -22,7 +22,10 @@ export class Renderer {
     this.zoom = 1;
     this.panX = 0;
     this.panY = 0;
-    this.minZoom = 0.5;
+    // zoom=1 already fits the map exactly; zooming out further would
+    // either reveal empty space (non-wrap) or duplicate the world via
+    // tile-replication (wrap), neither of which adds information.
+    this.minZoom = 1;
     this.maxZoom = 16;
     this.resize();
     window.addEventListener("resize", () => this.resize());
@@ -115,18 +118,8 @@ export class Renderer {
     } else {
       const visTilesX = map.width / this.zoom;
       const visTilesY = map.height / this.zoom;
-      // If the view is bigger than the map (zoom < 1), center it
-      // rather than letting the user push the map off-screen.
-      if (visTilesX >= map.width) {
-        this.panX = (map.width - visTilesX) / 2;
-      } else {
-        this.panX = Math.max(0, Math.min(map.width - visTilesX, this.panX));
-      }
-      if (visTilesY >= map.height) {
-        this.panY = (map.height - visTilesY) / 2;
-      } else {
-        this.panY = Math.max(0, Math.min(map.height - visTilesY, this.panY));
-      }
+      this.panX = Math.max(0, Math.min(map.width - visTilesX, this.panX));
+      this.panY = Math.max(0, Math.min(map.height - visTilesY, this.panY));
     }
   }
 
