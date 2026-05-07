@@ -1,0 +1,2292 @@
+{
+  "meta": {
+    "generatedAt": "2026-05-07T19:19:52.195Z",
+    "parent": "Conqueror_g4_1f6790",
+    "parentTech": {
+      "move": 90,
+      "stack": 0,
+      "prod": 2,
+      "atk": 4,
+      "def": 4
+    },
+    "map": "lab1",
+    "rrMap": "lab3",
+    "maxTicks": 4000,
+    "poolSize": 6,
+    "seasonsRun": 3,
+    "matchesPerSeason": 400,
+    "rrRounds": 21,
+    "rrTop": 10,
+    "variantCount": 50
+  },
+  "variants": [
+    {
+      "name": "Cg4_01_orig",
+      "tech": {
+        "move": 90,
+        "stack": 0,
+        "prod": 2,
+        "atk": 4,
+        "def": 4
+      }
+    },
+    {
+      "name": "Cg4_02_neutral",
+      "tech": {
+        "move": 20,
+        "stack": 20,
+        "prod": 20,
+        "atk": 20,
+        "def": 20
+      }
+    },
+    {
+      "name": "Cg4_03_pureM",
+      "tech": {
+        "move": 100,
+        "stack": 0,
+        "prod": 0,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_04_pureS",
+      "tech": {
+        "move": 0,
+        "stack": 100,
+        "prod": 0,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_05_pureP",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 100,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_06_pureA",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 0,
+        "atk": 100,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_07_pureD",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 0,
+        "atk": 0,
+        "def": 100
+      }
+    },
+    {
+      "name": "Cg4_08_MS50",
+      "tech": {
+        "move": 50,
+        "stack": 50,
+        "prod": 0,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_09_MP50",
+      "tech": {
+        "move": 50,
+        "stack": 0,
+        "prod": 50,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_10_MA50",
+      "tech": {
+        "move": 50,
+        "stack": 0,
+        "prod": 0,
+        "atk": 50,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_11_MD50",
+      "tech": {
+        "move": 50,
+        "stack": 0,
+        "prod": 0,
+        "atk": 0,
+        "def": 50
+      }
+    },
+    {
+      "name": "Cg4_12_SP50",
+      "tech": {
+        "move": 0,
+        "stack": 50,
+        "prod": 50,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_13_SA50",
+      "tech": {
+        "move": 0,
+        "stack": 50,
+        "prod": 0,
+        "atk": 50,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_14_SD50",
+      "tech": {
+        "move": 0,
+        "stack": 50,
+        "prod": 0,
+        "atk": 0,
+        "def": 50
+      }
+    },
+    {
+      "name": "Cg4_15_PA50",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 50,
+        "atk": 50,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_16_PD50",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 50,
+        "atk": 0,
+        "def": 50
+      }
+    },
+    {
+      "name": "Cg4_17_AD50",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 0,
+        "atk": 50,
+        "def": 50
+      }
+    },
+    {
+      "name": "Cg4_18_M80S20",
+      "tech": {
+        "move": 80,
+        "stack": 20,
+        "prod": 0,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_19_M80P20",
+      "tech": {
+        "move": 80,
+        "stack": 0,
+        "prod": 20,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_20_M80A20",
+      "tech": {
+        "move": 80,
+        "stack": 0,
+        "prod": 0,
+        "atk": 20,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_21_M80D20",
+      "tech": {
+        "move": 80,
+        "stack": 0,
+        "prod": 0,
+        "atk": 0,
+        "def": 20
+      }
+    },
+    {
+      "name": "Cg4_22_S80M20",
+      "tech": {
+        "move": 20,
+        "stack": 80,
+        "prod": 0,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_23_S80P20",
+      "tech": {
+        "move": 0,
+        "stack": 80,
+        "prod": 20,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_24_S80A20",
+      "tech": {
+        "move": 0,
+        "stack": 80,
+        "prod": 0,
+        "atk": 20,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_25_S80D20",
+      "tech": {
+        "move": 0,
+        "stack": 80,
+        "prod": 0,
+        "atk": 0,
+        "def": 20
+      }
+    },
+    {
+      "name": "Cg4_26_P80M20",
+      "tech": {
+        "move": 20,
+        "stack": 0,
+        "prod": 80,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_27_P80S20",
+      "tech": {
+        "move": 0,
+        "stack": 20,
+        "prod": 80,
+        "atk": 0,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_28_P80A20",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 80,
+        "atk": 20,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_29_P80D20",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 80,
+        "atk": 0,
+        "def": 20
+      }
+    },
+    {
+      "name": "Cg4_30_A80M20",
+      "tech": {
+        "move": 20,
+        "stack": 0,
+        "prod": 0,
+        "atk": 80,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_31_A80S20",
+      "tech": {
+        "move": 0,
+        "stack": 20,
+        "prod": 0,
+        "atk": 80,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_32_A80P20",
+      "tech": {
+        "move": 0,
+        "stack": 0,
+        "prod": 20,
+        "atk": 80,
+        "def": 0
+      }
+    },
+    {
+      "name": "Cg4_33_r33",
+      "tech": {
+        "move": 7,
+        "stack": 18,
+        "prod": 18,
+        "atk": 28,
+        "def": 29
+      }
+    },
+    {
+      "name": "Cg4_34_r34",
+      "tech": {
+        "move": 20,
+        "stack": 12,
+        "prod": 9,
+        "atk": 20,
+        "def": 39
+      }
+    },
+    {
+      "name": "Cg4_35_r35",
+      "tech": {
+        "move": 36,
+        "stack": 20,
+        "prod": 18,
+        "atk": 22,
+        "def": 4
+      }
+    },
+    {
+      "name": "Cg4_36_r36",
+      "tech": {
+        "move": 11,
+        "stack": 1,
+        "prod": 24,
+        "atk": 48,
+        "def": 16
+      }
+    },
+    {
+      "name": "Cg4_37_r37",
+      "tech": {
+        "move": 31,
+        "stack": 4,
+        "prod": 44,
+        "atk": 10,
+        "def": 11
+      }
+    },
+    {
+      "name": "Cg4_38_r38",
+      "tech": {
+        "move": 50,
+        "stack": 28,
+        "prod": 9,
+        "atk": 8,
+        "def": 5
+      }
+    },
+    {
+      "name": "Cg4_39_r39",
+      "tech": {
+        "move": 12,
+        "stack": 31,
+        "prod": 6,
+        "atk": 13,
+        "def": 38
+      }
+    },
+    {
+      "name": "Cg4_40_r40",
+      "tech": {
+        "move": 14,
+        "stack": 2,
+        "prod": 42,
+        "atk": 11,
+        "def": 31
+      }
+    },
+    {
+      "name": "Cg4_41_r41",
+      "tech": {
+        "move": 34,
+        "stack": 11,
+        "prod": 31,
+        "atk": 16,
+        "def": 8
+      }
+    },
+    {
+      "name": "Cg4_42_r42",
+      "tech": {
+        "move": 19,
+        "stack": 18,
+        "prod": 35,
+        "atk": 19,
+        "def": 9
+      }
+    },
+    {
+      "name": "Cg4_43_r43",
+      "tech": {
+        "move": 27,
+        "stack": 11,
+        "prod": 19,
+        "atk": 12,
+        "def": 31
+      }
+    },
+    {
+      "name": "Cg4_44_r44",
+      "tech": {
+        "move": 17,
+        "stack": 27,
+        "prod": 17,
+        "atk": 5,
+        "def": 34
+      }
+    },
+    {
+      "name": "Cg4_45_r45",
+      "tech": {
+        "move": 21,
+        "stack": 23,
+        "prod": 6,
+        "atk": 37,
+        "def": 13
+      }
+    },
+    {
+      "name": "Cg4_46_r46",
+      "tech": {
+        "move": 8,
+        "stack": 12,
+        "prod": 32,
+        "atk": 26,
+        "def": 22
+      }
+    },
+    {
+      "name": "Cg4_47_r47",
+      "tech": {
+        "move": 22,
+        "stack": 21,
+        "prod": 21,
+        "atk": 33,
+        "def": 3
+      }
+    },
+    {
+      "name": "Cg4_48_r48",
+      "tech": {
+        "move": 22,
+        "stack": 28,
+        "prod": 15,
+        "atk": 10,
+        "def": 25
+      }
+    },
+    {
+      "name": "Cg4_49_r49",
+      "tech": {
+        "move": 9,
+        "stack": 31,
+        "prod": 26,
+        "atk": 3,
+        "def": 31
+      }
+    },
+    {
+      "name": "Cg4_50_r50",
+      "tech": {
+        "move": 10,
+        "stack": 48,
+        "prod": 28,
+        "atk": 4,
+        "def": 10
+      }
+    }
+  ],
+  "seasons": [
+    {
+      "season": 1,
+      "elapsedMs": 83852,
+      "matches": 400,
+      "baseSeed": 1,
+      "standings": [
+        {
+          "name": "Cg4_03_pureM",
+          "rating": 1218.85,
+          "rd": 51.6,
+          "played": 45,
+          "wins": 31,
+          "winRate": 68.9,
+          "avgRank": 1.96,
+          "avgTerritory": 297.3,
+          "pointsPerGame": 4.044
+        },
+        {
+          "name": "Cg4_18_M80S20",
+          "rating": 1092.03,
+          "rd": 50,
+          "played": 58,
+          "wins": 24,
+          "winRate": 41.4,
+          "avgRank": 2.69,
+          "avgTerritory": 178.6,
+          "pointsPerGame": 3.31
+        },
+        {
+          "name": "Cg4_26_P80M20",
+          "rating": 1083.65,
+          "rd": 50,
+          "played": 50,
+          "wins": 8,
+          "winRate": 16,
+          "avgRank": 2.92,
+          "avgTerritory": 69.1,
+          "pointsPerGame": 3.08
+        },
+        {
+          "name": "Cg4_06_pureA",
+          "rating": 1067.4,
+          "rd": 50,
+          "played": 50,
+          "wins": 11,
+          "winRate": 22,
+          "avgRank": 3.04,
+          "avgTerritory": 95,
+          "pointsPerGame": 2.96
+        },
+        {
+          "name": "Cg4_21_M80D20",
+          "rating": 1052.06,
+          "rd": 50,
+          "played": 48,
+          "wins": 20,
+          "winRate": 41.7,
+          "avgRank": 2.9,
+          "avgTerritory": 179.8,
+          "pointsPerGame": 3.104
+        },
+        {
+          "name": "Cg4_34_r34",
+          "rating": 1049.51,
+          "rd": 50,
+          "played": 56,
+          "wins": 15,
+          "winRate": 26.8,
+          "avgRank": 3.09,
+          "avgTerritory": 115.6,
+          "pointsPerGame": 2.911
+        },
+        {
+          "name": "Cg4_42_r42",
+          "rating": 1033.24,
+          "rd": 50,
+          "played": 51,
+          "wins": 4,
+          "winRate": 7.8,
+          "avgRank": 3.39,
+          "avgTerritory": 33.9,
+          "pointsPerGame": 2.608
+        },
+        {
+          "name": "Cg4_41_r41",
+          "rating": 1032.37,
+          "rd": 50,
+          "played": 48,
+          "wins": 9,
+          "winRate": 18.8,
+          "avgRank": 3.33,
+          "avgTerritory": 81,
+          "pointsPerGame": 2.667
+        },
+        {
+          "name": "Cg4_37_r37",
+          "rating": 1031.87,
+          "rd": 54.66,
+          "played": 40,
+          "wins": 9,
+          "winRate": 22.5,
+          "avgRank": 3.23,
+          "avgTerritory": 97.1,
+          "pointsPerGame": 2.775
+        },
+        {
+          "name": "Cg4_16_PD50",
+          "rating": 1031.19,
+          "rd": 50,
+          "played": 50,
+          "wins": 10,
+          "winRate": 20,
+          "avgRank": 3.26,
+          "avgTerritory": 86.3,
+          "pointsPerGame": 2.74
+        },
+        {
+          "name": "Cg4_43_r43",
+          "rating": 1027.35,
+          "rd": 50,
+          "played": 63,
+          "wins": 12,
+          "winRate": 19,
+          "avgRank": 3.16,
+          "avgTerritory": 82.2,
+          "pointsPerGame": 2.841
+        },
+        {
+          "name": "Cg4_05_pureP",
+          "rating": 1026.73,
+          "rd": 59.16,
+          "played": 34,
+          "wins": 3,
+          "winRate": 8.8,
+          "avgRank": 3.32,
+          "avgTerritory": 38.1,
+          "pointsPerGame": 2.676
+        },
+        {
+          "name": "Cg4_07_pureD",
+          "rating": 1020.82,
+          "rd": 51.05,
+          "played": 46,
+          "wins": 8,
+          "winRate": 17.4,
+          "avgRank": 3.41,
+          "avgTerritory": 75,
+          "pointsPerGame": 2.587
+        },
+        {
+          "name": "Cg4_25_S80D20",
+          "rating": 1014.65,
+          "rd": 56.78,
+          "played": 37,
+          "wins": 0,
+          "winRate": 0,
+          "avgRank": 3.51,
+          "avgTerritory": 0,
+          "pointsPerGame": 2.486
+        },
+        {
+          "name": "Cg4_36_r36",
+          "rating": 1013.83,
+          "rd": 51.05,
+          "played": 46,
+          "wins": 8,
+          "winRate": 17.4,
+          "avgRank": 3.3,
+          "avgTerritory": 75.1,
+          "pointsPerGame": 2.696
+        },
+        {
+          "name": "Cg4_46_r46",
+          "rating": 1011.23,
+          "rd": 51.05,
+          "played": 46,
+          "wins": 6,
+          "winRate": 13,
+          "avgRank": 3.54,
+          "avgTerritory": 56.3,
+          "pointsPerGame": 2.457
+        },
+        {
+          "name": "Cg4_19_M80P20",
+          "rating": 1010.69,
+          "rd": 53.37,
+          "played": 42,
+          "wins": 15,
+          "winRate": 35.7,
+          "avgRank": 3.29,
+          "avgTerritory": 154,
+          "pointsPerGame": 2.714
+        },
+        {
+          "name": "Cg4_17_AD50",
+          "rating": 1007.67,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 5,
+          "winRate": 10.6,
+          "avgRank": 3.57,
+          "avgTerritory": 46,
+          "pointsPerGame": 2.426
+        },
+        {
+          "name": "Cg4_29_P80D20",
+          "rating": 1006.75,
+          "rd": 51.05,
+          "played": 46,
+          "wins": 6,
+          "winRate": 13,
+          "avgRank": 3.5,
+          "avgTerritory": 56.3,
+          "pointsPerGame": 2.5
+        },
+        {
+          "name": "Cg4_31_A80S20",
+          "rating": 1005.75,
+          "rd": 50,
+          "played": 53,
+          "wins": 9,
+          "winRate": 17,
+          "avgRank": 3.47,
+          "avgTerritory": 73.3,
+          "pointsPerGame": 2.528
+        },
+        {
+          "name": "Cg4_11_MD50",
+          "rating": 1000.58,
+          "rd": 53.37,
+          "played": 42,
+          "wins": 8,
+          "winRate": 19,
+          "avgRank": 3.6,
+          "avgTerritory": 82.2,
+          "pointsPerGame": 2.405
+        },
+        {
+          "name": "Cg4_27_P80S20",
+          "rating": 999.7,
+          "rd": 50,
+          "played": 55,
+          "wins": 4,
+          "winRate": 7.3,
+          "avgRank": 3.56,
+          "avgTerritory": 31.4,
+          "pointsPerGame": 2.436
+        },
+        {
+          "name": "Cg4_09_MP50",
+          "rating": 997.66,
+          "rd": 51.05,
+          "played": 46,
+          "wins": 14,
+          "winRate": 30.4,
+          "avgRank": 3.39,
+          "avgTerritory": 131.3,
+          "pointsPerGame": 2.609
+        },
+        {
+          "name": "Cg4_32_A80P20",
+          "rating": 997.02,
+          "rd": 50,
+          "played": 48,
+          "wins": 8,
+          "winRate": 16.7,
+          "avgRank": 3.48,
+          "avgTerritory": 71.9,
+          "pointsPerGame": 2.521
+        },
+        {
+          "name": "Cg4_47_r47",
+          "rating": 995.62,
+          "rd": 50,
+          "played": 51,
+          "wins": 8,
+          "winRate": 15.7,
+          "avgRank": 3.55,
+          "avgTerritory": 67.7,
+          "pointsPerGame": 2.451
+        },
+        {
+          "name": "Cg4_24_S80A20",
+          "rating": 995.4,
+          "rd": 50,
+          "played": 50,
+          "wins": 4,
+          "winRate": 8,
+          "avgRank": 3.66,
+          "avgTerritory": 34.5,
+          "pointsPerGame": 2.34
+        },
+        {
+          "name": "Cg4_15_PA50",
+          "rating": 992.61,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 7,
+          "winRate": 14.9,
+          "avgRank": 3.45,
+          "avgTerritory": 64.3,
+          "pointsPerGame": 2.553
+        },
+        {
+          "name": "Cg4_35_r35",
+          "rating": 991.12,
+          "rd": 50,
+          "played": 49,
+          "wins": 6,
+          "winRate": 12.2,
+          "avgRank": 3.53,
+          "avgTerritory": 52.9,
+          "pointsPerGame": 2.469
+        },
+        {
+          "name": "Cg4_30_A80M20",
+          "rating": 990.77,
+          "rd": 50,
+          "played": 49,
+          "wins": 6,
+          "winRate": 12.2,
+          "avgRank": 3.53,
+          "avgTerritory": 52.9,
+          "pointsPerGame": 2.469
+        },
+        {
+          "name": "Cg4_14_SD50",
+          "rating": 990.15,
+          "rd": 50,
+          "played": 49,
+          "wins": 2,
+          "winRate": 4.1,
+          "avgRank": 3.78,
+          "avgTerritory": 17.6,
+          "pointsPerGame": 2.224
+        },
+        {
+          "name": "Cg4_10_MA50",
+          "rating": 988.64,
+          "rd": 50,
+          "played": 51,
+          "wins": 14,
+          "winRate": 27.5,
+          "avgRank": 3.53,
+          "avgTerritory": 118.5,
+          "pointsPerGame": 2.471
+        },
+        {
+          "name": "Cg4_33_r33",
+          "rating": 986.81,
+          "rd": 50,
+          "played": 53,
+          "wins": 1,
+          "winRate": 1.9,
+          "avgRank": 3.83,
+          "avgTerritory": 8.2,
+          "pointsPerGame": 2.17
+        },
+        {
+          "name": "Cg4_38_r38",
+          "rating": 981.32,
+          "rd": 56.78,
+          "played": 37,
+          "wins": 7,
+          "winRate": 18.9,
+          "avgRank": 3.65,
+          "avgTerritory": 81.7,
+          "pointsPerGame": 2.351
+        },
+        {
+          "name": "Cg4_40_r40",
+          "rating": 980.52,
+          "rd": 50,
+          "played": 57,
+          "wins": 2,
+          "winRate": 3.5,
+          "avgRank": 3.79,
+          "avgTerritory": 15.2,
+          "pointsPerGame": 2.211
+        },
+        {
+          "name": "Cg4_08_MS50",
+          "rating": 980.14,
+          "rd": 50,
+          "played": 59,
+          "wins": 10,
+          "winRate": 16.9,
+          "avgRank": 3.69,
+          "avgTerritory": 73.2,
+          "pointsPerGame": 2.305
+        },
+        {
+          "name": "Cg4_50_r50",
+          "rating": 973.58,
+          "rd": 50,
+          "played": 57,
+          "wins": 4,
+          "winRate": 7,
+          "avgRank": 3.77,
+          "avgTerritory": 30.3,
+          "pointsPerGame": 2.228
+        },
+        {
+          "name": "Cg4_22_S80M20",
+          "rating": 970.06,
+          "rd": 51.6,
+          "played": 45,
+          "wins": 4,
+          "winRate": 8.9,
+          "avgRank": 3.73,
+          "avgTerritory": 38.4,
+          "pointsPerGame": 2.267
+        },
+        {
+          "name": "Cg4_01_orig",
+          "rating": 969.23,
+          "rd": 51.6,
+          "played": 45,
+          "wins": 20,
+          "winRate": 44.4,
+          "avgRank": 3.29,
+          "avgTerritory": 191.8,
+          "pointsPerGame": 2.711
+        },
+        {
+          "name": "Cg4_04_pureS",
+          "rating": 968.49,
+          "rd": 51.6,
+          "played": 45,
+          "wins": 2,
+          "winRate": 4.4,
+          "avgRank": 3.84,
+          "avgTerritory": 19.2,
+          "pointsPerGame": 2.156
+        },
+        {
+          "name": "Cg4_20_M80A20",
+          "rating": 961.14,
+          "rd": 50,
+          "played": 57,
+          "wins": 16,
+          "winRate": 28.1,
+          "avgRank": 3.51,
+          "avgTerritory": 121.1,
+          "pointsPerGame": 2.491
+        },
+        {
+          "name": "Cg4_45_r45",
+          "rating": 960.16,
+          "rd": 51.05,
+          "played": 46,
+          "wins": 2,
+          "winRate": 4.3,
+          "avgRank": 3.87,
+          "avgTerritory": 18.8,
+          "pointsPerGame": 2.13
+        },
+        {
+          "name": "Cg4_48_r48",
+          "rating": 954.9,
+          "rd": 54.66,
+          "played": 40,
+          "wins": 8,
+          "winRate": 20,
+          "avgRank": 3.7,
+          "avgTerritory": 86.3,
+          "pointsPerGame": 2.3
+        },
+        {
+          "name": "Cg4_13_SA50",
+          "rating": 952.76,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 5,
+          "winRate": 10.6,
+          "avgRank": 3.91,
+          "avgTerritory": 45.9,
+          "pointsPerGame": 2.085
+        },
+        {
+          "name": "Cg4_23_S80P20",
+          "rating": 952.47,
+          "rd": 50,
+          "played": 48,
+          "wins": 1,
+          "winRate": 2.1,
+          "avgRank": 4,
+          "avgTerritory": 9,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Cg4_12_SP50",
+          "rating": 948.48,
+          "rd": 50,
+          "played": 52,
+          "wins": 5,
+          "winRate": 9.6,
+          "avgRank": 3.9,
+          "avgTerritory": 41.5,
+          "pointsPerGame": 2.096
+        },
+        {
+          "name": "Cg4_39_r39",
+          "rating": 943.42,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 3,
+          "winRate": 6.4,
+          "avgRank": 3.91,
+          "avgTerritory": 27.5,
+          "pointsPerGame": 2.085
+        },
+        {
+          "name": "Cg4_02_neutral",
+          "rating": 941.27,
+          "rd": 50,
+          "played": 48,
+          "wins": 3,
+          "winRate": 6.3,
+          "avgRank": 3.94,
+          "avgTerritory": 27,
+          "pointsPerGame": 2.063
+        },
+        {
+          "name": "Cg4_44_r44",
+          "rating": 939.31,
+          "rd": 57.54,
+          "played": 36,
+          "wins": 2,
+          "winRate": 5.6,
+          "avgRank": 3.97,
+          "avgTerritory": 24,
+          "pointsPerGame": 2.028
+        },
+        {
+          "name": "Cg4_28_P80A20",
+          "rating": 934.32,
+          "rd": 52.76,
+          "played": 43,
+          "wins": 6,
+          "winRate": 14,
+          "avgRank": 3.93,
+          "avgTerritory": 60.2,
+          "pointsPerGame": 2.07
+        },
+        {
+          "name": "Cg4_49_r49",
+          "rating": 924.72,
+          "rd": 51.6,
+          "played": 45,
+          "wins": 5,
+          "winRate": 11.1,
+          "avgRank": 4.07,
+          "avgTerritory": 47.9,
+          "pointsPerGame": 1.933
+        }
+      ]
+    },
+    {
+      "season": 2,
+      "elapsedMs": 71475,
+      "matches": 400,
+      "baseSeed": 1000004,
+      "standings": [
+        {
+          "name": "Cg4_03_pureM",
+          "rating": 1132.68,
+          "rd": 61.87,
+          "played": 31,
+          "wins": 15,
+          "winRate": 48.4,
+          "avgRank": 2.55,
+          "avgTerritory": 208.7,
+          "pointsPerGame": 3.452
+        },
+        {
+          "name": "Cg4_46_r46",
+          "rating": 1083.48,
+          "rd": 59.16,
+          "played": 34,
+          "wins": 3,
+          "winRate": 8.8,
+          "avgRank": 3.03,
+          "avgTerritory": 38.1,
+          "pointsPerGame": 2.971
+        },
+        {
+          "name": "Cg4_01_orig",
+          "rating": 1077.65,
+          "rd": 50,
+          "played": 295,
+          "wins": 148,
+          "winRate": 50.2,
+          "avgRank": 2.69,
+          "avgTerritory": 216.5,
+          "pointsPerGame": 3.312
+        },
+        {
+          "name": "Cg4_18_M80S20",
+          "rating": 1057.69,
+          "rd": 50,
+          "played": 48,
+          "wins": 17,
+          "winRate": 35.4,
+          "avgRank": 2.96,
+          "avgTerritory": 152.8,
+          "pointsPerGame": 3.042
+        },
+        {
+          "name": "Cg4_28_P80A20",
+          "rating": 1050.7,
+          "rd": 52.76,
+          "played": 43,
+          "wins": 4,
+          "winRate": 9.3,
+          "avgRank": 3.28,
+          "avgTerritory": 40.2,
+          "pointsPerGame": 2.721
+        },
+        {
+          "name": "Cg4_15_PA50",
+          "rating": 1047.21,
+          "rd": 61.87,
+          "played": 31,
+          "wins": 4,
+          "winRate": 12.9,
+          "avgRank": 3.29,
+          "avgTerritory": 55.6,
+          "pointsPerGame": 2.71
+        },
+        {
+          "name": "Cg4_16_PD50",
+          "rating": 1045.13,
+          "rd": 58.33,
+          "played": 35,
+          "wins": 2,
+          "winRate": 5.7,
+          "avgRank": 3.31,
+          "avgTerritory": 24.6,
+          "pointsPerGame": 2.686
+        },
+        {
+          "name": "Cg4_40_r40",
+          "rating": 1044.99,
+          "rd": 50,
+          "played": 55,
+          "wins": 7,
+          "winRate": 12.7,
+          "avgRank": 3.33,
+          "avgTerritory": 54.9,
+          "pointsPerGame": 2.673
+        },
+        {
+          "name": "Cg4_49_r49",
+          "rating": 1036.68,
+          "rd": 60.93,
+          "played": 32,
+          "wins": 1,
+          "winRate": 3.1,
+          "avgRank": 3.53,
+          "avgTerritory": 13.5,
+          "pointsPerGame": 2.469
+        },
+        {
+          "name": "Cg4_23_S80P20",
+          "rating": 1034.44,
+          "rd": 55.34,
+          "played": 39,
+          "wins": 3,
+          "winRate": 7.7,
+          "avgRank": 3.38,
+          "avgTerritory": 33.2,
+          "pointsPerGame": 2.615
+        },
+        {
+          "name": "Cg4_19_M80P20",
+          "rating": 1029.17,
+          "rd": 55.34,
+          "played": 39,
+          "wins": 13,
+          "winRate": 33.3,
+          "avgRank": 3.21,
+          "avgTerritory": 143.8,
+          "pointsPerGame": 2.795
+        },
+        {
+          "name": "Cg4_07_pureD",
+          "rating": 1026.36,
+          "rd": 66.14,
+          "played": 27,
+          "wins": 3,
+          "winRate": 11.1,
+          "avgRank": 3.37,
+          "avgTerritory": 48,
+          "pointsPerGame": 2.63
+        },
+        {
+          "name": "Cg4_36_r36",
+          "rating": 1023.34,
+          "rd": 64.99,
+          "played": 28,
+          "wins": 3,
+          "winRate": 10.7,
+          "avgRank": 3.39,
+          "avgTerritory": 46.3,
+          "pointsPerGame": 2.607
+        },
+        {
+          "name": "Cg4_38_r38",
+          "rating": 1020.61,
+          "rd": 52.17,
+          "played": 44,
+          "wins": 8,
+          "winRate": 18.2,
+          "avgRank": 3.41,
+          "avgTerritory": 78.4,
+          "pointsPerGame": 2.591
+        },
+        {
+          "name": "Cg4_20_M80A20",
+          "rating": 1016.49,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 12,
+          "winRate": 25.5,
+          "avgRank": 3.28,
+          "avgTerritory": 110.1,
+          "pointsPerGame": 2.723
+        },
+        {
+          "name": "Cg4_06_pureA",
+          "rating": 1012.41,
+          "rd": 50,
+          "played": 49,
+          "wins": 5,
+          "winRate": 10.2,
+          "avgRank": 3.53,
+          "avgTerritory": 44.1,
+          "pointsPerGame": 2.469
+        },
+        {
+          "name": "Cg4_31_A80S20",
+          "rating": 1011.35,
+          "rd": 50,
+          "played": 60,
+          "wins": 7,
+          "winRate": 11.7,
+          "avgRank": 3.57,
+          "avgTerritory": 50.4,
+          "pointsPerGame": 2.433
+        },
+        {
+          "name": "Cg4_05_pureP",
+          "rating": 1007.06,
+          "rd": 50,
+          "played": 48,
+          "wins": 1,
+          "winRate": 2.1,
+          "avgRank": 3.65,
+          "avgTerritory": 9,
+          "pointsPerGame": 2.354
+        },
+        {
+          "name": "Cg4_17_AD50",
+          "rating": 1004.86,
+          "rd": 60.93,
+          "played": 32,
+          "wins": 5,
+          "winRate": 15.6,
+          "avgRank": 3.44,
+          "avgTerritory": 67.5,
+          "pointsPerGame": 2.563
+        },
+        {
+          "name": "Cg4_33_r33",
+          "rating": 1002.07,
+          "rd": 50,
+          "played": 59,
+          "wins": 7,
+          "winRate": 11.9,
+          "avgRank": 3.56,
+          "avgTerritory": 51.2,
+          "pointsPerGame": 2.441
+        },
+        {
+          "name": "Cg4_02_neutral",
+          "rating": 1001.49,
+          "rd": 51.6,
+          "played": 45,
+          "wins": 8,
+          "winRate": 17.8,
+          "avgRank": 3.56,
+          "avgTerritory": 76.8,
+          "pointsPerGame": 2.444
+        },
+        {
+          "name": "Cg4_13_SA50",
+          "rating": 999.05,
+          "rd": 68.64,
+          "played": 25,
+          "wins": 1,
+          "winRate": 4,
+          "avgRank": 3.56,
+          "avgTerritory": 17.3,
+          "pointsPerGame": 2.44
+        },
+        {
+          "name": "Cg4_42_r42",
+          "rating": 997.97,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 4,
+          "winRate": 8.5,
+          "avgRank": 3.7,
+          "avgTerritory": 36.7,
+          "pointsPerGame": 2.298
+        },
+        {
+          "name": "Cg4_04_pureS",
+          "rating": 997.34,
+          "rd": 62.86,
+          "played": 30,
+          "wins": 1,
+          "winRate": 3.3,
+          "avgRank": 3.7,
+          "avgTerritory": 14.3,
+          "pointsPerGame": 2.3
+        },
+        {
+          "name": "Cg4_27_P80S20",
+          "rating": 997.27,
+          "rd": 50,
+          "played": 54,
+          "wins": 3,
+          "winRate": 5.6,
+          "avgRank": 3.69,
+          "avgTerritory": 24,
+          "pointsPerGame": 2.315
+        },
+        {
+          "name": "Cg4_47_r47",
+          "rating": 996.74,
+          "rd": 50,
+          "played": 48,
+          "wins": 6,
+          "winRate": 12.5,
+          "avgRank": 3.63,
+          "avgTerritory": 54,
+          "pointsPerGame": 2.375
+        },
+        {
+          "name": "Cg4_48_r48",
+          "rating": 995.7,
+          "rd": 52.76,
+          "played": 43,
+          "wins": 4,
+          "winRate": 9.3,
+          "avgRank": 3.72,
+          "avgTerritory": 40.2,
+          "pointsPerGame": 2.279
+        },
+        {
+          "name": "Cg4_09_MP50",
+          "rating": 994.3,
+          "rd": 64.99,
+          "played": 28,
+          "wins": 5,
+          "winRate": 17.9,
+          "avgRank": 3.64,
+          "avgTerritory": 77,
+          "pointsPerGame": 2.357
+        },
+        {
+          "name": "Cg4_14_SD50",
+          "rating": 993.03,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 2,
+          "winRate": 4.3,
+          "avgRank": 3.74,
+          "avgTerritory": 18.4,
+          "pointsPerGame": 2.255
+        },
+        {
+          "name": "Cg4_29_P80D20",
+          "rating": 991.37,
+          "rd": 56.78,
+          "played": 37,
+          "wins": 2,
+          "winRate": 5.4,
+          "avgRank": 3.76,
+          "avgTerritory": 23.4,
+          "pointsPerGame": 2.243
+        },
+        {
+          "name": "Cg4_30_A80M20",
+          "rating": 991.26,
+          "rd": 50,
+          "played": 57,
+          "wins": 11,
+          "winRate": 19.3,
+          "avgRank": 3.53,
+          "avgTerritory": 83.3,
+          "pointsPerGame": 2.474
+        },
+        {
+          "name": "Cg4_41_r41",
+          "rating": 988.69,
+          "rd": 50,
+          "played": 50,
+          "wins": 9,
+          "winRate": 18,
+          "avgRank": 3.56,
+          "avgTerritory": 77.7,
+          "pointsPerGame": 2.44
+        },
+        {
+          "name": "Cg4_34_r34",
+          "rating": 988.25,
+          "rd": 50,
+          "played": 54,
+          "wins": 2,
+          "winRate": 3.7,
+          "avgRank": 3.83,
+          "avgTerritory": 16,
+          "pointsPerGame": 2.167
+        },
+        {
+          "name": "Cg4_37_r37",
+          "rating": 984.38,
+          "rd": 59.16,
+          "played": 34,
+          "wins": 2,
+          "winRate": 5.9,
+          "avgRank": 3.76,
+          "avgTerritory": 25.4,
+          "pointsPerGame": 2.235
+        },
+        {
+          "name": "Cg4_32_A80P20",
+          "rating": 982.72,
+          "rd": 51.6,
+          "played": 45,
+          "wins": 1,
+          "winRate": 2.2,
+          "avgRank": 3.82,
+          "avgTerritory": 9.6,
+          "pointsPerGame": 2.178
+        },
+        {
+          "name": "Cg4_44_r44",
+          "rating": 981.47,
+          "rd": 57.54,
+          "played": 36,
+          "wins": 2,
+          "winRate": 5.6,
+          "avgRank": 3.64,
+          "avgTerritory": 24,
+          "pointsPerGame": 2.361
+        },
+        {
+          "name": "Cg4_12_SP50",
+          "rating": 980.83,
+          "rd": 50,
+          "played": 51,
+          "wins": 2,
+          "winRate": 3.9,
+          "avgRank": 3.8,
+          "avgTerritory": 16.9,
+          "pointsPerGame": 2.196
+        },
+        {
+          "name": "Cg4_25_S80D20",
+          "rating": 979.69,
+          "rd": 50,
+          "played": 48,
+          "wins": 0,
+          "winRate": 0,
+          "avgRank": 3.92,
+          "avgTerritory": 0,
+          "pointsPerGame": 2.083
+        },
+        {
+          "name": "Cg4_24_S80A20",
+          "rating": 978.55,
+          "rd": 50,
+          "played": 56,
+          "wins": 3,
+          "winRate": 5.4,
+          "avgRank": 3.73,
+          "avgTerritory": 23.1,
+          "pointsPerGame": 2.268
+        },
+        {
+          "name": "Cg4_08_MS50",
+          "rating": 978.44,
+          "rd": 50,
+          "played": 51,
+          "wins": 9,
+          "winRate": 17.6,
+          "avgRank": 3.71,
+          "avgTerritory": 76.2,
+          "pointsPerGame": 2.294
+        },
+        {
+          "name": "Cg4_21_M80D20",
+          "rating": 964.72,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 13,
+          "winRate": 27.7,
+          "avgRank": 3.51,
+          "avgTerritory": 119.3,
+          "pointsPerGame": 2.489
+        },
+        {
+          "name": "Cg4_35_r35",
+          "rating": 963.58,
+          "rd": 50,
+          "played": 53,
+          "wins": 9,
+          "winRate": 17,
+          "avgRank": 3.83,
+          "avgTerritory": 73.3,
+          "pointsPerGame": 2.17
+        },
+        {
+          "name": "Cg4_50_r50",
+          "rating": 958.86,
+          "rd": 51.6,
+          "played": 45,
+          "wins": 1,
+          "winRate": 2.2,
+          "avgRank": 3.96,
+          "avgTerritory": 9.6,
+          "pointsPerGame": 2.044
+        },
+        {
+          "name": "Cg4_43_r43",
+          "rating": 954.27,
+          "rd": 50,
+          "played": 66,
+          "wins": 6,
+          "winRate": 9.1,
+          "avgRank": 3.95,
+          "avgTerritory": 39.3,
+          "pointsPerGame": 2.045
+        },
+        {
+          "name": "Cg4_10_MA50",
+          "rating": 949.29,
+          "rd": 50.52,
+          "played": 47,
+          "wins": 10,
+          "winRate": 21.3,
+          "avgRank": 3.72,
+          "avgTerritory": 91.9,
+          "pointsPerGame": 2.277
+        },
+        {
+          "name": "Cg4_11_MD50",
+          "rating": 945.58,
+          "rd": 57.54,
+          "played": 36,
+          "wins": 5,
+          "winRate": 13.9,
+          "avgRank": 3.92,
+          "avgTerritory": 59.9,
+          "pointsPerGame": 2.083
+        },
+        {
+          "name": "Cg4_22_S80M20",
+          "rating": 944.62,
+          "rd": 56.78,
+          "played": 37,
+          "wins": 2,
+          "winRate": 5.4,
+          "avgRank": 4.24,
+          "avgTerritory": 23.4,
+          "pointsPerGame": 1.757
+        },
+        {
+          "name": "Cg4_26_P80M20",
+          "rating": 929.42,
+          "rd": 51.05,
+          "played": 46,
+          "wins": 4,
+          "winRate": 8.7,
+          "avgRank": 4.07,
+          "avgTerritory": 37.5,
+          "pointsPerGame": 1.935
+        },
+        {
+          "name": "Cg4_45_r45",
+          "rating": 924.31,
+          "rd": 63.9,
+          "played": 29,
+          "wins": 3,
+          "winRate": 10.3,
+          "avgRank": 4.07,
+          "avgTerritory": 44.6,
+          "pointsPerGame": 1.931
+        },
+        {
+          "name": "Cg4_39_r39",
+          "rating": 902.44,
+          "rd": 60.93,
+          "played": 32,
+          "wins": 2,
+          "winRate": 6.3,
+          "avgRank": 4.16,
+          "avgTerritory": 27,
+          "pointsPerGame": 1.844
+        }
+      ]
+    },
+    {
+      "season": 3,
+      "elapsedMs": 79518,
+      "matches": 400,
+      "baseSeed": 2000007,
+      "standings": [
+        {
+          "name": "Cg4_03_pureM",
+          "rating": 1267.83,
+          "rd": 70,
+          "played": 24,
+          "wins": 19,
+          "winRate": 79.2,
+          "avgRank": 1.75,
+          "avgTerritory": 341.5,
+          "pointsPerGame": 4.25
+        },
+        {
+          "name": "Cg4_01_orig",
+          "rating": 1119.2,
+          "rd": 50,
+          "played": 139,
+          "wins": 81,
+          "winRate": 58.3,
+          "avgRank": 2.44,
+          "avgTerritory": 251.5,
+          "pointsPerGame": 3.561
+        },
+        {
+          "name": "Cg4_20_M80A20",
+          "rating": 1088.37,
+          "rd": 50,
+          "played": 69,
+          "wins": 32,
+          "winRate": 46.4,
+          "avgRank": 2.7,
+          "avgTerritory": 200.1,
+          "pointsPerGame": 3.304
+        },
+        {
+          "name": "Cg4_15_PA50",
+          "rating": 1083.22,
+          "rd": 74.62,
+          "played": 21,
+          "wins": 5,
+          "winRate": 23.8,
+          "avgRank": 2.86,
+          "avgTerritory": 102.8,
+          "pointsPerGame": 3.143
+        },
+        {
+          "name": "Cg4_21_M80D20",
+          "rating": 1062.81,
+          "rd": 50,
+          "played": 69,
+          "wins": 26,
+          "winRate": 37.7,
+          "avgRank": 2.88,
+          "avgTerritory": 162.7,
+          "pointsPerGame": 3.116
+        },
+        {
+          "name": "Cg4_44_r44",
+          "rating": 1053.68,
+          "rd": 82.5,
+          "played": 17,
+          "wins": 2,
+          "winRate": 11.8,
+          "avgRank": 3.29,
+          "avgTerritory": 50.8,
+          "pointsPerGame": 2.706
+        },
+        {
+          "name": "Cg4_18_M80S20",
+          "rating": 1049.26,
+          "rd": 50,
+          "played": 88,
+          "wins": 35,
+          "winRate": 39.8,
+          "avgRank": 2.91,
+          "avgTerritory": 171.7,
+          "pointsPerGame": 3.091
+        },
+        {
+          "name": "Cg4_27_P80S20",
+          "rating": 1040.03,
+          "rd": 50,
+          "played": 73,
+          "wins": 7,
+          "winRate": 9.6,
+          "avgRank": 3.32,
+          "avgTerritory": 41.4,
+          "pointsPerGame": 2.685
+        },
+        {
+          "name": "Cg4_45_r45",
+          "rating": 1038.85,
+          "rd": 64.99,
+          "played": 28,
+          "wins": 2,
+          "winRate": 7.1,
+          "avgRank": 3.36,
+          "avgTerritory": 30.8,
+          "pointsPerGame": 2.643
+        },
+        {
+          "name": "Cg4_29_P80D20",
+          "rating": 1038.38,
+          "rd": 76.38,
+          "played": 20,
+          "wins": 3,
+          "winRate": 15,
+          "avgRank": 3.3,
+          "avgTerritory": 64.7,
+          "pointsPerGame": 2.7
+        },
+        {
+          "name": "Cg4_49_r49",
+          "rating": 1036.41,
+          "rd": 63.9,
+          "played": 29,
+          "wins": 0,
+          "winRate": 0,
+          "avgRank": 3.52,
+          "avgTerritory": 0,
+          "pointsPerGame": 2.483
+        },
+        {
+          "name": "Cg4_06_pureA",
+          "rating": 1031.27,
+          "rd": 50,
+          "played": 72,
+          "wins": 11,
+          "winRate": 15.3,
+          "avgRank": 3.24,
+          "avgTerritory": 65.9,
+          "pointsPerGame": 2.764
+        },
+        {
+          "name": "Cg4_50_r50",
+          "rating": 1024.93,
+          "rd": 132.29,
+          "played": 6,
+          "wins": 2,
+          "winRate": 33.3,
+          "avgRank": 3.17,
+          "avgTerritory": 143.8,
+          "pointsPerGame": 2.833
+        },
+        {
+          "name": "Cg4_32_A80P20",
+          "rating": 1021.87,
+          "rd": 50,
+          "played": 69,
+          "wins": 10,
+          "winRate": 14.5,
+          "avgRank": 3.38,
+          "avgTerritory": 62.6,
+          "pointsPerGame": 2.623
+        },
+        {
+          "name": "Cg4_30_A80M20",
+          "rating": 1018.71,
+          "rd": 50,
+          "played": 75,
+          "wins": 14,
+          "winRate": 18.7,
+          "avgRank": 3.31,
+          "avgTerritory": 80.6,
+          "pointsPerGame": 2.693
+        },
+        {
+          "name": "Cg4_04_pureS",
+          "rating": 1012.95,
+          "rd": 72.98,
+          "played": 22,
+          "wins": 0,
+          "winRate": 0,
+          "avgRank": 3.77,
+          "avgTerritory": 0,
+          "pointsPerGame": 2.227
+        },
+        {
+          "name": "Cg4_07_pureD",
+          "rating": 1012.61,
+          "rd": 60.93,
+          "played": 32,
+          "wins": 8,
+          "winRate": 25,
+          "avgRank": 3.31,
+          "avgTerritory": 107.8,
+          "pointsPerGame": 2.688
+        },
+        {
+          "name": "Cg4_13_SA50",
+          "rating": 1011.66,
+          "rd": 59.16,
+          "played": 34,
+          "wins": 3,
+          "winRate": 8.8,
+          "avgRank": 3.59,
+          "avgTerritory": 38.1,
+          "pointsPerGame": 2.412
+        },
+        {
+          "name": "Cg4_17_AD50",
+          "rating": 1006.17,
+          "rd": 60.93,
+          "played": 32,
+          "wins": 2,
+          "winRate": 6.3,
+          "avgRank": 3.66,
+          "avgTerritory": 27,
+          "pointsPerGame": 2.344
+        },
+        {
+          "name": "Cg4_48_r48",
+          "rating": 1001.78,
+          "rd": 90.37,
+          "played": 14,
+          "wins": 1,
+          "winRate": 7.1,
+          "avgRank": 3.79,
+          "avgTerritory": 30.9,
+          "pointsPerGame": 2.214
+        },
+        {
+          "name": "Cg4_40_r40",
+          "rating": 1001.66,
+          "rd": 50,
+          "played": 74,
+          "wins": 5,
+          "winRate": 6.8,
+          "avgRank": 3.68,
+          "avgTerritory": 29.2,
+          "pointsPerGame": 2.324
+        },
+        {
+          "name": "Cg4_25_S80D20",
+          "rating": 998.42,
+          "rd": 50,
+          "played": 68,
+          "wins": 2,
+          "winRate": 2.9,
+          "avgRank": 3.71,
+          "avgTerritory": 12.7,
+          "pointsPerGame": 2.294
+        },
+        {
+          "name": "Cg4_12_SP50",
+          "rating": 997.79,
+          "rd": 50,
+          "played": 74,
+          "wins": 9,
+          "winRate": 12.2,
+          "avgRank": 3.5,
+          "avgTerritory": 52.5,
+          "pointsPerGame": 2.5
+        },
+        {
+          "name": "Cg4_19_M80P20",
+          "rating": 994.54,
+          "rd": 82.5,
+          "played": 17,
+          "wins": 5,
+          "winRate": 29.4,
+          "avgRank": 3.53,
+          "avgTerritory": 126.9,
+          "pointsPerGame": 2.471
+        },
+        {
+          "name": "Cg4_31_A80S20",
+          "rating": 993.56,
+          "rd": 50,
+          "played": 73,
+          "wins": 10,
+          "winRate": 13.7,
+          "avgRank": 3.51,
+          "avgTerritory": 59.2,
+          "pointsPerGame": 2.493
+        },
+        {
+          "name": "Cg4_42_r42",
+          "rating": 988.67,
+          "rd": 50,
+          "played": 72,
+          "wins": 5,
+          "winRate": 6.9,
+          "avgRank": 3.68,
+          "avgTerritory": 30,
+          "pointsPerGame": 2.319
+        },
+        {
+          "name": "Cg4_09_MP50",
+          "rating": 979.62,
+          "rd": 66.14,
+          "played": 27,
+          "wins": 6,
+          "winRate": 22.2,
+          "avgRank": 3.63,
+          "avgTerritory": 95.8,
+          "pointsPerGame": 2.37
+        },
+        {
+          "name": "Cg4_46_r46",
+          "rating": 979.45,
+          "rd": 80.3,
+          "played": 18,
+          "wins": 2,
+          "winRate": 11.1,
+          "avgRank": 3.61,
+          "avgTerritory": 48,
+          "pointsPerGame": 2.389
+        },
+        {
+          "name": "Cg4_26_P80M20",
+          "rating": 977.21,
+          "rd": 50,
+          "played": 75,
+          "wins": 6,
+          "winRate": 8,
+          "avgRank": 3.69,
+          "avgTerritory": 34.5,
+          "pointsPerGame": 2.307
+        },
+        {
+          "name": "Cg4_05_pureP",
+          "rating": 976.56,
+          "rd": 50,
+          "played": 76,
+          "wins": 7,
+          "winRate": 9.2,
+          "avgRank": 3.7,
+          "avgTerritory": 39.7,
+          "pointsPerGame": 2.303
+        },
+        {
+          "name": "Cg4_41_r41",
+          "rating": 973.7,
+          "rd": 50,
+          "played": 73,
+          "wins": 9,
+          "winRate": 12.3,
+          "avgRank": 3.74,
+          "avgTerritory": 53.2,
+          "pointsPerGame": 2.26
+        },
+        {
+          "name": "Cg4_43_r43",
+          "rating": 971.94,
+          "rd": 50,
+          "played": 69,
+          "wins": 9,
+          "winRate": 13,
+          "avgRank": 3.75,
+          "avgTerritory": 56.3,
+          "pointsPerGame": 2.246
+        },
+        {
+          "name": "Cg4_33_r33",
+          "rating": 971.56,
+          "rd": 50,
+          "played": 65,
+          "wins": 4,
+          "winRate": 6.2,
+          "avgRank": 3.71,
+          "avgTerritory": 26.6,
+          "pointsPerGame": 2.292
+        },
+        {
+          "name": "Cg4_24_S80A20",
+          "rating": 969.46,
+          "rd": 50,
+          "played": 75,
+          "wins": 2,
+          "winRate": 2.7,
+          "avgRank": 3.85,
+          "avgTerritory": 11.5,
+          "pointsPerGame": 2.147
+        },
+        {
+          "name": "Cg4_47_r47",
+          "rating": 969.05,
+          "rd": 50,
+          "played": 84,
+          "wins": 6,
+          "winRate": 7.1,
+          "avgRank": 3.8,
+          "avgTerritory": 30.8,
+          "pointsPerGame": 2.202
+        },
+        {
+          "name": "Cg4_16_PD50",
+          "rating": 966.34,
+          "rd": 67.36,
+          "played": 26,
+          "wins": 0,
+          "winRate": 0,
+          "avgRank": 4.19,
+          "avgTerritory": 0,
+          "pointsPerGame": 1.808
+        },
+        {
+          "name": "Cg4_28_P80A20",
+          "rating": 965.33,
+          "rd": 90.37,
+          "played": 14,
+          "wins": 0,
+          "winRate": 0,
+          "avgRank": 3.93,
+          "avgTerritory": 0,
+          "pointsPerGame": 2.071
+        },
+        {
+          "name": "Cg4_22_S80M20",
+          "rating": 965.29,
+          "rd": 76.38,
+          "played": 20,
+          "wins": 0,
+          "winRate": 0,
+          "avgRank": 4,
+          "avgTerritory": 0,
+          "pointsPerGame": 2
+        },
+        {
+          "name": "Cg4_39_r39",
+          "rating": 962.66,
+          "rd": 71.44,
+          "played": 23,
+          "wins": 0,
+          "winRate": 0,
+          "avgRank": 4.04,
+          "avgTerritory": 0,
+          "pointsPerGame": 1.957
+        },
+        {
+          "name": "Cg4_37_r37",
+          "rating": 961.37,
+          "rd": 71.44,
+          "played": 23,
+          "wins": 4,
+          "winRate": 17.4,
+          "avgRank": 3.91,
+          "avgTerritory": 75.1,
+          "pointsPerGame": 2.087
+        },
+        {
+          "name": "Cg4_36_r36",
+          "rating": 956.73,
+          "rd": 66.14,
+          "played": 27,
+          "wins": 2,
+          "winRate": 7.4,
+          "avgRank": 3.78,
+          "avgTerritory": 32,
+          "pointsPerGame": 2.222
+        },
+        {
+          "name": "Cg4_10_MA50",
+          "rating": 955.5,
+          "rd": 50,
+          "played": 67,
+          "wins": 14,
+          "winRate": 20.9,
+          "avgRank": 3.7,
+          "avgTerritory": 90.1,
+          "pointsPerGame": 2.299
+        },
+        {
+          "name": "Cg4_34_r34",
+          "rating": 954.46,
+          "rd": 50,
+          "played": 57,
+          "wins": 7,
+          "winRate": 12.3,
+          "avgRank": 3.81,
+          "avgTerritory": 53,
+          "pointsPerGame": 2.193
+        },
+        {
+          "name": "Cg4_02_neutral",
+          "rating": 954.35,
+          "rd": 87.5,
+          "played": 15,
+          "wins": 2,
+          "winRate": 13.3,
+          "avgRank": 3.8,
+          "avgTerritory": 57.5,
+          "pointsPerGame": 2.2
+        },
+        {
+          "name": "Cg4_14_SD50",
+          "rating": 945.9,
+          "rd": 50,
+          "played": 61,
+          "wins": 1,
+          "winRate": 1.6,
+          "avgRank": 4.08,
+          "avgTerritory": 7.1,
+          "pointsPerGame": 1.918
+        },
+        {
+          "name": "Cg4_38_r38",
+          "rating": 944.22,
+          "rd": 87.5,
+          "played": 15,
+          "wins": 3,
+          "winRate": 20,
+          "avgRank": 3.8,
+          "avgTerritory": 86.2,
+          "pointsPerGame": 2.2
+        },
+        {
+          "name": "Cg4_35_r35",
+          "rating": 943.56,
+          "rd": 50,
+          "played": 67,
+          "wins": 8,
+          "winRate": 11.9,
+          "avgRank": 3.87,
+          "avgTerritory": 51.6,
+          "pointsPerGame": 2.134
+        },
+        {
+          "name": "Cg4_11_MD50",
+          "rating": 929.27,
+          "rd": 78.26,
+          "played": 19,
+          "wins": 2,
+          "winRate": 10.5,
+          "avgRank": 3.89,
+          "avgTerritory": 45.5,
+          "pointsPerGame": 2.105
+        },
+        {
+          "name": "Cg4_08_MS50",
+          "rating": 926.46,
+          "rd": 50,
+          "played": 75,
+          "wins": 5,
+          "winRate": 6.7,
+          "avgRank": 4.2,
+          "avgTerritory": 28.8,
+          "pointsPerGame": 1.8
+        },
+        {
+          "name": "Cg4_23_S80P20",
+          "rating": 905.41,
+          "rd": 80.3,
+          "played": 18,
+          "wins": 2,
+          "winRate": 11.1,
+          "avgRank": 4.06,
+          "avgTerritory": 47.9,
+          "pointsPerGame": 1.944
+        }
+      ]
+    }
+  ],
+  "roundRobin": [
+    {
+      "name": "Cg4_03_pureM",
+      "played": 21,
+      "wins": 11,
+      "pointsPerGame": 6.81,
+      "winRate": 52.4,
+      "avgRank": 3.19,
+      "avgTerritory": 556.6
+    },
+    {
+      "name": "Cg4_18_M80S20",
+      "played": 21,
+      "wins": 4,
+      "pointsPerGame": 6.619,
+      "winRate": 19,
+      "avgRank": 3.381,
+      "avgTerritory": 202.7
+    },
+    {
+      "name": "Cg4_21_M80D20",
+      "played": 21,
+      "wins": 2,
+      "pointsPerGame": 5.905,
+      "winRate": 9.5,
+      "avgRank": 4.095,
+      "avgTerritory": 101.2
+    },
+    {
+      "name": "Cg4_15_PA50",
+      "played": 21,
+      "wins": 0,
+      "pointsPerGame": 5.048,
+      "winRate": 0,
+      "avgRank": 4.952,
+      "avgTerritory": 0
+    },
+    {
+      "name": "Cg4_45_r45",
+      "played": 21,
+      "wins": 0,
+      "pointsPerGame": 4.333,
+      "winRate": 0,
+      "avgRank": 5.667,
+      "avgTerritory": 0
+    },
+    {
+      "name": "Cg4_27_P80S20",
+      "played": 21,
+      "wins": 0,
+      "pointsPerGame": 3.81,
+      "winRate": 0,
+      "avgRank": 6.19,
+      "avgTerritory": 0
+    },
+    {
+      "name": "Cg4_29_P80D20",
+      "played": 21,
+      "wins": 0,
+      "pointsPerGame": 3.81,
+      "winRate": 0,
+      "avgRank": 6.19,
+      "avgTerritory": 0
+    },
+    {
+      "name": "Cg4_44_r44",
+      "played": 21,
+      "wins": 0,
+      "pointsPerGame": 3.667,
+      "winRate": 0,
+      "avgRank": 6.333,
+      "avgTerritory": 0
+    },
+    {
+      "name": "Cg4_20_M80A20",
+      "played": 21,
+      "wins": 2,
+      "pointsPerGame": 3,
+      "winRate": 9.5,
+      "avgRank": 7,
+      "avgTerritory": 101.1
+    },
+    {
+      "name": "Cg4_01_orig",
+      "played": 21,
+      "wins": 2,
+      "pointsPerGame": 2,
+      "winRate": 9.5,
+      "avgRank": 8,
+      "avgTerritory": 101.2
+    }
+  ]
+}
