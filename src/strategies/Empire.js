@@ -74,12 +74,13 @@ Each tick we score the four directions and commit full attackPower into
 the highest-scoring one:
   - Beatable enemy (myEff > enemy):  base 1000, the clean kill.
   - Empty tile:                      base 500, expansion compounds.
-  - Unbeatable enemy (trade):        base 50 * (myEff/enemy). Still a
-    1.4x trade in our favor — we deal myEff damage while losing
-    myEff/1.4 mass. Attack-1 may not change territory, but it leaves a
-    soft survivor for attack-2 to capture. With more territory and
-    growth on our side the war of attrition wins even when individual
-    battles don't.
+  - Unbeatable enemy (trade):        base 50 * (myEff/enemy), but only
+    when *allowed*: either localEndgame (no empties in our 5x5 view —
+    expansion is exhausted) or atCap (sitting wastes growth, so trade
+    instead). The 1.4x bonus makes the swap favorable: we deal myEff
+    damage while losing myEff/1.4 mass; the next attack lands on a
+    soft survivor and the cascade wins. Outside endgame and below cap,
+    we route around walls and save strength for clean kills.
   - Friendly tile:                   skipped (own no-op).
 On top of all that, any tile owned by our "focus enemy" (the living
 non-self player with the least territory) gets a +600 bonus. Pacifist
@@ -116,6 +117,10 @@ outward through the friendly stack.`,
     const attackPower = army.attackPower;
     if (attackPower <= 0.5) return;
     const myEff = attackPower * ATTACKER_BONUS;
+    // Suicide trades pay off once colonization is done (endgame) or
+    // when we're already at cap (growth is wasted otherwise). Mid-game
+    // with room to grow, we sit on strength and look for clean kills.
+    const atCap = army.strength >= army.maxStrength - 0.2;
 
     // Focus enemy: concentrate on whichever non-self living player has the
     // least territory. Two reasons:
@@ -148,9 +153,19 @@ outward through the friendly stack.`,
       }
     }
 
-    // Precompute Trinity alignment per direction (friendly knight-density).
+    // Precompute Trinity alignment per direction (friendly knight-density),
+    // and detect local endgame at the same pass through the stencil. A
+    // local endgame = no empty tiles within our 5x5 view = the board has
+    // been fully colonized around us. Outside endgame, suicide trades
+    // bleed strength we'd rather spend expanding into open ground; only
+    // when expansion is exhausted do they pay off.
     const align = [0, 0, 0, 0];
+    let localEndgame = true;
     if (stencil) {
+      for (let n = 0; n < 25; n++) {
+        const t = stencil[n];
+        if (t && t.armies.length === 0) { localEndgame = false; break; }
+      }
       for (let k = 0; k < 4; k++) {
         const offs = OFFSETS[k];
         let s = 0;
@@ -161,7 +176,11 @@ outward through the friendly stack.`,
         }
         align[k] = s;
       }
+    } else {
+      // No stencil (off-map / pre-render): assume open board, no suicide.
+      localEndgame = false;
     }
+    const allowSuicide = localEndgame || atCap;
 
     let bestDir = -1;
     let bestScore = -Infinity;
@@ -210,14 +229,19 @@ outward through the friendly stack.`,
         // Stronger beatable enemies score higher within the kill class:
         // clearing the biggest local threat compounds.
         base = KILL_BASE + enemy;
-      } else {
-        // Unbeatable enemy: still a 1.4x trade in our favor (we deal myEff
-        // damage and lose myEff/1.4 mass). One attack alone may not change
-        // territory, but the *next* attack lands on a soft survivor. With
-        // territory advantage the cascade always wins. No strength gate —
-        // sitting still on a saturated border is worse than a 1.4x trade.
-        // Tighter ratios still preferred (more absolute damage per swing).
+      } else if (allowSuicide) {
+        // Endgame (or capped) trade: 1.4x in our favor — we deal myEff
+        // damage and lose myEff/1.4 mass. One attack alone may not
+        // change territory, but the next lands on a soft survivor and
+        // the cascade wins. Outside endgame we'd rather spend the
+        // strength expanding into open ground than bleeding into walls.
         base = SUICIDE_BASE * (myEff / enemy);
+      } else {
+        // Unbeatable enemy in mid-game with room to grow elsewhere: route
+        // around it. Skip without flagging as fallback — the friendly
+        // march logic, or just sitting and growing, beats a wasted swing
+        // we can't afford.
+        continue;
       }
 
       // Focus-enemy bonus: when several pacifist neighbors surround us,
