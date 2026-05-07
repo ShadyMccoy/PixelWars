@@ -13,9 +13,13 @@ export const NEUTRAL_TECH = Object.freeze({
 
 // Slopes calibrated against multi-strategy mirror-match regression
 // (see tournament/calibrate.js). Stack and prod were overpowered at
-// the initial 0.010 guesses; def was strictly dominated. These values
-// were tuned to bring per-point winrate coefficients close to zero
-// across Berserker, Turtle, Hunter, SlowAndSteady, and Swarm.
+// the initial 0.010 guesses; def was strictly dominated. The first
+// pass tuned them down toward zero per-knob coefficients across
+// Berserker, Turtle, Hunter, SlowAndSteady, Swarm. The 2026-05 sweep
+// of 50 Conqueror_g4_1f6790 tech variants then showed `move` running
+// away with the simplex (pureM at 1268 vs orig 90/0/2/4/4 at 1119),
+// so this revision halves move's slope and triples stack/prod to
+// bring all four non-def knobs into the same ~1.3x dynamic-range band.
 //
 // `move` is special: its multiplier is the *minimum garrison* an
 // attacking army must leave behind in strength units. Lower garrison
@@ -24,11 +28,12 @@ export const NEUTRAL_TECH = Object.freeze({
 // the formula is in techToMultipliers below. Baseline = 1.0 matches
 // the engine's pre-tech "always leave 1" rule.
 export const SLOPES = Object.freeze({
-  move:  0.0100,  // tech 0 -> 1.5 garrison, tech 100 -> 0.5 garrison
-                  // (linear, no clamp; 3x dynamic range, comparable
-                  // to def's 1.95x and atk's 1.32x)
-  stack: 0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
-  prod:  0.0008,  // tech 0 -> 0.984x, tech 100 -> 1.064x
+  move:  0.0050,  // tech 0 -> 1.5 garrison, tech 100 -> 1.0 garrison
+                  // (linear, no clamp; 1.5x dynamic range, below
+                  // atk/stack/prod's 1.32x in attack-strength terms
+                  // and well below def's 1.95x)
+  stack: 0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
+  prod:  0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
   atk:   0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
   def:   0.0080,  // tech 0 -> 0.84x, tech 100 -> 1.64x
 });

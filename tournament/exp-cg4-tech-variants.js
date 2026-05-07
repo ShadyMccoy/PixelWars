@@ -25,17 +25,48 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const OUTPUT_PATH = resolve(HERE, "exp-cg4-tech-variants.json");
+const DEFAULT_OUTPUT_PATH = resolve(HERE, "exp-cg4-tech-variants.json");
 
 const MAP = MAPS.lab1;
 const RR_MAP = MAPS.lab3;
 const POOL_SIZE = 6;
 const MAX_TICKS = 4000;
-const SEASONS = 3;
-const MATCHES_PER_SEASON = 400;
-const RR_ROUNDS = 21;
-const RR_TOP = 10;
 const VARIANT_COUNT = 50;
+
+// CLI: --seasons N --matches M --rr-rounds N --rr-top N --out PATH --no-rr
+function parseArgs(argv) {
+  const opts = {
+    seasons: 3,
+    matchesPerSeason: 400,
+    rrRounds: 21,
+    rrTop: 10,
+    runRr: true,
+    output: DEFAULT_OUTPUT_PATH,
+  };
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    const next = () => argv[++i];
+    switch (a) {
+      case "--seasons": opts.seasons = parseInt(next(), 10); break;
+      case "--matches": opts.matchesPerSeason = parseInt(next(), 10); break;
+      case "--rr-rounds": opts.rrRounds = parseInt(next(), 10); break;
+      case "--rr-top": opts.rrTop = parseInt(next(), 10); break;
+      case "--no-rr": opts.runRr = false; break;
+      case "--out": opts.output = next(); break;
+      case "--help": case "-h":
+        console.log(
+          "Usage: node tournament/exp-cg4-tech-variants.js " +
+            "[--seasons N] [--matches M] [--rr-rounds N] [--rr-top N] " +
+            "[--no-rr] [--out PATH]",
+        );
+        process.exit(0);
+      default:
+        console.error(`Unknown option: ${a}`);
+        process.exit(1);
+    }
+  }
+  return opts;
+}
 
 const KNOBS = ["move", "stack", "prod", "atk", "def"];
 const KNOB_INITIAL = { move: "M", stack: "S", prod: "P", atk: "A", def: "D" };
@@ -164,14 +195,18 @@ function printStandings(rows, variants, header) {
 }
 
 async function main() {
+  const opts = parseArgs(process.argv.slice(2));
   const variants = buildVariants();
   console.log(
     `Tech-space exploration: ${variants.length} variants of Conqueror_g4_1f6790 ` +
       `(parent rating 1249, parent tech ${techKey(Cg4.tech)}).`,
   );
+  const rrLabel = opts.runRr
+    ? `final RR top ${opts.rrTop} on ${RR_MAP.name} (${opts.rrRounds} rounds)`
+    : `no round-robin`;
   console.log(
-    `Map=${MAP.name} · poolSize=${POOL_SIZE} · seasons=${SEASONS} × ${MATCHES_PER_SEASON} matches ` +
-      `· final RR top ${RR_TOP} on ${RR_MAP.name} (${RR_ROUNDS} rounds).`,
+    `Map=${MAP.name} · poolSize=${POOL_SIZE} · seasons=${opts.seasons} × ` +
+      `${opts.matchesPerSeason} matches · ${rrLabel}.`,
   );
   console.log(`\nVariants:`);
   for (const v of variants) {
@@ -182,13 +217,13 @@ async function main() {
   const seasons = [];
   let priors = null;
 
-  for (let s = 0; s < SEASONS; s++) {
+  for (let s = 0; s < opts.seasons; s++) {
     const t0 = Date.now();
     const result = runRatingTournament({
       strategies,
       map: MAP,
       poolSize: POOL_SIZE,
-      matches: MATCHES_PER_SEASON,
+      matches: opts.matchesPerSeason,
       baseSeed: 1 + s * 1_000_003,
       maxTicks: MAX_TICKS,
       priors,
@@ -199,14 +234,14 @@ async function main() {
     printStandings(
       result.standings,
       variants,
-      `\n=== Season ${s + 1}/${SEASONS} · ${MATCHES_PER_SEASON} matches · ` +
+      `\n=== Season ${s + 1}/${opts.seasons} · ${opts.matchesPerSeason} matches · ` +
         `${(dtMs / 1000).toFixed(1)}s · avg ${avgPlayed.toFixed(1)} games/variant ===`,
     );
 
     seasons.push({
       season: s + 1,
       elapsedMs: dtMs,
-      matches: MATCHES_PER_SEASON,
+      matches: opts.matchesPerSeason,
       baseSeed: 1 + s * 1_000_003,
       standings: result.standings.map((row) => ({
         name: row.name,
@@ -229,39 +264,53 @@ async function main() {
     }
   }
 
-  // Final FFA round-robin among the top RR_TOP after the last season.
-  const topNames = seasons[seasons.length - 1].standings.slice(0, RR_TOP).map((r) => r.name);
-  const topStrategies = topNames.map((n) => strategies.find((s) => s.name === n));
-  const tRR = Date.now();
-  const rr = runFfaTournament({
-    strategies: topStrategies,
-    map: RR_MAP,
-    rounds: RR_ROUNDS,
-    baseSeed: 0xC0FFEE,
-    maxTicks: MAX_TICKS,
-  });
-  const rrMs = Date.now() - tRR;
-  console.log(
-    `\n=== Final round-robin · top ${RR_TOP} · ${RR_ROUNDS} rounds · map=${RR_MAP.name} · ` +
-      `${(rrMs / 1000).toFixed(1)}s ===`,
-  );
-  console.log(
-    `${pad("#", 4)}  ${pad("Variant", 22)}  ${pad("Tech", 24)}  ` +
-      `${pad("PPG", 6, true)}  ${pad("Wins", 5, true)}  ` +
-      `${pad("Win%", 6, true)}  ${pad("AvgRank", 8, true)}`,
-  );
-  console.log("-".repeat(85));
-  rr.standings.forEach((row, i) => {
-    const variant = variants.find((v) => v.name === row.name);
+  // Optional FFA round-robin among the top rrTop after the last season.
+  let rrPayload = null;
+  if (opts.runRr) {
+    const topNames = seasons[seasons.length - 1].standings
+      .slice(0, opts.rrTop)
+      .map((r) => r.name);
+    const topStrategies = topNames.map((n) => strategies.find((s) => s.name === n));
+    const tRR = Date.now();
+    const rr = runFfaTournament({
+      strategies: topStrategies,
+      map: RR_MAP,
+      rounds: opts.rrRounds,
+      baseSeed: 0xC0FFEE,
+      maxTicks: MAX_TICKS,
+    });
+    const rrMs = Date.now() - tRR;
     console.log(
-      `${pad(i + 1, 4)}  ${pad(row.name, 22)}  ${pad(fmtTech(variant.tech), 24)}  ` +
-        `${pad(row.pointsPerGame.toFixed(2), 6, true)}  ${pad(row.wins, 5, true)}  ` +
-        `${pad((row.winRate * 100).toFixed(1) + "%", 6, true)}  ${pad(row.avgRank.toFixed(2), 8, true)}`,
+      `\n=== Final round-robin · top ${opts.rrTop} · ${opts.rrRounds} rounds · ` +
+        `map=${RR_MAP.name} · ${(rrMs / 1000).toFixed(1)}s ===`,
     );
-  });
+    console.log(
+      `${pad("#", 4)}  ${pad("Variant", 22)}  ${pad("Tech", 24)}  ` +
+        `${pad("PPG", 6, true)}  ${pad("Wins", 5, true)}  ` +
+        `${pad("Win%", 6, true)}  ${pad("AvgRank", 8, true)}`,
+    );
+    console.log("-".repeat(85));
+    rr.standings.forEach((row, i) => {
+      const variant = variants.find((v) => v.name === row.name);
+      console.log(
+        `${pad(i + 1, 4)}  ${pad(row.name, 22)}  ${pad(fmtTech(variant.tech), 24)}  ` +
+          `${pad(row.pointsPerGame.toFixed(2), 6, true)}  ${pad(row.wins, 5, true)}  ` +
+          `${pad((row.winRate * 100).toFixed(1) + "%", 6, true)}  ${pad(row.avgRank.toFixed(2), 8, true)}`,
+      );
+    });
+    rrPayload = rr.standings.map((row) => ({
+      name: row.name,
+      played: row.played,
+      wins: row.wins,
+      pointsPerGame: +row.pointsPerGame.toFixed(3),
+      winRate: +(row.winRate * 100).toFixed(1),
+      avgRank: +row.avgRank.toFixed(3),
+      avgTerritory: +row.avgTerritory.toFixed(1),
+    }));
+  }
 
   await writeFile(
-    OUTPUT_PATH,
+    opts.output,
     JSON.stringify(
       {
         meta: {
@@ -269,32 +318,24 @@ async function main() {
           parent: "Conqueror_g4_1f6790",
           parentTech: Cg4.tech,
           map: MAP.name,
-          rrMap: RR_MAP.name,
+          rrMap: opts.runRr ? RR_MAP.name : null,
           maxTicks: MAX_TICKS,
           poolSize: POOL_SIZE,
-          seasonsRun: SEASONS,
-          matchesPerSeason: MATCHES_PER_SEASON,
-          rrRounds: RR_ROUNDS,
-          rrTop: RR_TOP,
+          seasonsRun: opts.seasons,
+          matchesPerSeason: opts.matchesPerSeason,
+          rrRounds: opts.runRr ? opts.rrRounds : null,
+          rrTop: opts.runRr ? opts.rrTop : null,
           variantCount: variants.length,
         },
         variants: variants.map((v) => ({ name: v.name, tech: v.tech })),
         seasons,
-        roundRobin: rr.standings.map((row) => ({
-          name: row.name,
-          played: row.played,
-          wins: row.wins,
-          pointsPerGame: +row.pointsPerGame.toFixed(3),
-          winRate: +(row.winRate * 100).toFixed(1),
-          avgRank: +row.avgRank.toFixed(3),
-          avgTerritory: +row.avgTerritory.toFixed(1),
-        })),
+        roundRobin: rrPayload,
       },
       null,
       2,
     ),
   );
-  console.log(`\nWrote ${OUTPUT_PATH}.`);
+  console.log(`\nWrote ${opts.output}.`);
 }
 
 main().catch((e) => {

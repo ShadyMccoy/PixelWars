@@ -18,7 +18,7 @@ Five knobs, integer-valued, summing to exactly 100:
 | `atk`  | multiplier on effective strength when attacking        | Berserker |
 | `def`  | divisor on incoming effective strength when defending  | Fortress  |
 
-`move` is implemented as a per-player garrison floor on `Army.attack`: the engine refuses to let an army drop below its garrison, so high-move bots can throw more strength forward in a single attack while low-move bots are forced to keep larger reserves at home. Concretely (post-v2 rebalance), tech 0 leaves `1.5` strength behind, tech 50 leaves `1.0`, tech 100 leaves `0.5`. The formula is linear with no clamp: `garrison = 1.5 - 0.01 × tech`. Neutral allocation of move=20 leaves `1.3` — a mild penalty for skipping move investment, comparable in spirit to def's 0.84× baseline at tech 0. All strategies reach for `army.attackPower` (= `strength - garrison`) instead of hardcoding `strength - 1`, so the floor scales automatically.
+`move` is implemented as a per-player garrison floor on `Army.attack`: the engine refuses to let an army drop below its garrison, so high-move bots can throw more strength forward in a single attack while low-move bots are forced to keep larger reserves at home. Concretely (post-v3 rebalance, after a 50-variant sweep showed move dominating the simplex), tech 0 leaves `1.5` strength behind, tech 50 leaves `1.25`, tech 100 leaves `1.0`. The formula is linear with no clamp: `garrison = 1.5 - 0.005 × tech`. Neutral allocation of move=20 leaves `1.4` — a mild penalty for skipping move investment, comparable in spirit to def's 0.84× baseline at tech 0. All strategies reach for `army.attackPower` (= `strength - garrison`) instead of hardcoding `strength - 1`, so the floor scales automatically.
 
 `atk` and `def` extend the existing global `attackerBonus` (`src/core/Game.js:14`) as per-army modifiers; the other three modify per-tick game logic that already exists.
 
@@ -26,7 +26,7 @@ Five knobs, integer-valued, summing to exactly 100:
 
 Tech 0 in a knob means **worse than baseline**, tech 100 means **better**. The baseline anchor for non-move knobs is **tech 20** — the natural average of a 100-point split across 5 knobs — so a peanut-butter loadout `{20,20,20,20,20}` keeps `stack/prod/atk/def` at exactly 1.0×; only `move` differs (1.7 garrison at neutral). Any deviation trades a knob below 20 for another above 20.
 
-Each knob has a single tunable slope constant. For `stack/prod/atk/def` the multiplier is `1.0 + (tech - 20) * slope`. For `move` the formula is `garrison = 1.5 - 0.01 × tech` (linear, no clamp), spanning a 3× swing across the tech range — comparable in dynamic range to def's ~2× and atk's ~1.3×. Slopes are placeholders until calibration; they're the only thing touched during balance passes.
+Each knob has a single tunable slope constant. For `stack/prod/atk/def` the multiplier is `1.0 + (tech - 20) * slope`. For `move` the formula is `garrison = 1.5 - 0.005 × tech` (linear, no clamp), spanning a 1.5× swing across the tech range — below atk/stack/prod's ~1.3× and well below def's ~2×. Slopes get retuned each balance pass; they're the only thing touched during balance passes.
 
 ## Configuration
 
