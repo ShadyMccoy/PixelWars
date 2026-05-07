@@ -123,9 +123,13 @@ main.stage {
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.06),
     0 0 80px rgba(110, 231, 255, 0.08);
-  cursor: crosshair;
+  cursor: grab;
   background: #06080d;
   image-rendering: pixelated;
+}
+
+#game-canvas:active {
+  cursor: grabbing;
 }
 
 .stage-overlay {
