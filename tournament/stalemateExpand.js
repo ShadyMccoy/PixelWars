@@ -1,26 +1,33 @@
-// Stalemate handling for PL ranking input.
+// Tied-tier expansion for PL ranking input.
 //
-// At max-ticks with >1 player still alive, the strict territory-tiebreak
-// ranking gave free 1st place to whichever survivor had marginally more
-// land. That over-credited passive accumulators and under-credited bots
-// that won most of their decisive matches.
+// Two kinds of ties get expanded into N synthetic Plackett-Luce orderings:
 //
-// Fix: expand each stalemate match into N synthetic Plackett-Luce orderings
-// drawn from each survivor's "naturalized share" of strength + territory.
-// A 50/50 stalemate produces ~5 orderings each way → PL treats as a tie.
-// A 99/1 stalemate produces ~9.9/10 orderings favoring the leader → PL
-// treats as nearly a full win. Decisive matches still emit one ordering.
+//   1. Stalemate survivor block (max-ticks with >1 player alive). Strict
+//      territory-tiebreak gave free 1st place to whichever survivor had
+//      marginally more land. Fix: each ordering samples 1st/2nd/... from
+//      each survivor's "naturalized share" of strength + territory. A
+//      50/50 stalemate produces ~5 orderings each way → PL treats as a
+//      tie. A 99/1 stalemate produces ~9.9/10 orderings favoring the
+//      leader.
 //
-// Eliminated players keep their elimination-order tail; only survivors
-// are sampled. Sampling RNG is seeded from the match seed so refits
-// remain reproducible.
+//   2. Eliminated-bot tail (every match). Death-tick ordering used to
+//      decide rank among the dead, which over-rewarded sit-still
+//      strategies (a bot that owned 0 tiles but died last finished above
+//      a builder that died earlier with a real empire). New rule: all
+//      eliminated bots tie at the bottom; each ordering samples a
+//      uniform random permutation of the dead.
+//
+// Decisive matches (1 survivor, 4000-tick non-stalemates) used to emit a
+// single strict ordering. Now they emit N orderings each with weight 1/N
+// — survivor fixed at top, dead bots in random order. PL aggregates to:
+// "the survivor beat all dead, the dead are tied with each other."
+//
+// Sampling RNG is seeded from the match seed so refits remain reproducible.
 
 import { mulberry32 } from "../src/core/rng.js";
 
 export const STALEMATE_SAMPLES = 10;
 
-// A match name comes from r.name (matchLog format) or r.strategy
-// (in-memory result format). Keep one accessor everywhere.
 function entryName(r) {
   return r.name ?? r.strategy ?? r.entryName;
 }
@@ -78,24 +85,38 @@ function sampleOrdering(items, rng) {
   return out;
 }
 
-// Returns { orderings, weights } suitable for fitPlackettLuce.
-// Decisive matches contribute one ordering with weight 1. Stalemates
-// contribute N orderings each with weight 1/N — so a stalemate's total
-// PL evidence equals exactly one decisive match.
-export function expandToOrderings(match, n = STALEMATE_SAMPLES) {
-  if (!isStalemate(match)) {
-    return { orderings: [match.ranking.map(entryName)], weights: [1] };
+// Fisher-Yates shuffle of a name array using the supplied rng.
+function shuffleNames(names, rng) {
+  const out = names.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
   }
-  const eliminatedTail = match.ranking
-    .filter((r) => !r.survived)
-    .map(entryName);
-  const shares = survivorShares(match);
+  return out;
+}
+
+// Returns { orderings, weights } suitable for fitPlackettLuce. Every
+// match emits N orderings each of weight 1/N — total evidence per match
+// is exactly 1, regardless of whether the match was decisive, a
+// stalemate, or mutual destruction.
+export function expandToOrderings(match, n = STALEMATE_SAMPLES) {
+  const survivors = match.ranking.filter((r) => r.survived);
+  const eliminated = match.ranking.filter((r) => !r.survived).map(entryName);
   const seed = ((match.seed ?? 1) ^ 0xa1b2c3d4) >>> 0;
   const rng = mulberry32(seed);
+  const stale = isStalemate(match);
+
+  // Survivor head: stalemate samples by share; otherwise use the order
+  // arena.js produced (territory-then-strength, deterministic).
+  const survivorBlock = stale ? null : survivors.map(entryName);
+  const shares = stale ? survivorShares(match) : null;
+
   const orderings = new Array(n);
   const weights = new Array(n);
   for (let i = 0; i < n; i++) {
-    orderings[i] = [...sampleOrdering(shares, rng), ...eliminatedTail];
+    const head = stale ? sampleOrdering(shares, rng) : survivorBlock;
+    const tail = eliminated.length > 1 ? shuffleNames(eliminated, rng) : eliminated;
+    orderings[i] = [...head, ...tail];
     weights[i] = 1 / n;
   }
   return { orderings, weights };

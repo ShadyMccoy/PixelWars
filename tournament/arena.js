@@ -98,13 +98,23 @@ export function runMatch({
   // ranking.
   game.recomputeTerritory();
 
-  // Ranking: late deaths beat early deaths; among survivors, more territory wins.
+  // Ranking: survivors first, sorted by territory then strength. Eliminated
+  // bots are all considered tied at the bottom — death-tick ordering used
+  // to be the tiebreaker, which over-rewarded sit-still strategies (a
+  // Pacifist that owned 0 tiles but died last finished above a builder
+  // that died earlier with a real empire). PL/Borda treat the tail as
+  // tied via stalemateExpand. Death-tick is still emitted in the result
+  // for diagnostics and is used here only as a stable secondary sort
+  // (latest-died is shown first within the tied tail).
   const ranked = [...players].sort((a, b) => {
-    const aDied = eliminated.get(a.id) ?? Infinity;
-    const bDied = eliminated.get(b.id) ?? Infinity;
-    if (aDied !== bDied) return bDied - aDied;
-    if (a.totals.territory !== b.totals.territory) return b.totals.territory - a.totals.territory;
-    return b.totals.strength - a.totals.strength;
+    const aSurv = !eliminated.has(a.id);
+    const bSurv = !eliminated.has(b.id);
+    if (aSurv !== bSurv) return bSurv ? 1 : -1;
+    if (aSurv) {
+      if (a.totals.territory !== b.totals.territory) return b.totals.territory - a.totals.territory;
+      return b.totals.strength - a.totals.strength;
+    }
+    return (eliminated.get(b.id) ?? 0) - (eliminated.get(a.id) ?? 0);
   });
 
   const survivorCount = ranked.length - eliminated.size;

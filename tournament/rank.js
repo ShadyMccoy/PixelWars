@@ -55,9 +55,11 @@ export function buildRankings(matches, opts = {}) {
       s.matches++;
       s.sumPlace += r.place;
       s.sumOf += K - 1;
-      // Don't credit a "win" for placing 1st via the territory-tiebreak
-      // at stalemate; that's the whole point of the partial-credit fix.
-      if (r.place === 0 && !stale) s.wins++;
+      // Only credit a "win" if the place-0 bot actually survived. Stalemate
+      // 1sts are excluded (territory-tiebreak isn't a real win), and
+      // mutual-destruction matches now sort all eliminated tied at the
+      // bottom — the latest-died isn't the winner either.
+      if (r.place === 0 && r.survived && !stale) s.wins++;
     }
   }
 
