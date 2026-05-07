@@ -9,13 +9,14 @@
 //         id:          1,
 //         savedAt:     ISO,
 //         map:         "lab1",
-//         rrMap:       "lab1",
+//         bracketMap:  "bracket1",
 //         poolSize:    6,
 //         matches:     200,
 //         baseSeed:    1,
 //         champions:   [{ kind, name }, ...],
 //         topField:    ["Trinity", ...],
 //         standings:   [{ name, rating, rd, played, ... }, ...],   // top of rating phase
+//         bracket:     { fieldSize, brackets, champion, overall, winners },
 //         losses:      { "Trinity": [{ seed, lineup, finishedRank }] }  // recent losses per top bot
 //       }
 //     ]

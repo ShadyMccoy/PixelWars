@@ -345,5 +345,118 @@ function pickInfoGainLineup(strategies, live, k, rng) {
   return lineup;
 }
 
+// ---------------------------------------------------------- bracket
+//
+// K=3 single-elimination bracket. Each "tournament" is rounds of 3-bot
+// matches: winner of each match advances. Bracket runs until one bot is
+// left. We run B such tournaments with independent shuffles+seeds and
+// aggregate, since a single K=3 bracket is too noisy to crown a champion
+// on its own — the discrimination experiment that justifies the K=3
+// bracket map (24x18 g1.8 m12) found per-bracket reliability ~0.3.
+//
+// Field size must be a power of 3 (3, 9, 27, ...). Caller passes the
+// top-N from the rating phase; we round DOWN to the largest fitting
+// power of 3.
+//
+// Champion = bot that won the most bracket finals; tiebreak total round
+// wins, then Borda points-per-game across all bracket matches.
+
+export function runBracketTournament({
+  strategies,
+  map,
+  brackets = 5,
+  baseSeed = 1,
+  maxTicks = 4000,
+  onMatch = null,
+}) {
+  const POOL = 3;
+  if (strategies.length < POOL) {
+    throw new Error(`Bracket needs at least ${POOL} strategies (got ${strategies.length})`);
+  }
+
+  let fieldSize = POOL;
+  while (fieldSize * POOL <= strategies.length) fieldSize *= POOL;
+  const field = strategies.slice(0, fieldSize);
+
+  const standings = new Map(field.map((s) => [s.name, blankRow(s)]));
+  const positions = map.positions(POOL);
+  const winners = [];
+  const finalWins = new Map();
+  const roundWins = new Map();
+  const allResults = [];
+  for (const s of field) {
+    finalWins.set(s.name, 0);
+    roundWins.set(s.name, 0);
+  }
+
+  for (let b = 0; b < brackets; b++) {
+    const seedRng = mulberry32((baseSeed ^ 0xb12c4e7) + b * 100003);
+    const shuffled = field.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(seedRng() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    let advancing = shuffled;
+    let roundIdx = 0;
+    while (advancing.length > 1) {
+      const groups = advancing.length / POOL;
+      const next = [];
+      for (let g = 0; g < groups; g++) {
+        const lineup = advancing.slice(g * POOL, (g + 1) * POOL);
+        const matchSeed = baseSeed + b * 1_000_003 + roundIdx * 10_007 + g;
+        const result = runMatch({
+          strategies: lineup,
+          mapConfig: map.config,
+          startPositions: positions,
+          seed: matchSeed,
+          maxTicks,
+        });
+        onMatch?.(allResults.length, result, lineup);
+        allResults.push({
+          bracket: b, round: roundIdx, group: g, seed: matchSeed,
+          lineup: lineup.map((s) => s.name), ...result,
+        });
+        recordResult(standings, result);
+        const winnerName = result.ranking[0]?.strategy;
+        roundWins.set(winnerName, (roundWins.get(winnerName) ?? 0) + 1);
+        const winner = lineup.find((s) => s.name === winnerName);
+        if (!winner) throw new Error(`Bracket winner ${winnerName} not in lineup`);
+        next.push(winner);
+      }
+      advancing = next;
+      roundIdx++;
+    }
+    const champion = advancing[0];
+    finalWins.set(champion.name, (finalWins.get(champion.name) ?? 0) + 1);
+    winners.push({ bracket: b, champion: champion.name });
+  }
+
+  const finalized = finalizeStandings(standings);
+  const ppgByName = new Map(finalized.map((r) => [r.name, r.pointsPerGame]));
+  const overall = field
+    .map((s) => ({
+      name: s.name,
+      finalWins: finalWins.get(s.name) ?? 0,
+      roundWins: roundWins.get(s.name) ?? 0,
+      pointsPerGame: +(ppgByName.get(s.name) ?? 0).toFixed(3),
+    }))
+    .sort((a, b) =>
+      b.finalWins - a.finalWins ||
+      b.roundWins - a.roundWins ||
+      b.pointsPerGame - a.pointsPerGame,
+    );
+  const champion = overall[0]?.name ?? null;
+
+  return {
+    standings: finalized,
+    overall,
+    winners,
+    champion,
+    fieldSize,
+    brackets,
+    results: allResults,
+  };
+}
+
 // Back-compat alias for older callers.
 export const runTournament = runFfaTournament;

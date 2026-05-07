@@ -1,16 +1,17 @@
 // Season runner. A "season" pairs the rating-driven tournament with a
-// top-of-pool round robin, and emits two champions:
+// K=3 bracket phase, and emits two champions:
 //
 //   - rating-leader: the highest-rated bot at the end of the rating phase
-//   - round-robin:   the winner of an FFA round robin among the top N
-//                    by rating (typically run on a larger map so all
-//                    finalists fit in the same arena)
+//   - bracket:       the bot that won the most K=3 single-elimination
+//                    brackets among the top N by rating, run on a
+//                    fast-but-noisy bracket map with multiple
+//                    tournaments to average out per-bracket noise
 //
 // Both bots earn the right to spawn a descendant in the next deliverable.
 // The same bot can win both, by design — dominant bots get two spawns
 // per season.
 
-import { runRatingTournament, runFfaTournament } from "./scheduler.js";
+import { runRatingTournament, runBracketTournament } from "./scheduler.js";
 
 export function runSeason({
   strategies,
@@ -19,9 +20,9 @@ export function runSeason({
   matches = 200,
   baseSeed = 1,
   maxTicks = 4000,
-  rrMap = null,
-  rrTopN = 10,
-  rrRounds = 21,
+  bracketMap = null,
+  bracketTopN = 9,
+  brackets = 5,
   onMatch = null,
   priors = null,
 }) {
@@ -42,35 +43,35 @@ export function runSeason({
 
   const ratingChampion = ratingResult.standings[0]?.name ?? null;
 
-  const topN = Math.max(2, Math.min(rrTopN, ratingResult.standings.length));
+  const topN = Math.max(3, Math.min(bracketTopN, ratingResult.standings.length));
   const topNames = ratingResult.standings.slice(0, topN).map((s) => s.name);
   const topStrategies = topNames
     .map((name) => strategies.find((s) => s.name === name))
     .filter(Boolean);
 
-  let roundRobin = null;
-  let rrChampion = null;
-  if (topStrategies.length >= 2) {
-    roundRobin = runFfaTournament({
+  let bracket = null;
+  let bracketChampion = null;
+  if (topStrategies.length >= 3) {
+    bracket = runBracketTournament({
       strategies: topStrategies,
-      map: rrMap ?? map,
-      rounds: rrRounds,
+      map: bracketMap ?? map,
+      brackets,
       baseSeed: (baseSeed + 100003) >>> 0,
       maxTicks,
       onMatch: onMatch
-        ? (m, result, lineup) => onMatch("round-robin", m, result, lineup)
+        ? (m, result, lineup) => onMatch("bracket", m, result, lineup)
         : null,
     });
-    rrChampion = roundRobin.standings[0]?.name ?? null;
+    bracketChampion = bracket.champion;
   }
 
   const champions = [];
   if (ratingChampion) champions.push({ kind: "rating-leader", name: ratingChampion });
-  if (rrChampion) champions.push({ kind: "round-robin", name: rrChampion });
+  if (bracketChampion) champions.push({ kind: "bracket", name: bracketChampion });
 
   return {
     rating: ratingResult,
-    roundRobin,
+    bracket,
     champions,
     topField: topNames,
   };

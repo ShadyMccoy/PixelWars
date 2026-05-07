@@ -26,4 +26,15 @@ export const MAPS = {
     players: 5,
     positions: (n) => linePositions(n, { width: 30, height: 22 }),
   },
+  // Bracket map. Top of discriminate.json without the reliability
+  // penalty: 24x18 g1.8 m12 wrap line at K=3 (composite=2.012,
+  // discLOO=0.84, median match ~30 ticks). Single-tournament rankings
+  // are too noisy here for ranking work, but bracket Phase 2 runs
+  // multiple tournaments and accepts that noise — the speed wins.
+  bracket1: {
+    name: "bracket1",
+    config: { width: 24, height: 18, growth: 1.8, maxArmy: 12, wrap: true },
+    players: 3,
+    positions: (n) => linePositions(n, { width: 24, height: 18 }),
+  },
 };

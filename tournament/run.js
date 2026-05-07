@@ -91,12 +91,14 @@ Archive (exclude weak bots from default tournament pool):
   --archive-clear     Clear the archive (everyone competes again)
   --archive-list      Print the current archive and exit
 
-Season mode (rating tournament + top-N round robin → champions):
+Season mode (rating tournament + K=3 bracket → champions):
   --season            Run a season; emits two champions (rating leader
-                      + round-robin winner). Saves to seasons.json.
-  --season-rr-map NAME    Map for the round-robin phase (default: lab1)
-  --season-top N      Number of top bots in the round robin (default: 10)
-  --season-rr-rounds N    Round-robin rounds (default: 21)
+                      + bracket winner). Saves to seasons.json.
+  --season-bracket-map NAME  Map for the bracket phase (default: bracket1)
+  --season-top N      Number of top bots in the bracket field. Rounded
+                      DOWN to a power of 3 (3, 9, 27, ...). Default: 9
+  --season-brackets N    K=3 bracket tournaments to run; champion = bot
+                         that won the most bracket finals. Default: 5
 
 Lineage (genetic descendant feature):
   --list-lineages     Print every bot's family/parent/generation and exit
@@ -148,9 +150,9 @@ function parseArgs(argv) {
     listAll: false,
     rating: false,
     season: false,
-    seasonRrMap: "lab1",
-    seasonTop: 10,
-    seasonRrRounds: 21,
+    seasonBracketMap: "bracket1",
+    seasonTop: 9,
+    seasonBrackets: 5,
     listLineages: false,
     backfillLineages: false,
     prepareSpawn: null,
@@ -185,9 +187,12 @@ function parseArgs(argv) {
       case "--matches-per-season": opts.matchesPerSeason = parseInt(next(), 10); break;
       case "--rating": opts.rating = true; break;
       case "--season": opts.season = true; break;
-      case "--season-rr-map": opts.seasonRrMap = next(); break;
+      case "--season-bracket-map": opts.seasonBracketMap = next(); break;
       case "--season-top": opts.seasonTop = parseInt(next(), 10); break;
-      case "--season-rr-rounds": opts.seasonRrRounds = parseInt(next(), 10); break;
+      case "--season-brackets": opts.seasonBrackets = parseInt(next(), 10); break;
+      // Back-compat aliases for older invocations / scripts.
+      case "--season-rr-map": opts.seasonBracketMap = next(); break;
+      case "--season-rr-rounds": next(); break;
       case "--list-lineages": opts.listLineages = true; break;
       case "--backfill-lineages": opts.backfillLineages = true; break;
       case "--prepare-spawn": opts.prepareSpawn = next(); break;
@@ -539,9 +544,9 @@ async function cmdSeason(opts) {
     console.error(`Unknown map: ${opts.map}. Choose from: ${Object.keys(MAPS).join(", ")}`);
     process.exit(1);
   }
-  const rrMap = MAPS[opts.seasonRrMap];
-  if (!rrMap) {
-    console.error(`Unknown round-robin map: ${opts.seasonRrMap}. Choose from: ${Object.keys(MAPS).join(", ")}`);
+  const bracketMap = MAPS[opts.seasonBracketMap];
+  if (!bracketMap) {
+    console.error(`Unknown bracket map: ${opts.seasonBracketMap}. Choose from: ${Object.keys(MAPS).join(", ")}`);
     process.exit(1);
   }
 
@@ -561,14 +566,14 @@ async function cmdSeason(opts) {
   const onMatch = (phase, idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
     matchEntries.push(buildMatchEntry({
-      map: phase === "round-robin" ? opts.seasonRrMap : opts.map,
+      map: phase === "bracket" ? opts.seasonBracketMap : opts.map,
       result,
     }));
     const flags = detectFlags(result, { maxTicks: opts.ticks });
     if (flags.length) {
       flaggedEntries.push(buildEntry({
-        map: phase === "round-robin" ? rrMap : map,
-        mapPreset: phase === "round-robin" ? opts.seasonRrMap : opts.map,
+        map: phase === "bracket" ? bracketMap : map,
+        mapPreset: phase === "bracket" ? opts.seasonBracketMap : opts.map,
         seed: result.seed, maxTicks: opts.ticks,
         lineupNames, result, flags,
       }));
@@ -596,7 +601,7 @@ async function cmdSeason(opts) {
       : "";
     console.log(
       `Season: rating phase (${matchCount} matches, K=${opts.pool}, map=${opts.map}, matchmaker=${matchmaker}${newNote}) ` +
-      `+ round-robin (top ${opts.seasonTop}, ${opts.seasonRrRounds} rounds, map=${opts.seasonRrMap})\n`,
+      `+ bracket phase (top ${opts.seasonTop}, ${opts.seasonBrackets} K=3 brackets, map=${opts.seasonBracketMap})\n`,
     );
   }
 
@@ -607,9 +612,9 @@ async function cmdSeason(opts) {
     matches: matchCount,
     baseSeed: opts.seed,
     maxTicks: opts.ticks,
-    rrMap,
-    rrTopN: opts.seasonTop,
-    rrRounds: opts.seasonRrRounds,
+    bracketMap,
+    bracketTopN: opts.seasonTop,
+    brackets: opts.seasonBrackets,
     onMatch,
     priors,
   });
@@ -623,11 +628,12 @@ async function cmdSeason(opts) {
 
   if (opts.json) {
     process.stdout.write(JSON.stringify({
-      meta: { map: opts.map, rrMap: opts.seasonRrMap, ticks: opts.ticks, seed: opts.seed, pool: opts.pool, matches: matchCount },
+      meta: { map: opts.map, bracketMap: opts.seasonBracketMap, ticks: opts.ticks, seed: opts.seed, pool: opts.pool, matches: matchCount },
       champions: season.champions,
       topField: season.topField,
       ratingStandings: season.rating.standings,
-      roundRobinStandings: season.roundRobin?.standings ?? null,
+      bracketOverall: season.bracket?.overall ?? null,
+      bracketWinners: season.bracket?.winners ?? null,
       flagged: flaggedEntries,
       losses,
     }, null, 2) + "\n");
@@ -636,11 +642,12 @@ async function cmdSeason(opts) {
       map: opts.map, ticks: opts.ticks, seed: opts.seed,
       modeLabel: `season · rating phase · ${matchCount} matches · K=${opts.pool} · ${strategies.length} bots`,
     });
-    if (season.roundRobin) {
-      console.log(`\nRound-robin (top ${season.topField.length} on ${opts.seasonRrMap}, ${opts.seasonRrRounds} rounds):`);
-      season.roundRobin.standings.slice(0, 10).forEach((s, i) => {
-        console.log(`  ${String(i + 1).padStart(2)}. ${s.name.padEnd(18)} PPG=${s.pointsPerGame.toFixed(2)} Wins=${s.wins} AvgRank=${s.avgRank.toFixed(2)}`);
+    if (season.bracket) {
+      console.log(`\nBracket (top ${season.bracket.fieldSize} on ${opts.seasonBracketMap}, ${season.bracket.brackets} K=3 brackets):`);
+      season.bracket.overall.forEach((r, i) => {
+        console.log(`  ${String(i + 1).padStart(2)}. ${r.name.padEnd(18)} finals=${r.finalWins} roundWins=${r.roundWins} PPG=${r.pointsPerGame.toFixed(2)}`);
       });
+      console.log(`  bracket winners: ${season.bracket.winners.map((w) => w.champion).join(", ")}`);
     }
     console.log(`\nChampions:`);
     for (const c of season.champions) {
@@ -660,8 +667,8 @@ async function cmdSeason(opts) {
   const stored = await saveSeason({
     map: opts.map,
     mapConfig: { ...map.config },
-    rrMap: opts.seasonRrMap,
-    rrMapConfig: { ...rrMap.config },
+    bracketMap: opts.seasonBracketMap,
+    bracketMapConfig: { ...bracketMap.config },
     poolSize: opts.pool,
     matches: matchCount,
     baseSeed: opts.seed,
@@ -672,12 +679,14 @@ async function cmdSeason(opts) {
       name: s.name, rating: s.rating, rd: s.rd, played: s.played,
       wins: s.wins, pointsPerGame: +s.pointsPerGame.toFixed(3),
     })),
-    roundRobinStandings: season.roundRobin
-      ? season.roundRobin.standings.map((s) => ({
-          name: s.name, played: s.played, wins: s.wins,
-          pointsPerGame: +s.pointsPerGame.toFixed(3),
-          avgRank: +s.avgRank.toFixed(3),
-        }))
+    bracket: season.bracket
+      ? {
+          fieldSize: season.bracket.fieldSize,
+          brackets: season.bracket.brackets,
+          champion: season.bracket.champion,
+          overall: season.bracket.overall,
+          winners: season.bracket.winners,
+        }
       : null,
     losses,
   });
