@@ -1,13 +1,17 @@
-// Sidebar form for spinning up a match. Reads width / height / growth /
-// maxArmy / wrap / numPlayers from inputs and asks the app to build a
-// Game with that config plus N ring-positioned bots.
+// Sidebar form for the map config used by "Watch random match". Owns
+// width / height / growth / maxArmy / wrap / numPlayers inputs plus the
+// preset tabs (arena, classic, lab1, ...). Any change re-runs the
+// current scenario through `app.applyMapForm()`; the rankings panel
+// supplies the bot pool.
 //
-// Map presets (arena, classic, lab1, ...) are rendered as quick-fill
-// buttons that populate the form fields and submit. They share the
-// preset registry with the headless tournament runner so a preset
-// always means the same configuration in both contexts.
+// Map presets share their config with the headless tournament runner
+// so a preset always means the same map shape in both contexts. Each
+// preset also carries a recommended player count, which fills the
+// Players field when the preset is clicked (still editable).
 
 import { MAPS } from "../../tournament/maps.js";
+
+const DEFAULT_PRESET_PLAYERS = 4;
 
 export class MapEditor {
   constructor({ app }) {
@@ -18,10 +22,12 @@ export class MapEditor {
     this.maxArmy = document.getElementById("me-max-army");
     this.players = document.getElementById("me-players");
     this.wrap = document.getElementById("me-wrap");
-    this.apply = document.getElementById("btn-me-apply");
     this.presets = document.getElementById("me-presets");
 
-    this.apply.addEventListener("click", () => this.submit());
+    const inputs = [this.width, this.height, this.growth, this.maxArmy, this.players, this.wrap];
+    for (const el of inputs) {
+      el.addEventListener("change", () => this.app.applyMapForm());
+    }
     this.renderPresets();
   }
 
@@ -33,21 +39,22 @@ export class MapEditor {
       btn.className = "preset-tab";
       btn.textContent = key;
       const c = preset.config;
-      btn.title = `${c.width}×${c.height} · g=${c.growth} · maxArmy=${c.maxArmy}${c.wrap ? " · wrap" : ""}`;
-      btn.addEventListener("click", () => this.applyPreset(preset.config));
+      const k = preset.players ?? DEFAULT_PRESET_PLAYERS;
+      btn.title = `${c.width}×${c.height} · g=${c.growth} · maxArmy=${c.maxArmy}${c.wrap ? " · wrap" : ""} · ${k} players`;
+      btn.addEventListener("click", () => this.applyPreset(preset));
       this.presets.appendChild(btn);
     }
   }
 
-  applyPreset(config) {
-    this.width.value = config.width;
-    this.height.value = config.height;
-    this.growth.value = config.growth;
-    this.maxArmy.value = config.maxArmy;
-    this.wrap.checked = !!config.wrap;
-    // numPlayers stays — the preset only owns the map shape, not the
-    // roster size. Submit immediately so the user sees the new map.
-    this.submit();
+  applyPreset(preset) {
+    const c = preset.config;
+    this.width.value = c.width;
+    this.height.value = c.height;
+    this.growth.value = c.growth;
+    this.maxArmy.value = c.maxArmy;
+    this.wrap.checked = !!c.wrap;
+    this.players.value = preset.players ?? DEFAULT_PRESET_PLAYERS;
+    this.app.applyMapForm();
   }
 
   read() {
@@ -59,11 +66,6 @@ export class MapEditor {
       numPlayers: clampInt(this.players.value, 2, 8, 4),
       wrap: !!this.wrap.checked,
     };
-  }
-
-  submit() {
-    this.app._userChoseMode = true;
-    this.app.loadCustomMap(this.read());
   }
 }
 

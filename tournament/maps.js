@@ -77,34 +77,40 @@ export const MAPS = {
   arena: {
     name: "arena",
     config: { width: 30, height: 22, growth: 2, maxArmy: 6, wrap: true },
+    players: 4,
     positions: (n) => ringPositions(n, { width: 30, height: 22, radiusFactor: 0.4 }),
   },
   classic: {
     name: "classic",
     config: { width: 40, height: 30, growth: 1, maxArmy: 6, wrap: true },
+    players: 6,
     positions: (n) => ringPositions(n, { width: 40, height: 30, radiusFactor: 0.42 }),
   },
   tight: {
     name: "tight",
     config: { width: 22, height: 16, growth: 2.2, maxArmy: 6, wrap: true },
+    players: 3,
     positions: (n) => ringPositions(n, { width: 22, height: 16, radiusFactor: 0.38 }),
   },
   // Lab-tested map (24x18 g=1.8 wrap line k=4). Composite score from map-search ranking, disc=0.74 rel=0.87.
   lab1: {
     name: "lab1",
     config: { width: 24, height: 18, growth: 1.8, maxArmy: 6, wrap: true },
+    players: 4,
     positions: (n) => linePositions(n, { width: 24, height: 18 }),
   },
   // Lab-tested map (30x22 g=1.8 wrap line k=4). Composite score from map-search ranking, disc=0.79 rel=0.89.
   lab2: {
     name: "lab2",
     config: { width: 30, height: 22, growth: 1.8, maxArmy: 6, wrap: true },
+    players: 4,
     positions: (n) => linePositions(n, { width: 30, height: 22 }),
   },
   // Lab-tested map (38x28 g=1.8 wrap line k=4). Composite score from map-search ranking, disc=0.73 rel=0.90.
   lab3: {
     name: "lab3",
     config: { width: 38, height: 28, growth: 1.8, maxArmy: 6, wrap: true },
+    players: 4,
     positions: (n) => linePositions(n, { width: 38, height: 28 }),
   },
 };
