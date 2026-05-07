@@ -12,10 +12,14 @@
       <div class="brand">PixelWars</div>
       <div class="brand-sub">Tile Strategy Sandbox</div>
       <div class="header-spacer"></div>
+      <button id="btn-try-bot" class="btn" title="Paste a bot script and seat it in the next match">⚙ Try a bot</button>
       <span class="tick-pill" id="tick-label">t=0</span>
       <span class="kbd">Space</span><span class="brand-sub">play</span>
       <span class="kbd">.</span><span class="brand-sub">step</span>
       <span class="kbd">R</span><span class="brand-sub">reset</span>
+      <span class="kbd">L</span><span class="brand-sub">replay</span>
+      <span class="kbd">S</span><span class="brand-sub">save</span>
+      <span id="seed-pill" class="seed-pill" title="Click to copy">seed=–</span>
     </header>
 
     <aside class="sidebar">
@@ -26,7 +30,9 @@
         <div class="controls">
           <button id="btn-play" class="btn primary">⏸ Pause</button>
           <button id="btn-step" class="btn">⏭ Step</button>
-          <button id="btn-reset" class="btn">↻ Reset</button>
+          <button id="btn-reset" class="btn" title="New seed, same lineup &amp; map">↻ New seed</button>
+          <button id="btn-replay" class="btn" title="Replay same seed">↺ Replay</button>
+          <button id="btn-save" class="btn" title="Save this seed to your local list">★ Save</button>
         </div>
         <div class="slider-row" style="margin-top:10px;">
           <span class="brand-sub">Speed</span>
@@ -41,7 +47,13 @@
           <label><input id="toggle-grid" type="checkbox" checked />Grid</label>
           <label><input id="toggle-territory" type="checkbox" checked />Territory shading</label>
           <label><input id="toggle-glow" type="checkbox" checked />Army glow</label>
-          <label><input id="toggle-moves" type="checkbox" checked />Movement trails</label>
+          <label><input id="toggle-moves" type="checkbox" checked />Movement</label>
+          <label class="toggle-sub">Style
+            <select id="move-style" class="dropdown-mini">
+              <option value="circle">Circle</option>
+              <option value="line">Line</option>
+            </select>
+          </label>
           <label><input id="toggle-overlay" type="checkbox" />Strategy overlay</label>
         </div>
       </div>

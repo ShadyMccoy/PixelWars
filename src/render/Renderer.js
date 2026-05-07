@@ -12,15 +12,37 @@ export class Renderer {
     this.showGlow = true;
     this.showMoves = true;
     this.showOverlay = false;
+    // "circle" | "line": visual used to depict an in-flight move.
+    this.moveStyle = "circle";
     this.hoverTile = null;
     this.selectedTile = null;
+    // Viewport: zoom = 1 fits the map exactly to the canvas; panX/panY
+    // are in tile units (fractional) and on wrap maps are normalized
+    // into [0, map.width) × [0, map.height). The draw path applies
+    // these as a context transform and tile-replicates wrap maps so
+    // scrolling past the seam reveals the next copy.
+    this.zoom = 1;
+    this.panX = 0;
+    this.panY = 0;
+    // zoom=1 already fits the map exactly; zooming out further would
+    // either reveal empty space (non-wrap) or duplicate the world via
+    // tile-replication (wrap), neither of which adds information.
+    this.minZoom = 1;
+    this.maxZoom = 16;
     this.resize();
     window.addEventListener("resize", () => this.resize());
   }
 
   setGame(game) {
     this.game = game;
+    this.resetView();
     this.resize();
+  }
+
+  resetView() {
+    this.zoom = 1;
+    this.panX = 0;
+    this.panY = 0;
   }
 
   resize() {
@@ -42,28 +64,124 @@ export class Renderer {
     this.canvas.width = Math.floor(this.cssWidth * this.dpr);
     this.canvas.height = Math.floor(this.cssHeight * this.dpr);
     this.tileSize = (this.cssWidth / map.width) * this.dpr;
+    this._clampPan();
   }
 
   pixelToTile(px, py) {
     const rect = this.canvas.getBoundingClientRect();
-    const x = Math.floor(((px - rect.left) / rect.width) * this.game.map.width);
-    const y = Math.floor(((py - rect.top) / rect.height) * this.game.map.height);
-    return this.game.map.getTile(x, y);
+    if (rect.width === 0 || rect.height === 0) return null;
+    const ix = ((px - rect.left) / rect.width) * this.canvas.width;
+    const iy = ((py - rect.top) / rect.height) * this.canvas.height;
+    const ts = this.tileSize;
+    const tx = Math.floor((ix / this.zoom) / ts + this.panX);
+    const ty = Math.floor((iy / this.zoom) / ts + this.panY);
+    return this.game.map.getTile(tx, ty);
+  }
+
+  // Zoom toward the cursor: the world point under (cssX, cssY) stays
+  // fixed across the zoom step. Without this anchoring, wheel-zoom
+  // drifts the focus and forces users to pan back after every scroll.
+  zoomAt(cssX, cssY, factor) {
+    const newZoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.zoom * factor));
+    if (newZoom === this.zoom) return;
+    const rect = this.canvas.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+    const ix = ((cssX - rect.left) / rect.width) * this.canvas.width;
+    const iy = ((cssY - rect.top) / rect.height) * this.canvas.height;
+    const ts = this.tileSize;
+    const cursorTileX = ix / (this.zoom * ts) + this.panX;
+    const cursorTileY = iy / (this.zoom * ts) + this.panY;
+    this.zoom = newZoom;
+    this.panX = cursorTileX - ix / (this.zoom * ts);
+    this.panY = cursorTileY - iy / (this.zoom * ts);
+    this._clampPan();
+  }
+
+  // Pan by a CSS-pixel delta (e.g., from a drag). Converts to tile
+  // units via the current zoom so a 100px drag at zoom=2 moves half as
+  // far across the map as the same drag at zoom=1.
+  panByPixels(dx, dy) {
+    if (this.cssWidth === 0 || this.cssHeight === 0) return;
+    const map = this.game.map;
+    const dxTiles = (dx / this.cssWidth) * (map.width / this.zoom);
+    const dyTiles = (dy / this.cssHeight) * (map.height / this.zoom);
+    this.panX -= dxTiles;
+    this.panY -= dyTiles;
+    this._clampPan();
+  }
+
+  _clampPan() {
+    const map = this.game.map;
+    if (map.wrap) {
+      // Globe-style wrap: normalize into one canonical period so float
+      // accumulation can't drift unboundedly across long sessions.
+      this.panX = ((this.panX % map.width) + map.width) % map.width;
+      this.panY = ((this.panY % map.height) + map.height) % map.height;
+    } else {
+      const visTilesX = map.width / this.zoom;
+      const visTilesY = map.height / this.zoom;
+      this.panX = Math.max(0, Math.min(map.width - visTilesX, this.panX));
+      this.panY = Math.max(0, Math.min(map.height - visTilesY, this.panY));
+    }
   }
 
   draw(now) {
     const ctx = this.ctx;
-    const game = this.game;
+    const map = this.game.map;
     const ts = this.tileSize;
+    const z = this.zoom;
 
     ctx.fillStyle = "#06080d";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    const mapPxW = map.width * ts;
+    const mapPxH = map.height * ts;
+    const visW = this.canvas.width / z;
+    const visH = this.canvas.height / z;
+
+    ctx.save();
+    ctx.scale(z, z);
+
+    if (map.wrap) {
+      // panX/panY were normalized into [0, map) by _clampPan, so the
+      // first copy starts at a non-positive offset and we tile forward
+      // until the visible region is covered. For a fit view (zoom=1,
+      // panX=0) this collapses to a single copy.
+      const startX = -this.panX * ts;
+      const startY = -this.panY * ts;
+      const copiesX = Math.max(1, Math.ceil((visW - startX) / mapPxW));
+      const copiesY = Math.max(1, Math.ceil((visH - startY) / mapPxH));
+      for (let cy = 0; cy < copiesY; cy++) {
+        for (let cx = 0; cx < copiesX; cx++) {
+          ctx.save();
+          ctx.translate(startX + cx * mapPxW, startY + cy * mapPxH);
+          this._drawWorld(now);
+          ctx.restore();
+        }
+      }
+    } else {
+      ctx.translate(-this.panX * ts, -this.panY * ts);
+      this._drawWorld(now);
+    }
+
+    ctx.restore();
+  }
+
+  _drawWorld(now) {
+    const ctx = this.ctx;
+    const game = this.game;
+    const ts = this.tileSize;
+    const z = this.zoom;
 
     if (this.showTerritory) this.drawTerritory();
 
     if (this.showGrid && game.map.width <= 80) {
       ctx.strokeStyle = "rgba(255,255,255,0.04)";
-      ctx.lineWidth = 1;
+      // Compensate for the active scale so the grid stays a hairline
+      // regardless of zoom — at zoom=4 a literal 1-unit line would be
+      // 4 device pixels wide and the territory tint would disappear
+      // behind it.
+      ctx.lineWidth = 1 / z;
       ctx.beginPath();
       for (let x = 0; x <= game.map.width; x++) {
         ctx.moveTo(x * ts, 0);
@@ -82,8 +200,8 @@ export class Renderer {
 
     if (this.showOverlay) this.drawStrategyOverlay();
 
-    if (this.hoverTile) this.outlineTile(this.hoverTile, "rgba(255,255,255,0.35)", 2);
-    if (this.selectedTile) this.outlineTile(this.selectedTile, "#ffffff", 3);
+    if (this.hoverTile) this.outlineTile(this.hoverTile, "rgba(255,255,255,0.35)", 2 / z);
+    if (this.selectedTile) this.outlineTile(this.selectedTile, "#ffffff", 3 / z);
   }
 
   drawTerritory() {
@@ -91,7 +209,7 @@ export class Renderer {
     const ts = this.tileSize;
     for (const tile of this.game.map.tiles) {
       const owner = tile.ownerArmy();
-      if (!owner) continue;
+      if (!owner || !owner.player) continue;
       const alpha = 0.10 + 0.20 * (owner.strength / owner.maxStrength);
       ctx.fillStyle = hexToRgba(owner.player.color, alpha);
       ctx.fillRect(tile.pos.x * ts, tile.pos.y * ts, ts, ts);
@@ -106,40 +224,49 @@ export class Renderer {
     if (!moves || moves.length === 0) return;
     const fade = game.moveFadeTicks || 8;
     const tick = game.tick;
-    const lineWidth = Math.max(1, ts * 0.09);
-    const headLen = ts * 0.22;
+    // Same shape exponent as drawArmies so the size of the moving shape
+    // visually matches the size of the army that produced the move.
+    const refStrength = game.maxArmy || 6;
+    const minSize = 0.10;
+    const maxSize = 0.42;
+    const exponent = 0.7;
+    const denom = Math.max(1, fade - 1);
     ctx.lineCap = "round";
     for (let i = 0; i < moves.length; i++) {
       const m = moves[i];
       const age = tick - m.tick;
       if (age >= fade || age < 0) continue;
-      const alpha = (1 - age / fade) * 0.6;
-      const sx = (m.x + 0.5) * ts;
-      const sy = (m.y + 0.5) * ts;
-      const tx = (m.x + 0.5 + m.dx) * ts;
-      const ty = (m.y + 0.5 + m.dy) * ts;
-      // Comet-style taper: transparent at the origin, full accent at the
-      // destination. The gradient itself encodes direction, so a westbound
-      // and an eastbound move are never mirror images of each other.
-      const grad = ctx.createLinearGradient(sx, sy, tx, ty);
-      grad.addColorStop(0, hexToRgba(m.accent, 0));
-      grad.addColorStop(0.6, hexToRgba(m.accent, alpha * 0.5));
-      grad.addColorStop(1, hexToRgba(m.accent, alpha));
-      ctx.strokeStyle = grad;
-      ctx.fillStyle = hexToRgba(m.accent, alpha);
-      ctx.lineWidth = lineWidth;
-      ctx.beginPath();
-      ctx.moveTo(sx, sy);
-      ctx.lineTo(tx, ty);
-      ctx.stroke();
-      const ang = Math.atan2(ty - sy, tx - sx);
-      const back = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(tx, ty);
-      ctx.lineTo(tx + Math.cos(ang + back) * headLen, ty + Math.sin(ang + back) * headLen);
-      ctx.lineTo(tx + Math.cos(ang - back) * headLen, ty + Math.sin(ang - back) * headLen);
-      ctx.closePath();
-      ctx.fill();
+      const t = Math.min(1, age / denom);
+      const alpha = Math.max(0, 1 - age / fade) * 0.85;
+      const cx = (m.x + 0.5 + m.dx * t) * ts;
+      const cy = (m.y + 0.5 + m.dy * t) * ts;
+      const ratio = Math.max(0, Math.min(1, m.power / refStrength));
+      const size = ts * (minSize + (maxSize - minSize) * Math.pow(ratio, exponent));
+
+      if (this.moveStyle === "line") {
+        // Bar oriented perpendicular to the path, sliding from source
+        // to destination. Half-length scales with the move's strength.
+        const len = Math.hypot(m.dx, m.dy) || 1;
+        const nx = -m.dy / len;
+        const ny = m.dx / len;
+        const half = size * 1.15;
+        ctx.strokeStyle = hexToRgba(m.accent, alpha);
+        ctx.lineWidth = Math.max(2, ts * 0.12);
+        ctx.beginPath();
+        ctx.moveTo(cx - nx * half, cy - ny * half);
+        ctx.lineTo(cx + nx * half, cy + ny * half);
+        ctx.stroke();
+      } else {
+        // Filled circle in the player's color with an accent ring;
+        // radius scales with the move's strength.
+        ctx.fillStyle = hexToRgba(m.color, alpha);
+        ctx.beginPath();
+        ctx.arc(cx, cy, size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = hexToRgba(m.accent, alpha);
+        ctx.lineWidth = Math.max(1, ts * 0.05);
+        ctx.stroke();
+      }
     }
   }
 
@@ -155,6 +282,7 @@ export class Renderer {
     const exponent = 0.7;
     for (const army of this.game.armies) {
       if (!army.alive) continue;
+      if (!army.player) continue;
       if (!army.bornAt) army.bornAt = now;
       const ratio = Math.max(0, Math.min(1, army.strength / army.maxStrength));
       const radiusFactor = minRadius + (maxRadius - minRadius) * Math.pow(ratio, exponent);

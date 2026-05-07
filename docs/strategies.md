@@ -2,6 +2,24 @@
 
 A strategy is a tiny ES module that decides what one army does on each tick.
 
+## Two ways to run a bot
+
+- **Try a bot in the browser** — fastest path. Click "⚙ Try a bot" in the
+  header, paste a module, name it, hit *Use in match*. The bot is seated
+  in slot 0 of the next match and runs in your browser only. Lives for
+  this session, gone on refresh. See
+  [Pasting a bot in the browser](#pasting-a-bot-in-the-browser) below
+  for the constraints (self-contained module, no `import` statements,
+  same `act(army, game)` contract).
+- **Commit a bot to the repo** — for bots that should live in
+  rankings, replays, and the tournament runner. Drop a file in
+  `src/strategies/`, register it in `index.js`. See
+  [File layout](#file-layout) below.
+
+Both paths use the same `act(army, game)` contract; the only differences
+are persistence, the import surface, and how the engine resolves the
+module.
+
 ## File layout
 
 Drop a new file in `src/strategies/` named after your bot, e.g.
@@ -107,6 +125,74 @@ work, but they cannot be replayed.
 `src/strategies/helpers.js` exports `balanceAttack(army, tile)` —
 sends just enough force to either reinforce a friendly tile to parity or
 overpower an enemy with margin 1. Reuse it or roll your own.
+
+## Pasting a bot in the browser
+
+The "⚙ Try a bot" modal accepts an ES module that default-exports the
+same `{ name, act, ... }` shape described above. The module is loaded
+via `URL.createObjectURL` + dynamic `import()`, validated on the main
+thread, then re-imported inside the engine Web Worker so the actual
+simulation runs your code.
+
+### Constraints
+
+- **Self-contained.** No `import` statements: a Blob URL has no
+  resolution context, so `import "../core/Army.js"` (or anything
+  relative) will throw on load. Inline any helpers you need.
+- **`export default` is required.** A bare object literal won't work;
+  the loader reads `module.default`.
+- **Same `act(army, game)` contract** as committed bots. `army.tile`,
+  `army.tile.neighbors[0..3]` (W, E, N, S), `army.attack(tile, power)`,
+  `army.attackPower`, `army.player.id`, `game.rng()`, `game.tick`,
+  `tile.armies` — all available exactly the same way.
+- **Session-only.** The bot lives in memory for this tab. Refresh and
+  it's gone; there is no `localStorage` step. Reset and seed
+  controls preserve the seated bot inside the session.
+- **The bot's `name` field is overridden** by what you type into the
+  modal's name input, so you can paste any module without renaming it.
+
+### Minimum viable bot
+
+```js
+export default {
+  name: "Drift",
+  description: "Pushes east when it can.",
+  act(army, game) {
+    const east = army.tile?.neighbors[1]; // W=0 E=1 N=2 S=3
+    if (east) army.attack(east, army.attackPower * 0.6);
+  },
+};
+```
+
+### Things you can read
+
+| Field                              | Meaning |
+|------------------------------------|---------|
+| `army.tile`                        | The tile this army is on (or `null` mid-move). |
+| `army.tile.neighbors[0..3]`        | Adjacent tile or `null` (W, E, N, S). |
+| `army.tile.armies`                 | Armies on this tile, including yours. |
+| `army.strength` / `army.maxStrength` | Current and capped strength. |
+| `army.attackPower`                 | Max strength you can commit this tick. |
+| `army.player.id`                   | Compare with `other.player.id` to identify enemies. |
+| `tile.armies[k].player.id`         | Same idea, for armies you can see. |
+| `game.rng()`                       | Deterministic float in `[0, 1)`. Use this, not `Math.random()`. |
+| `game.tick`                        | Current tick. |
+
+### The only action
+
+```js
+army.attack(tile, power);
+```
+
+`tile` must be adjacent. `power > 0.5`. The army keeps `strength - power`
+behind. Conflict resolution happens automatically at end-of-tick.
+
+### Want to share it?
+
+Right now there's no in-browser submission flow — the persistence path
+is "drop the file in `src/strategies/` and open a PR." See
+`docs/bot-uploads-roadmap.md` for the planned hardened upload pipeline
+(iframe sandbox + CI gates) before any cross-visitor sharing turns on.
 
 ## Style guide
 

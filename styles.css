@@ -79,6 +79,23 @@ header.app-header {
   color: var(--text-dim);
 }
 
+.seed-pill {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  background: var(--bg-3);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  border: 1px solid var(--line);
+  transition: border-color 0.12s, color 0.12s;
+}
+
+.seed-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 aside.sidebar {
   grid-area: sidebar;
   background: var(--bg-1);
@@ -106,9 +123,13 @@ main.stage {
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.06),
     0 0 80px rgba(110, 231, 255, 0.08);
-  cursor: crosshair;
+  cursor: grab;
   background: #06080d;
   image-rendering: pixelated;
+}
+
+#game-canvas:active {
+  cursor: grabbing;
 }
 
 .stage-overlay {
@@ -245,6 +266,22 @@ select.dropdown {
 
 .toggles input[type="checkbox"] {
   accent-color: var(--accent);
+}
+
+.toggles .toggle-sub {
+  margin-left: 22px;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.dropdown-mini {
+  background: var(--bg-3);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 #mode-description {
@@ -530,6 +567,16 @@ select.dropdown {
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
+.log-entry.log-replay {
+  cursor: pointer;
+  color: var(--text);
+  transition: color 0.12s;
+}
+
+.log-entry.log-replay:hover {
+  color: var(--accent);
+}
+
 .hud-empty {
   color: var(--text-dim);
   font-style: italic;
@@ -552,6 +599,183 @@ select.dropdown {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.strat-tooltip-code {
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+}
+
+.code-modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+}
+
+.code-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 6, 12, 0.7);
+  backdrop-filter: blur(2px);
+}
+
+.code-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(880px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.code-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 6px;
+  gap: 12px;
+}
+
+.code-modal-title {
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.code-modal-close {
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.code-modal-close:hover {
+  color: var(--text);
+}
+
+.code-modal-docs {
+  margin-left: auto;
+  font-size: 11px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: var(--text-dim);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 3px 8px;
+  letter-spacing: 0.5px;
+}
+
+.code-modal-docs:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.code-modal-subtitle {
+  padding: 0 18px 8px;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.code-modal-form {
+  padding: 0 18px 8px;
+}
+
+.code-modal-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.code-modal-name {
+  flex: 1;
+  background: var(--bg-3);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+}
+
+.code-modal-code {
+  flex: 1;
+  margin: 0 18px;
+  background: #06090f;
+  color: #c8d1e0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  resize: vertical;
+  min-height: 320px;
+  white-space: pre;
+  outline: none;
+}
+
+.code-modal-code.readonly {
+  cursor: text;
+  color: #d6dee9;
+}
+
+.code-modal-error {
+  padding: 6px 18px 0;
+  color: var(--danger);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  min-height: 14px;
+  white-space: pre-wrap;
+}
+
+.code-modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px 14px;
+  gap: 10px;
+}
+
+.code-modal-foot-left,
+.code-modal-foot-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.code-modal-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.code-modal-upload input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+#btn-try-bot {
+  font-size: 12px;
+  padding: 6px 10px;
 }
 
 .match-picker-head {
@@ -621,6 +845,32 @@ select.dropdown {
 .match-flag[data-tag="close-finish"] { color: #6ee7ff; border-color: rgba(110, 231, 255, 0.4); }
 .match-flag[data-tag="runaway"] { color: #ff4d6d; border-color: rgba(255, 77, 109, 0.4); }
 .match-flag[data-tag="mutual-destruction"] { color: #f97aff; border-color: rgba(249, 122, 255, 0.4); }
+.match-flag[data-tag="saved"] { color: #ffe066; border-color: rgba(255, 224, 102, 0.4); }
+
+.match-row.local {
+  border-left: 2px solid #ffe066;
+}
+
+.match-row.local .match-id {
+  color: #ffe066;
+}
+
+.match-delete {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  border-radius: 3px;
+  padding: 0 5px;
+  font-size: 10px;
+  cursor: pointer;
+  margin-left: 4px;
+  line-height: 1.4;
+}
+
+.match-delete:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
 
 .match-lineup {
   font-size: 10px;
