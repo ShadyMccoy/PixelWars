@@ -144,7 +144,22 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
   // Parent's character tech (if any). Without this in the prompt, the
   // spawn agent has no way to know that tech is a tunable axis - it
   // defaults to inheriting the parent's allocation via spread.
-  const parentTech = CHARACTER_TECHS[parentName] ?? { ...NEUTRAL_TECH };
+  // Resolution: prefer .tech on the loaded strategy default-export
+  // (covers descendants and most hand-authored bots), then the
+  // CHARACTER_TECHS map (covers factory bots and a few hand-authored
+  // ones like Settler), then neutral. Reading from CHARACTER_TECHS
+  // first was wrong: descendants aren't in that map, so the prompt
+  // claimed every Conqueror_gN parent ran neutral 20/20/20/20/20 even
+  // when its source file said move:90. The agents reconciled by
+  // reading tech off the source code, but the dedicated section was
+  // silently misleading and probably suppressed tech exploration.
+  let parentTech;
+  try {
+    const loaded = getStrategy(parentName);
+    parentTech = loaded?.tech ?? CHARACTER_TECHS[parentName] ?? { ...NEUTRAL_TECH };
+  } catch {
+    parentTech = CHARACTER_TECHS[parentName] ?? { ...NEUTRAL_TECH };
+  }
 
   const prompt = buildPrompt({
     parentName,

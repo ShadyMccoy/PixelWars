@@ -43,6 +43,7 @@ import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
 import { CHARACTER_TECHS } from "./characterTechs.js";
+import { NEUTRAL_TECH } from "../core/Tech.js";
 
 // Every bot ever defined. Order matters — it's the canonical listing for
 // `--list` and (after filtering) the default tournament pool.
@@ -92,14 +93,16 @@ export const ALL_STRATEGY_LIST = [
   ...DESCENDANTS,
 ];
 
-// Attach character techs in place. Strategies are plain objects with
-// `name` already; we add a default `tech` field so tournament code
-// can pick it up without touching each strategy file. Entries that
-// pass an explicit tech via {strategy, tech, ...} still override.
+// Attach character techs in place so every loaded strategy carries an
+// explicit .tech, even bots that would otherwise default to neutral.
+// Resolution: bot's own `tech` field (set in the strategy file) wins;
+// then CHARACTER_TECHS map; then neutral. Backfilling neutral here
+// (rather than letting arena.js's normalizeEntry fall back implicitly)
+// means tooling like the spawn agent's prompt always sees the correct
+// tech without a special case for "tech unset = neutral".
 for (const s of ALL_STRATEGY_LIST) {
-  if (CHARACTER_TECHS[s.name] && !s.tech) {
-    s.tech = CHARACTER_TECHS[s.name];
-  }
+  if (s.tech) continue;
+  s.tech = CHARACTER_TECHS[s.name] ?? { ...NEUTRAL_TECH };
 }
 
 const ARCHIVED_SET = new Set(ARCHIVED);
