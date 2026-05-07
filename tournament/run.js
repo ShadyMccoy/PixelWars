@@ -35,6 +35,7 @@ import {
   ensureFoundersForNames,
   familiesByName,
   getLineageStorePath,
+  markArchived,
 } from "./lineageStore.js";
 import { prepareSpawnTask, registerDescendant } from "./spawn.js";
 import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
@@ -83,6 +84,8 @@ Single-match / replay:
 Archive (exclude weak bots from default tournament pool):
   --archive-bottom N  Archive every bot in the bottom N tiers across all
                       saved leagues (or just --map NAME's league)
+  --trim-to N         Archive the globally weakest active bots until the
+                      active pool size equals N (uses rankings.json)
   --archive-add A,B   Add specific bots to the archive
   --archive-remove A  Remove specific bots from the archive
   --archive-clear     Clear the archive (everyone competes again)
@@ -138,6 +141,7 @@ function parseArgs(argv) {
     seasons: 3,
     matchesPerSeason: 20,
     archiveBottom: null,
+    trimTo: null,
     archiveAdd: null,
     archiveRemove: null,
     archiveClear: false,
@@ -194,6 +198,7 @@ function parseArgs(argv) {
       case "--file": opts.descendantFile = next(); break;
       case "--birth-season": opts.descendantSeason = parseInt(next(), 10); break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
+      case "--trim-to": opts.trimTo = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-remove": opts.archiveRemove = next().split(",").map((s) => s.trim()).filter(Boolean); break;
       case "--archive-clear": opts.archiveClear = true; break;
@@ -468,6 +473,64 @@ async function cmdArchiveBottom(opts) {
   console.log(`Archived ${final.length} bots from the bottom ${N} tier${N === 1 ? "" : "s"} of each league:`);
   for (const b of breakdown) console.log(`  ${b.map.padEnd(8)} contributed ${b.count} bots`);
   console.log(`\nActive pool now: ${ALL_STRATEGY_LIST.length - final.length} bots`);
+  console.log(`(re-import the strategies module — i.e. re-run anything else — to pick up the change)`);
+}
+
+// Trim the active pool to a fixed size N by archiving the globally
+// weakest active bots according to rankings.json. Idempotent: running
+// again at size N does nothing. Pairs with applyArchivalForSpawn's
+// 1-in-1-out so the cap holds across descendant registrations.
+//
+// Bots without a rating record default to 1500 (matches spawn.js's
+// ASSUMED_RATING) so unrated newcomers aren't preferred archive
+// candidates. No family-suicide guard — follows the --archive-bottom
+// convention of trusting the data; hand-edit if you want exceptions.
+async function cmdTrimTo(opts) {
+  const N = opts.trimTo;
+  if (!Number.isFinite(N) || N <= 0) {
+    console.error(`--trim-to needs a positive integer; got ${opts.trimTo}`);
+    process.exit(1);
+  }
+
+  const rankings = await loadRankings();
+  if (!rankings) {
+    console.error(`No rankings.json. Run a season or rating tournament first.`);
+    process.exit(1);
+  }
+  const ratings = ratingMap(rankings, 1500);
+
+  const active = STRATEGY_LIST.map((s) => s.name);
+  if (active.length <= N) {
+    console.log(`Active pool already at ${active.length} ≤ ${N}. Nothing to archive.`);
+    return;
+  }
+
+  const sorted = active.slice().sort(
+    (a, b) => ratings.get(a) - ratings.get(b) || a.localeCompare(b),
+  );
+  const chosen = sorted.slice(0, active.length - N);
+
+  const lineages = await loadLineages();
+  const lineageNames = new Set(lineages.map((b) => b.name));
+  for (const name of chosen) {
+    if (lineageNames.has(name)) await markArchived(name);
+  }
+
+  // Mirror applyArchivalForSpawn: union existing archive (preserves
+  // factory bots without lineage records) with all !active lineages
+  // and the freshly chosen names.
+  const existing = currentArchive();
+  const post = await loadLineages();
+  const fromLineage = post.filter((b) => !b.active).map((b) => b.name);
+  const merged = [...new Set([...existing, ...chosen, ...fromLineage])];
+  const final = await writeArchive(merged);
+
+  console.log(`Trimmed to ${N}: archived ${chosen.length} weakest bots:`);
+  for (const name of chosen) {
+    const tag = ratings.has(name) ? String(ratings.get(name)) : "  -- ";
+    console.log(`  ${tag.padStart(5)}  ${name}`);
+  }
+  console.log(`\nArchive size: ${final.length}. Active pool now: ${ALL_STRATEGY_LIST.length - final.length} bots`);
   console.log(`(re-import the strategies module — i.e. re-run anything else — to pick up the change)`);
 }
 
@@ -945,6 +1008,7 @@ async function main() {
   if (opts.archiveAdd) return cmdArchiveAdd(opts);
   if (opts.archiveRemove) return cmdArchiveRemove(opts);
   if (opts.archiveBottom != null) return cmdArchiveBottom(opts);
+  if (opts.trimTo != null) return cmdTrimTo(opts);
   if (opts.listLineages) return cmdListLineages();
   if (opts.backfillLineages) return cmdBackfillLineages();
   if (opts.prepareSpawn) return cmdPrepareSpawn(opts);
