@@ -14,13 +14,33 @@ export class Renderer {
     this.showOverlay = false;
     this.hoverTile = null;
     this.selectedTile = null;
+    // Viewport: zoom = 1 fits the map exactly to the canvas; panX/panY
+    // are in tile units (fractional) and on wrap maps are normalized
+    // into [0, map.width) × [0, map.height). The draw path applies
+    // these as a context transform and tile-replicates wrap maps so
+    // scrolling past the seam reveals the next copy.
+    this.zoom = 1;
+    this.panX = 0;
+    this.panY = 0;
+    // zoom=1 already fits the map exactly; zooming out further would
+    // either reveal empty space (non-wrap) or duplicate the world via
+    // tile-replication (wrap), neither of which adds information.
+    this.minZoom = 1;
+    this.maxZoom = 16;
     this.resize();
     window.addEventListener("resize", () => this.resize());
   }
 
   setGame(game) {
     this.game = game;
+    this.resetView();
     this.resize();
+  }
+
+  resetView() {
+    this.zoom = 1;
+    this.panX = 0;
+    this.panY = 0;
   }
 
   resize() {
@@ -42,28 +62,124 @@ export class Renderer {
     this.canvas.width = Math.floor(this.cssWidth * this.dpr);
     this.canvas.height = Math.floor(this.cssHeight * this.dpr);
     this.tileSize = (this.cssWidth / map.width) * this.dpr;
+    this._clampPan();
   }
 
   pixelToTile(px, py) {
     const rect = this.canvas.getBoundingClientRect();
-    const x = Math.floor(((px - rect.left) / rect.width) * this.game.map.width);
-    const y = Math.floor(((py - rect.top) / rect.height) * this.game.map.height);
-    return this.game.map.getTile(x, y);
+    if (rect.width === 0 || rect.height === 0) return null;
+    const ix = ((px - rect.left) / rect.width) * this.canvas.width;
+    const iy = ((py - rect.top) / rect.height) * this.canvas.height;
+    const ts = this.tileSize;
+    const tx = Math.floor((ix / this.zoom) / ts + this.panX);
+    const ty = Math.floor((iy / this.zoom) / ts + this.panY);
+    return this.game.map.getTile(tx, ty);
+  }
+
+  // Zoom toward the cursor: the world point under (cssX, cssY) stays
+  // fixed across the zoom step. Without this anchoring, wheel-zoom
+  // drifts the focus and forces users to pan back after every scroll.
+  zoomAt(cssX, cssY, factor) {
+    const newZoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.zoom * factor));
+    if (newZoom === this.zoom) return;
+    const rect = this.canvas.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+    const ix = ((cssX - rect.left) / rect.width) * this.canvas.width;
+    const iy = ((cssY - rect.top) / rect.height) * this.canvas.height;
+    const ts = this.tileSize;
+    const cursorTileX = ix / (this.zoom * ts) + this.panX;
+    const cursorTileY = iy / (this.zoom * ts) + this.panY;
+    this.zoom = newZoom;
+    this.panX = cursorTileX - ix / (this.zoom * ts);
+    this.panY = cursorTileY - iy / (this.zoom * ts);
+    this._clampPan();
+  }
+
+  // Pan by a CSS-pixel delta (e.g., from a drag). Converts to tile
+  // units via the current zoom so a 100px drag at zoom=2 moves half as
+  // far across the map as the same drag at zoom=1.
+  panByPixels(dx, dy) {
+    if (this.cssWidth === 0 || this.cssHeight === 0) return;
+    const map = this.game.map;
+    const dxTiles = (dx / this.cssWidth) * (map.width / this.zoom);
+    const dyTiles = (dy / this.cssHeight) * (map.height / this.zoom);
+    this.panX -= dxTiles;
+    this.panY -= dyTiles;
+    this._clampPan();
+  }
+
+  _clampPan() {
+    const map = this.game.map;
+    if (map.wrap) {
+      // Globe-style wrap: normalize into one canonical period so float
+      // accumulation can't drift unboundedly across long sessions.
+      this.panX = ((this.panX % map.width) + map.width) % map.width;
+      this.panY = ((this.panY % map.height) + map.height) % map.height;
+    } else {
+      const visTilesX = map.width / this.zoom;
+      const visTilesY = map.height / this.zoom;
+      this.panX = Math.max(0, Math.min(map.width - visTilesX, this.panX));
+      this.panY = Math.max(0, Math.min(map.height - visTilesY, this.panY));
+    }
   }
 
   draw(now) {
     const ctx = this.ctx;
-    const game = this.game;
+    const map = this.game.map;
     const ts = this.tileSize;
+    const z = this.zoom;
 
     ctx.fillStyle = "#06080d";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    const mapPxW = map.width * ts;
+    const mapPxH = map.height * ts;
+    const visW = this.canvas.width / z;
+    const visH = this.canvas.height / z;
+
+    ctx.save();
+    ctx.scale(z, z);
+
+    if (map.wrap) {
+      // panX/panY were normalized into [0, map) by _clampPan, so the
+      // first copy starts at a non-positive offset and we tile forward
+      // until the visible region is covered. For a fit view (zoom=1,
+      // panX=0) this collapses to a single copy.
+      const startX = -this.panX * ts;
+      const startY = -this.panY * ts;
+      const copiesX = Math.max(1, Math.ceil((visW - startX) / mapPxW));
+      const copiesY = Math.max(1, Math.ceil((visH - startY) / mapPxH));
+      for (let cy = 0; cy < copiesY; cy++) {
+        for (let cx = 0; cx < copiesX; cx++) {
+          ctx.save();
+          ctx.translate(startX + cx * mapPxW, startY + cy * mapPxH);
+          this._drawWorld(now);
+          ctx.restore();
+        }
+      }
+    } else {
+      ctx.translate(-this.panX * ts, -this.panY * ts);
+      this._drawWorld(now);
+    }
+
+    ctx.restore();
+  }
+
+  _drawWorld(now) {
+    const ctx = this.ctx;
+    const game = this.game;
+    const ts = this.tileSize;
+    const z = this.zoom;
 
     if (this.showTerritory) this.drawTerritory();
 
     if (this.showGrid && game.map.width <= 80) {
       ctx.strokeStyle = "rgba(255,255,255,0.04)";
-      ctx.lineWidth = 1;
+      // Compensate for the active scale so the grid stays a hairline
+      // regardless of zoom — at zoom=4 a literal 1-unit line would be
+      // 4 device pixels wide and the territory tint would disappear
+      // behind it.
+      ctx.lineWidth = 1 / z;
       ctx.beginPath();
       for (let x = 0; x <= game.map.width; x++) {
         ctx.moveTo(x * ts, 0);
@@ -82,8 +198,8 @@ export class Renderer {
 
     if (this.showOverlay) this.drawStrategyOverlay();
 
-    if (this.hoverTile) this.outlineTile(this.hoverTile, "rgba(255,255,255,0.35)", 2);
-    if (this.selectedTile) this.outlineTile(this.selectedTile, "#ffffff", 3);
+    if (this.hoverTile) this.outlineTile(this.hoverTile, "rgba(255,255,255,0.35)", 2 / z);
+    if (this.selectedTile) this.outlineTile(this.selectedTile, "#ffffff", 3 / z);
   }
 
   drawTerritory() {

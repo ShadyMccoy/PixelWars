@@ -66,6 +66,9 @@ export class Controls {
         this.app.saveCurrentMatch();
       } else if (e.key === ".") {
         this.app.stepOnce();
+      } else if (e.key === "0") {
+        this.app.renderer.resetView();
+        this.app.markDirty();
       }
     });
   }

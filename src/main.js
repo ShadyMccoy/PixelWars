@@ -131,6 +131,7 @@ class App {
       lineupTech: entry.lineupTech ?? null,
       startPositions: entry.startPositions,
     });
+    this.renderer.resetView();
     this.renderer.resize();
     this.chart.resize();
     this.territoryChart.resize();
@@ -224,6 +225,7 @@ class App {
       startPositions: positions,
       seed: useSeed,
     });
+    this.renderer.resetView();
     this.renderer.resize();
     this.chart.resize();
     this.territoryChart.resize();
@@ -307,6 +309,56 @@ class App {
   bindCanvas() {
     if (this._canvasBound) return;
     this._canvasBound = true;
+
+    // Drag state lives on `this` so the global mouseup/mousemove
+    // listeners (which see drags that finish off-canvas) share it
+    // with the canvas-scoped click handler. A 4-px threshold lets a
+    // shaky click still register as a tile select rather than a pan.
+    const DRAG_THRESHOLD_PX = 4;
+    this._dragging = false;
+    this._dragMoved = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let lastX = 0;
+    let lastY = 0;
+
+    this.canvas.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
+      this._dragging = true;
+      this._dragMoved = false;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      this.canvas.style.cursor = "grabbing";
+      e.preventDefault();
+    });
+
+    // Pan listener attaches to window so a drag that escapes the
+    // canvas keeps tracking until release.
+    window.addEventListener("mousemove", (e) => {
+      if (!this._dragging) return;
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      const totalDx = Math.abs(e.clientX - dragStartX);
+      const totalDy = Math.abs(e.clientY - dragStartY);
+      if (!this._dragMoved && totalDx + totalDy > DRAG_THRESHOLD_PX) {
+        this._dragMoved = true;
+      }
+      if (this._dragMoved) {
+        this.renderer.panByPixels(dx, dy);
+        this.markDirty();
+      }
+    });
+
+    window.addEventListener("mouseup", (e) => {
+      if (!this._dragging) return;
+      this._dragging = false;
+      this.canvas.style.cursor = "";
+    });
+
     this.canvas.addEventListener("mousemove", (e) => {
       this.renderer.hoverTile = this.renderer.pixelToTile(e.clientX, e.clientY);
       this.updateTileTooltip(e.clientX, e.clientY);
@@ -318,11 +370,27 @@ class App {
       this.markDirty();
     });
     this.canvas.addEventListener("click", (e) => {
+      // A drag that crossed the threshold ate this click — selecting
+      // a tile at drag-release would be jarring on a long pan.
+      if (this._dragMoved) {
+        this._dragMoved = false;
+        return;
+      }
       const tile = this.renderer.pixelToTile(e.clientX, e.clientY);
       if (!tile) return;
       this.renderer.selectedTile = tile;
       this.markDirty();
     });
+
+    this.canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+      this.renderer.zoomAt(e.clientX, e.clientY, factor);
+      // Hover tile changes after zoom even without a fresh mousemove.
+      this.renderer.hoverTile = this.renderer.pixelToTile(e.clientX, e.clientY);
+      this.updateTileTooltip(e.clientX, e.clientY);
+      this.markDirty();
+    }, { passive: false });
   }
 
   ensureTileTooltip() {
