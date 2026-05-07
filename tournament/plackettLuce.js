@@ -20,11 +20,22 @@
 // an unbounded MLE skill and the iteration never converges. Default is
 // 0.5 — strong enough to bound pathological cases, weak enough to barely
 // move ratings once each bot has tens of real matches.
+//
+// `opts.winBoost` amplifies stage 0 of the PL cascade — the "who won the
+// match" stage — by an extra multiplicative factor. With winBoost=0, all
+// stages contribute equally (vanilla PL); with winBoost=3, stage 0
+// contributes 4x as much evidence as a mid-pack stage. This pulls the
+// rating toward "did you win matches" rather than "where did you finish
+// among the non-winners." Useful when the field contains bots that
+// exploit FFA survivability (pacifists that never engage but reliably
+// finish 3rd-of-6) — vanilla PL credits their consistent mid-pack
+// finishes too generously vs. bots that actually go for the win.
 
 export function fitPlackettLuce(orderings, opts = {}) {
   const tol = opts.tol ?? 1e-7;
   const maxIter = opts.maxIter ?? 2000;
   const prior = opts.prior ?? 0.5;
+  const winBoost = opts.winBoost ?? 0;
   // Optional per-ordering weights (default 1 each). Used by stalemate
   // expansion: a stalemate match emits N synthetic orderings each with
   // weight 1/N, so its total contribution equals one decisive match.
@@ -48,12 +59,15 @@ export function fitPlackettLuce(orderings, opts = {}) {
     matchWeights.push(weightsIn ? (weightsIn[oi] ?? 1) : 1);
   }
 
-  // W[j] = weighted count of appearances in non-last positions.
+  // W[j] = weighted count of appearances in non-last positions. Stage 0
+  // (the winner-determination stage) carries an extra winBoost multiplier
+  // so wins count more than mid-pack finishes.
   const W = new Array(N).fill(0);
   for (let mi = 0; mi < matches.length; mi++) {
     const m = matches[mi];
     const w = matchWeights[mi];
-    for (let i = 0; i < m.length - 1; i++) W[m[i]] += w;
+    if (m.length > 1) W[m[0]] += w * (1 + winBoost);
+    for (let i = 1; i < m.length - 1; i++) W[m[i]] += w;
   }
 
   let s = new Array(N).fill(1);
@@ -74,7 +88,12 @@ export function fitPlackettLuce(orderings, opts = {}) {
         T[i] = sum;
       }
       for (let i = 0; i < K - 1; i++) {
-        const inv = w / T[i];
+        // Stage 0 (winner) gets the same winBoost on the denominator side
+        // as it does on W; otherwise the boosted W just inflates skill
+        // without the matching denominator term, which would bias every
+        // bot up uniformly instead of widening the win/non-win gap.
+        const stageW = i === 0 ? w * (1 + winBoost) : w;
+        const inv = stageW / T[i];
         for (let l = i; l < K; l++) denom[m[l]] += inv;
       }
     }

@@ -18,6 +18,13 @@ import { fileURLToPath } from "node:url";
 const RATING_BASE = 1000;
 const RATING_SCALE = 400;
 
+// Default winBoost: multiplier on the "who won the match" stage of the
+// PL cascade. winBoost=3 means stage 0 contributes 4x as much evidence
+// as any later stage, so a bot that wins matches earns rating much
+// faster than a bot that just finishes 3rd-of-6 reliably. Set to 0 for
+// vanilla PL behavior (every stage equal).
+const DEFAULT_WIN_BOOST = 3;
+
 export function skillToRating(skill) {
   return Math.round(RATING_BASE + RATING_SCALE * Math.log10(skill));
 }
@@ -26,12 +33,13 @@ export function filterCurrentVersion(matches) {
   return matches.filter((m) => m.rulesVersion === RULES_VERSION);
 }
 
-export function buildRankings(matches) {
+export function buildRankings(matches, opts = {}) {
   // Stalemates contribute N synthetic orderings drawn from each survivor's
   // strength+territory share, each weighted 1/N so total evidence equals
   // one decisive match. Decisive matches contribute one ordering, weight 1.
+  const winBoost = opts.winBoost ?? DEFAULT_WIN_BOOST;
   const { orderings, weights } = expandManyToOrderings(matches);
-  const { skill, iterations, converged } = fitPlackettLuce(orderings, { weights });
+  const { skill, iterations, converged } = fitPlackettLuce(orderings, { weights, winBoost });
 
   const stats = new Map();
   for (const name of Object.keys(skill)) {
