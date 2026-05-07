@@ -84,19 +84,26 @@ after the first pass):
 - **k=4 generally outscores k=6** — fewer simultaneous players means
   less FFA noise per match.
 
-## Promoted presets
+## Promoted preset
 
-Three lab-tested presets live in `tournament/maps.js`:
+A single lab-tested preset lives in `tournament/maps.js`:
 
-| preset | size  | growth | k | composite | discrimination | reliability |
-| ------ | ----- | ------ | - | --------- | -------------- | ----------- |
-| `lab1` | 24×18 | 1.8    | 4 | 0.541     | 0.74           | 0.87        |
-| `lab2` | 30×22 | 1.8    | 4 | 0.512     | 0.79           | 0.89        |
-| `lab3` | 38×28 | 1.8    | 4 | 0.401     | 0.73           | 0.90        |
+| preset | size  | growth | maxArmy | k | composite | discrimination | reliability |
+| ------ | ----- | ------ | ------- | - | --------- | -------------- | ----------- |
+| `lab1` | 30×22 | 1.8    | 12      | 5 | 1.01      | 0.84           | 0.56        |
 
-All wrap=true, line topology. `lab1` is the bare-`node tournament/run.js`
-default — league seedings against the current bot pool naturally use the
-highest-signal map.
+Wrap=true, line topology. `lab1` is the bare-`node tournament/run.js`
+default and is the official ranking map.
+
+Picked by the **cross-map discrimination sweep** (see
+`tournament/map-search/discriminate.js`): a 192-config grid varying
+size × growth × maxArmy × k. Each config is scored by Spearman vs the
+*leave-one-out consensus* — the mean ranking across all OTHER configs
+in the grid. The map that best predicts the cross-map consensus is
+the one that "sorts winners on maps in general." Reliability check
+on the survivors revealed that k=3 looked great but had seed-noisy
+per-bot ranks; k=5 (more comparisons per match) wins once
+repeatability is required.
 
 ## Layout
 
@@ -110,6 +117,7 @@ tournament/map-search/
   validate.js             Planted-degenerate + anchor-swap validation
   league-spotcheck.js     Sanity check via a real league run
   promote.js              Write top configs into tournament/maps.js
+  discriminate.js         Cross-map LOO-consensus discrimination sweep
   test-phase{1,3,4}.js    Unit tests
 ```
 

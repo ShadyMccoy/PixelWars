@@ -94,8 +94,7 @@ Archive (exclude weak bots from default tournament pool):
 Season mode (rating tournament + top-N round robin → champions):
   --season            Run a season; emits two champions (rating leader
                       + round-robin winner). Saves to seasons.json.
-  --season-rr-map NAME    Map for the round-robin phase (default: lab3,
-                          which fits 10 players comfortably)
+  --season-rr-map NAME    Map for the round-robin phase (default: lab1)
   --season-top N      Number of top bots in the round robin (default: 10)
   --season-rr-rounds N    Round-robin rounds (default: 21)
 
@@ -149,7 +148,7 @@ function parseArgs(argv) {
     listAll: false,
     rating: false,
     season: false,
-    seasonRrMap: "lab3",
+    seasonRrMap: "lab1",
     seasonTop: 10,
     seasonRrRounds: 21,
     listLineages: false,

@@ -20,7 +20,7 @@ import { MAPS } from "./maps.js";
 function parseArgs(argv) {
   const opts = {
     seed: 57,
-    map: "classic",
+    map: "lab1",
     lineup: ["Membrane", "Citadel", "Bulwark", "TideWall", "Crusader", "Trinity"],
     bot: "Membrane",
     ticks: 6000,
