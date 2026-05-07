@@ -18,6 +18,7 @@ import {
   MSG_SET_SPEED,
   MSG_STEP_ONCE,
   MSG_SET_SNAPSHOT_INTERVAL,
+  MSG_SET_OVERLAY,
   EVT_SNAPSHOT,
   EVT_PLAYERS_CHANGED,
   EVT_WINNER,
@@ -125,6 +126,10 @@ export class EngineClient {
 
   setSnapshotInterval(ms) {
     this._send(MSG_SET_SNAPSHOT_INTERVAL, ms);
+  }
+
+  setOverlay(enabled) {
+    this._send(MSG_SET_OVERLAY, !!enabled);
   }
 
   // ------------------------------------------------------------------

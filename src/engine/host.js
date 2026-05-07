@@ -25,6 +25,16 @@ const DEFAULT_SNAPSHOT_INTERVAL_MS = 100;
 const SCHEDULE_INTERVAL_MS = 16;
 const TICK_SAFETY = 32;
 
+// Plan-cache key prefixes that strategies/painter.js writes onto the
+// Game object. Listed here so the snapshot can ferry them across the
+// boundary - the renderer reads `game[`${prefix}${pid}`]` exactly the
+// way it does on a live engine. Keep in sync with painter.js.
+const PLAN_PREFIXES = [
+  "_frontierPlan_",
+  "_pressureSinkPlan_",
+  "_citadelSortiePlan_",
+];
+
 export class EngineHost {
   constructor({ emit }) {
     this.emit = emit;
@@ -41,6 +51,7 @@ export class EngineHost {
     this._lastWinnerLogged = null;
     this._minTick = 30; // matches main.js winner heuristic
     this._initSpec = null;
+    this._overlayEnabled = false;
     this._timeNow = typeof performance !== "undefined" && performance.now
       ? () => performance.now()
       : () => Date.now();
@@ -50,6 +61,16 @@ export class EngineHost {
 
   setSnapshotInterval(ms) {
     if (Number.isFinite(ms) && ms >= 16) this.snapshotInterval = ms;
+  }
+
+  setOverlay(enabled) {
+    const next = !!enabled;
+    if (next === this._overlayEnabled) return;
+    this._overlayEnabled = next;
+    // Force a fresh snapshot so the client gets / drops plan data
+    // immediately rather than waiting for the next interval tick.
+    this._snapshotPending = true;
+    if (this.game) this._postSnapshot(this._timeNow());
   }
 
   initCustom(spec) {
@@ -267,6 +288,33 @@ export class EngineHost {
 
     const recentMoves = game.recentMoves.map((m) => ({ ...m }));
 
+    // Strategy-overlay plan caches. Only included when the client has
+    // toggled overlay on; otherwise we'd ship ~4 bytes/tile/player every
+    // snapshot for nothing. Each plan owns three typed arrays sized by
+    // the map; structured-clone copies them across the boundary.
+    let plans = null;
+    if (this._overlayEnabled) {
+      plans = [];
+      const list = game.players.list;
+      for (let i = 0; i < list.length; i++) {
+        const pid = list[i].id;
+        for (const prefix of PLAN_PREFIXES) {
+          const cached = game[`${prefix}${pid}`];
+          if (!cached || cached.tick !== game.tick) continue;
+          const p = cached.plan;
+          plans.push({
+            playerId: pid,
+            prefix,
+            tick: cached.tick,
+            roles: p.roles,
+            depth: p.depth,
+            friendly: p.friendly,
+          });
+          break;
+        }
+      }
+    }
+
     return {
       tick: game.tick,
       elapsed: game.elapsed,
@@ -278,6 +326,7 @@ export class EngineHost {
       playerTotals,
       recentMoves,
       history,
+      plans,
     };
   }
 }

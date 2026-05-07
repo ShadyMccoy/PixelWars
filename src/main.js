@@ -261,6 +261,15 @@ class App {
     this.engine.setSpeed(speed);
   }
 
+  setOverlay(enabled) {
+    // Plan caches only cross the worker boundary while overlay is on.
+    // Toggle both sides in lock-step so a stale plan from a prior tick
+    // doesn't render after the user disables the overlay.
+    this.renderer.showOverlay = !!enabled;
+    this.engine.setOverlay(!!enabled);
+    this.markDirty();
+  }
+
   stepOnce() {
     this.engine.stepOnce();
   }

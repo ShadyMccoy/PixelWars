@@ -44,8 +44,7 @@ export class Controls {
       this.app.markDirty();
     });
     this.toggleOverlay.addEventListener("change", () => {
-      this.app.renderer.showOverlay = this.toggleOverlay.checked;
-      this.app.markDirty();
+      this.app.setOverlay(this.toggleOverlay.checked);
     });
 
     document.addEventListener("keydown", (e) => {

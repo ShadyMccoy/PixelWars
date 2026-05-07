@@ -106,10 +106,11 @@ export class GameView {
     // Toggled by the renderer's territory check; safe to leave false
     // since the worker recomputes territory before each snapshot.
     this._territoryDirty = false;
-    // Compatibility: the renderer's strategy overlay reads cached plans
-    // off the live Game. Without crossing them through the boundary the
-    // overlay simply renders nothing - not a regression for big-map
-    // hangs, and the toggle still works (just no decorations).
+    // Strategy-overlay plan caches mirror the live engine: the
+    // renderer reads `view[`${prefix}${pid}`]`. The set of currently-
+    // installed keys is tracked so we can drop stale ones when
+    // overlay is toggled off or a player no longer has a plan.
+    this._planKeys = new Set();
     this._armiesById = new Map();
     this._listeners = new Map();
   }
@@ -247,5 +248,26 @@ export class GameView {
 
     // History: replace wholesale - bounded by maxHistory in the engine.
     this.history = snapshot.history || [];
+
+    this._applyPlans(snapshot.plans);
+  }
+
+  _applyPlans(plans) {
+    // Drop any keys we set last snapshot - prevents a stale plan from
+    // lingering when overlay flips off, a player no longer has one, or
+    // a strategy stops painting.
+    if (this._planKeys.size > 0) {
+      for (const key of this._planKeys) delete this[key];
+      this._planKeys.clear();
+    }
+    if (!plans) return;
+    for (const p of plans) {
+      const key = `${p.prefix}${p.playerId}`;
+      this[key] = {
+        tick: p.tick,
+        plan: { roles: p.roles, depth: p.depth, friendly: p.friendly },
+      };
+      this._planKeys.add(key);
+    }
   }
 }

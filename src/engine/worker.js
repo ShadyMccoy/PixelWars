@@ -12,6 +12,7 @@ import {
   MSG_SET_SPEED,
   MSG_STEP_ONCE,
   MSG_SET_SNAPSHOT_INTERVAL,
+  MSG_SET_OVERLAY,
 } from "./protocol.js";
 
 const host = new EngineHost({
@@ -41,6 +42,9 @@ self.addEventListener("message", (e) => {
       break;
     case MSG_SET_SNAPSHOT_INTERVAL:
       host.setSnapshotInterval(payload);
+      break;
+    case MSG_SET_OVERLAY:
+      host.setOverlay(payload);
       break;
   }
 });

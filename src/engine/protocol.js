@@ -11,6 +11,7 @@ export const MSG_SET_PLAYING = "setPlaying";
 export const MSG_SET_SPEED = "setSpeed";
 export const MSG_STEP_ONCE = "stepOnce";
 export const MSG_SET_SNAPSHOT_INTERVAL = "setSnapshotInterval";
+export const MSG_SET_OVERLAY = "setOverlay";
 
 // Engine -> client
 export const EVT_SNAPSHOT = "snapshot";
