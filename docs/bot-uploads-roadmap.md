@@ -34,6 +34,23 @@ the small audience the site has today.
   makes manual review impractical; CI gates merge, the sandbox handles
   safety, and the league system curates by skill.
 
+## Status
+
+The **paste-and-run UI** (v1 step 3) shipped — see
+[src/ui/CustomBots.js](../src/ui/CustomBots.js) and
+[src/ui/CodeModal.js](../src/ui/CodeModal.js). The pasted module loads
+via Blob URL + dynamic `import()` and runs in the engine Web Worker,
+session-scoped, single-tab. Constraints (no `import` statements,
+required `export default`) are documented in
+[docs/strategies.md](./strategies.md#pasting-a-bot-in-the-browser).
+
+The remaining v1 pieces — submissions directory, hardened browser
+sandbox (null-origin iframe + worker + global overrides + meta-CSP),
+CI validation workflow, and the league quarantine tier — are still
+pending. The sandbox is the load-bearing piece before any
+*cross-visitor* sharing turns on; until then the paste-and-run flow
+only runs a visitor's bot in their own tab.
+
 ## v1 — minimum viable upload flow
 
 Build all of this together; each piece depends on the others to be
@@ -85,15 +102,20 @@ weaker than header CSP (no `frame-ancestors`, no `report-uri`) but
 sufficient for `connect-src` and `script-src`. If we ever move off Pages,
 promote to real headers.
 
-### 3. Paste-and-run UI
+### 3. Paste-and-run UI ✅ shipped
 
-- Sidebar panel "Try a bot": textarea, Run button, error pane.
-- On Run: turn the textarea contents into a Blob, instantiate the
-  sandbox, register a synthetic strategy under a temporary name, drop
-  it into the current mode.
-- "Share this bot" button: opens a pre-filled GitHub PR via
-  `https://github.com/<owner>/<repo>/new/main?filename=...&value=...`
-  pointing at `src/strategies/submissions/`. No auth flow we control.
+- ⚙ Try-a-bot button in the header opens a modal with a textarea,
+  name field, and validation pane. Implemented in
+  [src/ui/CustomBots.js](../src/ui/CustomBots.js) and
+  [src/ui/CodeModal.js](../src/ui/CodeModal.js).
+- On Use-in-match: the textarea contents become a Blob, get loaded
+  via dynamic `import()`, validated on the main thread, then
+  re-imported inside the engine Web Worker. The bot is seated in
+  slot 0 of the next match.
+- Session-scoped, single-tab. No persistence layer.
+- Still pending: hardened sandbox (this currently runs in the engine
+  worker, *not* in a null-origin iframe), and a "Share this bot" PR
+  shortcut. Both gate cross-visitor sharing.
 
 ### 4. CI validation workflow
 

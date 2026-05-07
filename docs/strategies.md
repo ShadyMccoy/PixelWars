@@ -56,11 +56,23 @@ Then add it to the registry list in `src/strategies/index.js`:
 ```js
 import Stormtrooper from "./Stormtrooper.js";
 // ...
-export const STRATEGY_LIST = [..., Stormtrooper];
+export const ALL_STRATEGY_LIST = [..., Stormtrooper];
 ```
+
+`STRATEGY_LIST` (the active pool seen by tournaments and the HUD
+dropdown) is derived from `ALL_STRATEGY_LIST` minus anything in the
+archive — so register here, not there.
 
 That's it. The bot now appears in the browser HUD dropdown, in the Node
 tournament runner, and in `--list`.
+
+### Optional: tech loadout
+
+A strategy can carry a default tech in its `tech` field — a 5-knob
+allocation (`move`, `stack`, `prod`, `atk`, `def`) summing to 100.
+Tournaments without an explicit `--lineup-config` will use this default;
+otherwise the neutral `{20,20,20,20,20}` split applies. See
+[docs/techs.md](./techs.md) for what each knob does and how to tune.
 
 ## The `act(army, game)` contract
 
