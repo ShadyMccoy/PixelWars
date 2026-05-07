@@ -14,7 +14,7 @@
 
 import { readFile, writeFile, copyFile, access } from "node:fs/promises";
 import { dirname, resolve, basename } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { addDescendant, loadLineages, markArchived } from "./lineageStore.js";
 import { loadLatestSeason } from "./seasonStore.js";
 import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
@@ -366,7 +366,7 @@ export async function registerDescendant({ name, parent, filePath, birthSeason =
   // Validate the file exists and the bot loads correctly.
   const absPath = resolve(filePath);
   await access(absPath);
-  const mod = await import(absPath);
+  const mod = await import(pathToFileURL(absPath).href);
   if (!mod.default) {
     throw new Error(`${absPath} must default-export a strategy object`);
   }
