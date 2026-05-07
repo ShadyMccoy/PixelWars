@@ -79,6 +79,23 @@ header.app-header {
   color: var(--text-dim);
 }
 
+.seed-pill {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  background: var(--bg-3);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  border: 1px solid var(--line);
+  transition: border-color 0.12s, color 0.12s;
+}
+
+.seed-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 aside.sidebar {
   grid-area: sidebar;
   background: var(--bg-1);
@@ -530,6 +547,16 @@ select.dropdown {
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
+.log-entry.log-replay {
+  cursor: pointer;
+  color: var(--text);
+  transition: color 0.12s;
+}
+
+.log-entry.log-replay:hover {
+  color: var(--accent);
+}
+
 .hud-empty {
   color: var(--text-dim);
   font-style: italic;
@@ -621,6 +648,32 @@ select.dropdown {
 .match-flag[data-tag="close-finish"] { color: #6ee7ff; border-color: rgba(110, 231, 255, 0.4); }
 .match-flag[data-tag="runaway"] { color: #ff4d6d; border-color: rgba(255, 77, 109, 0.4); }
 .match-flag[data-tag="mutual-destruction"] { color: #f97aff; border-color: rgba(249, 122, 255, 0.4); }
+.match-flag[data-tag="saved"] { color: #ffe066; border-color: rgba(255, 224, 102, 0.4); }
+
+.match-row.local {
+  border-left: 2px solid #ffe066;
+}
+
+.match-row.local .match-id {
+  color: #ffe066;
+}
+
+.match-delete {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  border-radius: 3px;
+  padding: 0 5px;
+  font-size: 10px;
+  cursor: pointer;
+  margin-left: 4px;
+  line-height: 1.4;
+}
+
+.match-delete:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
 
 .match-lineup {
   font-size: 10px;
