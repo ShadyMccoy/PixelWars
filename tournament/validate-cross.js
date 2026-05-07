@@ -22,7 +22,7 @@ const HELP = `Usage: node tournament/validate-cross.js [options]
   --matches M         Total matches (default 300)
   --ticks N           Max ticks (default 2000)
   --seed N            Base seed (default 1)
-  --map NAME          Map preset (default arena)
+  --map NAME          Map preset (default lab1)
   --help              This message
 `;
 
@@ -47,7 +47,7 @@ function parseArgs(argv) {
     matches: 300,
     ticks: 2000,
     seed: 1,
-    map: "arena",
+    map: "lab1",
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];

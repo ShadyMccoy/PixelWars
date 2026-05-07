@@ -44,7 +44,7 @@ Grid (line topology + wrap=true held fixed):
   --grid full           full grid (default)
 
 Pool / matches:
-  --pool balanced|top   bot pool from arena league (default: balanced; 24 bots)
+  --pool balanced|top   bot pool from rankings.json (default: balanced; 24 bots)
   --matches N           matches per config (default: 60)
   --max-ticks N         per-match cap (default: 1500)
   --snapshot-every N    for tStable (default: 25)
@@ -113,10 +113,11 @@ function parseArgs(argv) {
 }
 
 function resolveBots(spec) {
-  const data = JSON.parse(readFileSync("tournament/leagues.json", "utf8"));
-  const league = data.leagues.find(l => l.map === "arena");
-  if (!league) throw new Error("No saved arena league for bot selection");
-  const flat = league.tiers.flat();
+  // Bot pool draws from tournament/rankings.json — the live skill ranking
+  // refreshed by `npm run rank` over all logged matches. It's strictly
+  // fresher and broader than any single saved league snapshot.
+  const data = JSON.parse(readFileSync("tournament/rankings.json", "utf8"));
+  const flat = data.players.map(p => p.name);
   let names;
   if (spec === "top") {
     names = flat.slice(0, 24);

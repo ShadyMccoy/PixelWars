@@ -444,11 +444,9 @@ async function cmdArchiveBottom(opts) {
     console.error(`No saved leagues. Run \`node tournament/run.js --league\` first.`);
     process.exit(1);
   }
-  // Filter to a single map if --map was specified explicitly. Default
-  // (opts.map=="arena") still triggers the filter though, which is the
-  // wrong default for archive-bottom; we want union of all leagues. Use
-  // a sentinel: only filter if the user passed --map explicitly. Lacking
-  // that detection here, we just take the union of all saved leagues.
+  // archive-bottom wants the union of all saved leagues, so we ignore
+  // --map here. (--map's default is the official ranking map; honoring
+  // it would silently restrict the archive to a single league.)
   const sources = leagues;
 
   const archive = new Set();

@@ -46,7 +46,7 @@ points-per-game. Designed for ranking large strategy populations.
 
 ```bash
 node tournament/run.js                                       # all bots, lab1, K=6, 200 matches
-node tournament/run.js --pool 8 --matches 500 --map arena    # different map preset
+node tournament/run.js --pool 8 --matches 500                # bigger pool, more matches
 node tournament/run.js --bots Aggressive,Trinity,Vampire     # restricted pool
 node tournament/run.js --list                                # what's available
 node tournament/run.js --help

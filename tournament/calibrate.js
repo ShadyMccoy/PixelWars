@@ -9,7 +9,7 @@
 //   --pure         Pure-knob duels: every pair {A:100} vs {B:100} run
 //                  many seeds. Quick OP smoke test.
 //
-// All modes default to the Berserker strategy on the arena map. Strategy
+// All modes default to the Berserker strategy on the lab1 map. Strategy
 // can be overridden via --strategy. Mirror matches are pure 1v1.
 //
 // Output is a printable summary plus, if --csv DIR is set, raw match
@@ -33,7 +33,7 @@ Modes (pick one):
 Options:
   --strategy NAME        Strategy(ies); comma-separated for batch.
                          Default: Berserker
-  --map NAME             Map preset (default arena)
+  --map NAME             Map preset (default lab1)
   --matches N            Random tech vector pairs (regress only, default 400)
   --seeds N              Seeds per matchup (default 5)
   --ticks N              Max ticks per match (default 4000)
@@ -45,7 +45,7 @@ function parseArgs(argv) {
   const opts = {
     mode: null,
     strategy: "Berserker",
-    map: "arena",
+    map: "lab1",
     matches: 400,
     seeds: 5,
     ticks: 4000,

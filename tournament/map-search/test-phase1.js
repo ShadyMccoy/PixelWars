@@ -56,7 +56,7 @@ console.log("\n--- predictRanking ---");
 
 console.log("\n--- runMatch with snapshotEvery ---");
 {
-  const map = MAPS.arena;
+  const map = MAPS.lab1;
   const lineup = ["Trinity", "Random", "Aggressive"].map(getStrategy);
   const result = runMatch({
     strategies: lineup,
@@ -81,7 +81,7 @@ console.log("\n--- runMatch with snapshotEvery ---");
 
 console.log("\n--- runMatch without snapshots is unchanged ---");
 {
-  const map = MAPS.arena;
+  const map = MAPS.lab1;
   const lineup = ["Trinity", "Random"].map(getStrategy);
   const r1 = runMatch({
     strategies: lineup,

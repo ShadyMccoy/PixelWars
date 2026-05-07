@@ -120,7 +120,7 @@ overpower an enemy with margin 1. Reuse it or roll your own.
 ## Running a tournament
 
 ```bash
-# All registered bots, arena map, 10 rounds
+# All registered bots, lab1 map, 10 rounds
 npm run tournament
 
 # A specific lineup

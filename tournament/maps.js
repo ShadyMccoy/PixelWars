@@ -1,26 +1,6 @@
 // Map presets used by the tournament runner. Each preset is map config + a
 // function that returns starting positions for `n` players.
 
-function ringPositions(n, { width, height, radiusFactor = 0.4, edgePad = 1 }) {
-  const cx = width / 2;
-  const cy = height / 2;
-  const r = Math.min(width, height) * radiusFactor;
-  const pad = edgePad;
-  const positions = [];
-  for (let i = 0; i < n; i++) {
-    const angle = (i / n) * Math.PI * 2;
-    const x = clamp(Math.floor(cx + Math.cos(angle) * r), pad, width - 1 - pad);
-    const y = clamp(Math.floor(cy + Math.sin(angle) * r), pad, height - 1 - pad);
-    positions.push({ x, y, strength: 1 });
-  }
-  return positions;
-}
-
-function clamp(v, lo, hi) {
-  return Math.max(lo, Math.min(hi, v));
-}
-
-
 function linePositions(n, { width, height, edgePad = 1 }) {
   const y = Math.floor(height / 2);
   const usable = width - 2 * edgePad - 1;
@@ -33,15 +13,6 @@ function linePositions(n, { width, height, edgePad = 1 }) {
 }
 
 export const MAPS = {
-  // Arena: kept for back-compat with the saved arena league (used as
-  // ground truth by tournament/map-search/*) and for tests that
-  // reference MAPS.arena directly.
-  arena: {
-    name: "arena",
-    config: { width: 30, height: 22, growth: 2, maxArmy: 12, wrap: true },
-    players: 4,
-    positions: (n) => ringPositions(n, { width: 30, height: 22, radiusFactor: 0.4 }),
-  },
   // Official ranking map. Picked by the cross-map discrimination sweep
   // (tournament/map-search/discriminate.js): of all configs varying size
   // x growth x maxArmy x k, this one's per-bot ranking best matches the
