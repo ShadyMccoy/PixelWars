@@ -52,6 +52,10 @@ export class EngineHost {
     this._minTick = 30; // matches main.js winner heuristic
     this._initSpec = null;
     this._overlayEnabled = false;
+    // Strategies the user pasted via "Try a bot". Source code arrives
+    // in the init payload; we eval each one to a real strategy object
+    // exactly once, then look it up by name when seating players.
+    this._customStrategies = new Map();
     this._timeNow = typeof performance !== "undefined" && performance.now
       ? () => performance.now()
       : () => Date.now();
@@ -73,30 +77,37 @@ export class EngineHost {
     if (this.game) this._postSnapshot(this._timeNow());
   }
 
-  initCustom(spec) {
+  async initCustom(spec) {
     // spec: { mapConfig, lineup: [strategyName], palette, numPlayers, seed,
-    //         startPositions? }
+    //         startPositions?, customStrategies? }
     this._initSpec = { kind: "custom", spec };
+    await this._registerCustom(spec.customStrategies);
     this._buildGame(spec);
     this._snapshotPending = true;
     this.emit(EVT_PLAYERS_CHANGED, { players: this._serializePlayers() });
     this._postSnapshot(this._timeNow());
   }
 
-  initReplay(spec) {
+  async initReplay(spec) {
     // spec: { mapConfig, seed, lineup: [strategyName], lineupTech,
     //         startPositions, palette }
     this._initSpec = { kind: "replay", spec };
+    await this._registerCustom(spec.customStrategies);
     this._buildReplay(spec);
     this._snapshotPending = true;
     this.emit(EVT_PLAYERS_CHANGED, { players: this._serializePlayers() });
     this._postSnapshot(this._timeNow());
   }
 
-  reset() {
+  async reset() {
     if (!this._initSpec) return;
-    if (this._initSpec.kind === "custom") this._buildGame(this._initSpec.spec);
-    else this._buildReplay(this._initSpec.spec);
+    if (this._initSpec.kind === "custom") {
+      await this._registerCustom(this._initSpec.spec.customStrategies);
+      this._buildGame(this._initSpec.spec);
+    } else {
+      await this._registerCustom(this._initSpec.spec.customStrategies);
+      this._buildReplay(this._initSpec.spec);
+    }
     this._lastWinnerLogged = null;
     this._snapshotPending = true;
     this.emit(EVT_PLAYERS_CHANGED, { players: this._serializePlayers() });
@@ -124,11 +135,37 @@ export class EngineHost {
 
   // --- Internals ----------------------------------------------------------
 
+  // Convert pasted-bot source into runnable strategy objects. Each
+  // entry is loaded via a Blob URL so dynamic import() can pull the
+  // module's default export. We cache by name+code so reset and
+  // re-init don't re-import the same source.
+  async _registerCustom(customStrategies) {
+    if (!customStrategies || customStrategies.length === 0) return;
+    for (const { name, code } of customStrategies) {
+      const existing = this._customStrategies.get(name);
+      if (existing && existing.__sourceCode === code) continue;
+      const blob = new Blob([code], { type: "application/javascript" });
+      const url = URL.createObjectURL(blob);
+      try {
+        const mod = await import(/* webpackIgnore: true */ url);
+        const def = mod.default;
+        if (!def || typeof def.act !== "function") {
+          throw new Error(`Custom bot ${name}: default export missing act()`);
+        }
+        def.name = name;
+        def.__sourceCode = code;
+        this._customStrategies.set(name, def);
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    }
+  }
+
   _buildGame(spec) {
     const { mapConfig, lineup, palette, startPositions, seed } = spec;
     this.game = new Game({ ...mapConfig, seed });
     const strategies = lineup.map((name) => {
-      const s = ALL_STRATEGIES[name];
+      const s = this._customStrategies.get(name) ?? ALL_STRATEGIES[name];
       if (!s) throw new Error(`Unknown strategy: ${name}`);
       return s;
     });
@@ -152,7 +189,7 @@ export class EngineHost {
   _buildReplay(spec) {
     const { mapConfig, seed, lineup, lineupTech, startPositions, palette } = spec;
     const strategies = lineup.map((name) => {
-      const s = ALL_STRATEGIES[name];
+      const s = this._customStrategies.get(name) ?? ALL_STRATEGIES[name];
       if (!s) throw new Error(`Replay references unknown strategy: ${name}`);
       return s;
     });

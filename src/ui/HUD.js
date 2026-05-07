@@ -37,13 +37,22 @@ export class HUD {
     const strat = player.strategy;
     const title = strat?.name ?? player.name ?? "";
     const body = strat?.summary || strat?.description || "";
+    const showCodeBtn = !!strat?.name;
     this.tooltip.innerHTML = `
       <div class="strat-tooltip-title">${escapeHtml(title)}</div>
       ${body ? `<div class="strat-tooltip-body">${escapeHtml(body)}</div>` : ""}
       ${renderTechLoadout(player)}
+      ${showCodeBtn ? `<button class="btn-mini strat-tooltip-code" data-strat-name="${escapeHtml(strat.name)}">&lt;/&gt; View code</button>` : ""}
     `;
     this.tooltip.style.setProperty("--player-color", player.color);
     this.tooltip.style.display = "block";
+    if (showCodeBtn) {
+      const btn = this.tooltip.querySelector(".strat-tooltip-code");
+      btn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.app?.viewStrategyCode?.(strat.name);
+      });
+    }
     this.positionTooltip(row);
   }
 
