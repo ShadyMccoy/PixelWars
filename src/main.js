@@ -43,11 +43,11 @@ class App {
     this.engine.on("snapshot", () => this.markDirty());
     this.engine.on("players:changed", () => this.markDirty());
     this.engine.on("winner", ({ name }) => {
-      this.controls.log(`👑 ${name} wins!`);
+      this.controls.log(`👑 ${name} wins!`, this._snapshotMatchInfo());
       if (this.autoStopOnWinner && this.playing) this._setPlayingLocal(false);
     });
     this.engine.on("draw", () => {
-      this.controls.log(`💀 Mutual destruction.`);
+      this.controls.log(`💀 Mutual destruction.`, this._snapshotMatchInfo());
       if (this.autoStopOnWinner && this.playing) this._setPlayingLocal(false);
     });
 
@@ -120,6 +120,16 @@ class App {
     this.autoStopOnWinner = true;
     this.modeKey = "replay";
     this.mode = { key: "replay", name: `Replay #${entry.id}` };
+    this.currentMatch = {
+      kind: "replay",
+      id: entry.id,
+      map: entry.map,
+      mapConfig: entry.mapConfig,
+      seed: entry.seed,
+      lineup: entry.lineup,
+      lineupTech: entry.lineupTech ?? null,
+      startPositions: entry.startPositions,
+    };
 
     this.engine.loadReplay({
       mapConfig: entry.mapConfig,
@@ -128,6 +138,7 @@ class App {
       lineupTech: entry.lineupTech ?? null,
       startPositions: entry.startPositions,
     });
+    this.renderer.resetView();
     this.renderer.resize();
     this.chart.resize();
     this.territoryChart.resize();
@@ -139,12 +150,13 @@ class App {
     this.activePlayer = this.game.players.list[0] ?? null;
     this.matchPicker?.setActive(entry.id);
     this.controls.log(`▶ Replay #${entry.id} · ${entry.lineup.join(", ")}`);
+    this.controls.updateMatchInfo(this.currentMatch);
     this.bindCanvas();
     this._setPlayingLocal(true);
     this.markDirty();
   }
 
-  loadCustomMap({ width, height, growth, maxArmy, wrap, numPlayers, botNames = null, fixedLineup = false }) {
+  loadCustomMap({ width, height, growth, maxArmy, wrap, numPlayers, botNames = null, fixedLineup = false, seed = null, startPositions = null }) {
     // Transient ad-hoc map: build a Game with the user's config and seat
     // N bots in a ring. If `botNames` is given:
     //   - fixedLineup=true: use the names in order (Reset path).
@@ -181,7 +193,7 @@ class App {
         throw new Error(`Not enough strategies for ${numPlayers} players`);
       }
     }
-    const seed = (Date.now() & 0x7fffffff) >>> 0;
+    const useSeed = seed != null ? (seed >>> 0) : ((Date.now() & 0x7fffffff) >>> 0);
 
     this.replayEntry = null;
     this.autoStopOnWinner = false;
@@ -195,42 +207,172 @@ class App {
       fixedLineup: true,
     };
 
-    const cx = width / 2;
-    const cy = height / 2;
-    const r = Math.min(width, height) * 0.4;
-    const startPositions = [];
-    for (let i = 0; i < numPlayers; i++) {
-      const angle = (i / numPlayers) * Math.PI * 2;
-      const x = Math.max(1, Math.min(width - 2, Math.floor(cx + Math.cos(angle) * r)));
-      const y = Math.max(1, Math.min(height - 2, Math.floor(cy + Math.sin(angle) * r)));
-      startPositions.push({ x, y });
+    let positions = startPositions;
+    if (!positions) {
+      const cx = width / 2;
+      const cy = height / 2;
+      const r = Math.min(width, height) * 0.4;
+      positions = [];
+      for (let i = 0; i < numPlayers; i++) {
+        const angle = (i / numPlayers) * Math.PI * 2;
+        const x = Math.max(1, Math.min(width - 2, Math.floor(cx + Math.cos(angle) * r)));
+        const y = Math.max(1, Math.min(height - 2, Math.floor(cy + Math.sin(angle) * r)));
+        positions.push({ x, y });
+      }
     }
+
+    this.currentMatch = {
+      kind: "custom",
+      id: null,
+      map: "custom",
+      mapConfig: { width, height, growth, maxArmy, wrap },
+      seed: useSeed,
+      lineup: strategies.map((s) => s.name),
+      lineupTech: null,
+      startPositions: positions,
+    };
 
     this.engine.loadCustom({
       mapConfig: { width, height, growth, maxArmy, wrap },
       lineupStrategies: strategies,
-      startPositions,
-      seed,
+      startPositions: positions,
+      seed: useSeed,
       customStrategies: this.customBots.serializeUsed(strategies.map((s) => s.name)),
     });
+    this.renderer.resetView();
     this.renderer.resize();
     this.chart.resize();
     this.territoryChart.resize();
 
     document.getElementById("mode-description").textContent =
-      `Custom · ${width}×${height} · g=${growth} · maxArmy=${maxArmy}${wrap ? " · wrap" : ""} · ${numPlayers} bots`;
+      `Custom · ${width}×${height} · g=${growth} · maxArmy=${maxArmy}${wrap ? " · wrap" : ""} · ${numPlayers} bots · seed=${useSeed}`;
 
     this.activePlayer = this.game.players.list[0] ?? null;
     this.matchPicker?.setActive(null);
-    this.controls.log(`🛠 Custom map · ${width}×${height} · ${numPlayers} bots`);
+    this.controls.log(`🛠 Custom map · ${width}×${height} · ${numPlayers} bots · seed=${useSeed}`);
+    this.controls.updateMatchInfo(this.currentMatch);
     this.bindCanvas();
     this._setPlayingLocal(true);
     this.markDirty();
   }
 
+  // Snapshot the current match in a form ready for `loadFromMatchInfo` or
+  // `saveCurrentMatch`. Returns null if no match has been loaded yet.
+  _snapshotMatchInfo() {
+    return this.currentMatch ? { ...this.currentMatch } : null;
+  }
+
+  // Re-run the match described by `info`. Used by the event log click
+  // handler to replay any past winner/draw line, and by the saved-match
+  // panel for browser-side stored entries.
+  loadFromMatchInfo(info) {
+    if (!info) return;
+    this._userChoseMode = true;
+    if (info.kind === "replay" || info.id != null) {
+      this.loadReplay({
+        id: info.id,
+        map: info.map,
+        mapConfig: info.mapConfig,
+        seed: info.seed,
+        lineup: info.lineup,
+        lineupTech: info.lineupTech ?? null,
+        startPositions: info.startPositions,
+        flags: info.flags ?? [],
+      });
+      return;
+    }
+    const cfg = info.mapConfig;
+    this.loadCustomMap({
+      width: cfg.width,
+      height: cfg.height,
+      growth: cfg.growth,
+      maxArmy: cfg.maxArmy,
+      wrap: !!cfg.wrap,
+      numPlayers: info.lineup.length,
+      botNames: info.lineup,
+      fixedLineup: true,
+      seed: info.seed,
+      startPositions: info.startPositions,
+    });
+  }
+
+  // Re-run with the same seed as the current match. Pairs with
+  // `reload()` (Reset = new seed).
+  replaySameSeed() {
+    if (!this.currentMatch) {
+      this.reload();
+      return;
+    }
+    this.loadFromMatchInfo(this.currentMatch);
+  }
+
+  // Persist the current match to localStorage so it shows up alongside
+  // the static tournament/interesting.json picks.
+  saveCurrentMatch() {
+    if (!this.currentMatch) {
+      this.controls.log("⚠ Nothing to save yet.");
+      return null;
+    }
+    const saved = this.matchPicker?.saveLocal(this.currentMatch) ?? null;
+    if (saved) {
+      this.controls.log(`★ Saved seed=${saved.seed} as ${saved.id}`);
+    }
+    return saved;
+  }
+
   bindCanvas() {
     if (this._canvasBound) return;
     this._canvasBound = true;
+
+    // Drag state lives on `this` so the global mouseup/mousemove
+    // listeners (which see drags that finish off-canvas) share it
+    // with the canvas-scoped click handler. A 4-px threshold lets a
+    // shaky click still register as a tile select rather than a pan.
+    const DRAG_THRESHOLD_PX = 4;
+    this._dragging = false;
+    this._dragMoved = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let lastX = 0;
+    let lastY = 0;
+
+    this.canvas.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
+      this._dragging = true;
+      this._dragMoved = false;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      this.canvas.style.cursor = "grabbing";
+      e.preventDefault();
+    });
+
+    // Pan listener attaches to window so a drag that escapes the
+    // canvas keeps tracking until release.
+    window.addEventListener("mousemove", (e) => {
+      if (!this._dragging) return;
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      const totalDx = Math.abs(e.clientX - dragStartX);
+      const totalDy = Math.abs(e.clientY - dragStartY);
+      if (!this._dragMoved && totalDx + totalDy > DRAG_THRESHOLD_PX) {
+        this._dragMoved = true;
+      }
+      if (this._dragMoved) {
+        this.renderer.panByPixels(dx, dy);
+        this.markDirty();
+      }
+    });
+
+    window.addEventListener("mouseup", (e) => {
+      if (!this._dragging) return;
+      this._dragging = false;
+      this.canvas.style.cursor = "";
+    });
+
     this.canvas.addEventListener("mousemove", (e) => {
       this.renderer.hoverTile = this.renderer.pixelToTile(e.clientX, e.clientY);
       this.updateTileTooltip(e.clientX, e.clientY);
@@ -242,11 +384,27 @@ class App {
       this.markDirty();
     });
     this.canvas.addEventListener("click", (e) => {
+      // A drag that crossed the threshold ate this click — selecting
+      // a tile at drag-release would be jarring on a long pan.
+      if (this._dragMoved) {
+        this._dragMoved = false;
+        return;
+      }
       const tile = this.renderer.pixelToTile(e.clientX, e.clientY);
       if (!tile) return;
       this.renderer.selectedTile = tile;
       this.markDirty();
     });
+
+    this.canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+      this.renderer.zoomAt(e.clientX, e.clientY, factor);
+      // Hover tile changes after zoom even without a fresh mousemove.
+      this.renderer.hoverTile = this.renderer.pixelToTile(e.clientX, e.clientY);
+      this.updateTileTooltip(e.clientX, e.clientY);
+      this.markDirty();
+    }, { passive: false });
   }
 
   ensureTileTooltip() {

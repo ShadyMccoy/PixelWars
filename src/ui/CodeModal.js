@@ -5,17 +5,33 @@
 // The modal is created lazily and reused. Only one instance is open
 // at a time; opening with a different mode replaces the contents.
 
-const SAMPLE_BOT = `// Paste a strategy module here. Must be self-contained: no imports
-// (the worker can't resolve relative paths from your paste). The
-// 'act' callback runs every tick on each of your armies.
+const SAMPLE_BOT = `// Paste a strategy module here. Self-contained ES modules only —
+// no \`import\` statements (Blob URLs have no resolution context).
 //
-// API quick reference:
-//   army.tile.neighbors[i] -> tile in direction i (0..3) or null
-//   army.attack(tile, power) -> commit 'power' strength toward 'tile'
-//   army.attackPower         -> max usable strength this tick
-//   army.player.id           -> your own player id
-//   game.rng()               -> deterministic [0,1) random
-//   game.tick                -> current tick count
+// API quick reference (full notes: docs/strategies.md):
+//
+//   act(army, game)              runs every tick, once per army
+//
+//   army.tile                    your tile (or null mid-move)
+//   army.tile.neighbors[i]       adjacent tile or null (W=0,E=1,N=2,S=3)
+//   army.tile.armies             stack on this tile (incl. yours)
+//   army.strength / .maxStrength current and capped strength
+//   army.attackPower             max strength you can commit this tick
+//   army.player.id               your player id (compare to others)
+//
+//   tile.armies[k].player.id     identify friend or foe
+//
+//   army.attack(tile, power)     ONLY action — commit 'power' to 'tile'.
+//                                tile must be adjacent, power > 0.5.
+//                                'strength - power' stays behind.
+//
+//   game.rng()                   deterministic [0,1). Use this, NOT Math.random().
+//   game.tick                    current tick
+//
+// Conflict resolution (combine with friendlies, fight enemies) happens
+// automatically at end-of-tick. Don't mutate other armies / tiles /
+// players. The 'name' field below is overridden by the modal's name
+// input, so you can paste any module without renaming it.
 
 export default {
   name: "MyBot",
@@ -52,6 +68,7 @@ export class CodeModal {
       <div class="code-modal" role="dialog" aria-modal="true">
         <div class="code-modal-head">
           <div class="code-modal-title"></div>
+          <a class="code-modal-docs" href="docs/strategies.md" target="_blank" rel="noopener">📘 Bot API</a>
           <button class="code-modal-close" aria-label="Close">×</button>
         </div>
         <div class="code-modal-subtitle"></div>
@@ -108,7 +125,7 @@ export class CodeModal {
     this._show();
   }
 
-  openEdit({ title = "Try a bot", subtitle = "Paste a strategy module. It runs in your browser only — clears on refresh.", initialCode = SAMPLE_BOT, initialName = "MyBot", onSubmit }) {
+  openEdit({ title = "Try a bot", subtitle = "Self-contained ES module, default-export {name, act}. Runs in your browser only — clears on refresh.", initialCode = SAMPLE_BOT, initialName = "MyBot", onSubmit }) {
     this._setMode("edit");
     this.titleEl.textContent = title;
     this.subtitleEl.textContent = subtitle;
