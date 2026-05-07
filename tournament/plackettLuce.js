@@ -25,6 +25,10 @@ export function fitPlackettLuce(orderings, opts = {}) {
   const tol = opts.tol ?? 1e-7;
   const maxIter = opts.maxIter ?? 2000;
   const prior = opts.prior ?? 0.5;
+  // Optional per-ordering weights (default 1 each). Used by stalemate
+  // expansion: a stalemate match emits N synthetic orderings each with
+  // weight 1/N, so its total contribution equals one decisive match.
+  const weightsIn = opts.weights;
 
   const nameSet = new Set();
   for (const o of orderings) for (const n of o) nameSet.add(n);
@@ -36,15 +40,20 @@ export function fitPlackettLuce(orderings, opts = {}) {
   // Encode orderings as integer arrays (best-first). Skip degenerate
   // matches (≤1 participant) — they carry no ranking signal.
   const matches = [];
-  for (const o of orderings) {
+  const matchWeights = [];
+  for (let oi = 0; oi < orderings.length; oi++) {
+    const o = orderings[oi];
     if (o.length < 2) continue;
     matches.push(o.map((n) => idx.get(n)));
+    matchWeights.push(weightsIn ? (weightsIn[oi] ?? 1) : 1);
   }
 
-  // W[j] = appearances in non-last positions across all matches.
+  // W[j] = weighted count of appearances in non-last positions.
   const W = new Array(N).fill(0);
-  for (const m of matches) {
-    for (let i = 0; i < m.length - 1; i++) W[m[i]]++;
+  for (let mi = 0; mi < matches.length; mi++) {
+    const m = matches[mi];
+    const w = matchWeights[mi];
+    for (let i = 0; i < m.length - 1; i++) W[m[i]] += w;
   }
 
   let s = new Array(N).fill(1);
@@ -53,7 +62,9 @@ export function fitPlackettLuce(orderings, opts = {}) {
 
   for (; iter < maxIter; iter++) {
     const denom = new Array(N).fill(0);
-    for (const m of matches) {
+    for (let mi = 0; mi < matches.length; mi++) {
+      const m = matches[mi];
+      const w = matchWeights[mi];
       const K = m.length;
       // T[i] = s[m[i]] + s[m[i+1]] + ... + s[m[K-1]]
       const T = new Array(K);
@@ -63,7 +74,7 @@ export function fitPlackettLuce(orderings, opts = {}) {
         T[i] = sum;
       }
       for (let i = 0; i < K - 1; i++) {
-        const inv = 1 / T[i];
+        const inv = w / T[i];
         for (let l = i; l < K; l++) denom[m[l]] += inv;
       }
     }

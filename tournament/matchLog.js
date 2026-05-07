@@ -30,6 +30,7 @@ export function buildMatchEntry({ map, result }) {
     seed: result.seed,
     ticks: result.ticks,
     endReason: result.endReason,
+    stalemate: result.stalemate ?? false,
     ranking: result.ranking.map((r, place) => ({
       name: r.strategy,
       place,

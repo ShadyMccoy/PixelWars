@@ -25,11 +25,21 @@
 import { spawn } from "node:child_process";
 import { readFile, access } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, "..");
 const DEFAULT_AGENT_CMD = "claude -p";
+
+// Auto-matches: scale rating-phase match count to the active pool's
+// uncertainty deficit, so quiet iterations (few new/uncertain bots) run
+// short seasons and noisy ones (many fresh descendants) run long. RD
+// floor is ~50 at played=49, so each below-floor bot contributes
+// (49 - played) to the deficit; sum across active bots = total matches
+// the info-gain matchmaker needs to drive every uncertain bot to floor.
+const FLOOR_PLAYED = 49;
+const AUTO_MIN_MATCHES = 30;
+const AUTO_MAX_MATCHES = 250;
 
 const HELP = `Usage: node tournament/loop.js [options]
 
@@ -79,11 +89,12 @@ function parseArgs(argv) {
 // `captureStdout`/`captureStderr` are true those streams are captured
 // instead of inherited. Resolves with { stdout, stderr }; rejects on
 // non-zero exit.
-function runCmd(cmd, args, { input = null, captureStdout = false, captureStderr = false, env } = {}) {
+function runCmd(cmd, args, { input = null, captureStdout = false, captureStderr = false, env, shell = false } = {}) {
   return new Promise((resolveP, rejectP) => {
     const proc = spawn(cmd, args, {
       cwd: REPO_ROOT,
       env: env ?? process.env,
+      shell,
       stdio: [
         input != null ? "pipe" : "ignore",
         captureStdout ? "pipe" : "inherit",
@@ -109,9 +120,51 @@ function runCmd(cmd, args, { input = null, captureStdout = false, captureStderr 
   });
 }
 
+// Read rankings.json (post-last-season priors) and compute the number
+// of rating-phase matches needed to drive every active bot's synthetic
+// RD to the floor. Bots already at floor contribute 0; fresh bots
+// missing from rankings.json contribute the full FLOOR_PLAYED.
+async function pickAutoMatches() {
+  const indexUrl = pathToFileURL(resolve(REPO_ROOT, "src/strategies/index.js")).href + `?bust=${Date.now()}`;
+  const stratMod = await import(indexUrl);
+  const activeNames = stratMod.STRATEGY_LIST.map((s) => s.name);
+
+  let priors = {};
+  try {
+    const txt = await readFile(resolve(REPO_ROOT, "tournament/rankings.json"), "utf8");
+    const data = JSON.parse(txt);
+    for (const p of data.players ?? []) {
+      priors[p.name] = { played: p.matches ?? 0 };
+    }
+  } catch (e) {
+    if (e.code !== "ENOENT") throw e;
+    // No rankings yet: every active bot is fresh, deficit = N * FLOOR_PLAYED.
+  }
+
+  let deficit = 0;
+  let uncertain = 0;
+  for (const name of activeNames) {
+    const played = priors[name]?.played ?? 0;
+    const d = Math.max(0, FLOOR_PLAYED - played);
+    if (d > 0) uncertain++;
+    deficit += d;
+  }
+  const matches = Math.max(AUTO_MIN_MATCHES, Math.min(AUTO_MAX_MATCHES, deficit));
+  return { matches, uncertain, deficit, activeCount: activeNames.length };
+}
+
 async function runSeason(seasonArgs) {
+  const userArgs = seasonArgs.trim() ? seasonArgs.trim().split(/\s+/) : [];
+  const userSpecifiedMatches = userArgs.includes("--matches");
+
   const args = ["tournament/run.js", "--season"];
-  if (seasonArgs.trim()) args.push(...seasonArgs.trim().split(/\s+/));
+  if (userArgs.length) args.push(...userArgs);
+  if (!userSpecifiedMatches) {
+    const plan = await pickAutoMatches();
+    log(`Auto-matches: ${plan.matches} (deficit=${plan.deficit} across ${plan.uncertain}/${plan.activeCount} uncertain bots)`);
+    args.push("--matches", String(plan.matches));
+  }
+
   log(`Running season: node ${args.join(" ")}`);
   await runCmd("node", args);
 }
@@ -132,7 +185,7 @@ async function prepareSpawn(parent) {
   const m = r.stderr.match(/Suggested filename:\s*(.+)/);
   if (!m) throw new Error(`Could not parse suggested filename from --prepare-spawn for "${parent}":\n${r.stderr}`);
   const filepath = m[1].trim();
-  const nameMatch = filepath.match(/([^/]+)\.js$/);
+  const nameMatch = filepath.match(/([^/\\]+)\.js$/);
   if (!nameMatch) throw new Error(`Suggested filename has unexpected shape: ${filepath}`);
   return { prompt, filepath, newName: nameMatch[1], parent };
 }
@@ -158,7 +211,9 @@ the path (the basename without \`.js\`). Once written, exit.
   if (parts.length === 0) throw new Error("agent-cmd is empty");
   const [bin, ...args] = parts;
   log(`Invoking agent: ${agentCmd}`);
-  await runCmd(bin, args, { input: fullPrompt });
+  // shell:true so Windows finds .cmd/.bat shims (e.g. claude.cmd) on PATH;
+  // Node 20+ refuses to spawn them directly (CVE-2024-27980).
+  await runCmd(bin, args, { input: fullPrompt, shell: true });
 }
 
 async function registerDescendant({ newName, parent, filepath }) {

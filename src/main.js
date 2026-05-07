@@ -70,7 +70,11 @@ class App {
       app: this,
     });
     this.mapEditor = new MapEditor({ app: this });
+    // Initial match: seed the canvas with default form values + top of
+    // STRATEGY_LIST so something renders before rankings.json loads.
     this.loadCustomMap(this.mapEditor.read());
+    // Reset the override flag so the rankings loader can replace the
+    // initial canvas with a top-tier match once rankings.json arrives.
     this._userChoseMode = false;
     this.leagueViewer = new LeagueViewer({
       root: document.getElementById("league-viewer"),
@@ -83,6 +87,19 @@ class App {
       },
     });
     this.startLoop();
+  }
+
+  // Called by MapEditor whenever a form field or preset changes. Re-runs
+  // the match through the rankings flow when a selection is available;
+  // falls back to the default-strategies path when rankings haven't
+  // loaded (or when the selection has been emptied).
+  applyMapForm() {
+    this._userChoseMode = true;
+    if (this.leagueViewer?.canWatch()) {
+      this.leagueViewer.watchMatch();
+    } else {
+      this.loadCustomMap(this.mapEditor.read());
+    }
   }
 
   loadReplay(entry) {
@@ -120,18 +137,30 @@ class App {
     this.markDirty();
   }
 
-  loadCustomMap({ width, height, growth, maxArmy, wrap, numPlayers, botNames = null }) {
+  loadCustomMap({ width, height, growth, maxArmy, wrap, numPlayers, botNames = null, fixedLineup = false }) {
+    // Transient ad-hoc map: build a Game with the user's config and seat
+    // N bots in a ring. If `botNames` is given:
+    //   - fixedLineup=true: use the names in order (Reset path).
+    //   - otherwise: sample numPlayers random names from the pool.
+    // No botNames → top of STRATEGY_LIST.
     let strategies;
     if (botNames) {
       const pool = botNames.map((n) => ALL_STRATEGIES[n]).filter(Boolean);
-      if (pool.length < numPlayers) {
-        throw new Error(`Pool has ${pool.length} valid bots; need ${numPlayers}`);
-      }
-      strategies = [];
-      const remaining = pool.slice();
-      for (let i = 0; i < numPlayers; i++) {
-        const j = Math.floor(Math.random() * remaining.length);
-        strategies.push(remaining.splice(j, 1)[0]);
+      if (fixedLineup) {
+        if (pool.length < numPlayers) {
+          throw new Error(`Saved lineup has ${pool.length} valid bots; need ${numPlayers}`);
+        }
+        strategies = pool.slice(0, numPlayers);
+      } else {
+        if (pool.length < numPlayers) {
+          throw new Error(`Pool has ${pool.length} valid bots; need ${numPlayers}`);
+        }
+        strategies = [];
+        const remaining = pool.slice();
+        for (let i = 0; i < numPlayers; i++) {
+          const j = Math.floor(Math.random() * remaining.length);
+          strategies.push(remaining.splice(j, 1)[0]);
+        }
       }
     } else {
       strategies = STRATEGY_LIST.slice(0, numPlayers);
@@ -145,7 +174,13 @@ class App {
     this.autoStopOnWinner = false;
     this.modeKey = "custom";
     this.mode = { key: "custom", name: "Custom Map" };
-    this.lastCustomArgs = { width, height, growth, maxArmy, wrap, numPlayers };
+    // Snapshot the chosen lineup so Reset reproduces the same matchup
+    // (different seed, same bots & map config).
+    this.lastCustomArgs = {
+      width, height, growth, maxArmy, wrap, numPlayers,
+      botNames: strategies.map((s) => s.name),
+      fixedLineup: true,
+    };
 
     const cx = width / 2;
     const cy = height / 2;
