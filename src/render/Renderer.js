@@ -12,6 +12,8 @@ export class Renderer {
     this.showGlow = true;
     this.showMoves = true;
     this.showOverlay = false;
+    // "circle" | "line": visual used to depict an in-flight move.
+    this.moveStyle = "circle";
     this.hoverTile = null;
     this.selectedTile = null;
     // Viewport: zoom = 1 fits the map exactly to the canvas; panX/panY
@@ -222,40 +224,49 @@ export class Renderer {
     if (!moves || moves.length === 0) return;
     const fade = game.moveFadeTicks || 8;
     const tick = game.tick;
-    const lineWidth = Math.max(1, ts * 0.09);
-    const headLen = ts * 0.22;
+    // Same shape exponent as drawArmies so the size of the moving shape
+    // visually matches the size of the army that produced the move.
+    const refStrength = game.maxArmy || 6;
+    const minSize = 0.10;
+    const maxSize = 0.42;
+    const exponent = 0.7;
+    const denom = Math.max(1, fade - 1);
     ctx.lineCap = "round";
     for (let i = 0; i < moves.length; i++) {
       const m = moves[i];
       const age = tick - m.tick;
       if (age >= fade || age < 0) continue;
-      const alpha = (1 - age / fade) * 0.6;
-      const sx = (m.x + 0.5) * ts;
-      const sy = (m.y + 0.5) * ts;
-      const tx = (m.x + 0.5 + m.dx) * ts;
-      const ty = (m.y + 0.5 + m.dy) * ts;
-      // Comet-style taper: transparent at the origin, full accent at the
-      // destination. The gradient itself encodes direction, so a westbound
-      // and an eastbound move are never mirror images of each other.
-      const grad = ctx.createLinearGradient(sx, sy, tx, ty);
-      grad.addColorStop(0, hexToRgba(m.accent, 0));
-      grad.addColorStop(0.6, hexToRgba(m.accent, alpha * 0.5));
-      grad.addColorStop(1, hexToRgba(m.accent, alpha));
-      ctx.strokeStyle = grad;
-      ctx.fillStyle = hexToRgba(m.accent, alpha);
-      ctx.lineWidth = lineWidth;
-      ctx.beginPath();
-      ctx.moveTo(sx, sy);
-      ctx.lineTo(tx, ty);
-      ctx.stroke();
-      const ang = Math.atan2(ty - sy, tx - sx);
-      const back = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(tx, ty);
-      ctx.lineTo(tx + Math.cos(ang + back) * headLen, ty + Math.sin(ang + back) * headLen);
-      ctx.lineTo(tx + Math.cos(ang - back) * headLen, ty + Math.sin(ang - back) * headLen);
-      ctx.closePath();
-      ctx.fill();
+      const t = Math.min(1, age / denom);
+      const alpha = Math.max(0, 1 - age / fade) * 0.85;
+      const cx = (m.x + 0.5 + m.dx * t) * ts;
+      const cy = (m.y + 0.5 + m.dy * t) * ts;
+      const ratio = Math.max(0, Math.min(1, m.power / refStrength));
+      const size = ts * (minSize + (maxSize - minSize) * Math.pow(ratio, exponent));
+
+      if (this.moveStyle === "line") {
+        // Bar oriented perpendicular to the path, sliding from source
+        // to destination. Half-length scales with the move's strength.
+        const len = Math.hypot(m.dx, m.dy) || 1;
+        const nx = -m.dy / len;
+        const ny = m.dx / len;
+        const half = size * 1.15;
+        ctx.strokeStyle = hexToRgba(m.accent, alpha);
+        ctx.lineWidth = Math.max(2, ts * 0.12);
+        ctx.beginPath();
+        ctx.moveTo(cx - nx * half, cy - ny * half);
+        ctx.lineTo(cx + nx * half, cy + ny * half);
+        ctx.stroke();
+      } else {
+        // Filled circle in the player's color with an accent ring;
+        // radius scales with the move's strength.
+        ctx.fillStyle = hexToRgba(m.color, alpha);
+        ctx.beginPath();
+        ctx.arc(cx, cy, size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = hexToRgba(m.accent, alpha);
+        ctx.lineWidth = Math.max(1, ts * 0.05);
+        ctx.stroke();
+      }
     }
   }
 
