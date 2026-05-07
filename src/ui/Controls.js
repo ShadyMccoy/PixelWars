@@ -17,6 +17,7 @@ export class Controls {
     this.toggleTerritory = $("#toggle-territory");
     this.toggleGlow = $("#toggle-glow");
     this.toggleMoves = $("#toggle-moves");
+    this.moveStyle = $("#move-style");
     this.toggleOverlay = $("#toggle-overlay");
     this.tickLabel = $("#tick-label");
     this.seedPill = $("#seed-pill");
@@ -49,6 +50,13 @@ export class Controls {
       this.app.renderer.showMoves = this.toggleMoves.checked;
       this.app.markDirty();
     });
+    if (this.moveStyle) {
+      this.moveStyle.value = this.app.renderer.moveStyle;
+      this.moveStyle.addEventListener("change", () => {
+        this.app.renderer.moveStyle = this.moveStyle.value;
+        this.app.markDirty();
+      });
+    }
     this.toggleOverlay.addEventListener("change", () => {
       this.app.setOverlay(this.toggleOverlay.checked);
     });
