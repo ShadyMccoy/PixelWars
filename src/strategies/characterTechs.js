@@ -25,6 +25,9 @@ const RAW = {
   Bully:      { atk: 60, move: 40 },
   Conqueror:  { atk: 50, stack: 50 },
   Empire:     { atk: 60, move: 40 },
+  // Settler: stays neutral (20/20/20/20/20) like Pacifist_02, since the
+  // pacifist phase needs defense to survive and the endgame Empire-mode
+  // burst doesn't last long enough to justify atk-heavy investment.
 
   // Defensive / fortress
   Turtle:     { def: 50, stack: 50 },
