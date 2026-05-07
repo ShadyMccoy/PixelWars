@@ -107,10 +107,13 @@ export function runMatch({
     return b.totals.strength - a.totals.strength;
   });
 
+  const survivorCount = ranked.length - eliminated.size;
+  const stalemate = endReason === "max-ticks" && survivorCount > 1;
   const result = {
     seed,
     ticks: game.tick,
     endReason,
+    stalemate,
     ranking: ranked.map((p) => {
       const idx = players.indexOf(p);
       return {

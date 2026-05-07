@@ -11,6 +11,7 @@ import { loadMatches } from "./matchLog.js";
 import { fitPlackettLuce } from "./plackettLuce.js";
 import { saveRankings, getRankingsPath } from "./rankingsStore.js";
 import { RULES_VERSION } from "../src/core/version.js";
+import { expandManyToOrderings, isStalemate } from "./stalemateExpand.js";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -26,8 +27,11 @@ export function filterCurrentVersion(matches) {
 }
 
 export function buildRankings(matches) {
-  const orderings = matches.map((m) => m.ranking.map((r) => r.name));
-  const { skill, iterations, converged } = fitPlackettLuce(orderings);
+  // Stalemates contribute N synthetic orderings drawn from each survivor's
+  // strength+territory share, each weighted 1/N so total evidence equals
+  // one decisive match. Decisive matches contribute one ordering, weight 1.
+  const { orderings, weights } = expandManyToOrderings(matches);
+  const { skill, iterations, converged } = fitPlackettLuce(orderings, { weights });
 
   const stats = new Map();
   for (const name of Object.keys(skill)) {
@@ -36,13 +40,16 @@ export function buildRankings(matches) {
   for (const m of matches) {
     const K = m.ranking.length;
     if (K < 2) continue;
+    const stale = isStalemate(m);
     for (const r of m.ranking) {
       const s = stats.get(r.name);
       if (!s) continue;
       s.matches++;
       s.sumPlace += r.place;
       s.sumOf += K - 1;
-      if (r.place === 0) s.wins++;
+      // Don't credit a "win" for placing 1st via the territory-tiebreak
+      // at stalemate; that's the whole point of the partial-credit fix.
+      if (r.place === 0 && !stale) s.wins++;
     }
   }
 

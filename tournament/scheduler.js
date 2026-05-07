@@ -11,6 +11,7 @@
 import { runMatch } from "./arena.js";
 import { mulberry32 } from "../src/core/rng.js";
 import { fitPlackettLuce } from "./plackettLuce.js";
+import { expandManyToOrderings } from "./stalemateExpand.js";
 
 // Rating shape mirrors the original Glicko output (rating, rd, played)
 // so downstream consumers — season.js, spawn.js, SeasonViewer.js —
@@ -51,6 +52,7 @@ function blankRow(s) {
 
 function recordResult(standings, result) {
   const slots = result.ranking.length;
+  const stale = result.stalemate === true;
   for (let i = 0; i < slots; i++) {
     const r = result.ranking[i];
     const s = standings.get(r.strategy);
@@ -60,7 +62,9 @@ function recordResult(standings, result) {
     s.points += slots - 1 - i; // Borda
     s.totalTerritory += r.territory;
     if (r.survived) s.survived++;
-    if (i === 0 && r.survived) s.wins++;
+    // Don't credit a "win" for placing 1st via the territory-tiebreak
+    // at stalemate; partial credit comes through the PL fit instead.
+    if (i === 0 && r.survived && !stale) s.wins++;
     if (r.eliminatedAt != null) {
       s.totalEliminationTick += r.eliminatedAt;
       s.eliminationCount++;
@@ -256,9 +260,11 @@ export function runRatingTournament({
     for (const s of lineup) live.get(s.name).played++;
   }
 
-  // Fit PL on every match's full finish order.
-  const orderings = results.map((r) => r.ranking.map((e) => e.strategy));
-  const { skill } = fitPlackettLuce(orderings);
+  // Fit PL on every match's full finish order. Stalemate matches are
+  // expanded into N synthetic orderings drawn from each survivor's
+  // strength+territory share so they get partial credit.
+  const { orderings, weights } = expandManyToOrderings(results);
+  const { skill } = fitPlackettLuce(orderings, { weights });
 
   const ratings = new Map();
   const ratingsObj = {};
