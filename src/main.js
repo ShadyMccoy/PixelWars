@@ -8,6 +8,9 @@ import { MatchPicker } from "./ui/MatchPicker.js";
 import { LeagueViewer } from "./ui/LeagueViewer.js";
 import { SeasonViewer } from "./ui/SeasonViewer.js";
 import { MapEditor } from "./ui/MapEditor.js";
+import { CodeModal } from "./ui/CodeModal.js";
+import { CustomBots, loadStrategyFromCode } from "./ui/CustomBots.js";
+import { getStrategySource } from "./ui/strategySource.js";
 import { ALL_STRATEGIES, STRATEGY_LIST } from "./strategies/index.js";
 
 class App {
@@ -58,6 +61,10 @@ class App {
     // Tracks whether the user has already touched the controls so the
     // async rankings loader doesn't yank them out of an active view.
     this._userChoseMode = false;
+
+    this.customBots = new CustomBots();
+    this.codeModal = new CodeModal();
+    this._bindTryBotButton();
 
     this.matchPicker = new MatchPicker({
       root: document.getElementById("match-picker"),
@@ -143,9 +150,10 @@ class App {
     //   - fixedLineup=true: use the names in order (Reset path).
     //   - otherwise: sample numPlayers random names from the pool.
     // No botNames → top of STRATEGY_LIST.
+    const lookupBot = (n) => this.customBots.getStrategy(n) ?? ALL_STRATEGIES[n];
     let strategies;
     if (botNames) {
-      const pool = botNames.map((n) => ALL_STRATEGIES[n]).filter(Boolean);
+      const pool = botNames.map(lookupBot).filter(Boolean);
       if (fixedLineup) {
         if (pool.length < numPlayers) {
           throw new Error(`Saved lineup has ${pool.length} valid bots; need ${numPlayers}`);
@@ -163,7 +171,12 @@ class App {
         }
       }
     } else {
-      strategies = STRATEGY_LIST.slice(0, numPlayers);
+      // Default lineup: any pasted custom bots take the front slots so a
+      // fresh "Use in match" actually shows up without manual setup.
+      const customs = this.customBots.list().map((e) => e.strategy);
+      const corePool = STRATEGY_LIST.filter((s) => !this.customBots.has(s.name));
+      const merged = [...customs, ...corePool];
+      strategies = merged.slice(0, numPlayers);
       if (strategies.length < numPlayers) {
         throw new Error(`Not enough strategies for ${numPlayers} players`);
       }
@@ -198,6 +211,7 @@ class App {
       lineupStrategies: strategies,
       startPositions,
       seed,
+      customStrategies: this.customBots.serializeUsed(strategies.map((s) => s.name)),
     });
     this.renderer.resize();
     this.chart.resize();
@@ -317,6 +331,62 @@ class App {
     } else {
       this.loadCustomMap(this.mapEditor.read());
     }
+  }
+
+  _bindTryBotButton() {
+    const btn = document.getElementById("btn-try-bot");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      this.codeModal.openEdit({
+        onSubmit: ({ name, code }) => this.useCustomBot({ name, code }),
+      });
+    });
+  }
+
+  // Open the read-only code viewer for a strategy by name. Looks at
+  // pasted bots first, then falls back to fetching the file from disk
+  // (or to act.toString() for factory-built bots).
+  async viewStrategyCode(name) {
+    const strategy = this.customBots.getStrategy(name) ?? ALL_STRATEGIES[name];
+    if (!strategy) return;
+    this.codeModal.openView({
+      title: name,
+      subtitle: "Loading source…",
+      code: "",
+    });
+    const { source, origin } = await getStrategySource(strategy, { customBots: this.customBots });
+    const subtitle = origin === "custom"
+      ? "Custom bot from this session."
+      : origin === "act-toString"
+        ? "Source not on disk; showing act() as compiled."
+        : `From ${origin}`;
+    this.codeModal.openView({ title: name, subtitle, code: source });
+  }
+
+  // Validate and register a pasted bot, then immediately reload the
+  // current map with the new bot seated in slot 0. Subsequent random
+  // pools also include it.
+  async useCustomBot({ name, code }) {
+    let strategy;
+    try {
+      strategy = await loadStrategyFromCode(code);
+    } catch (err) {
+      throw new Error(`Couldn't load module: ${err.message}`);
+    }
+    this.customBots.add({ name, code, strategy });
+    this._userChoseMode = true;
+    const config = this.mapEditor.read();
+    const { numPlayers } = config;
+    const otherCustoms = this.customBots
+      .list()
+      .map((e) => e.name)
+      .filter((n) => n !== name);
+    const corePool = STRATEGY_LIST.map((s) => s.name)
+      .filter((n) => !this.customBots.has(n));
+    const fillers = [...otherCustoms, ...corePool].slice(0, Math.max(0, numPlayers - 1));
+    const botNames = [name, ...fillers];
+    this.loadCustomMap({ ...config, botNames, fixedLineup: true });
+    this.controls.log(`⚙ Loaded custom bot "${name}" — seated in slot 1`);
   }
 
   markDirty() {

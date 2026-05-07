@@ -91,7 +91,7 @@ export class Renderer {
     const ts = this.tileSize;
     for (const tile of this.game.map.tiles) {
       const owner = tile.ownerArmy();
-      if (!owner) continue;
+      if (!owner || !owner.player) continue;
       const alpha = 0.10 + 0.20 * (owner.strength / owner.maxStrength);
       ctx.fillStyle = hexToRgba(owner.player.color, alpha);
       ctx.fillRect(tile.pos.x * ts, tile.pos.y * ts, ts, ts);
@@ -155,6 +155,7 @@ export class Renderer {
     const exponent = 0.7;
     for (const army of this.game.armies) {
       if (!army.alive) continue;
+      if (!army.player) continue;
       if (!army.bornAt) army.bornAt = now;
       const ratio = Math.max(0, Math.min(1, army.strength / army.maxStrength));
       const radiusFactor = minRadius + (maxRadius - minRadius) * Math.pow(ratio, exponent);

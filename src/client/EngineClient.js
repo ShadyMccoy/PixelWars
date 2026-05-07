@@ -71,7 +71,7 @@ export class EngineClient {
   // before the first snapshot arrives.
   // ------------------------------------------------------------------
 
-  loadCustom({ mapConfig, lineupStrategies, startPositions, seed }) {
+  loadCustom({ mapConfig, lineupStrategies, startPositions, seed, customStrategies = [] }) {
     const palette = PALETTE.slice(0, lineupStrategies.length);
     const lineup = lineupStrategies.map((s) => s.name);
     this._primeView({
@@ -86,6 +86,7 @@ export class EngineClient {
       palette,
       startPositions,
       seed,
+      customStrategies,
     });
   }
 

@@ -21,15 +21,19 @@ const host = new EngineHost({
 
 self.addEventListener("message", (e) => {
   const { type, payload } = e.data || {};
+  const log = (err) => self.postMessage({
+    type: "log",
+    payload: `engine: ${err?.message ?? String(err)}`,
+  });
   switch (type) {
     case MSG_INIT_CUSTOM:
-      host.initCustom(payload);
+      Promise.resolve(host.initCustom(payload)).catch(log);
       break;
     case MSG_INIT_REPLAY:
-      host.initReplay(payload);
+      Promise.resolve(host.initReplay(payload)).catch(log);
       break;
     case MSG_RESET:
-      host.reset();
+      Promise.resolve(host.reset()).catch(log);
       break;
     case MSG_SET_PLAYING:
       host.setPlaying(!!payload);
