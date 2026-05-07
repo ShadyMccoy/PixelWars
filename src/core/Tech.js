@@ -18,8 +18,12 @@ export const NEUTRAL_TECH = Object.freeze({
 // Berserker, Turtle, Hunter, SlowAndSteady, Swarm. The 2026-05 sweep
 // of 50 Conqueror_g4_1f6790 tech variants then showed `move` running
 // away with the simplex (pureM at 1268 vs orig 90/0/2/4/4 at 1119),
-// so this revision halves move's slope and triples stack/prod to
-// bring all four non-def knobs into the same ~1.3x dynamic-range band.
+// so v3 halved move's slope and tripled stack/prod. v3 calibration
+// (cross-strategy avg) showed move and atk near zero but stack/prod
+// overshooting at +0.7%/+0.6% per point — stack/prod compound across
+// ticks while atk fires only on attack, so equal-range slopes aren't
+// equal value. v4 cuts stack/prod ~40% (0.0030 → 0.0018) and leaves
+// move/atk/def alone.
 //
 // `move` is special: its multiplier is the *minimum garrison* an
 // attacking army must leave behind in strength units. Lower garrison
@@ -30,10 +34,10 @@ export const NEUTRAL_TECH = Object.freeze({
 export const SLOPES = Object.freeze({
   move:  0.0050,  // tech 0 -> 1.5 garrison, tech 100 -> 1.0 garrison
                   // (linear, no clamp; 1.5x dynamic range, below
-                  // atk/stack/prod's 1.32x in attack-strength terms
-                  // and well below def's 1.95x)
-  stack: 0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
-  prod:  0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
+                  // atk's 1.32x in attack-strength terms and well
+                  // below def's 1.95x)
+  stack: 0.0018,  // tech 0 -> 0.964x, tech 100 -> 1.144x
+  prod:  0.0018,  // tech 0 -> 0.964x, tech 100 -> 1.144x
   atk:   0.0030,  // tech 0 -> 0.94x, tech 100 -> 1.24x
   def:   0.0080,  // tech 0 -> 0.84x, tech 100 -> 1.64x
 });
