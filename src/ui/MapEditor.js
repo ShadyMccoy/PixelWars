@@ -67,6 +67,18 @@ export class MapEditor {
       wrap: !!this.wrap.checked,
     };
   }
+
+  // Sync form fields from an external config (e.g. URL-loaded match)
+  // without firing the change handlers — the caller is already doing
+  // its own load and shouldn't be rebounded back into applyMapForm.
+  write({ width, height, growth, maxArmy, wrap, numPlayers }) {
+    if (width != null) this.width.value = width;
+    if (height != null) this.height.value = height;
+    if (growth != null) this.growth.value = growth;
+    if (maxArmy != null) this.maxArmy.value = maxArmy;
+    if (wrap != null) this.wrap.checked = !!wrap;
+    if (numPlayers != null) this.players.value = numPlayers;
+  }
 }
 
 function clampInt(raw, lo, hi, fallback) {

@@ -11,6 +11,7 @@ import { MapEditor } from "./ui/MapEditor.js";
 import { CodeModal } from "./ui/CodeModal.js";
 import { CustomBots, loadStrategyFromCode } from "./ui/CustomBots.js";
 import { getStrategySource } from "./ui/strategySource.js";
+import { readUrlMatchInfo, updateUrl } from "./ui/shareLink.js";
 import { ALL_STRATEGIES, STRATEGY_LIST } from "./strategies/index.js";
 
 class App {
@@ -77,12 +78,17 @@ class App {
       app: this,
     });
     this.mapEditor = new MapEditor({ app: this });
-    // Initial match: seed the canvas with default form values + top of
-    // STRATEGY_LIST so something renders before rankings.json loads.
-    this.loadCustomMap(this.mapEditor.read());
-    // Reset the override flag so the rankings loader can replace the
-    // initial canvas with a top-tier match once rankings.json arrives.
-    this._userChoseMode = false;
+    // Initial match: prefer a shared URL if one is present, otherwise
+    // seed the canvas with default form values + top of STRATEGY_LIST
+    // so something renders before rankings.json loads.
+    const urlInfo = readUrlMatchInfo();
+    const loadedFromUrl = urlInfo ? this._tryLoadFromUrl(urlInfo) : false;
+    if (!loadedFromUrl) {
+      this.loadCustomMap(this.mapEditor.read());
+      // Reset the override flag so the rankings loader can replace the
+      // initial canvas with a top-tier match once rankings.json arrives.
+      this._userChoseMode = false;
+    }
     this.leagueViewer = new LeagueViewer({
       root: document.getElementById("league-viewer"),
       refreshButton: document.getElementById("btn-leagues-refresh"),
@@ -154,6 +160,7 @@ class App {
     this.bindCanvas();
     this._setPlayingLocal(true);
     this.markDirty();
+    updateUrl(this.currentMatch);
   }
 
   loadCustomMap({ width, height, growth, maxArmy, wrap, numPlayers, botNames = null, fixedLineup = false, seed = null, startPositions = null }) {
@@ -254,6 +261,50 @@ class App {
     this.bindCanvas();
     this._setPlayingLocal(true);
     this.markDirty();
+    updateUrl(this.currentMatch);
+  }
+
+  // Best-effort load of a match described by URL query params. Returns
+  // true on success, false if the URL doesn't carry enough info or if
+  // any referenced bot isn't available — in which case the caller falls
+  // back to the default startup flow.
+  _tryLoadFromUrl(info) {
+    if (!info || !info.mapConfig) return false;
+    const c = info.mapConfig;
+    const lookupBot = (n) => this.customBots.getStrategy(n) ?? ALL_STRATEGIES[n];
+    const hasLineup = Array.isArray(info.lineup) && info.lineup.length > 0;
+    if (hasLineup && info.lineup.some((n) => !lookupBot(n))) {
+      console.warn("Shared link references unknown bot(s); using defaults.", info.lineup);
+      return false;
+    }
+    const numPlayers = hasLineup ? info.lineup.length : null;
+    this.mapEditor.write({
+      width: c.width,
+      height: c.height,
+      growth: c.growth,
+      maxArmy: c.maxArmy,
+      wrap: c.wrap,
+      numPlayers,
+    });
+    this._userChoseMode = true;
+    try {
+      this.loadCustomMap({
+        width: c.width,
+        height: c.height,
+        growth: c.growth,
+        maxArmy: c.maxArmy,
+        wrap: !!c.wrap,
+        numPlayers: numPlayers ?? this.mapEditor.read().numPlayers,
+        botNames: hasLineup ? info.lineup : null,
+        fixedLineup: hasLineup,
+        seed: info.seed,
+        startPositions: info.startPositions,
+      });
+      return true;
+    } catch (err) {
+      console.warn("Couldn't load shared match from URL:", err);
+      return false;
+    }
   }
 
   // Snapshot the current match in a form ready for `loadFromMatchInfo` or
