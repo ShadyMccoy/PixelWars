@@ -1,6 +1,4 @@
-import { Game } from "./core/Game.js";
-import { Player } from "./core/Player.js";
-import { startingBlobSide, placeStartingBlob } from "./core/startup.js";
+import { EngineClient } from "./client/EngineClient.js";
 import { Renderer } from "./render/Renderer.js";
 import { StatsChart } from "./render/StatsChart.js";
 import { TerritoryChart } from "./render/TerritoryChart.js";
@@ -12,19 +10,6 @@ import { SeasonViewer } from "./ui/SeasonViewer.js";
 import { MapEditor } from "./ui/MapEditor.js";
 import { ALL_STRATEGIES, STRATEGY_LIST } from "./strategies/index.js";
 
-// Mirrors tournament/arena.js so a replayed match looks the same on screen
-// as the headless run.
-const REPLAY_PALETTE = [
-  { color: "#ff4d6d", accent: "#ff8fa3" },
-  { color: "#3ea6ff", accent: "#8ecbff" },
-  { color: "#a16bff", accent: "#cdb4ff" },
-  { color: "#52e0a4", accent: "#a8f3d2" },
-  { color: "#ffb84d", accent: "#ffd699" },
-  { color: "#f97aff", accent: "#fbc2ff" },
-  { color: "#ffe066", accent: "#fff3a3" },
-  { color: "#7cffb2", accent: "#bbffd6" },
-];
-
 class App {
   constructor() {
     this.canvas = document.getElementById("game-canvas");
@@ -35,14 +20,33 @@ class App {
     this.mode = null;
     this.playing = true;
     this.speed = 1;
-    this.lastFrame = performance.now();
-    this.tickAccumulator = 0;
-    this.tickInterval = 1 / 30;
-    this.renderInterval = 200;
-    this.lastRender = 0;
     this._needsRender = true;
     this.activePlayer = null;
-    this.lastWinnerLogged = null;
+
+    // Engine boundary: the simulation runs in a worker, the client
+    // exposes a GameView that renderer / HUD / charts read like a
+    // local Game. Nothing downstream needs to know there's a worker.
+    this.engine = new EngineClient();
+    this.game = this.engine.game;
+
+    this.renderer = new Renderer({ canvas: this.canvas, game: this.game });
+    this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
+    this.territoryChart = new TerritoryChart({
+      canvas: this.territoryChartCanvas,
+      game: this.game,
+    });
+    this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
+
+    this.engine.on("snapshot", () => this.markDirty());
+    this.engine.on("players:changed", () => this.markDirty());
+    this.engine.on("winner", ({ name }) => {
+      this.controls.log(`👑 ${name} wins!`);
+      if (this.autoStopOnWinner && this.playing) this._setPlayingLocal(false);
+    });
+    this.engine.on("draw", () => {
+      this.controls.log(`💀 Mutual destruction.`);
+      if (this.autoStopOnWinner && this.playing) this._setPlayingLocal(false);
+    });
 
     this.controls = new Controls({ app: this });
     this.replayEntry = null;
@@ -99,10 +103,6 @@ class App {
   }
 
   loadReplay(entry) {
-    // Saved entries are self-contained: mapConfig + lineup + startPositions
-    // + seed are all the inputs runMatch (and Game) need. Reproducing the
-    // headless result in the browser is a matter of feeding the same
-    // values into a Game instance.
     const strategies = entry.lineup.map((name) => {
       const s = ALL_STRATEGIES[name];
       if (!s) throw new Error(`Replay references unknown strategy: ${name}`);
@@ -113,62 +113,27 @@ class App {
     this.autoStopOnWinner = true;
     this.modeKey = "replay";
     this.mode = { key: "replay", name: `Replay #${entry.id}` };
-    this.game = new Game({ ...entry.mapConfig, seed: entry.seed });
 
-    const players = strategies.map((s, i) => {
-      const palette = REPLAY_PALETTE[i % REPLAY_PALETTE.length];
-      // Per-slot saved tech wins (legacy replays predate it; fall back
-      // to the strategy's character tech, which is what runMatch sees).
-      const tech = entry.lineupTech?.[i] ?? s.tech;
-      return new Player({
-        name: `${s.name}#${i + 1}`,
-        color: palette.color,
-        accent: palette.accent,
-        strategy: s,
-        tech,
-      });
+    this.engine.loadReplay({
+      mapConfig: entry.mapConfig,
+      seed: entry.seed,
+      lineupStrategies: strategies,
+      lineupTech: entry.lineupTech ?? null,
+      startPositions: entry.startPositions,
     });
-    players.forEach((p) => this.game.addPlayer(p));
-    {
-      const side = startingBlobSide(this.game.map, entry.startPositions.length);
-      entry.startPositions.forEach((pos, i) => {
-        placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
-      });
-    }
+    this.renderer.resize();
+    this.chart.resize();
+    this.territoryChart.resize();
 
     const flagText = (entry.flags ?? []).map((f) => f.tag).join(" · ") || "saved";
     document.getElementById("mode-description").textContent =
       `Replay #${entry.id} · ${entry.map} · seed=${entry.seed} · ${flagText}`;
 
-    if (!this.renderer) {
-      this.renderer = new Renderer({ canvas: this.canvas, game: this.game });
-    } else {
-      this.renderer.setGame(this.game);
-    }
-    if (!this.chart) {
-      this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
-    } else {
-      this.chart.setGame(this.game);
-    }
-
-    if (!this.territoryChart) {
-      this.territoryChart = new TerritoryChart({ canvas: this.territoryChartCanvas, game: this.game });
-    } else {
-      this.territoryChart.setGame(this.game);
-    }
-    if (!this.hud) {
-      this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
-    } else {
-      this.hud.setGame(this.game);
-    }
-
     this.activePlayer = this.game.players.list[0] ?? null;
-    this.lastWinnerLogged = null;
     this.matchPicker?.setActive(entry.id);
     this.controls.log(`▶ Replay #${entry.id} · ${entry.lineup.join(", ")}`);
     this.bindCanvas();
-    this.playing = true;
-    this.controls.setPlaying(true);
+    this._setPlayingLocal(true);
     this.markDirty();
   }
 
@@ -216,69 +181,36 @@ class App {
       botNames: strategies.map((s) => s.name),
       fixedLineup: true,
     };
-    this.game = new Game({ width, height, growth, maxArmy, wrap, seed });
 
     const cx = width / 2;
     const cy = height / 2;
     const r = Math.min(width, height) * 0.4;
-    const positions = [];
+    const startPositions = [];
     for (let i = 0; i < numPlayers; i++) {
       const angle = (i / numPlayers) * Math.PI * 2;
       const x = Math.max(1, Math.min(width - 2, Math.floor(cx + Math.cos(angle) * r)));
       const y = Math.max(1, Math.min(height - 2, Math.floor(cy + Math.sin(angle) * r)));
-      positions.push({ x, y });
+      startPositions.push({ x, y });
     }
 
-    const players = strategies.map((s, i) => {
-      const palette = REPLAY_PALETTE[i % REPLAY_PALETTE.length];
-      return new Player({
-        name: `${s.name}#${i + 1}`,
-        color: palette.color,
-        accent: palette.accent,
-        strategy: s,
-        tech: s.tech,
-      });
+    this.engine.loadCustom({
+      mapConfig: { width, height, growth, maxArmy, wrap },
+      lineupStrategies: strategies,
+      startPositions,
+      seed,
     });
-    players.forEach((p) => this.game.addPlayer(p));
-    {
-      const side = startingBlobSide(this.game.map, positions.length);
-      positions.forEach((pos, i) => {
-        placeStartingBlob(this.game, players[i], pos.x, pos.y, side);
-      });
-    }
+    this.renderer.resize();
+    this.chart.resize();
+    this.territoryChart.resize();
 
     document.getElementById("mode-description").textContent =
       `Custom · ${width}×${height} · g=${growth} · maxArmy=${maxArmy}${wrap ? " · wrap" : ""} · ${numPlayers} bots`;
 
-    if (!this.renderer) {
-      this.renderer = new Renderer({ canvas: this.canvas, game: this.game });
-    } else {
-      this.renderer.setGame(this.game);
-    }
-    if (!this.chart) {
-      this.chart = new StatsChart({ canvas: this.chartCanvas, game: this.game });
-    } else {
-      this.chart.setGame(this.game);
-    }
-
-    if (!this.territoryChart) {
-      this.territoryChart = new TerritoryChart({ canvas: this.territoryChartCanvas, game: this.game });
-    } else {
-      this.territoryChart.setGame(this.game);
-    }
-    if (!this.hud) {
-      this.hud = new HUD({ root: this.hudRoot, game: this.game, app: this });
-    } else {
-      this.hud.setGame(this.game);
-    }
-
     this.activePlayer = this.game.players.list[0] ?? null;
-    this.lastWinnerLogged = null;
     this.matchPicker?.setActive(null);
     this.controls.log(`🛠 Custom map · ${width}×${height} · ${numPlayers} bots`);
     this.bindCanvas();
-    this.playing = true;
-    this.controls.setPlaying(true);
+    this._setPlayingLocal(true);
     this.markDirty();
   }
 
@@ -350,14 +282,31 @@ class App {
   }
 
   togglePlay() {
-    this.playing = !this.playing;
+    this._setPlayingLocal(!this.playing);
+  }
+
+  _setPlayingLocal(playing) {
+    this.playing = !!playing;
     this.controls.setPlaying(this.playing);
+    this.engine.setPlaying(this.playing);
+  }
+
+  setSpeed(speed) {
+    this.speed = speed;
+    this.engine.setSpeed(speed);
+  }
+
+  setOverlay(enabled) {
+    // Plan caches only cross the worker boundary while overlay is on.
+    // Toggle both sides in lock-step so a stale plan from a prior tick
+    // doesn't render after the user disables the overlay.
+    this.renderer.showOverlay = !!enabled;
+    this.engine.setOverlay(!!enabled);
     this.markDirty();
   }
 
   stepOnce() {
-    this.game.step(this.tickInterval);
-    this.markDirty();
+    this.engine.stepOnce();
   }
 
   reload() {
@@ -375,52 +324,21 @@ class App {
   }
 
   startLoop() {
+    // Engine simulation runs in the worker. The main thread only
+    // renders, so a slow tick on a big map cannot block scroll, hover,
+    // or HUD interactions.
     const loop = (now) => {
-      const dt = Math.min(0.1, (now - this.lastFrame) / 1000);
-      this.lastFrame = now;
-      if (this.playing) {
-        this.tickAccumulator += dt * this.speed;
-        let safety = 32;
-        while (this.tickAccumulator >= this.tickInterval && safety-- > 0) {
-          this.game.step(this.tickInterval);
-          this.tickAccumulator -= this.tickInterval;
-        }
-      }
-      const shouldRender =
-        this._needsRender || (this.playing && now - this.lastRender >= this.renderInterval);
-      if (shouldRender) {
-        if (this.game._territoryDirty) this.game.recomputeTerritory();
+      if (this._needsRender) {
         this.renderer.draw(now);
         this.chart.draw();
         this.territoryChart.draw();
         this.hud.update();
         this.controls.setTick(this.game.tick);
-        this.lastRender = now;
         this._needsRender = false;
       }
-      this.checkWinner();
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
-  }
-
-  checkWinner() {
-    const alive = this.game.livingPlayers();
-    if (alive.length === 1 && this.game.tick > 30 && this.lastWinnerLogged !== alive[0].id) {
-      this.lastWinnerLogged = alive[0].id;
-      this.controls.log(`👑 ${alive[0].name} wins!`);
-      if (this.autoStopOnWinner && this.playing) {
-        this.playing = false;
-        this.controls.setPlaying(false);
-      }
-    } else if (alive.length === 0 && this.game.tick > 30 && this.lastWinnerLogged !== "draw") {
-      this.lastWinnerLogged = "draw";
-      this.controls.log(`💀 Mutual destruction.`);
-      if (this.autoStopOnWinner && this.playing) {
-        this.playing = false;
-        this.controls.setPlaying(false);
-      }
-    }
   }
 }
 
