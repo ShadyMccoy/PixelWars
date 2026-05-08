@@ -40,6 +40,9 @@ import Tempo from "./Tempo.js";
 import Empire from "./Empire.js";
 import Settler from "./Settler.js";
 import Drumline from "./Drumline.js";
+import Sniper from "./Sniper.js";
+import Hammer from "./Hammer.js";
+import Stockpile from "./Stockpile.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -91,6 +94,9 @@ export const ALL_STRATEGY_LIST = [
   Empire,
   Settler,
   Drumline,
+  Sniper,
+  Hammer,
+  Stockpile,
   ...GENERATED,
   ...DESCENDANTS,
 ];
