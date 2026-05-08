@@ -17,15 +17,32 @@ import Conqueror_g10_ed740d from "./Conqueror_g10_ed740d.js";
 import Conqueror_g10_f5e8bf from "./Conqueror_g10_f5e8bf.js";
 import Conqueror_g11_03759c from "./Conqueror_g11_03759c.js";
 import Conqueror_g11_15ba79 from "./Conqueror_g11_15ba79.js";
+import Conqueror_g11_224717 from "./Conqueror_g11_224717.js";
 import Conqueror_g11_6c48eb from "./Conqueror_g11_6c48eb.js";
 import Conqueror_g11_755fa9 from "./Conqueror_g11_755fa9.js";
+import Conqueror_g11_898e1e from "./Conqueror_g11_898e1e.js";
 import Conqueror_g11_95d739 from "./Conqueror_g11_95d739.js";
+import Conqueror_g11_bc4fe7 from "./Conqueror_g11_bc4fe7.js";
 import Conqueror_g11_cb02bc from "./Conqueror_g11_cb02bc.js";
 import Conqueror_g11_e13995 from "./Conqueror_g11_e13995.js";
 import Conqueror_g12_f23241 from "./Conqueror_g12_f23241.js";
 import Conqueror_g13_036b6a from "./Conqueror_g13_036b6a.js";
+import Conqueror_g13_037c96 from "./Conqueror_g13_037c96.js";
 import Conqueror_g13_402951 from "./Conqueror_g13_402951.js";
 import Conqueror_g13_8fa0f9 from "./Conqueror_g13_8fa0f9.js";
+import Conqueror_g13_b41df9 from "./Conqueror_g13_b41df9.js";
+import Conqueror_g14_2486d3 from "./Conqueror_g14_2486d3.js";
+import Conqueror_g14_2ae72f from "./Conqueror_g14_2ae72f.js";
+import Conqueror_g14_7d3830 from "./Conqueror_g14_7d3830.js";
+import Conqueror_g15_8c3a18 from "./Conqueror_g15_8c3a18.js";
+import Conqueror_g15_9bb6eb from "./Conqueror_g15_9bb6eb.js";
+import Conqueror_g15_c74a3b from "./Conqueror_g15_c74a3b.js";
+import Conqueror_g15_e978b4 from "./Conqueror_g15_e978b4.js";
+import Conqueror_g16_3f3a3d from "./Conqueror_g16_3f3a3d.js";
+import Conqueror_g16_e79590 from "./Conqueror_g16_e79590.js";
+import Conqueror_g17_397562 from "./Conqueror_g17_397562.js";
+import Conqueror_g17_6d0fb0 from "./Conqueror_g17_6d0fb0.js";
+import Conqueror_g18_7e8c2e from "./Conqueror_g18_7e8c2e.js";
 import Conqueror_g1_879a88 from "./Conqueror_g1_879a88.js";
 import Conqueror_g2_083569 from "./Conqueror_g2_083569.js";
 import Conqueror_g2_0aeb3a from "./Conqueror_g2_0aeb3a.js";
@@ -58,6 +75,7 @@ import Conqueror_g5_0b2647 from "./Conqueror_g5_0b2647.js";
 import Conqueror_g5_171570 from "./Conqueror_g5_171570.js";
 import Conqueror_g5_25aa91 from "./Conqueror_g5_25aa91.js";
 import Conqueror_g5_2a3d2a from "./Conqueror_g5_2a3d2a.js";
+import Conqueror_g5_3087ea from "./Conqueror_g5_3087ea.js";
 import Conqueror_g5_3d9064 from "./Conqueror_g5_3d9064.js";
 import Conqueror_g5_4c1ea4 from "./Conqueror_g5_4c1ea4.js";
 import Conqueror_g5_4ca8e8 from "./Conqueror_g5_4ca8e8.js";
@@ -162,6 +180,7 @@ import Conqueror_g9_5c4555 from "./Conqueror_g9_5c4555.js";
 import Conqueror_g9_65e80c from "./Conqueror_g9_65e80c.js";
 import Conqueror_g9_682bef from "./Conqueror_g9_682bef.js";
 import Conqueror_g9_a22c1e from "./Conqueror_g9_a22c1e.js";
+import Conqueror_g9_aa6fcf from "./Conqueror_g9_aa6fcf.js";
 import Conqueror_g9_b68f52 from "./Conqueror_g9_b68f52.js";
 import Conqueror_g9_bb8efc from "./Conqueror_g9_bb8efc.js";
 import Conqueror_g9_bbe71a from "./Conqueror_g9_bbe71a.js";
@@ -232,15 +251,32 @@ export const DESCENDANTS = [
   Conqueror_g10_f5e8bf,
   Conqueror_g11_03759c,
   Conqueror_g11_15ba79,
+  Conqueror_g11_224717,
   Conqueror_g11_6c48eb,
   Conqueror_g11_755fa9,
+  Conqueror_g11_898e1e,
   Conqueror_g11_95d739,
+  Conqueror_g11_bc4fe7,
   Conqueror_g11_cb02bc,
   Conqueror_g11_e13995,
   Conqueror_g12_f23241,
   Conqueror_g13_036b6a,
+  Conqueror_g13_037c96,
   Conqueror_g13_402951,
   Conqueror_g13_8fa0f9,
+  Conqueror_g13_b41df9,
+  Conqueror_g14_2486d3,
+  Conqueror_g14_2ae72f,
+  Conqueror_g14_7d3830,
+  Conqueror_g15_8c3a18,
+  Conqueror_g15_9bb6eb,
+  Conqueror_g15_c74a3b,
+  Conqueror_g15_e978b4,
+  Conqueror_g16_3f3a3d,
+  Conqueror_g16_e79590,
+  Conqueror_g17_397562,
+  Conqueror_g17_6d0fb0,
+  Conqueror_g18_7e8c2e,
   Conqueror_g1_879a88,
   Conqueror_g2_083569,
   Conqueror_g2_0aeb3a,
@@ -273,6 +309,7 @@ export const DESCENDANTS = [
   Conqueror_g5_171570,
   Conqueror_g5_25aa91,
   Conqueror_g5_2a3d2a,
+  Conqueror_g5_3087ea,
   Conqueror_g5_3d9064,
   Conqueror_g5_4c1ea4,
   Conqueror_g5_4ca8e8,
@@ -377,6 +414,7 @@ export const DESCENDANTS = [
   Conqueror_g9_65e80c,
   Conqueror_g9_682bef,
   Conqueror_g9_a22c1e,
+  Conqueror_g9_aa6fcf,
   Conqueror_g9_b68f52,
   Conqueror_g9_bb8efc,
   Conqueror_g9_bbe71a,

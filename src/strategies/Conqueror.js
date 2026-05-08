@@ -62,7 +62,7 @@ score — same kernels — but sizes the commitment to the target:
   - unbeatable enemy: skip and pick the next-best aligned direction
 This recovers the strength Trinity wastes capping-out friendly tiles, which
 compounds across the match. Same emergent flocking, fewer leaks.`,
-  act(army) {
+  act(army, game) {
     const tile = army.tile;
     if (!tile || !tile.stencil5) return;
     const stencil = tile.stencil5;
@@ -75,8 +75,23 @@ compounds across the match. Same emergent flocking, fewer leaks.`,
     // Sort directions by alignment score, then walk that order looking for
     // a viable target. This lets a "second-best" direction win when the
     // top one is blocked by a maxed friendly or an unbeatable enemy.
+    //
+    // The iteration order is shuffled per call so equally-aligned
+    // directions break ties uniformly at random instead of always
+    // favoring W (the original push order). With stable JS sort, the
+    // pre-shuffle order survives among score-ties, so this is the
+    // cheapest way to eliminate the universal W-bias that compounds
+    // into a structural slot advantage on contested neutral tiles.
+    const order = [0, 1, 2, 3];
+    if (game) {
+      for (let i = 3; i > 0; i--) {
+        const j = (game.rng() * (i + 1)) | 0;
+        const t = order[i]; order[i] = order[j]; order[j] = t;
+      }
+    }
     const ranked = [];
-    for (let k = 0; k < 4; k++) {
+    for (let oi = 0; oi < 4; oi++) {
+      const k = order[oi];
       if (!neighbors[k]) continue;
       const offs = OFFSETS[k];
       let score = 0;
