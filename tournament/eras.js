@@ -142,20 +142,25 @@ async function main() {
   const { eras, champions } = pickEraChampions(rankings, lineages, opts.top, opts.minPlayed);
 
   // Pin a specific bot if requested. If it's already a champion, nothing
-  // changes; otherwise we add it with whatever lineage/rating data we
-  // have so it still gets reported in the per-era summary.
+  // changes; otherwise we add it with whatever metadata we can find. A
+  // brand-new bot (not in rankings.json yet) is allowed — it just needs
+  // to exist in ALL_STRATEGIES — so we can use eras.js as an evaluation
+  // harness for newly-written candidates against the historical pool.
   if (opts.pin && !champions.has(opts.pin)) {
     const p = rankings.players.find((x) => x.name === opts.pin);
-    if (!p) throw new Error(`--pin ${opts.pin}: not in rankings.json`);
     const ln = lineages.find((b) => b.name === opts.pin);
+    if (!p && !ALL_STRATEGIES[opts.pin]) {
+      throw new Error(`--pin ${opts.pin}: not in rankings.json or ALL_STRATEGIES`);
+    }
     champions.set(opts.pin, {
-      name: p.name,
-      rating: p.rating,
-      matches: p.matches,
-      wins: p.wins,
+      name: opts.pin,
+      rating: p?.rating ?? null,
+      matches: p?.matches ?? 0,
+      wins: p?.wins ?? 0,
       generation: ln?.generation ?? null,
     });
-    console.log(`Pinned ${opts.pin} into the field (gen ${ln?.generation ?? "?"}, rating ${p.rating}).`);
+    const ratingStr = p ? `rating ${p.rating}` : "no prior rating";
+    console.log(`Pinned ${opts.pin} into the field (gen ${ln?.generation ?? "?"}, ${ratingStr}).`);
   }
 
   console.log(`\nEra champions (top ${opts.top} per generation, min ${opts.minPlayed} matches):`);

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-05-08T06:58:38.147Z",
+  "generatedAt": "2026-05-08T12:26:50.092Z",
   "opts": {
-    "top": 3,
-    "matches": 2000,
+    "top": 1,
+    "matches": 400,
     "pool": null,
     "map": "lab1",
     "seed": 1,
     "minPlayed": 15,
-    "pin": "Conqueror_g14_8d5369",
+    "pin": "Drumline",
     "append": false
   },
   "eras": [
@@ -18,20 +18,6 @@
           "name": "Tactician",
           "rating": 875,
           "matches": 887,
-          "wins": 0,
-          "generation": 0
-        },
-        {
-          "name": "Pinwheel",
-          "rating": 848,
-          "matches": 463,
-          "wins": 1,
-          "generation": 0
-        },
-        {
-          "name": "Cluster_08",
-          "rating": 844,
-          "matches": 192,
           "wins": 0,
           "generation": 0
         }
@@ -58,20 +44,6 @@
           "matches": 351,
           "wins": 62,
           "generation": 2
-        },
-        {
-          "name": "Conqueror_g2_e0f65e",
-          "rating": 982,
-          "matches": 43,
-          "wins": 9,
-          "generation": 2
-        },
-        {
-          "name": "Conqueror_g2_e90f66",
-          "rating": 975,
-          "matches": 488,
-          "wins": 92,
-          "generation": 2
         }
       ]
     },
@@ -96,20 +68,6 @@
           "matches": 91,
           "wins": 27,
           "generation": 4
-        },
-        {
-          "name": "Conqueror_g4_3fd4ce",
-          "rating": 1057,
-          "matches": 476,
-          "wins": 149,
-          "generation": 4
-        },
-        {
-          "name": "Conqueror_g4_de5d02",
-          "rating": 1032,
-          "matches": 738,
-          "wins": 140,
-          "generation": 4
         }
       ]
     },
@@ -121,20 +79,6 @@
           "rating": 1066,
           "matches": 93,
           "wins": 22,
-          "generation": 5
-        },
-        {
-          "name": "Conqueror_g5_f15d3e",
-          "rating": 1060,
-          "matches": 1107,
-          "wins": 219,
-          "generation": 5
-        },
-        {
-          "name": "Conqueror_g5_edeed5",
-          "rating": 1049,
-          "matches": 789,
-          "wins": 131,
           "generation": 5
         }
       ]
@@ -148,20 +92,6 @@
           "matches": 566,
           "wins": 175,
           "generation": 6
-        },
-        {
-          "name": "Conqueror_g6_27c4e7",
-          "rating": 1055,
-          "matches": 1026,
-          "wins": 193,
-          "generation": 6
-        },
-        {
-          "name": "Conqueror_g6_53407c",
-          "rating": 1045,
-          "matches": 921,
-          "wins": 148,
-          "generation": 6
         }
       ]
     },
@@ -173,20 +103,6 @@
           "rating": 1056,
           "matches": 499,
           "wins": 162,
-          "generation": 7
-        },
-        {
-          "name": "Conqueror_g7_efa4e0",
-          "rating": 1052,
-          "matches": 1551,
-          "wins": 354,
-          "generation": 7
-        },
-        {
-          "name": "Conqueror_g7_31769b",
-          "rating": 1043,
-          "matches": 282,
-          "wins": 87,
           "generation": 7
         }
       ]
@@ -200,20 +116,6 @@
           "matches": 45,
           "wins": 19,
           "generation": 8
-        },
-        {
-          "name": "Conqueror_g8_5c68e4",
-          "rating": 1097,
-          "matches": 167,
-          "wins": 56,
-          "generation": 8
-        },
-        {
-          "name": "Conqueror_g8_579783",
-          "rating": 1085,
-          "matches": 251,
-          "wins": 82,
-          "generation": 8
         }
       ]
     },
@@ -225,20 +127,6 @@
           "rating": 1093,
           "matches": 25,
           "wins": 9,
-          "generation": 9
-        },
-        {
-          "name": "Conqueror_g9_469924",
-          "rating": 1062,
-          "matches": 109,
-          "wins": 30,
-          "generation": 9
-        },
-        {
-          "name": "Conqueror_g9_aa6fcf",
-          "rating": 1051,
-          "matches": 90,
-          "wins": 18,
           "generation": 9
         }
       ]
@@ -252,20 +140,6 @@
           "matches": 278,
           "wins": 65,
           "generation": 10
-        },
-        {
-          "name": "Conqueror_g10_447dc3",
-          "rating": 1063,
-          "matches": 269,
-          "wins": 81,
-          "generation": 10
-        },
-        {
-          "name": "Conqueror_g10_c1e73e",
-          "rating": 1055,
-          "matches": 84,
-          "wins": 19,
-          "generation": 10
         }
       ]
     },
@@ -277,20 +151,6 @@
           "rating": 1068,
           "matches": 103,
           "wins": 25,
-          "generation": 11
-        },
-        {
-          "name": "Conqueror_g11_755fa9",
-          "rating": 1051,
-          "matches": 1032,
-          "wins": 205,
-          "generation": 11
-        },
-        {
-          "name": "Conqueror_g11_6c48eb",
-          "rating": 1050,
-          "matches": 280,
-          "wins": 85,
           "generation": 11
         }
       ]
@@ -316,20 +176,6 @@
           "matches": 736,
           "wins": 204,
           "generation": 13
-        },
-        {
-          "name": "Conqueror_g13_8fa0f9",
-          "rating": 1040,
-          "matches": 77,
-          "wins": 15,
-          "generation": 13
-        },
-        {
-          "name": "Conqueror_g13_036b6a",
-          "rating": 1032,
-          "matches": 68,
-          "wins": 12,
-          "generation": 13
         }
       ]
     },
@@ -341,20 +187,6 @@
           "rating": 1205,
           "matches": 351,
           "wins": 131,
-          "generation": 14
-        },
-        {
-          "name": "Conqueror_g14_5ae6c0",
-          "rating": 1168,
-          "matches": 156,
-          "wins": 48,
-          "generation": 14
-        },
-        {
-          "name": "Conqueror_g14_2486d3",
-          "rating": 1141,
-          "matches": 244,
-          "wins": 72,
           "generation": 14
         }
       ]
@@ -368,20 +200,6 @@
           "matches": 51,
           "wins": 17,
           "generation": 15
-        },
-        {
-          "name": "Conqueror_g15_313179",
-          "rating": 1170,
-          "matches": 107,
-          "wins": 32,
-          "generation": 15
-        },
-        {
-          "name": "Conqueror_g15_eb52b8",
-          "rating": 1145,
-          "matches": 144,
-          "wins": 41,
-          "generation": 15
         }
       ]
     },
@@ -393,13 +211,6 @@
           "rating": 1110,
           "matches": 466,
           "wins": 111,
-          "generation": 16
-        },
-        {
-          "name": "Conqueror_g16_3f3a3d",
-          "rating": 1063,
-          "matches": 89,
-          "wins": 18,
           "generation": 16
         }
       ]
@@ -413,13 +224,6 @@
           "matches": 310,
           "wins": 77,
           "generation": 17
-        },
-        {
-          "name": "Conqueror_g17_397562",
-          "rating": 1103,
-          "matches": 420,
-          "wins": 94,
-          "generation": 17
         }
       ]
     },
@@ -431,13 +235,6 @@
           "rating": 1132,
           "matches": 443,
           "wins": 119,
-          "generation": 18
-        },
-        {
-          "name": "Conqueror_g18_7e8c2e",
-          "rating": 1086,
-          "matches": 105,
-          "wins": 23,
           "generation": 18
         }
       ]
@@ -463,20 +260,6 @@
           "matches": 141,
           "wins": 42,
           "generation": 20
-        },
-        {
-          "name": "Conqueror_g20_19eb85",
-          "rating": 1122,
-          "matches": 160,
-          "wins": 41,
-          "generation": 20
-        },
-        {
-          "name": "Conqueror_g20_f5c991",
-          "rating": 1104,
-          "matches": 222,
-          "wins": 49,
-          "generation": 20
         }
       ]
     },
@@ -497,1120 +280,490 @@
   "standings": [
     {
       "rank": 1,
-      "name": "Conqueror_g20_43253a",
-      "generation": 20,
-      "crossRating": 1040.45,
-      "crossWinRate": 0.321,
-      "crossPpg": 2.281,
-      "crossPlayed": 196,
-      "crossWins": 63,
-      "globalRating": 1151,
-      "globalMatches": 141,
-      "globalWinRate": 0.298
-    },
-    {
-      "rank": 2,
-      "name": "Conqueror_g21_e2aa5a",
-      "generation": 21,
-      "crossRating": 1028.25,
-      "crossWinRate": 0.278,
-      "crossPpg": 2.19,
-      "crossPlayed": 216,
-      "crossWins": 60,
-      "globalRating": 1095,
-      "globalMatches": 73,
-      "globalWinRate": 0.192
-    },
-    {
-      "rank": 3,
       "name": "Conqueror_g19_9533e3",
       "generation": 19,
-      "crossRating": 1027.94,
-      "crossWinRate": 0.291,
-      "crossPpg": 2.221,
-      "crossPlayed": 213,
-      "crossWins": 62,
+      "crossRating": 1054.45,
+      "crossWinRate": 0.368,
+      "crossPpg": 2.345,
+      "crossPlayed": 87,
+      "crossWins": 32,
       "globalRating": 1157,
       "globalMatches": 397,
       "globalWinRate": 0.307
     },
     {
-      "rank": 4,
-      "name": "Conqueror_g14_8d5369",
-      "generation": 14,
-      "crossRating": 1024.26,
-      "crossWinRate": 0.271,
-      "crossPpg": 2.31,
-      "crossPlayed": 210,
-      "crossWins": 57,
-      "globalRating": 1205,
-      "globalMatches": 351,
-      "globalWinRate": 0.373
-    },
-    {
-      "rank": 5,
-      "name": "Conqueror_g10_c1e73e",
-      "generation": 10,
-      "crossRating": 1023.03,
-      "crossWinRate": 0.264,
-      "crossPpg": 2.076,
-      "crossPlayed": 197,
-      "crossWins": 52,
-      "globalRating": 1055,
-      "globalMatches": 84,
-      "globalWinRate": 0.226
-    },
-    {
-      "rank": 6,
-      "name": "Conqueror_g9_aa6fcf",
-      "generation": 9,
-      "crossRating": 1021.86,
-      "crossWinRate": 0.257,
-      "crossPpg": 2.017,
-      "crossPlayed": 179,
-      "crossWins": 46,
-      "globalRating": 1051,
-      "globalMatches": 90,
-      "globalWinRate": 0.2
-    },
-    {
-      "rank": 7,
-      "name": "Conqueror_g17_397562",
-      "generation": 17,
-      "crossRating": 1021.24,
-      "crossWinRate": 0.255,
-      "crossPpg": 2.071,
-      "crossPlayed": 184,
-      "crossWins": 47,
-      "globalRating": 1103,
-      "globalMatches": 420,
-      "globalWinRate": 0.224
-    },
-    {
-      "rank": 8,
-      "name": "Conqueror_g15_eb52b8",
-      "generation": 15,
-      "crossRating": 1021.01,
-      "crossWinRate": 0.257,
-      "crossPpg": 2.134,
-      "crossPlayed": 187,
-      "crossWins": 48,
-      "globalRating": 1145,
-      "globalMatches": 144,
-      "globalWinRate": 0.285
-    },
-    {
-      "rank": 9,
-      "name": "Conqueror_g20_f5c991",
-      "generation": 20,
-      "crossRating": 1019.94,
-      "crossWinRate": 0.272,
-      "crossPpg": 2.084,
-      "crossPlayed": 191,
-      "crossWins": 52,
-      "globalRating": 1104,
-      "globalMatches": 222,
-      "globalWinRate": 0.221
-    },
-    {
-      "rank": 10,
+      "rank": 2,
       "name": "Conqueror_g15_2c15dc",
       "generation": 15,
-      "crossRating": 1019.83,
-      "crossWinRate": 0.259,
-      "crossPpg": 2.151,
-      "crossPlayed": 185,
-      "crossWins": 48,
+      "crossRating": 1030.02,
+      "crossWinRate": 0.324,
+      "crossPpg": 2.363,
+      "crossPlayed": 102,
+      "crossWins": 33,
       "globalRating": 1181,
       "globalMatches": 51,
       "globalWinRate": 0.333
     },
     {
-      "rank": 11,
-      "name": "Conqueror_g6_9eb2e4",
-      "generation": 6,
-      "crossRating": 1019.74,
-      "crossWinRate": 0.25,
-      "crossPpg": 1.865,
-      "crossPlayed": 208,
-      "crossWins": 52,
-      "globalRating": 1063,
-      "globalMatches": 566,
-      "globalWinRate": 0.309
+      "rank": 3,
+      "name": "Conqueror_g21_e2aa5a",
+      "generation": 21,
+      "crossRating": 1024.28,
+      "crossWinRate": 0.305,
+      "crossPpg": 2.256,
+      "crossPlayed": 82,
+      "crossWins": 25,
+      "globalRating": 1095,
+      "globalMatches": 73,
+      "globalWinRate": 0.192
     },
     {
-      "rank": 12,
-      "name": "Conqueror_g14_5ae6c0",
-      "generation": 14,
-      "crossRating": 1018.3,
-      "crossWinRate": 0.28,
-      "crossPpg": 2.28,
-      "crossPlayed": 189,
-      "crossWins": 53,
-      "globalRating": 1168,
-      "globalMatches": 156,
-      "globalWinRate": 0.308
-    },
-    {
-      "rank": 13,
-      "name": "Conqueror_g2_6b59e8",
-      "generation": 2,
-      "crossRating": 1017.14,
-      "crossWinRate": 0.25,
-      "crossPpg": 2.026,
-      "crossPlayed": 192,
-      "crossWins": 48,
-      "globalRating": 990,
-      "globalMatches": 351,
-      "globalWinRate": 0.177
-    },
-    {
-      "rank": 14,
-      "name": "Conqueror_g17_6d0fb0",
-      "generation": 17,
-      "crossRating": 1016.15,
-      "crossWinRate": 0.228,
-      "crossPpg": 2.01,
-      "crossPlayed": 206,
-      "crossWins": 47,
-      "globalRating": 1116,
-      "globalMatches": 310,
-      "globalWinRate": 0.248
-    },
-    {
-      "rank": 15,
-      "name": "Conqueror_g16_e79590",
-      "generation": 16,
-      "crossRating": 1015.32,
-      "crossWinRate": 0.241,
-      "crossPpg": 2.052,
-      "crossPlayed": 174,
-      "crossWins": 42,
-      "globalRating": 1110,
-      "globalMatches": 466,
-      "globalWinRate": 0.238
-    },
-    {
-      "rank": 16,
-      "name": "Conqueror_g8_579783",
-      "generation": 8,
-      "crossRating": 1015.11,
-      "crossWinRate": 0.238,
-      "crossPpg": 1.852,
-      "crossPlayed": 189,
-      "crossWins": 45,
-      "globalRating": 1085,
-      "globalMatches": 251,
-      "globalWinRate": 0.327
-    },
-    {
-      "rank": 17,
-      "name": "Conqueror_g13_8fa0f9",
-      "generation": 13,
-      "crossRating": 1010.32,
-      "crossWinRate": 0.232,
-      "crossPpg": 1.945,
-      "crossPlayed": 181,
-      "crossWins": 42,
-      "globalRating": 1040,
-      "globalMatches": 77,
-      "globalWinRate": 0.195
-    },
-    {
-      "rank": 18,
-      "name": "Conqueror_g16_3f3a3d",
-      "generation": 16,
-      "crossRating": 1009.3,
-      "crossWinRate": 0.24,
-      "crossPpg": 1.911,
-      "crossPlayed": 192,
-      "crossWins": 46,
-      "globalRating": 1063,
-      "globalMatches": 89,
-      "globalWinRate": 0.202
-    },
-    {
-      "rank": 19,
-      "name": "Conqueror_g20_19eb85",
-      "generation": 20,
-      "crossRating": 1007.87,
-      "crossWinRate": 0.238,
-      "crossPpg": 2.162,
-      "crossPlayed": 185,
-      "crossWins": 44,
-      "globalRating": 1122,
-      "globalMatches": 160,
-      "globalWinRate": 0.256
-    },
-    {
-      "rank": 20,
-      "name": "Conqueror_g14_2486d3",
-      "generation": 14,
-      "crossRating": 1006.35,
-      "crossWinRate": 0.215,
-      "crossPpg": 1.915,
-      "crossPlayed": 177,
-      "crossWins": 38,
-      "globalRating": 1141,
-      "globalMatches": 244,
-      "globalWinRate": 0.295
-    },
-    {
-      "rank": 21,
-      "name": "Conqueror_g8_5c68e4",
-      "generation": 8,
-      "crossRating": 1006.23,
-      "crossWinRate": 0.211,
-      "crossPpg": 1.873,
-      "crossPlayed": 204,
-      "crossWins": 43,
-      "globalRating": 1097,
-      "globalMatches": 167,
-      "globalWinRate": 0.335
-    },
-    {
-      "rank": 22,
-      "name": "Conqueror_g18_7e8c2e",
-      "generation": 18,
-      "crossRating": 1005.55,
-      "crossWinRate": 0.229,
-      "crossPpg": 2.03,
-      "crossPlayed": 201,
-      "crossWins": 46,
-      "globalRating": 1086,
-      "globalMatches": 105,
-      "globalWinRate": 0.219
-    },
-    {
-      "rank": 23,
-      "name": "Conqueror_g9_01de66",
-      "generation": 9,
-      "crossRating": 1005.36,
-      "crossWinRate": 0.212,
-      "crossPpg": 1.788,
-      "crossPlayed": 170,
-      "crossWins": 36,
-      "globalRating": 1093,
-      "globalMatches": 25,
-      "globalWinRate": 0.36
-    },
-    {
-      "rank": 24,
-      "name": "Conqueror_g18_6a26b3",
-      "generation": 18,
-      "crossRating": 1004.1,
-      "crossWinRate": 0.2,
-      "crossPpg": 2.018,
-      "crossPlayed": 165,
-      "crossWins": 33,
-      "globalRating": 1132,
-      "globalMatches": 443,
-      "globalWinRate": 0.269
-    },
-    {
-      "rank": 25,
-      "name": "Conqueror_g9_469924",
-      "generation": 9,
-      "crossRating": 1003.87,
-      "crossWinRate": 0.215,
-      "crossPpg": 1.994,
-      "crossPlayed": 177,
-      "crossWins": 38,
-      "globalRating": 1062,
-      "globalMatches": 109,
-      "globalWinRate": 0.275
-    },
-    {
-      "rank": 26,
-      "name": "Conqueror_g5_edeed5",
-      "generation": 5,
-      "crossRating": 1003.59,
-      "crossWinRate": 0.203,
-      "crossPpg": 1.976,
-      "crossPlayed": 207,
-      "crossWins": 42,
-      "globalRating": 1049,
-      "globalMatches": 789,
-      "globalWinRate": 0.166
-    },
-    {
-      "rank": 27,
-      "name": "Conqueror_g15_313179",
-      "generation": 15,
-      "crossRating": 1003.24,
-      "crossWinRate": 0.228,
-      "crossPpg": 2.114,
-      "crossPlayed": 184,
-      "crossWins": 42,
-      "globalRating": 1170,
-      "globalMatches": 107,
-      "globalWinRate": 0.299
-    },
-    {
-      "rank": 28,
-      "name": "Conqueror_g4_3fd4ce",
-      "generation": 4,
-      "crossRating": 1002.06,
-      "crossWinRate": 0.202,
-      "crossPpg": 1.852,
-      "crossPlayed": 183,
-      "crossWins": 37,
-      "globalRating": 1057,
-      "globalMatches": 476,
-      "globalWinRate": 0.313
-    },
-    {
-      "rank": 29,
-      "name": "Conqueror_g12_f23241",
-      "generation": 12,
-      "crossRating": 1001.95,
-      "crossWinRate": 0.18,
-      "crossPpg": 1.938,
-      "crossPlayed": 194,
-      "crossWins": 35,
-      "globalRating": 1068,
-      "globalMatches": 787,
-      "globalWinRate": 0.22
-    },
-    {
-      "rank": 30,
+      "rank": 4,
       "name": "Conqueror_g11_224717",
       "generation": 11,
-      "crossRating": 1001.73,
-      "crossWinRate": 0.196,
-      "crossPpg": 1.871,
-      "crossPlayed": 194,
-      "crossWins": 38,
+      "crossRating": 1022.47,
+      "crossWinRate": 0.292,
+      "crossPpg": 1.888,
+      "crossPlayed": 89,
+      "crossWins": 26,
       "globalRating": 1068,
       "globalMatches": 103,
       "globalWinRate": 0.243
     },
     {
-      "rank": 31,
-      "name": "Conqueror_g13_036b6a",
-      "generation": 13,
-      "crossRating": 1001.37,
-      "crossWinRate": 0.203,
-      "crossPpg": 1.92,
-      "crossPlayed": 187,
-      "crossWins": 38,
-      "globalRating": 1032,
-      "globalMatches": 68,
-      "globalWinRate": 0.176
+      "rank": 5,
+      "name": "Drumline",
+      "generation": null,
+      "crossRating": 1018.12,
+      "crossWinRate": 0.25,
+      "crossPpg": 2.292,
+      "crossPlayed": 96,
+      "crossWins": 24,
+      "globalRating": null,
+      "globalMatches": 0,
+      "globalWinRate": null
     },
     {
-      "rank": 32,
-      "name": "Conqueror_g7_efa4e0",
-      "generation": 7,
-      "crossRating": 1000.77,
-      "crossWinRate": 0.209,
-      "crossPpg": 1.895,
-      "crossPlayed": 172,
-      "crossWins": 36,
-      "globalRating": 1052,
-      "globalMatches": 1551,
-      "globalWinRate": 0.228
+      "rank": 6,
+      "name": "Conqueror_g14_8d5369",
+      "generation": 14,
+      "crossRating": 1016.69,
+      "crossWinRate": 0.263,
+      "crossPpg": 2.221,
+      "crossPlayed": 95,
+      "crossWins": 25,
+      "globalRating": 1205,
+      "globalMatches": 351,
+      "globalWinRate": 0.373
     },
     {
-      "rank": 33,
-      "name": "Conqueror_g4_de5d02",
-      "generation": 4,
-      "crossRating": 998.74,
-      "crossWinRate": 0.19,
-      "crossPpg": 1.722,
-      "crossPlayed": 205,
-      "crossWins": 39,
-      "globalRating": 1032,
-      "globalMatches": 738,
-      "globalWinRate": 0.19
-    },
-    {
-      "rank": 34,
+      "rank": 7,
       "name": "Conqueror_g4_be92c1",
       "generation": 4,
-      "crossRating": 996.54,
-      "crossWinRate": 0.185,
-      "crossPpg": 1.951,
-      "crossPlayed": 184,
-      "crossWins": 34,
+      "crossRating": 1013.64,
+      "crossWinRate": 0.206,
+      "crossPpg": 1.784,
+      "crossPlayed": 97,
+      "crossWins": 20,
       "globalRating": 1079,
       "globalMatches": 91,
       "globalWinRate": 0.297
     },
     {
-      "rank": 35,
-      "name": "Conqueror_g10_447dc3",
-      "generation": 10,
-      "crossRating": 995.4,
-      "crossWinRate": 0.196,
-      "crossPpg": 1.799,
-      "crossPlayed": 184,
-      "crossWins": 36,
-      "globalRating": 1063,
-      "globalMatches": 269,
-      "globalWinRate": 0.301
-    },
-    {
-      "rank": 36,
-      "name": "Conqueror_g2_e0f65e",
-      "generation": 2,
-      "crossRating": 995.18,
-      "crossWinRate": 0.192,
-      "crossPpg": 1.86,
-      "crossPlayed": 172,
-      "crossWins": 33,
-      "globalRating": 982,
-      "globalMatches": 43,
-      "globalWinRate": 0.209
-    },
-    {
-      "rank": 37,
-      "name": "Conqueror_g6_27c4e7",
-      "generation": 6,
-      "crossRating": 995.12,
-      "crossWinRate": 0.198,
-      "crossPpg": 1.846,
-      "crossPlayed": 182,
-      "crossWins": 36,
-      "globalRating": 1055,
-      "globalMatches": 1026,
-      "globalWinRate": 0.188
-    },
-    {
-      "rank": 38,
-      "name": "Conqueror_g2_e90f66",
-      "generation": 2,
-      "crossRating": 994.92,
-      "crossWinRate": 0.176,
-      "crossPpg": 1.78,
-      "crossPlayed": 205,
-      "crossWins": 36,
-      "globalRating": 975,
-      "globalMatches": 488,
-      "globalWinRate": 0.189
-    },
-    {
-      "rank": 39,
+      "rank": 8,
       "name": "Conqueror_g13_b41df9",
       "generation": 13,
-      "crossRating": 994.89,
-      "crossWinRate": 0.174,
-      "crossPpg": 1.878,
-      "crossPlayed": 172,
-      "crossWins": 30,
+      "crossRating": 1011.83,
+      "crossWinRate": 0.218,
+      "crossPpg": 2.161,
+      "crossPlayed": 87,
+      "crossWins": 19,
       "globalRating": 1124,
       "globalMatches": 736,
       "globalWinRate": 0.277
     },
     {
-      "rank": 40,
-      "name": "Conqueror_g6_53407c",
-      "generation": 6,
-      "crossRating": 992.83,
-      "crossWinRate": 0.174,
-      "crossPpg": 1.764,
-      "crossPlayed": 195,
-      "crossWins": 34,
-      "globalRating": 1045,
-      "globalMatches": 921,
-      "globalWinRate": 0.161
+      "rank": 9,
+      "name": "Conqueror_g17_6d0fb0",
+      "generation": 17,
+      "crossRating": 1009.63,
+      "crossWinRate": 0.203,
+      "crossPpg": 1.784,
+      "crossPlayed": 74,
+      "crossWins": 15,
+      "globalRating": 1116,
+      "globalMatches": 310,
+      "globalWinRate": 0.248
     },
     {
-      "rank": 41,
-      "name": "Conqueror_g7_31769b",
-      "generation": 7,
-      "crossRating": 988.82,
-      "crossWinRate": 0.172,
-      "crossPpg": 1.813,
-      "crossPlayed": 192,
-      "crossWins": 33,
-      "globalRating": 1043,
-      "globalMatches": 282,
-      "globalWinRate": 0.309
+      "rank": 10,
+      "name": "Conqueror_g20_43253a",
+      "generation": 20,
+      "crossRating": 1002.47,
+      "crossWinRate": 0.215,
+      "crossPpg": 2.177,
+      "crossPlayed": 79,
+      "crossWins": 17,
+      "globalRating": 1151,
+      "globalMatches": 141,
+      "globalWinRate": 0.298
     },
     {
-      "rank": 42,
-      "name": "Conqueror_g11_6c48eb",
-      "generation": 11,
-      "crossRating": 986.12,
-      "crossWinRate": 0.165,
-      "crossPpg": 1.797,
-      "crossPlayed": 182,
-      "crossWins": 30,
-      "globalRating": 1050,
-      "globalMatches": 280,
-      "globalWinRate": 0.304
+      "rank": 11,
+      "name": "Conqueror_g12_f23241",
+      "generation": 12,
+      "crossRating": 1000.68,
+      "crossWinRate": 0.198,
+      "crossPpg": 1.868,
+      "crossPlayed": 91,
+      "crossWins": 18,
+      "globalRating": 1068,
+      "globalMatches": 787,
+      "globalWinRate": 0.22
     },
     {
-      "rank": 43,
+      "rank": 12,
       "name": "Conqueror_g3_be9a58",
       "generation": 3,
-      "crossRating": 986,
-      "crossWinRate": 0.169,
-      "crossPpg": 1.842,
-      "crossPlayed": 177,
-      "crossWins": 30,
+      "crossRating": 999.64,
+      "crossWinRate": 0.193,
+      "crossPpg": 1.784,
+      "crossPlayed": 88,
+      "crossWins": 17,
       "globalRating": 1026,
       "globalMatches": 350,
       "globalWinRate": 0.251
     },
     {
-      "rank": 44,
-      "name": "Conqueror_g5_3087ea",
-      "generation": 5,
-      "crossRating": 985.75,
-      "crossWinRate": 0.155,
-      "crossPpg": 1.818,
-      "crossPlayed": 187,
-      "crossWins": 29,
-      "globalRating": 1066,
-      "globalMatches": 93,
-      "globalWinRate": 0.237
-    },
-    {
-      "rank": 45,
+      "rank": 13,
       "name": "Conqueror_g7_3b651e",
       "generation": 7,
-      "crossRating": 985.2,
-      "crossWinRate": 0.158,
-      "crossPpg": 1.758,
-      "crossPlayed": 190,
-      "crossWins": 30,
+      "crossRating": 998.31,
+      "crossWinRate": 0.16,
+      "crossPpg": 1.723,
+      "crossPlayed": 94,
+      "crossWins": 15,
       "globalRating": 1056,
       "globalMatches": 499,
       "globalWinRate": 0.325
     },
     {
-      "rank": 46,
+      "rank": 14,
+      "name": "Conqueror_g18_6a26b3",
+      "generation": 18,
+      "crossRating": 998.19,
+      "crossWinRate": 0.182,
+      "crossPpg": 1.828,
+      "crossPlayed": 99,
+      "crossWins": 18,
+      "globalRating": 1132,
+      "globalMatches": 443,
+      "globalWinRate": 0.269
+    },
+    {
+      "rank": 15,
+      "name": "Conqueror_g9_01de66",
+      "generation": 9,
+      "crossRating": 997.48,
+      "crossWinRate": 0.188,
+      "crossPpg": 1.792,
+      "crossPlayed": 96,
+      "crossWins": 18,
+      "globalRating": 1093,
+      "globalMatches": 25,
+      "globalWinRate": 0.36
+    },
+    {
+      "rank": 16,
+      "name": "Conqueror_g16_e79590",
+      "generation": 16,
+      "crossRating": 996.62,
+      "crossWinRate": 0.187,
+      "crossPpg": 1.827,
+      "crossPlayed": 75,
+      "crossWins": 14,
+      "globalRating": 1110,
+      "globalMatches": 466,
+      "globalWinRate": 0.238
+    },
+    {
+      "rank": 17,
+      "name": "Conqueror_g6_9eb2e4",
+      "generation": 6,
+      "crossRating": 994.54,
+      "crossWinRate": 0.132,
+      "crossPpg": 1.763,
+      "crossPlayed": 76,
+      "crossWins": 10,
+      "globalRating": 1063,
+      "globalMatches": 566,
+      "globalWinRate": 0.309
+    },
+    {
+      "rank": 18,
       "name": "Conqueror_g8_82d39b",
       "generation": 8,
-      "crossRating": 984.75,
-      "crossWinRate": 0.168,
-      "crossPpg": 1.684,
-      "crossPlayed": 190,
-      "crossWins": 32,
+      "crossRating": 989.98,
+      "crossWinRate": 0.185,
+      "crossPpg": 1.793,
+      "crossPlayed": 92,
+      "crossWins": 17,
       "globalRating": 1132,
       "globalMatches": 45,
       "globalWinRate": 0.422
     },
     {
-      "rank": 47,
-      "name": "Conqueror_g11_755fa9",
-      "generation": 11,
-      "crossRating": 984.39,
-      "crossWinRate": 0.161,
-      "crossPpg": 1.785,
-      "crossPlayed": 186,
-      "crossWins": 30,
-      "globalRating": 1051,
-      "globalMatches": 1032,
-      "globalWinRate": 0.199
+      "rank": 19,
+      "name": "Conqueror_g2_6b59e8",
+      "generation": 2,
+      "crossRating": 984.8,
+      "crossWinRate": 0.152,
+      "crossPpg": 1.861,
+      "crossPlayed": 79,
+      "crossWins": 12,
+      "globalRating": 990,
+      "globalMatches": 351,
+      "globalWinRate": 0.177
     },
     {
-      "rank": 48,
-      "name": "Conqueror_g5_f15d3e",
-      "generation": 5,
-      "crossRating": 978.15,
-      "crossWinRate": 0.145,
-      "crossPpg": 1.737,
-      "crossPlayed": 186,
-      "crossWins": 27,
-      "globalRating": 1060,
-      "globalMatches": 1107,
-      "globalWinRate": 0.198
-    },
-    {
-      "rank": 49,
+      "rank": 20,
       "name": "Conqueror_g10_34ca94",
       "generation": 10,
-      "crossRating": 972.23,
-      "crossWinRate": 0.131,
-      "crossPpg": 1.623,
-      "crossPlayed": 183,
-      "crossWins": 24,
+      "crossRating": 979.51,
+      "crossWinRate": 0.171,
+      "crossPpg": 1.78,
+      "crossPlayed": 82,
+      "crossWins": 14,
       "globalRating": 1072,
       "globalMatches": 278,
       "globalWinRate": 0.234
     },
     {
-      "rank": 50,
-      "name": "Cluster_08",
-      "generation": 0,
-      "crossRating": 942.95,
-      "crossWinRate": 0,
-      "crossPpg": 3,
-      "crossPlayed": 181,
-      "crossWins": 0,
-      "globalRating": 844,
-      "globalMatches": 192,
-      "globalWinRate": 0
+      "rank": 21,
+      "name": "Conqueror_g5_3087ea",
+      "generation": 5,
+      "crossRating": 974.52,
+      "crossWinRate": 0.143,
+      "crossPpg": 1.844,
+      "crossPlayed": 77,
+      "crossWins": 11,
+      "globalRating": 1066,
+      "globalMatches": 93,
+      "globalWinRate": 0.237
     },
     {
-      "rank": 51,
-      "name": "Phalanx_g1_5b920f",
-      "generation": 1,
-      "crossRating": 942.31,
-      "crossWinRate": 0,
-      "crossPpg": 2.946,
-      "crossPlayed": 186,
-      "crossWins": 0,
-      "globalRating": 819,
-      "globalMatches": 55,
-      "globalWinRate": 0
-    },
-    {
-      "rank": 52,
-      "name": "Pinwheel",
-      "generation": 0,
-      "crossRating": 939.39,
-      "crossWinRate": 0,
-      "crossPpg": 2.829,
-      "crossPlayed": 181,
-      "crossWins": 0,
-      "globalRating": 848,
-      "globalMatches": 463,
-      "globalWinRate": 0.002
-    },
-    {
-      "rank": 53,
+      "rank": 22,
       "name": "Tactician",
       "generation": 0,
-      "crossRating": 937.08,
+      "crossRating": 942.71,
       "crossWinRate": 0,
-      "crossPpg": 1.921,
-      "crossPlayed": 191,
+      "crossPpg": 1.843,
+      "crossPlayed": 83,
       "crossWins": 0,
       "globalRating": 875,
       "globalMatches": 887,
       "globalWinRate": 0
+    },
+    {
+      "rank": 23,
+      "name": "Phalanx_g1_5b920f",
+      "generation": 1,
+      "crossRating": 939.42,
+      "crossWinRate": 0,
+      "crossPpg": 3,
+      "crossPlayed": 80,
+      "crossWins": 0,
+      "globalRating": 819,
+      "globalMatches": 55,
+      "globalWinRate": 0
     }
   ],
   "correlations": {
-    "rhoXrXw": 0.9800032252862442,
-    "rhoXrG": 0.5853894533139816
+    "rhoXrXw": 0.958498023715415,
+    "rhoXrG": 0.637492941840768
   },
   "pin": {
-    "name": "Conqueror_g14_8d5369",
+    "name": "Drumline",
     "rows": [
       {
         "name": "Tactician",
-        "encounters": 12,
-        "wins": 9,
-        "winRate": 0.75,
+        "encounters": 14,
+        "wins": 8,
+        "winRate": 0.571,
         "generation": 0,
         "globalRating": 875
       },
       {
-        "name": "Pinwheel",
-        "encounters": 18,
-        "wins": 6,
-        "winRate": 0.333,
-        "generation": 0,
-        "globalRating": 848
-      },
-      {
-        "name": "Cluster_08",
-        "encounters": 17,
-        "wins": 7,
-        "winRate": 0.412,
-        "generation": 0,
-        "globalRating": 844
-      },
-      {
         "name": "Phalanx_g1_5b920f",
-        "encounters": 14,
-        "wins": 7,
-        "winRate": 0.5,
+        "encounters": 16,
+        "wins": 6,
+        "winRate": 0.375,
         "generation": 1,
         "globalRating": 819
       },
       {
         "name": "Conqueror_g2_6b59e8",
-        "encounters": 22,
-        "wins": 14,
-        "winRate": 0.636,
+        "encounters": 21,
+        "wins": 11,
+        "winRate": 0.524,
         "generation": 2,
         "globalRating": 990
       },
       {
-        "name": "Conqueror_g2_e0f65e",
-        "encounters": 11,
-        "wins": 7,
-        "winRate": 0.636,
-        "generation": 2,
-        "globalRating": 982
-      },
-      {
-        "name": "Conqueror_g2_e90f66",
-        "encounters": 17,
-        "wins": 12,
-        "winRate": 0.706,
-        "generation": 2,
-        "globalRating": 975
-      },
-      {
         "name": "Conqueror_g3_be9a58",
-        "encounters": 21,
-        "wins": 14,
-        "winRate": 0.667,
+        "encounters": 18,
+        "wins": 10,
+        "winRate": 0.556,
         "generation": 3,
         "globalRating": 1026
       },
       {
         "name": "Conqueror_g4_be92c1",
-        "encounters": 14,
-        "wins": 7,
-        "winRate": 0.5,
+        "encounters": 19,
+        "wins": 10,
+        "winRate": 0.526,
         "generation": 4,
         "globalRating": 1079
       },
       {
-        "name": "Conqueror_g4_3fd4ce",
-        "encounters": 18,
-        "wins": 11,
-        "winRate": 0.611,
-        "generation": 4,
-        "globalRating": 1057
-      },
-      {
-        "name": "Conqueror_g4_de5d02",
-        "encounters": 22,
-        "wins": 11,
-        "winRate": 0.5,
-        "generation": 4,
-        "globalRating": 1032
-      },
-      {
         "name": "Conqueror_g5_3087ea",
-        "encounters": 16,
-        "wins": 7,
-        "winRate": 0.438,
+        "encounters": 17,
+        "wins": 11,
+        "winRate": 0.647,
         "generation": 5,
         "globalRating": 1066
       },
       {
-        "name": "Conqueror_g5_f15d3e",
-        "encounters": 15,
-        "wins": 10,
-        "winRate": 0.667,
-        "generation": 5,
-        "globalRating": 1060
-      },
-      {
-        "name": "Conqueror_g5_edeed5",
-        "encounters": 19,
-        "wins": 13,
-        "winRate": 0.684,
-        "generation": 5,
-        "globalRating": 1049
-      },
-      {
         "name": "Conqueror_g6_9eb2e4",
-        "encounters": 12,
-        "wins": 8,
-        "winRate": 0.667,
+        "encounters": 13,
+        "wins": 7,
+        "winRate": 0.538,
         "generation": 6,
         "globalRating": 1063
       },
       {
-        "name": "Conqueror_g6_27c4e7",
-        "encounters": 9,
-        "wins": 8,
-        "winRate": 0.889,
-        "generation": 6,
-        "globalRating": 1055
-      },
-      {
-        "name": "Conqueror_g6_53407c",
-        "encounters": 18,
-        "wins": 11,
-        "winRate": 0.611,
-        "generation": 6,
-        "globalRating": 1045
-      },
-      {
         "name": "Conqueror_g7_3b651e",
-        "encounters": 15,
-        "wins": 9,
-        "winRate": 0.6,
+        "encounters": 18,
+        "wins": 14,
+        "winRate": 0.778,
         "generation": 7,
         "globalRating": 1056
       },
       {
-        "name": "Conqueror_g7_efa4e0",
-        "encounters": 18,
-        "wins": 9,
-        "winRate": 0.5,
-        "generation": 7,
-        "globalRating": 1052
-      },
-      {
-        "name": "Conqueror_g7_31769b",
-        "encounters": 13,
-        "wins": 6,
-        "winRate": 0.462,
-        "generation": 7,
-        "globalRating": 1043
-      },
-      {
         "name": "Conqueror_g8_82d39b",
-        "encounters": 18,
-        "wins": 13,
-        "winRate": 0.722,
+        "encounters": 15,
+        "wins": 9,
+        "winRate": 0.6,
         "generation": 8,
         "globalRating": 1132
       },
       {
-        "name": "Conqueror_g8_5c68e4",
-        "encounters": 18,
-        "wins": 11,
-        "winRate": 0.611,
-        "generation": 8,
-        "globalRating": 1097
-      },
-      {
-        "name": "Conqueror_g8_579783",
-        "encounters": 10,
-        "wins": 6,
-        "winRate": 0.6,
-        "generation": 8,
-        "globalRating": 1085
-      },
-      {
         "name": "Conqueror_g9_01de66",
-        "encounters": 18,
-        "wins": 14,
-        "winRate": 0.778,
+        "encounters": 19,
+        "wins": 10,
+        "winRate": 0.526,
         "generation": 9,
         "globalRating": 1093
       },
       {
-        "name": "Conqueror_g9_469924",
-        "encounters": 16,
-        "wins": 13,
-        "winRate": 0.813,
-        "generation": 9,
-        "globalRating": 1062
-      },
-      {
-        "name": "Conqueror_g9_aa6fcf",
-        "encounters": 14,
-        "wins": 6,
-        "winRate": 0.429,
-        "generation": 9,
-        "globalRating": 1051
-      },
-      {
         "name": "Conqueror_g10_34ca94",
-        "encounters": 12,
+        "encounters": 18,
         "wins": 9,
-        "winRate": 0.75,
+        "winRate": 0.5,
         "generation": 10,
         "globalRating": 1072
       },
       {
-        "name": "Conqueror_g10_447dc3",
-        "encounters": 13,
-        "wins": 8,
-        "winRate": 0.615,
-        "generation": 10,
-        "globalRating": 1063
-      },
-      {
-        "name": "Conqueror_g10_c1e73e",
-        "encounters": 22,
-        "wins": 12,
-        "winRate": 0.545,
-        "generation": 10,
-        "globalRating": 1055
-      },
-      {
         "name": "Conqueror_g11_224717",
-        "encounters": 17,
-        "wins": 7,
-        "winRate": 0.412,
+        "encounters": 19,
+        "wins": 15,
+        "winRate": 0.789,
         "generation": 11,
         "globalRating": 1068
       },
       {
-        "name": "Conqueror_g11_755fa9",
-        "encounters": 10,
-        "wins": 4,
-        "winRate": 0.4,
-        "generation": 11,
-        "globalRating": 1051
-      },
-      {
-        "name": "Conqueror_g11_6c48eb",
-        "encounters": 13,
-        "wins": 6,
-        "winRate": 0.462,
-        "generation": 11,
-        "globalRating": 1050
-      },
-      {
         "name": "Conqueror_g12_f23241",
-        "encounters": 20,
-        "wins": 13,
-        "winRate": 0.65,
+        "encounters": 24,
+        "wins": 15,
+        "winRate": 0.625,
         "generation": 12,
         "globalRating": 1068
       },
       {
         "name": "Conqueror_g13_b41df9",
-        "encounters": 15,
-        "wins": 8,
-        "winRate": 0.533,
+        "encounters": 18,
+        "wins": 7,
+        "winRate": 0.389,
         "generation": 13,
         "globalRating": 1124
       },
       {
-        "name": "Conqueror_g13_8fa0f9",
-        "encounters": 12,
-        "wins": 7,
-        "winRate": 0.583,
-        "generation": 13,
-        "globalRating": 1040
-      },
-      {
-        "name": "Conqueror_g13_036b6a",
-        "encounters": 16,
-        "wins": 12,
-        "winRate": 0.75,
-        "generation": 13,
-        "globalRating": 1032
-      },
-      {
-        "name": "Conqueror_g14_5ae6c0",
-        "encounters": 18,
-        "wins": 13,
-        "winRate": 0.722,
-        "generation": 14,
-        "globalRating": 1168
-      },
-      {
-        "name": "Conqueror_g14_2486d3",
-        "encounters": 13,
+        "name": "Conqueror_g14_8d5369",
+        "encounters": 19,
         "wins": 8,
-        "winRate": 0.615,
+        "winRate": 0.421,
         "generation": 14,
-        "globalRating": 1141
+        "globalRating": 1205
       },
       {
         "name": "Conqueror_g15_2c15dc",
-        "encounters": 18,
-        "wins": 8,
-        "winRate": 0.444,
+        "encounters": 15,
+        "wins": 10,
+        "winRate": 0.667,
         "generation": 15,
         "globalRating": 1181
       },
       {
-        "name": "Conqueror_g15_313179",
-        "encounters": 22,
-        "wins": 11,
-        "winRate": 0.5,
-        "generation": 15,
-        "globalRating": 1170
-      },
-      {
-        "name": "Conqueror_g15_eb52b8",
-        "encounters": 15,
-        "wins": 4,
-        "winRate": 0.267,
-        "generation": 15,
-        "globalRating": 1145
-      },
-      {
         "name": "Conqueror_g16_e79590",
-        "encounters": 17,
+        "encounters": 15,
         "wins": 10,
-        "winRate": 0.588,
+        "winRate": 0.667,
         "generation": 16,
         "globalRating": 1110
       },
       {
-        "name": "Conqueror_g16_3f3a3d",
-        "encounters": 16,
-        "wins": 11,
-        "winRate": 0.688,
-        "generation": 16,
-        "globalRating": 1063
-      },
-      {
         "name": "Conqueror_g17_6d0fb0",
-        "encounters": 23,
-        "wins": 12,
-        "winRate": 0.522,
+        "encounters": 13,
+        "wins": 8,
+        "winRate": 0.615,
         "generation": 17,
         "globalRating": 1116
       },
       {
-        "name": "Conqueror_g17_397562",
-        "encounters": 13,
-        "wins": 5,
-        "winRate": 0.385,
-        "generation": 17,
-        "globalRating": 1103
-      },
-      {
         "name": "Conqueror_g18_6a26b3",
-        "encounters": 11,
-        "wins": 6,
-        "winRate": 0.545,
+        "encounters": 21,
+        "wins": 11,
+        "winRate": 0.524,
         "generation": 18,
         "globalRating": 1132
       },
       {
-        "name": "Conqueror_g18_7e8c2e",
-        "encounters": 19,
-        "wins": 13,
-        "winRate": 0.684,
-        "generation": 18,
-        "globalRating": 1086
-      },
-      {
         "name": "Conqueror_g19_9533e3",
         "encounters": 20,
-        "wins": 10,
-        "winRate": 0.5,
+        "wins": 12,
+        "winRate": 0.6,
         "generation": 19,
         "globalRating": 1157
       },
       {
         "name": "Conqueror_g20_43253a",
-        "encounters": 19,
+        "encounters": 17,
         "wins": 10,
-        "winRate": 0.526,
+        "winRate": 0.588,
         "generation": 20,
         "globalRating": 1151
       },
       {
-        "name": "Conqueror_g20_19eb85",
-        "encounters": 15,
-        "wins": 7,
-        "winRate": 0.467,
-        "generation": 20,
-        "globalRating": 1122
-      },
-      {
-        "name": "Conqueror_g20_f5c991",
-        "encounters": 18,
-        "wins": 11,
-        "winRate": 0.611,
-        "generation": 20,
-        "globalRating": 1104
-      },
-      {
         "name": "Conqueror_g21_e2aa5a",
-        "encounters": 18,
-        "wins": 11,
-        "winRate": 0.611,
+        "encounters": 15,
+        "wins": 9,
+        "winRate": 0.6,
         "generation": 21,
         "globalRating": 1095
       }
     ],
-    "totalEnc": 840,
-    "totalWin": 485,
-    "overallWinRate": 0.577
+    "totalEnc": 384,
+    "totalWin": 220,
+    "overallWinRate": 0.573
   }
 }
