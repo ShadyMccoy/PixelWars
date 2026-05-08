@@ -53,6 +53,9 @@ import Drifter from "./Drifter.js";
 import Beachhead from "./Beachhead.js";
 import Cordon from "./Cordon.js";
 import Forge from "./Forge.js";
+import Tidewatcher from "./Tidewatcher.js";
+import Smith from "./Smith.js";
+import Coastal from "./Coastal.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -117,6 +120,9 @@ export const ALL_STRATEGY_LIST = [
   Beachhead,
   Cordon,
   Forge,
+  Tidewatcher,
+  Smith,
+  Coastal,
   ...GENERATED,
   ...DESCENDANTS,
 ];
