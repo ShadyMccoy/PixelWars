@@ -92,6 +92,8 @@ class App {
     // async rankings loader doesn't yank them out of an active view.
     this._userChoseMode = false;
 
+    this.ratings = null;
+
     this.customBots = new CustomBots();
     this.codeModal = new CodeModal();
     this._bindTryBotButton();
@@ -317,6 +319,11 @@ class App {
       console.warn("Couldn't load shared match from URL:", err);
       return false;
     }
+  }
+
+  setRatings(ratings) {
+    this.ratings = ratings;
+    this.hud?.render();
   }
 
   // Snapshot the current match in a form ready for `loadFromMatchInfo` or

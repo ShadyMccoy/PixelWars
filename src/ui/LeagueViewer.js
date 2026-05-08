@@ -60,6 +60,9 @@ export class LeagueViewer {
     }
     this.rankings = parsed;
     if (this.selection.size === 0) this.applyTier(0);
+    const ratings = {};
+    for (const p of parsed.players) ratings[p.name] = p.rating;
+    this.app?.setRatings?.(ratings);
     this.render();
     this._notifyFirstLoad();
   }

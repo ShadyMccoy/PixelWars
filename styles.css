@@ -333,6 +333,16 @@ select.dropdown {
   letter-spacing: 0.3px;
 }
 
+.strat-tooltip-rating {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
 .strat-tooltip-body {
   color: var(--text-dim);
   white-space: pre-wrap;
@@ -469,6 +479,18 @@ select.dropdown {
 .player-name {
   font-weight: 700;
   flex: 1;
+}
+
+.player-rating {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1px 7px;
+  letter-spacing: 0.3px;
 }
 
 .player-stat {
