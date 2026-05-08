@@ -5,10 +5,14 @@ const BONUS = 1.4;
 // can act again next tick if a better target appears. 0.7 means each
 // snipe spends at most 70% of available budget.
 const BUDGET_FRACTION = 0.7;
-// Search radius for vulnerable enemy tiles. 5 covers most of lab1's
-// 30x22 board within a reasonable scan, and the budget cap (12 *
-// moveRecharge) limits useful range anyway.
-const RADIUS = 5;
+// Search radius for vulnerable enemy tiles. Originally 5; v1's 60-bot
+// pool eval found that at radius 5 the maximum deliverable power
+// (cap * fraction / dist) is too small to kill anything past the
+// opening few ticks. Radius 3 keeps strikes meaningful — at the
+// budget-cap ceiling we can deliver ~6 strength at distance 3 vs ~3.6
+// at distance 5 — and most useful targets are within a few tiles
+// anyway on lab1's 30x22 map.
+const RADIUS = 3;
 
 export default {
   name: "Sniper",
@@ -49,7 +53,7 @@ budget that makes the strategy possible.
 Expected to dismantle bots that stay locked in adjacent-only
 play (the entire current lineage). Expected to lose to its
 mirror or to other ranged bots that can counter-snipe.`,
-  tech: { move: 50, stack: 0, prod: 10, atk: 35, def: 5 },
+  tech: { move: 75, stack: 0, prod: 5, atk: 15, def: 5 },
   act(army, game) {
     const tile = army.tile;
     if (!tile) return;

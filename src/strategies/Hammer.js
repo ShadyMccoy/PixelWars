@@ -53,7 +53,7 @@ Expected to crush bots that under-commit (every classic-tuned
 Conqueror). Expected to lose to other over-commit bots whose
 strength regen keeps up better, or to ranged bots (Sniper) that
 exploit Hammer's adjacent-only horizon.`,
-  tech: { move: 30, stack: 0, prod: 20, atk: 40, def: 10 },
+  tech: { move: 60, stack: 0, prod: 10, atk: 20, def: 10 },
   act(army, game) {
     const tile = army.tile;
     if (!tile) return;
