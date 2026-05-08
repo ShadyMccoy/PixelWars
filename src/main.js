@@ -12,7 +12,36 @@ import { CustomBots, loadStrategyFromCode } from "./ui/CustomBots.js";
 import { getStrategySource } from "./ui/strategySource.js";
 import { readUrlMatchInfo, updateUrl } from "./ui/shareLink.js";
 import { ALL_STRATEGIES, STRATEGY_LIST } from "./strategies/index.js";
-import { startingBlobSide } from "./core/startup.js";
+
+// Pick the a×b factorization of `n` that gives cells closest to square
+// for this map's aspect ratio, then drop seeds at each cell's center.
+// Every cell is congruent (same shape, same wrap relationship to its
+// neighbors), so all players start with identical geometry — unlike a
+// circle layout, where on a non-square wrap map the cardinal pairs
+// have different wrap distances and asymmetric blob clipping.
+function gridPositions(n, width, height) {
+  if (n === 1) return [{ x: Math.floor(width / 2), y: Math.floor(height / 2) }];
+  let best = null;
+  for (let a = 1; a <= n; a++) {
+    if (n % a !== 0) continue;
+    const b = n / a;
+    const cellW = width / a;
+    const cellH = height / b;
+    const aspect = Math.max(cellW, cellH) / Math.min(cellW, cellH);
+    if (!best || aspect < best.aspect) best = { a, b, aspect };
+  }
+  const { a, b } = best;
+  const out = [];
+  for (let j = 0; j < b; j++) {
+    for (let i = 0; i < a; i++) {
+      out.push({
+        x: Math.round(width * (i + 0.5) / a) % width,
+        y: Math.round(height * (j + 0.5) / b) % height,
+      });
+    }
+  }
+  return out;
+}
 
 class App {
   constructor() {
@@ -209,30 +238,7 @@ class App {
       fixedLineup: true,
     };
 
-    let positions = startPositions;
-    if (!positions) {
-      // Place starts on a ring whose radius keeps every player's blob
-      // clear of its neighbors AND of its wrap-opposite. The naive
-      // r = 0.4·min(W,H) puts opposite players only ~0.2·W apart on
-      // the torus, less than a blob is wide — their starting tiles
-      // collide across the wrap edge and the player seated first ends
-      // up with a fatter blob, biasing matches toward whichever color
-      // sits at index 0.
-      const cx = width / 2;
-      const cy = height / 2;
-      const D = Math.min(width, height);
-      const side = startingBlobSide({ width, height }, numPlayers);
-      const rMin = numPlayers >= 2 ? side / (2 * Math.sin(Math.PI / numPlayers)) : 0;
-      const rMax = Math.max(0, (D - side) / 2);
-      const r = numPlayers <= 1 ? 0 : Math.min(rMax, Math.max(rMin, (rMin + rMax) / 2));
-      positions = [];
-      for (let i = 0; i < numPlayers; i++) {
-        const angle = (i / numPlayers) * Math.PI * 2;
-        const x = ((Math.round(cx + Math.cos(angle) * r) % width) + width) % width;
-        const y = ((Math.round(cy + Math.sin(angle) * r) % height) + height) % height;
-        positions.push({ x, y });
-      }
-    }
+    const positions = startPositions ?? gridPositions(numPlayers, width, height);
 
     this.currentMatch = {
       kind: "custom",
