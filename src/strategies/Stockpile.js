@@ -134,7 +134,9 @@ matches where neither bot finds a target.`,
           enemy += a.strength;
         }
         if (friendly) continue;
-        const maxPowerByBudget = budget / dist;
+        // Cost formula: power * dist + 1. Max deliverable power is
+        // (budget - 1) / dist.
+        const maxPowerByBudget = (budget - 1) / dist;
         const maxPower = maxPowerByBudget < sLimit ? maxPowerByBudget : sLimit;
         if (maxPower <= 0.5) continue;
         if (maxPower * atkMult <= enemy * 1.15) continue;

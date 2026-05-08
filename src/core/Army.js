@@ -80,12 +80,13 @@ export class Army {
 
   attack(tile, power) {
     // Budget movement model: the bot can ask for any (non-self) tile.
-    // The engine computes Euclidean distance, treats power × distance
-    // as work-units, and clamps actual delivered power to whatever
-    // work the source tile's budget can pay for. Adjacent moves
-    // (distance 1) clamp directly against the budget; longer moves
-    // get a smaller effective power for the same budget. Conquest of
-    // the destination resets *its* budget to 0 in resolveConflicts.
+    // Cost formula has a flat per-move overhead: cost = power *
+    // distance + 1. The +1 is a fixed fee per move regardless of
+    // distance, so many small moves are strictly more expensive
+    // than fewer larger moves carrying the same total power. Engine
+    // clamps actual delivered power to whatever the source tile's
+    // budget can pay for; conquest of the destination resets *its*
+    // budget to 0 in resolveConflicts.
     if (this.game.movementModel === "budget") {
       if (!tile || this.tile === tile) return false;
       if (power <= 0.5) return false;
@@ -93,10 +94,12 @@ export class Army {
       if (!src) return false;
       const dist = this._distance(src, tile);
       if (dist <= 0) return false;
-      const requestedWork = power * dist;
+      // cost = power * distance + 1. Solve actualPower from clamped
+      // actualWork: actualPower = (actualWork - 1) / dist.
+      const requestedWork = power * dist + 1;
       const budget = src.budget;
       const actualWork = requestedWork < budget ? requestedWork : budget;
-      const actualPower = actualWork / dist;
+      const actualPower = (actualWork - 1) / dist;
       if (actualPower <= 0.5) return false;
       // Engine sanity: keep at least 0.5 strength behind so the
       // source tile doesn't pop empty mid-tick. Lower bound; the

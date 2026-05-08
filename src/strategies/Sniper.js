@@ -114,8 +114,10 @@ mirror or to other ranged bots that can counter-snipe.`,
         // arrivals.
         const minPower = Math.sqrt(1.0 + (enemy / atkMult) ** 2) * 1.1;
         // Cap by all three constraints: budget at this distance, the
-        // army's keep-half-home rule, and the army's strength.
-        const maxPowerByBudget = workCap / dist;
+        // army's keep-half-home rule, and the army's strength. Cost
+        // formula is power * distance + 1, so max deliverable power
+        // at this distance is (workCap - 1) / dist.
+        const maxPowerByBudget = (workCap - 1) / dist;
         const ceiling = Math.min(maxPowerByBudget, maxSelfCommit, sLimit);
         if (minPower > ceiling) continue;
 
