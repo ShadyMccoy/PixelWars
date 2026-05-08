@@ -44,6 +44,9 @@ import Sniper from "./Sniper.js";
 import Hammer from "./Hammer.js";
 import Stockpile from "./Stockpile.js";
 import Reservoir from "./Reservoir.js";
+import Tidewatcher from "./Tidewatcher.js";
+import Smith from "./Smith.js";
+import Coastal from "./Coastal.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -99,6 +102,9 @@ export const ALL_STRATEGY_LIST = [
   Hammer,
   Stockpile,
   Reservoir,
+  Tidewatcher,
+  Smith,
+  Coastal,
   ...GENERATED,
   ...DESCENDANTS,
 ];
