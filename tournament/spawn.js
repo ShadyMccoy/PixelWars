@@ -384,12 +384,36 @@ function formatMapConfig(cfg) {
   return parts.join(", ") || JSON.stringify(cfg);
 }
 
+// Walk each candidate's ancestor chain (using the full lineage list,
+// since intermediate ancestors may be archived) and return only those
+// that have `rootName` somewhere in their chain. `candidates` should
+// already be filtered to active && != newBot.
+function collectActiveDescendantsOf(rootName, candidates, allLineages) {
+  const byName = new Map(allLineages.map((b) => [b.name, b]));
+  return candidates.filter((b) => {
+    let cur = b.parent;
+    while (cur) {
+      if (cur === rootName) return true;
+      cur = byName.get(cur)?.parent;
+    }
+    return false;
+  });
+}
+
 // ---------------------------------------------------------- archival on spawn
 //
-// Every spawn is zero-sum at the pool level: the globally weakest active
-// bot gets archived to make room for the descendant, except when doing
-// so would leave the spawning family with zero active members (a family
-// can't suicide on a single bad descendant).
+// Every spawn is zero-sum at the pool level: someone gets archived to
+// make room for the new descendant. Selection is two-stage:
+//
+//   1. Anti-clone-spam: if the new descendant's parent P has any active
+//      transitive descendants rated below P, archive the weakest such
+//      descendant. A family that propagates weaker copies of itself
+//      shouldn't displace bots from other families — its own deadweight
+//      is the right thing to prune.
+//   2. Otherwise, archive the globally weakest active bot.
+//
+// In both stages, a family-suicide guard prevents culling the spawning
+// family's last non-new-bot member.
 
 export async function applyArchivalForSpawn(newBotName) {
   const lineages = await loadLineages();
@@ -408,17 +432,43 @@ export async function applyArchivalForSpawn(newBotName) {
   const activeBots = lineages.filter((b) => b.active && b.name !== newBotName);
   const familySiblings = activeBots.filter((b) => b.family === newRec.family);
 
+  // Family-suicide guard: a candidate is unsafe to cull if doing so
+  // leaves the spawning family with zero active non-new-bot members.
+  const isSafeCull = (cand) =>
+    !(cand.family === newRec.family && familySiblings.length <= 1);
+
   const decisions = [];
 
-  // Global weakest, with family-suicide guard: if the weakest belongs to
-  // the spawning family AND is its only active sibling, skip and try the
-  // next weakest. After archival, the family must still have ≥ 1 member
-  // (excluding the new bot, which is exempt).
-  const sorted = activeBots.slice().sort((a, b) => ratingOf(a.name) - ratingOf(b.name));
-  for (const cand of sorted) {
-    if (cand.family === newRec.family && familySiblings.length <= 1) continue;
-    decisions.push({ name: cand.name, reason: "global-weakest-on-spawn", rating: ratingOf(cand.name) });
-    break;
+  // Stage 1: prefer to cull P's own weak transitive descendants. A
+  // descendant of P that's rated below P hasn't improved on the parent —
+  // it's clone-spam and shouldn't take up someone else's pool slot.
+  // Targets the lowest-rated such descendant.
+  const parentName = newRec.parent;
+  if (parentName) {
+    const parentRating = ratingOf(parentName);
+    const subtree = collectActiveDescendantsOf(parentName, activeBots, lineages);
+    const weakClones = subtree
+      .filter((b) => ratingOf(b.name) < parentRating)
+      .filter(isSafeCull)
+      .sort((a, b) => ratingOf(a.name) - ratingOf(b.name));
+    if (weakClones.length > 0) {
+      const cand = weakClones[0];
+      decisions.push({
+        name: cand.name,
+        reason: "weak-clone-of-parent",
+        rating: ratingOf(cand.name),
+      });
+    }
+  }
+
+  // Stage 2: fall back to global weakest, family-suicide-guarded.
+  if (decisions.length === 0) {
+    const sorted = activeBots.slice().sort((a, b) => ratingOf(a.name) - ratingOf(b.name));
+    for (const cand of sorted) {
+      if (!isSafeCull(cand)) continue;
+      decisions.push({ name: cand.name, reason: "global-weakest-on-spawn", rating: ratingOf(cand.name) });
+      break;
+    }
   }
 
   for (const d of decisions) {
