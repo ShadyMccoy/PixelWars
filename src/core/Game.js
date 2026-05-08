@@ -12,6 +12,10 @@ export class Game {
     maxArmy = 6,
     decay = 0.05,
     attackerBonus = 1.4,
+    combatModel = "linear",
+    movementModel = "classic",
+    maxBudget = null,         // budget mode: cap. null -> defaults to maxArmy.
+    baseBudgetRecharge = 1.0, // budget mode: budget gained per tick at neutral move-tech.
     maxHistory = 240,
     seed = null,
   } = {}) {
@@ -26,6 +30,28 @@ export class Game {
     this.maxArmy = maxArmy;
     this.decay = decay;
     this.attackerBonus = attackerBonus;
+    // "linear" (default): winner pays loser_eff/winner_mult raw —
+    //   flat subtractive, no nonlinear reward for overkill.
+    // "lanchester": winner's post-fight effective strength is
+    //   sqrt(winner_eff^2 - loser_eff^2). Concentration of force
+    //   compounds — a 2x force ratio is ~4x more efficient — so
+    //   shaping mass at the breakthrough pays directly. Bots tuned
+    //   on linear (Conqueror's enemy/1.4 + MARGIN commit math) are
+    //   not optimal here; the closed-form commit becomes a strict
+    //   underestimate.
+    this.combatModel = combatModel;
+    // "classic" (default): adjacent-only attacks, garrison floor from
+    //   the move tech. Existing 391 bots target this model.
+    // "budget": tile-local movement budget recharges per tick (scaled
+    //   by the owner's move-tech multiplier), measured in work units
+    //   (strength × Euclidean distance). Attack targets can be any
+    //   tile; the engine clamps actual delivered power so the
+    //   work spent never exceeds the source tile's budget. Conquest
+    //   resets the captured tile's budget to 0, which gives defenders
+    //   a structural tempo advantage and makes blitz raids costly.
+    this.movementModel = movementModel;
+    this.maxBudget = maxBudget != null ? maxBudget : maxArmy;
+    this.baseBudgetRecharge = baseBudgetRecharge;
     this.history = [];
     this.maxHistory = maxHistory;
     this.seed = seed;
@@ -34,6 +60,22 @@ export class Game {
     this._territoryDirty = true;
     this.recentMoves = [];
     this.moveFadeTicks = 8;
+    // Recently-resolved combats, used by the renderer to paint a red
+    // residue on contested tiles. magnitude = total strength engaged
+    // in the fight; the renderer fades alpha with age and scales by
+    // magnitude so heavy/sustained conflicts read as deeper red.
+    this.recentConflicts = [];
+    this.conflictFadeTicks = 45;
+  }
+
+  recordConflict(tile, magnitude) {
+    if (!tile || !(magnitude > 0)) return;
+    this.recentConflicts.push({
+      x: tile.pos.x,
+      y: tile.pos.y,
+      magnitude,
+      tick: this.tick,
+    });
   }
 
   recordMove(fromTile, toTile, player, power) {
@@ -174,6 +216,37 @@ export class Game {
     }
     this.map.resolveConflicts(this._dirtyTiles);
 
+    // Budget mode: each owned tile recharges its movement budget by
+    // baseRecharge × owner.move-tech-multiplier, capped at maxBudget.
+    // Tiles without an army (neutral) are skipped — their budget was
+    // already reset to 0 on whatever conquest left them empty, and
+    // there's no owner to define the recharge rate. Done after combat
+    // resolution so just-conquered tiles (budget=0) don't sneak in a
+    // free recharge tick before the new owner has acted.
+    if (this.movementModel === "budget") {
+      const baseRate = this.baseBudgetRecharge * interval * 30; // tickInterval is 1/30 by default; normalize to ~1 per tick.
+      const baseCap = this.maxBudget;
+      const tiles = this.map.tiles;
+      for (let i = 0; i < tiles.length; i++) {
+        const tile = tiles[i];
+        const armies = tile.armies;
+        if (armies.length !== 1) continue;
+        const owner = armies[0].player;
+        // Move tech multiplies BOTH recharge rate AND budget cap. A
+        // high-move tile fills faster *and* holds more, so the
+        // archetype scales coherently — quick small jabs recover
+        // their work fast, while a saved-up alpha strike can also
+        // be larger. Cap is owner-dependent: when a tile changes
+        // hands, the new ceiling is set by the new owner's tech
+        // (the budget itself was just reset to 0 in resolveConflicts
+        // and will climb to the new cap from there).
+        const mult = owner?.techMults?.moveRecharge ?? 1;
+        const cap = baseCap * mult;
+        const next = tile.budget + baseRate * mult;
+        tile.budget = next > cap ? cap : next;
+      }
+    }
+
     if (this.recentMoves.length > 0) {
       const moves = this.recentMoves;
       const cutoff = tick - this.moveFadeTicks;
@@ -182,6 +255,16 @@ export class Game {
         if (moves[i].tick > cutoff) moves[w++] = moves[i];
       }
       moves.length = w;
+    }
+
+    if (this.recentConflicts.length > 0) {
+      const conflicts = this.recentConflicts;
+      const cutoff = tick - this.conflictFadeTicks;
+      let w = 0;
+      for (let i = 0; i < conflicts.length; i++) {
+        if (conflicts[i].tick > cutoff) conflicts[w++] = conflicts[i];
+      }
+      conflicts.length = w;
     }
 
     if (this._deadCount > 32 && this._deadCount * 4 > armies.length) {
@@ -264,6 +347,7 @@ export class Game {
     this._deadCount = 0;
     this._dirtyTiles.length = 0;
     this.recentMoves.length = 0;
+    this.recentConflicts.length = 0;
     this.tick = 0;
     this.elapsed = 0;
     this.history.length = 0;

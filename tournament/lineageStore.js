@@ -123,6 +123,51 @@ export async function markArchived(name, { season = null } = {}) {
   return rec;
 }
 
+// Tree (kinship) distance between two bots, in edges, via their lowest
+// common ancestor. Self = 0; parent/child = 1; siblings = 2; cousins = 4.
+// Bots in different families return Infinity. Founders (parent === null)
+// terminate the walk; if both founders share the family root by name,
+// they're treated as the same node (distance 0 from themselves).
+//
+// Takes the full bot list so callers can build a name-indexed lookup
+// once and reuse it across many pairs.
+export function kinshipDistance(aName, bName, bots) {
+  if (aName === bName) return 0;
+  const byName = bots instanceof Map ? bots : new Map(bots.map((b) => [b.name, b]));
+  const a = byName.get(aName);
+  const b = byName.get(bName);
+  if (!a || !b) return Infinity;
+  if (a.family !== b.family) return Infinity;
+
+  // Walk a's chain to root, recording depth-from-a for each ancestor.
+  const aChain = new Map();
+  let cur = a;
+  let depth = 0;
+  while (cur) {
+    aChain.set(cur.name, depth);
+    if (cur.parent == null) break;
+    const next = byName.get(cur.parent);
+    if (!next) break;
+    cur = next;
+    depth += 1;
+  }
+
+  // Walk b's chain until we hit something in a's chain — that's the LCA.
+  cur = b;
+  depth = 0;
+  while (cur) {
+    if (aChain.has(cur.name)) {
+      return aChain.get(cur.name) + depth;
+    }
+    if (cur.parent == null) break;
+    const next = byName.get(cur.parent);
+    if (!next) break;
+    cur = next;
+    depth += 1;
+  }
+  return Infinity;
+}
+
 // Group bots by family, return a Map of familyId -> bot records (sorted
 // by generation then createdAt). Useful for tree-style displays.
 export async function familiesByName() {

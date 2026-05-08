@@ -82,21 +82,32 @@ export function validateTech(tech) {
   return t;
 }
 
+// Movement-budget recharge multiplier in "budget" movementModel.
+// Pivots at 1.0 at tech 20 (neutral), reaches 0.6 at tech 0 and 2.6
+// at tech 100. Same shape as the other knobs (linear with `1.0 +
+// (tech - 20) * MOVE_RECHARGE_SLOPE`); decoupled from SLOPES.move
+// because the classic-mode formula has different units (garrison
+// floor in strength, not a multiplier).
+const MOVE_RECHARGE_SLOPE = 0.020;
+
 export function techToMultipliers(tech) {
   const t = validateTech(tech);
   const mults = {};
   for (const k of KNOBS) {
     if (k === "move") {
-      // Move's "multiplier" is the garrison floor; high tech reduces
-      // the floor so the bot can throw more strength forward. Linear
-      // from MOVE_INTERCEPT (1.5) at tech 0 to MOVE_INTERCEPT - 100 *
-      // SLOPES.move (0.5) at tech 100. No clamp - the formula is the
-      // contract.
+      // Classic movementModel: move multiplier *is* the garrison
+      // floor. Linear from MOVE_INTERCEPT (1.5) at tech 0 to
+      // MOVE_INTERCEPT - 100 * SLOPES.move (0.5) at tech 100. No
+      // clamp - the formula is the contract.
       mults[k] = MOVE_INTERCEPT - t[k] * SLOPES[k];
     } else {
       mults[k] = 1.0 + (t[k] - BASELINE) * SLOPES[k];
     }
   }
+  // Budget movementModel: separate per-tile recharge multiplier
+  // computed from the same move tech value but on a clean 1.0-pivot
+  // shape so it composes naturally with the other knobs.
+  mults.moveRecharge = 1.0 + (t.move - BASELINE) * MOVE_RECHARGE_SLOPE;
   return mults;
 }
 

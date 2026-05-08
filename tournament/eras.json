@@ -1,248 +1,277 @@
 {
-  "generatedAt": "2026-05-08T03:57:45.843Z",
+  "generatedAt": "2026-05-08T12:26:50.092Z",
   "opts": {
-    "intervals": 10,
-    "top": 3,
-    "matches": 250,
+    "top": 1,
+    "matches": 400,
     "pool": null,
     "map": "lab1",
     "seed": 1,
-    "minPlayedInEra": 15,
-    "append": true
-  },
-  "logRange": {
-    "firstTs": "2026-05-07T22:52:53.185Z",
-    "lastTs": "2026-05-08T03:53:52.784Z",
-    "count": 4358
+    "minPlayed": 15,
+    "pin": "Drumline",
+    "append": false
   },
   "eras": [
     {
-      "i": 1,
-      "endMatch": 435,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-07T23:06:31.573Z",
+      "generation": 0,
       "top": [
         {
-          "name": "Conqueror_g5_0b2647",
-          "rating": 1204,
-          "matches": 17
-        },
+          "name": "Tactician",
+          "rating": 875,
+          "matches": 887,
+          "wins": 0,
+          "generation": 0
+        }
+      ]
+    },
+    {
+      "generation": 1,
+      "top": [
+        {
+          "name": "Phalanx_g1_5b920f",
+          "rating": 819,
+          "matches": 55,
+          "wins": 0,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "generation": 2,
+      "top": [
         {
           "name": "Conqueror_g2_6b59e8",
-          "rating": 1192,
-          "matches": 16
-        },
-        {
-          "name": "Conqueror_g9_c81d7f",
-          "rating": 1179,
-          "matches": 15
+          "rating": 990,
+          "matches": 351,
+          "wins": 62,
+          "generation": 2
         }
       ]
     },
     {
-      "i": 2,
-      "endMatch": 871,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-07T23:15:46.865Z",
+      "generation": 3,
+      "top": [
+        {
+          "name": "Conqueror_g3_be9a58",
+          "rating": 1026,
+          "matches": 350,
+          "wins": 88,
+          "generation": 3
+        }
+      ]
+    },
+    {
+      "generation": 4,
+      "top": [
+        {
+          "name": "Conqueror_g4_be92c1",
+          "rating": 1079,
+          "matches": 91,
+          "wins": 27,
+          "generation": 4
+        }
+      ]
+    },
+    {
+      "generation": 5,
+      "top": [
+        {
+          "name": "Conqueror_g5_3087ea",
+          "rating": 1066,
+          "matches": 93,
+          "wins": 22,
+          "generation": 5
+        }
+      ]
+    },
+    {
+      "generation": 6,
       "top": [
         {
           "name": "Conqueror_g6_9eb2e4",
-          "rating": 1158,
-          "matches": 165
-        },
-        {
-          "name": "Conqueror_g9_c81d7f",
-          "rating": 1150,
-          "matches": 33
-        },
-        {
-          "name": "Conqueror_g10_447dc3",
-          "rating": 1147,
-          "matches": 33
+          "rating": 1063,
+          "matches": 566,
+          "wins": 175,
+          "generation": 6
         }
       ]
     },
     {
-      "i": 3,
-      "endMatch": 1307,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-07T23:20:16.869Z",
+      "generation": 7,
       "top": [
         {
-          "name": "Conqueror_g9_c81d7f",
-          "rating": 1177,
-          "matches": 40
-        },
-        {
-          "name": "Conqueror_g10_447dc3",
-          "rating": 1151,
-          "matches": 40
-        },
-        {
-          "name": "Conqueror_g6_9eb2e4",
-          "rating": 1147,
-          "matches": 243
+          "name": "Conqueror_g7_3b651e",
+          "rating": 1056,
+          "matches": 499,
+          "wins": 162,
+          "generation": 7
         }
       ]
     },
     {
-      "i": 4,
-      "endMatch": 1743,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-08T00:08:19.629Z",
+      "generation": 8,
       "top": [
         {
-          "name": "Conqueror_g8_74e11b",
-          "rating": 1178,
-          "matches": 73
-        },
-        {
-          "name": "Conqueror_g9_1e065b",
-          "rating": 1168,
-          "matches": 23
-        },
-        {
-          "name": "Conqueror_g6_9eb2e4",
-          "rating": 1134,
-          "matches": 302
+          "name": "Conqueror_g8_82d39b",
+          "rating": 1132,
+          "matches": 45,
+          "wins": 19,
+          "generation": 8
         }
       ]
     },
     {
-      "i": 5,
-      "endMatch": 2179,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-08T01:30:51.025Z",
+      "generation": 9,
       "top": [
         {
-          "name": "Conqueror_g8_4d842b",
-          "rating": 1277,
-          "matches": 22
-        },
-        {
-          "name": "Conqueror_g8_912a4c",
-          "rating": 1218,
-          "matches": 23
-        },
-        {
-          "name": "Conqueror_g11_755fa9",
-          "rating": 1208,
-          "matches": 23
+          "name": "Conqueror_g9_01de66",
+          "rating": 1093,
+          "matches": 25,
+          "wins": 9,
+          "generation": 9
         }
       ]
     },
     {
-      "i": 6,
-      "endMatch": 2614,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-08T01:39:07.334Z",
+      "generation": 10,
       "top": [
         {
-          "name": "Conqueror_g8_912a4c",
-          "rating": 1214,
-          "matches": 43
-        },
-        {
-          "name": "Conqueror_g8_4d842b",
-          "rating": 1207,
-          "matches": 43
-        },
-        {
-          "name": "Conqueror_g11_755fa9",
-          "rating": 1181,
-          "matches": 43
+          "name": "Conqueror_g10_34ca94",
+          "rating": 1072,
+          "matches": 278,
+          "wins": 65,
+          "generation": 10
         }
       ]
     },
     {
-      "i": 7,
-      "endMatch": 3050,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-08T02:16:25.189Z",
+      "generation": 11,
       "top": [
         {
-          "name": "Conqueror_g11_755fa9",
-          "rating": 1136,
-          "matches": 113
-        },
-        {
-          "name": "Conqueror_g8_4d842b",
-          "rating": 1129,
-          "matches": 111
-        },
-        {
-          "name": "Conqueror_g8_579783",
-          "rating": 1127,
-          "matches": 119
+          "name": "Conqueror_g11_224717",
+          "rating": 1068,
+          "matches": 103,
+          "wins": 25,
+          "generation": 11
         }
       ]
     },
     {
-      "i": 8,
-      "endMatch": 3486,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-08T03:07:15.620Z",
+      "generation": 12,
       "top": [
         {
-          "name": "Conqueror_g8_1c5660",
-          "rating": 1205,
-          "matches": 15
-        },
+          "name": "Conqueror_g12_f23241",
+          "rating": 1068,
+          "matches": 787,
+          "wins": 173,
+          "generation": 12
+        }
+      ]
+    },
+    {
+      "generation": 13,
+      "top": [
         {
-          "name": "Conqueror_g5_897d51",
-          "rating": 1147,
-          "matches": 43
-        },
-        {
-          "name": "Conqueror_g11_755fa9",
+          "name": "Conqueror_g13_b41df9",
           "rating": 1124,
-          "matches": 118
+          "matches": 736,
+          "wins": 204,
+          "generation": 13
         }
       ]
     },
     {
-      "i": 9,
-      "endMatch": 3922,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-08T03:31:37.865Z",
+      "generation": 14,
       "top": [
         {
-          "name": "Conqueror_g5_f15d3e",
-          "rating": 1208,
-          "matches": 40
-        },
-        {
-          "name": "Conqueror_g8_5c68e4",
-          "rating": 1183,
-          "matches": 32
-        },
-        {
-          "name": "Conqueror_g8_3280dd",
-          "rating": 1159,
-          "matches": 42
+          "name": "Conqueror_g14_8d5369",
+          "rating": 1205,
+          "matches": 351,
+          "wins": 131,
+          "generation": 14
         }
       ]
     },
     {
-      "i": 10,
-      "endMatch": 4358,
-      "startTs": "2026-05-07T22:52:53.185Z",
-      "endTs": "2026-05-08T03:53:52.784Z",
+      "generation": 15,
       "top": [
         {
-          "name": "Conqueror_g6_27c4e7",
-          "rating": 1206,
-          "matches": 27
-        },
+          "name": "Conqueror_g15_2c15dc",
+          "rating": 1181,
+          "matches": 51,
+          "wins": 17,
+          "generation": 15
+        }
+      ]
+    },
+    {
+      "generation": 16,
+      "top": [
         {
-          "name": "Conqueror_g8_bfcb0e",
-          "rating": 1189,
-          "matches": 56
-        },
+          "name": "Conqueror_g16_e79590",
+          "rating": 1110,
+          "matches": 466,
+          "wins": 111,
+          "generation": 16
+        }
+      ]
+    },
+    {
+      "generation": 17,
+      "top": [
         {
-          "name": "Conqueror_g5_f15d3e",
-          "rating": 1172,
-          "matches": 77
+          "name": "Conqueror_g17_6d0fb0",
+          "rating": 1116,
+          "matches": 310,
+          "wins": 77,
+          "generation": 17
+        }
+      ]
+    },
+    {
+      "generation": 18,
+      "top": [
+        {
+          "name": "Conqueror_g18_6a26b3",
+          "rating": 1132,
+          "matches": 443,
+          "wins": 119,
+          "generation": 18
+        }
+      ]
+    },
+    {
+      "generation": 19,
+      "top": [
+        {
+          "name": "Conqueror_g19_9533e3",
+          "rating": 1157,
+          "matches": 397,
+          "wins": 122,
+          "generation": 19
+        }
+      ]
+    },
+    {
+      "generation": 20,
+      "top": [
+        {
+          "name": "Conqueror_g20_43253a",
+          "rating": 1151,
+          "matches": 141,
+          "wins": 42,
+          "generation": 20
+        }
+      ]
+    },
+    {
+      "generation": 21,
+      "top": [
+        {
+          "name": "Conqueror_g21_e2aa5a",
+          "rating": 1095,
+          "matches": 73,
+          "wins": 14,
+          "generation": 21
         }
       ]
     }
@@ -250,568 +279,491 @@
   "missing": [],
   "standings": [
     {
-      "name": "Conqueror_g8_bfcb0e",
-      "author": "claude",
-      "played": 69,
-      "wins": 19,
-      "survived": 19,
-      "points": 166,
-      "totalRank": 179,
-      "totalTerritory": 12533,
-      "totalEliminationTick": 23675,
-      "eliminationCount": 50,
-      "avgRank": 2.5942028985507246,
-      "avgTerritory": 181.63768115942028,
-      "avgEliminationTick": 473.5,
-      "winRate": 0.2753623188405797,
-      "survivalRate": 0.2753623188405797,
-      "pointsPerGame": 2.4057971014492754,
-      "rating": 1038.24,
-      "rd": 41.83,
-      "firstEra": 10,
-      "appearances": [
-        {
-          "era": 10,
-          "rating": 1189,
-          "matches": 56
-        }
-      ]
+      "rank": 1,
+      "name": "Conqueror_g19_9533e3",
+      "generation": 19,
+      "crossRating": 1054.45,
+      "crossWinRate": 0.368,
+      "crossPpg": 2.345,
+      "crossPlayed": 87,
+      "crossWins": 32,
+      "globalRating": 1157,
+      "globalMatches": 397,
+      "globalWinRate": 0.307
     },
     {
-      "name": "Conqueror_g8_579783",
-      "author": "claude",
-      "played": 80,
-      "wins": 24,
-      "survived": 24,
-      "points": 208,
-      "totalRank": 192,
-      "totalTerritory": 15830,
-      "totalEliminationTick": 26491,
-      "eliminationCount": 56,
-      "avgRank": 2.4,
-      "avgTerritory": 197.875,
-      "avgEliminationTick": 473.05357142857144,
-      "winRate": 0.3,
-      "survivalRate": 0.3,
-      "pointsPerGame": 2.6,
-      "rating": 1027.34,
-      "rd": 38.89,
-      "firstEra": 7,
-      "appearances": [
-        {
-          "era": 7,
-          "rating": 1127,
-          "matches": 119
-        }
-      ]
+      "rank": 2,
+      "name": "Conqueror_g15_2c15dc",
+      "generation": 15,
+      "crossRating": 1030.02,
+      "crossWinRate": 0.324,
+      "crossPpg": 2.363,
+      "crossPlayed": 102,
+      "crossWins": 33,
+      "globalRating": 1181,
+      "globalMatches": 51,
+      "globalWinRate": 0.333
     },
     {
-      "name": "Conqueror_g8_3280dd",
-      "author": "claude",
-      "played": 69,
-      "wins": 19,
-      "survived": 19,
-      "points": 156,
-      "totalRank": 189,
-      "totalTerritory": 12530,
-      "totalEliminationTick": 22084,
-      "eliminationCount": 50,
-      "avgRank": 2.739130434782609,
-      "avgTerritory": 181.59420289855072,
-      "avgEliminationTick": 441.68,
-      "winRate": 0.2753623188405797,
-      "survivalRate": 0.2753623188405797,
-      "pointsPerGame": 2.260869565217391,
-      "rating": 1027.08,
-      "rd": 41.83,
-      "firstEra": 9,
-      "appearances": [
-        {
-          "era": 9,
-          "rating": 1159,
-          "matches": 42
-        }
-      ]
+      "rank": 3,
+      "name": "Conqueror_g21_e2aa5a",
+      "generation": 21,
+      "crossRating": 1024.28,
+      "crossWinRate": 0.305,
+      "crossPpg": 2.256,
+      "crossPlayed": 82,
+      "crossWins": 25,
+      "globalRating": 1095,
+      "globalMatches": 73,
+      "globalWinRate": 0.192
     },
     {
-      "name": "Conqueror_g11_755fa9",
-      "author": "claude",
-      "played": 77,
-      "wins": 20,
-      "survived": 20,
-      "points": 174,
-      "totalRank": 211,
-      "totalTerritory": 13196,
-      "totalEliminationTick": 24551,
-      "eliminationCount": 57,
-      "avgRank": 2.74025974025974,
-      "avgTerritory": 171.37662337662337,
-      "avgEliminationTick": 430.719298245614,
-      "winRate": 0.2597402597402597,
-      "survivalRate": 0.2597402597402597,
-      "pointsPerGame": 2.25974025974026,
-      "rating": 1022.38,
-      "rd": 39.63,
-      "firstEra": 5,
-      "appearances": [
-        {
-          "era": 5,
-          "rating": 1208,
-          "matches": 23
-        },
-        {
-          "era": 6,
-          "rating": 1181,
-          "matches": 43
-        },
-        {
-          "era": 7,
-          "rating": 1136,
-          "matches": 113
-        },
-        {
-          "era": 8,
-          "rating": 1124,
-          "matches": 118
-        }
-      ]
+      "rank": 4,
+      "name": "Conqueror_g11_224717",
+      "generation": 11,
+      "crossRating": 1022.47,
+      "crossWinRate": 0.292,
+      "crossPpg": 1.888,
+      "crossPlayed": 89,
+      "crossWins": 26,
+      "globalRating": 1068,
+      "globalMatches": 103,
+      "globalWinRate": 0.243
     },
     {
-      "name": "Conqueror_g8_74e11b",
-      "author": "claude",
-      "played": 66,
-      "wins": 17,
-      "survived": 17,
-      "points": 132,
-      "totalRank": 198,
-      "totalTerritory": 11215,
-      "totalEliminationTick": 19728,
-      "eliminationCount": 49,
-      "avgRank": 3,
-      "avgTerritory": 169.92424242424244,
-      "avgEliminationTick": 402.61224489795916,
-      "winRate": 0.25757575757575757,
-      "survivalRate": 0.25757575757575757,
-      "pointsPerGame": 2,
-      "rating": 1016.8,
-      "rd": 42.76,
-      "firstEra": 4,
-      "appearances": [
-        {
-          "era": 4,
-          "rating": 1178,
-          "matches": 73
-        }
-      ]
+      "rank": 5,
+      "name": "Drumline",
+      "generation": null,
+      "crossRating": 1018.12,
+      "crossWinRate": 0.25,
+      "crossPpg": 2.292,
+      "crossPlayed": 96,
+      "crossWins": 24,
+      "globalRating": null,
+      "globalMatches": 0,
+      "globalWinRate": null
     },
     {
-      "name": "Conqueror_g8_5c68e4",
-      "author": "claude",
-      "played": 69,
-      "wins": 18,
-      "survived": 18,
-      "points": 160,
-      "totalRank": 185,
-      "totalTerritory": 11872,
-      "totalEliminationTick": 22120,
-      "eliminationCount": 51,
-      "avgRank": 2.681159420289855,
-      "avgTerritory": 172.05797101449275,
-      "avgEliminationTick": 433.72549019607845,
-      "winRate": 0.2608695652173913,
-      "survivalRate": 0.2608695652173913,
-      "pointsPerGame": 2.318840579710145,
-      "rating": 1014.63,
-      "rd": 41.83,
-      "firstEra": 9,
-      "appearances": [
-        {
-          "era": 9,
-          "rating": 1183,
-          "matches": 32
-        }
-      ]
+      "rank": 6,
+      "name": "Conqueror_g14_8d5369",
+      "generation": 14,
+      "crossRating": 1016.69,
+      "crossWinRate": 0.263,
+      "crossPpg": 2.221,
+      "crossPlayed": 95,
+      "crossWins": 25,
+      "globalRating": 1205,
+      "globalMatches": 351,
+      "globalWinRate": 0.373
     },
     {
-      "name": "Conqueror_g6_27c4e7",
-      "author": "claude",
-      "played": 64,
-      "wins": 17,
-      "survived": 17,
-      "points": 149,
-      "totalRank": 171,
-      "totalTerritory": 11214,
-      "totalEliminationTick": 20829,
-      "eliminationCount": 47,
-      "avgRank": 2.671875,
-      "avgTerritory": 175.21875,
-      "avgEliminationTick": 443.17021276595744,
-      "winRate": 0.265625,
-      "survivalRate": 0.265625,
-      "pointsPerGame": 2.328125,
-      "rating": 1013.34,
-      "rd": 43.41,
-      "firstEra": 10,
-      "appearances": [
-        {
-          "era": 10,
-          "rating": 1206,
-          "matches": 27
-        }
-      ]
+      "rank": 7,
+      "name": "Conqueror_g4_be92c1",
+      "generation": 4,
+      "crossRating": 1013.64,
+      "crossWinRate": 0.206,
+      "crossPpg": 1.784,
+      "crossPlayed": 97,
+      "crossWins": 20,
+      "globalRating": 1079,
+      "globalMatches": 91,
+      "globalWinRate": 0.297
     },
     {
+      "rank": 8,
+      "name": "Conqueror_g13_b41df9",
+      "generation": 13,
+      "crossRating": 1011.83,
+      "crossWinRate": 0.218,
+      "crossPpg": 2.161,
+      "crossPlayed": 87,
+      "crossWins": 19,
+      "globalRating": 1124,
+      "globalMatches": 736,
+      "globalWinRate": 0.277
+    },
+    {
+      "rank": 9,
+      "name": "Conqueror_g17_6d0fb0",
+      "generation": 17,
+      "crossRating": 1009.63,
+      "crossWinRate": 0.203,
+      "crossPpg": 1.784,
+      "crossPlayed": 74,
+      "crossWins": 15,
+      "globalRating": 1116,
+      "globalMatches": 310,
+      "globalWinRate": 0.248
+    },
+    {
+      "rank": 10,
+      "name": "Conqueror_g20_43253a",
+      "generation": 20,
+      "crossRating": 1002.47,
+      "crossWinRate": 0.215,
+      "crossPpg": 2.177,
+      "crossPlayed": 79,
+      "crossWins": 17,
+      "globalRating": 1151,
+      "globalMatches": 141,
+      "globalWinRate": 0.298
+    },
+    {
+      "rank": 11,
+      "name": "Conqueror_g12_f23241",
+      "generation": 12,
+      "crossRating": 1000.68,
+      "crossWinRate": 0.198,
+      "crossPpg": 1.868,
+      "crossPlayed": 91,
+      "crossWins": 18,
+      "globalRating": 1068,
+      "globalMatches": 787,
+      "globalWinRate": 0.22
+    },
+    {
+      "rank": 12,
+      "name": "Conqueror_g3_be9a58",
+      "generation": 3,
+      "crossRating": 999.64,
+      "crossWinRate": 0.193,
+      "crossPpg": 1.784,
+      "crossPlayed": 88,
+      "crossWins": 17,
+      "globalRating": 1026,
+      "globalMatches": 350,
+      "globalWinRate": 0.251
+    },
+    {
+      "rank": 13,
+      "name": "Conqueror_g7_3b651e",
+      "generation": 7,
+      "crossRating": 998.31,
+      "crossWinRate": 0.16,
+      "crossPpg": 1.723,
+      "crossPlayed": 94,
+      "crossWins": 15,
+      "globalRating": 1056,
+      "globalMatches": 499,
+      "globalWinRate": 0.325
+    },
+    {
+      "rank": 14,
+      "name": "Conqueror_g18_6a26b3",
+      "generation": 18,
+      "crossRating": 998.19,
+      "crossWinRate": 0.182,
+      "crossPpg": 1.828,
+      "crossPlayed": 99,
+      "crossWins": 18,
+      "globalRating": 1132,
+      "globalMatches": 443,
+      "globalWinRate": 0.269
+    },
+    {
+      "rank": 15,
+      "name": "Conqueror_g9_01de66",
+      "generation": 9,
+      "crossRating": 997.48,
+      "crossWinRate": 0.188,
+      "crossPpg": 1.792,
+      "crossPlayed": 96,
+      "crossWins": 18,
+      "globalRating": 1093,
+      "globalMatches": 25,
+      "globalWinRate": 0.36
+    },
+    {
+      "rank": 16,
+      "name": "Conqueror_g16_e79590",
+      "generation": 16,
+      "crossRating": 996.62,
+      "crossWinRate": 0.187,
+      "crossPpg": 1.827,
+      "crossPlayed": 75,
+      "crossWins": 14,
+      "globalRating": 1110,
+      "globalMatches": 466,
+      "globalWinRate": 0.238
+    },
+    {
+      "rank": 17,
       "name": "Conqueror_g6_9eb2e4",
-      "author": "claude",
-      "played": 76,
-      "wins": 16,
-      "survived": 16,
-      "points": 153,
-      "totalRank": 227,
-      "totalTerritory": 10552,
-      "totalEliminationTick": 23974,
-      "eliminationCount": 60,
-      "avgRank": 2.986842105263158,
-      "avgTerritory": 138.8421052631579,
-      "avgEliminationTick": 399.56666666666666,
-      "winRate": 0.21052631578947367,
-      "survivalRate": 0.21052631578947367,
-      "pointsPerGame": 2.013157894736842,
-      "rating": 1009.91,
-      "rd": 39.89,
-      "firstEra": 2,
-      "appearances": [
-        {
-          "era": 2,
-          "rating": 1158,
-          "matches": 165
-        },
-        {
-          "era": 3,
-          "rating": 1147,
-          "matches": 243
-        },
-        {
-          "era": 4,
-          "rating": 1134,
-          "matches": 302
-        }
-      ]
+      "generation": 6,
+      "crossRating": 994.54,
+      "crossWinRate": 0.132,
+      "crossPpg": 1.763,
+      "crossPlayed": 76,
+      "crossWins": 10,
+      "globalRating": 1063,
+      "globalMatches": 566,
+      "globalWinRate": 0.309
     },
     {
-      "name": "Conqueror_g8_912a4c",
-      "author": "claude",
-      "played": 62,
-      "wins": 14,
-      "survived": 14,
-      "points": 132,
-      "totalRank": 178,
-      "totalTerritory": 9234,
-      "totalEliminationTick": 19780,
-      "eliminationCount": 48,
-      "avgRank": 2.870967741935484,
-      "avgTerritory": 148.93548387096774,
-      "avgEliminationTick": 412.0833333333333,
-      "winRate": 0.22580645161290322,
-      "survivalRate": 0.22580645161290322,
-      "pointsPerGame": 2.129032258064516,
-      "rating": 1009.82,
-      "rd": 44.1,
-      "firstEra": 5,
-      "appearances": [
-        {
-          "era": 5,
-          "rating": 1218,
-          "matches": 23
-        },
-        {
-          "era": 6,
-          "rating": 1214,
-          "matches": 43
-        }
-      ]
+      "rank": 18,
+      "name": "Conqueror_g8_82d39b",
+      "generation": 8,
+      "crossRating": 989.98,
+      "crossWinRate": 0.185,
+      "crossPpg": 1.793,
+      "crossPlayed": 92,
+      "crossWins": 17,
+      "globalRating": 1132,
+      "globalMatches": 45,
+      "globalWinRate": 0.422
     },
     {
-      "name": "Conqueror_g8_4d842b",
-      "author": "claude",
-      "played": 77,
-      "wins": 17,
-      "survived": 17,
-      "points": 167,
-      "totalRank": 218,
-      "totalTerritory": 11213,
-      "totalEliminationTick": 26397,
-      "eliminationCount": 60,
-      "avgRank": 2.831168831168831,
-      "avgTerritory": 145.62337662337663,
-      "avgEliminationTick": 439.95,
-      "winRate": 0.22077922077922077,
-      "survivalRate": 0.22077922077922077,
-      "pointsPerGame": 2.168831168831169,
-      "rating": 1007.4,
-      "rd": 39.63,
-      "firstEra": 5,
-      "appearances": [
-        {
-          "era": 5,
-          "rating": 1277,
-          "matches": 22
-        },
-        {
-          "era": 6,
-          "rating": 1207,
-          "matches": 43
-        },
-        {
-          "era": 7,
-          "rating": 1129,
-          "matches": 111
-        }
-      ]
-    },
-    {
-      "name": "Conqueror_g10_447dc3",
-      "author": "claude",
-      "played": 58,
-      "wins": 14,
-      "survived": 14,
-      "points": 129,
-      "totalRank": 161,
-      "totalTerritory": 9231,
-      "totalEliminationTick": 19059,
-      "eliminationCount": 44,
-      "avgRank": 2.7758620689655173,
-      "avgTerritory": 159.1551724137931,
-      "avgEliminationTick": 433.15909090909093,
-      "winRate": 0.2413793103448276,
-      "survivalRate": 0.2413793103448276,
-      "pointsPerGame": 2.2241379310344827,
-      "rating": 1006.5,
-      "rd": 45.57,
-      "firstEra": 2,
-      "appearances": [
-        {
-          "era": 2,
-          "rating": 1147,
-          "matches": 33
-        },
-        {
-          "era": 3,
-          "rating": 1151,
-          "matches": 40
-        }
-      ]
-    },
-    {
-      "name": "Conqueror_g5_f15d3e",
-      "author": "claude",
-      "played": 70,
-      "wins": 13,
-      "survived": 13,
-      "points": 131,
-      "totalRank": 219,
-      "totalTerritory": 8574,
-      "totalEliminationTick": 23397,
-      "eliminationCount": 57,
-      "avgRank": 3.1285714285714286,
-      "avgTerritory": 122.48571428571428,
-      "avgEliminationTick": 410.4736842105263,
-      "winRate": 0.18571428571428572,
-      "survivalRate": 0.18571428571428572,
-      "pointsPerGame": 1.8714285714285714,
-      "rating": 994.3,
-      "rd": 41.54,
-      "firstEra": 9,
-      "appearances": [
-        {
-          "era": 9,
-          "rating": 1208,
-          "matches": 40
-        },
-        {
-          "era": 10,
-          "rating": 1172,
-          "matches": 77
-        }
-      ]
-    },
-    {
-      "name": "Conqueror_g9_1e065b",
-      "author": "claude",
-      "played": 82,
-      "wins": 12,
-      "survived": 12,
-      "points": 169,
-      "totalRank": 241,
-      "totalTerritory": 7913,
-      "totalEliminationTick": 30517,
-      "eliminationCount": 70,
-      "avgRank": 2.9390243902439024,
-      "avgTerritory": 96.5,
-      "avgEliminationTick": 435.95714285714286,
-      "winRate": 0.14634146341463414,
-      "survivalRate": 0.14634146341463414,
-      "pointsPerGame": 2.0609756097560976,
-      "rating": 984.13,
-      "rd": 38.42,
-      "firstEra": 4,
-      "appearances": [
-        {
-          "era": 4,
-          "rating": 1168,
-          "matches": 23
-        }
-      ]
-    },
-    {
-      "name": "Conqueror_g5_897d51",
-      "author": "claude",
-      "played": 68,
-      "wins": 8,
-      "survived": 8,
-      "points": 104,
-      "totalRank": 236,
-      "totalTerritory": 5277,
-      "totalEliminationTick": 23198,
-      "eliminationCount": 60,
-      "avgRank": 3.4705882352941178,
-      "avgTerritory": 77.6029411764706,
-      "avgEliminationTick": 386.6333333333333,
-      "winRate": 0.11764705882352941,
-      "survivalRate": 0.11764705882352941,
-      "pointsPerGame": 1.5294117647058822,
-      "rating": 976.18,
-      "rd": 42.14,
-      "firstEra": 8,
-      "appearances": [
-        {
-          "era": 8,
-          "rating": 1147,
-          "matches": 43
-        }
-      ]
-    },
-    {
+      "rank": 19,
       "name": "Conqueror_g2_6b59e8",
-      "author": "claude",
-      "played": 62,
-      "wins": 7,
-      "survived": 7,
-      "points": 106,
-      "totalRank": 204,
-      "totalTerritory": 4614,
-      "totalEliminationTick": 22986,
-      "eliminationCount": 55,
-      "avgRank": 3.2903225806451615,
-      "avgTerritory": 74.41935483870968,
-      "avgEliminationTick": 417.92727272727274,
-      "winRate": 0.11290322580645161,
-      "survivalRate": 0.11290322580645161,
-      "pointsPerGame": 1.7096774193548387,
-      "rating": 975.2,
-      "rd": 44.1,
-      "firstEra": 1,
-      "appearances": [
-        {
-          "era": 1,
-          "rating": 1192,
-          "matches": 16
-        }
-      ]
+      "generation": 2,
+      "crossRating": 984.8,
+      "crossWinRate": 0.152,
+      "crossPpg": 1.861,
+      "crossPlayed": 79,
+      "crossWins": 12,
+      "globalRating": 990,
+      "globalMatches": 351,
+      "globalWinRate": 0.177
     },
     {
-      "name": "Conqueror_g5_0b2647",
-      "author": "claude",
-      "played": 65,
-      "wins": 9,
-      "survived": 9,
-      "points": 125,
-      "totalRank": 200,
-      "totalTerritory": 5938,
-      "totalEliminationTick": 24955,
-      "eliminationCount": 56,
-      "avgRank": 3.076923076923077,
-      "avgTerritory": 91.35384615384615,
-      "avgEliminationTick": 445.625,
-      "winRate": 0.13846153846153847,
-      "survivalRate": 0.13846153846153847,
-      "pointsPerGame": 1.9230769230769231,
-      "rating": 970.99,
-      "rd": 43.08,
-      "firstEra": 1,
-      "appearances": [
-        {
-          "era": 1,
-          "rating": 1204,
-          "matches": 17
-        }
-      ]
+      "rank": 20,
+      "name": "Conqueror_g10_34ca94",
+      "generation": 10,
+      "crossRating": 979.51,
+      "crossWinRate": 0.171,
+      "crossPpg": 1.78,
+      "crossPlayed": 82,
+      "crossWins": 14,
+      "globalRating": 1072,
+      "globalMatches": 278,
+      "globalWinRate": 0.234
     },
     {
-      "name": "Conqueror_g9_c81d7f",
-      "author": "claude",
-      "played": 65,
-      "wins": 3,
-      "survived": 3,
-      "points": 64,
-      "totalRank": 261,
-      "totalTerritory": 1979,
-      "totalEliminationTick": 21580,
-      "eliminationCount": 62,
-      "avgRank": 4.015384615384615,
-      "avgTerritory": 30.446153846153845,
-      "avgEliminationTick": 348.06451612903226,
-      "winRate": 0.046153846153846156,
-      "survivalRate": 0.046153846153846156,
-      "pointsPerGame": 0.9846153846153847,
-      "rating": 953.92,
-      "rd": 43.08,
-      "firstEra": 1,
-      "appearances": [
-        {
-          "era": 1,
-          "rating": 1179,
-          "matches": 15
-        },
-        {
-          "era": 2,
-          "rating": 1150,
-          "matches": 33
-        },
-        {
-          "era": 3,
-          "rating": 1177,
-          "matches": 40
-        }
-      ]
+      "rank": 21,
+      "name": "Conqueror_g5_3087ea",
+      "generation": 5,
+      "crossRating": 974.52,
+      "crossWinRate": 0.143,
+      "crossPpg": 1.844,
+      "crossPlayed": 77,
+      "crossWins": 11,
+      "globalRating": 1066,
+      "globalMatches": 93,
+      "globalWinRate": 0.237
     },
     {
-      "name": "Conqueror_g8_1c5660",
-      "author": "claude",
-      "played": 71,
-      "wins": 3,
-      "survived": 3,
-      "points": 75,
-      "totalRank": 280,
-      "totalTerritory": 1978,
-      "totalEliminationTick": 24410,
-      "eliminationCount": 68,
-      "avgRank": 3.943661971830986,
-      "avgTerritory": 27.859154929577464,
-      "avgEliminationTick": 358.97058823529414,
-      "winRate": 0.04225352112676056,
-      "survivalRate": 0.04225352112676056,
-      "pointsPerGame": 1.056338028169014,
-      "rating": 951.82,
-      "rd": 41.25,
-      "firstEra": 8,
-      "appearances": [
-        {
-          "era": 8,
-          "rating": 1205,
-          "matches": 15
-        }
-      ]
+      "rank": 22,
+      "name": "Tactician",
+      "generation": 0,
+      "crossRating": 942.71,
+      "crossWinRate": 0,
+      "crossPpg": 1.843,
+      "crossPlayed": 83,
+      "crossWins": 0,
+      "globalRating": 875,
+      "globalMatches": 887,
+      "globalWinRate": 0
+    },
+    {
+      "rank": 23,
+      "name": "Phalanx_g1_5b920f",
+      "generation": 1,
+      "crossRating": 939.42,
+      "crossWinRate": 0,
+      "crossPpg": 3,
+      "crossPlayed": 80,
+      "crossWins": 0,
+      "globalRating": 819,
+      "globalMatches": 55,
+      "globalWinRate": 0
     }
-  ]
+  ],
+  "correlations": {
+    "rhoXrXw": 0.958498023715415,
+    "rhoXrG": 0.637492941840768
+  },
+  "pin": {
+    "name": "Drumline",
+    "rows": [
+      {
+        "name": "Tactician",
+        "encounters": 14,
+        "wins": 8,
+        "winRate": 0.571,
+        "generation": 0,
+        "globalRating": 875
+      },
+      {
+        "name": "Phalanx_g1_5b920f",
+        "encounters": 16,
+        "wins": 6,
+        "winRate": 0.375,
+        "generation": 1,
+        "globalRating": 819
+      },
+      {
+        "name": "Conqueror_g2_6b59e8",
+        "encounters": 21,
+        "wins": 11,
+        "winRate": 0.524,
+        "generation": 2,
+        "globalRating": 990
+      },
+      {
+        "name": "Conqueror_g3_be9a58",
+        "encounters": 18,
+        "wins": 10,
+        "winRate": 0.556,
+        "generation": 3,
+        "globalRating": 1026
+      },
+      {
+        "name": "Conqueror_g4_be92c1",
+        "encounters": 19,
+        "wins": 10,
+        "winRate": 0.526,
+        "generation": 4,
+        "globalRating": 1079
+      },
+      {
+        "name": "Conqueror_g5_3087ea",
+        "encounters": 17,
+        "wins": 11,
+        "winRate": 0.647,
+        "generation": 5,
+        "globalRating": 1066
+      },
+      {
+        "name": "Conqueror_g6_9eb2e4",
+        "encounters": 13,
+        "wins": 7,
+        "winRate": 0.538,
+        "generation": 6,
+        "globalRating": 1063
+      },
+      {
+        "name": "Conqueror_g7_3b651e",
+        "encounters": 18,
+        "wins": 14,
+        "winRate": 0.778,
+        "generation": 7,
+        "globalRating": 1056
+      },
+      {
+        "name": "Conqueror_g8_82d39b",
+        "encounters": 15,
+        "wins": 9,
+        "winRate": 0.6,
+        "generation": 8,
+        "globalRating": 1132
+      },
+      {
+        "name": "Conqueror_g9_01de66",
+        "encounters": 19,
+        "wins": 10,
+        "winRate": 0.526,
+        "generation": 9,
+        "globalRating": 1093
+      },
+      {
+        "name": "Conqueror_g10_34ca94",
+        "encounters": 18,
+        "wins": 9,
+        "winRate": 0.5,
+        "generation": 10,
+        "globalRating": 1072
+      },
+      {
+        "name": "Conqueror_g11_224717",
+        "encounters": 19,
+        "wins": 15,
+        "winRate": 0.789,
+        "generation": 11,
+        "globalRating": 1068
+      },
+      {
+        "name": "Conqueror_g12_f23241",
+        "encounters": 24,
+        "wins": 15,
+        "winRate": 0.625,
+        "generation": 12,
+        "globalRating": 1068
+      },
+      {
+        "name": "Conqueror_g13_b41df9",
+        "encounters": 18,
+        "wins": 7,
+        "winRate": 0.389,
+        "generation": 13,
+        "globalRating": 1124
+      },
+      {
+        "name": "Conqueror_g14_8d5369",
+        "encounters": 19,
+        "wins": 8,
+        "winRate": 0.421,
+        "generation": 14,
+        "globalRating": 1205
+      },
+      {
+        "name": "Conqueror_g15_2c15dc",
+        "encounters": 15,
+        "wins": 10,
+        "winRate": 0.667,
+        "generation": 15,
+        "globalRating": 1181
+      },
+      {
+        "name": "Conqueror_g16_e79590",
+        "encounters": 15,
+        "wins": 10,
+        "winRate": 0.667,
+        "generation": 16,
+        "globalRating": 1110
+      },
+      {
+        "name": "Conqueror_g17_6d0fb0",
+        "encounters": 13,
+        "wins": 8,
+        "winRate": 0.615,
+        "generation": 17,
+        "globalRating": 1116
+      },
+      {
+        "name": "Conqueror_g18_6a26b3",
+        "encounters": 21,
+        "wins": 11,
+        "winRate": 0.524,
+        "generation": 18,
+        "globalRating": 1132
+      },
+      {
+        "name": "Conqueror_g19_9533e3",
+        "encounters": 20,
+        "wins": 12,
+        "winRate": 0.6,
+        "generation": 19,
+        "globalRating": 1157
+      },
+      {
+        "name": "Conqueror_g20_43253a",
+        "encounters": 17,
+        "wins": 10,
+        "winRate": 0.588,
+        "generation": 20,
+        "globalRating": 1151
+      },
+      {
+        "name": "Conqueror_g21_e2aa5a",
+        "encounters": 15,
+        "wins": 9,
+        "winRate": 0.6,
+        "generation": 21,
+        "globalRating": 1095
+      }
+    ],
+    "totalEnc": 384,
+    "totalWin": 220,
+    "overallWinRate": 0.573
+  }
 }

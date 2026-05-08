@@ -40,6 +40,26 @@ import Tempo from "./Tempo.js";
 import Empire from "./Empire.js";
 import Settler from "./Settler.js";
 import Smartiepants from "./Smartiepants.js";
+import Drumline from "./Drumline.js";
+import Sniper from "./Sniper.js";
+import Hammer from "./Hammer.js";
+import Stockpile from "./Stockpile.js";
+import Reservoir from "./Reservoir.js";
+import Convex from "./Convex.js";
+import Cleaver from "./Cleaver.js";
+import Coward from "./Coward.js";
+import Reaper from "./Reaper.js";
+import Flanker from "./Flanker.js";
+import Drifter from "./Drifter.js";
+import Beachhead from "./Beachhead.js";
+import Cordon from "./Cordon.js";
+import Forge from "./Forge.js";
+import Tidewatcher from "./Tidewatcher.js";
+import Smith from "./Smith.js";
+import Coastal from "./Coastal.js";
+import Huddle from "./Huddle.js";
+import Pulse from "./Pulse.js";
+import Escort from "./Escort.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -91,6 +111,26 @@ export const ALL_STRATEGY_LIST = [
   Empire,
   Settler,
   Smartiepants,
+  Drumline,
+  Sniper,
+  Hammer,
+  Stockpile,
+  Reservoir,
+  Convex,
+  Cleaver,
+  Coward,
+  Reaper,
+  Flanker,
+  Drifter,
+  Beachhead,
+  Cordon,
+  Forge,
+  Tidewatcher,
+  Smith,
+  Coastal,
+  Huddle,
+  Pulse,
+  Escort,
   ...GENERATED,
   ...DESCENDANTS,
 ];

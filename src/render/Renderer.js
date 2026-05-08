@@ -11,9 +11,15 @@ export class Renderer {
     this.showTerritory = true;
     this.showGlow = true;
     this.showMoves = true;
+    this.showConflicts = true;
     this.showOverlay = false;
     // "circle" | "line": visual used to depict an in-flight move.
     this.moveStyle = "circle";
+    // 3D iso view: each tile becomes a colored prism whose height is
+    // the strength of the owning army. Reads like a stylized Voronoi
+    // diagram in three dimensions. Disabled by default; toggled from
+    // the View panel.
+    this.view3D = false;
     this.hoverTile = null;
     this.selectedTile = null;
     // Viewport: zoom = 1 fits the map exactly to the canvas; panX/panY
@@ -72,6 +78,19 @@ export class Renderer {
     if (rect.width === 0 || rect.height === 0) return null;
     const ix = ((px - rect.left) / rect.width) * this.canvas.width;
     const iy = ((py - rect.top) / rect.height) * this.canvas.height;
+    if (this.view3D) {
+      // Inverse iso projection at z=0. Picking ignores column height
+      // (a click on a tall pillar's top maps to the cell behind it),
+      // but the territory still reads correctly on the ground plane.
+      const layout = this._iso3DLayout();
+      if (!layout) return null;
+      const { cx, cy, ts } = layout;
+      const dx = ix - cx;
+      const dy = iy - cy;
+      const tx = Math.floor(dx / ts + 2 * dy / ts);
+      const ty = Math.floor(2 * dy / ts - dx / ts);
+      return this.game.map.getTile(tx, ty);
+    }
     const ts = this.tileSize;
     const tx = Math.floor((ix / this.zoom) / ts + this.panX);
     const ty = Math.floor((iy / this.zoom) / ts + this.panY);
@@ -112,6 +131,16 @@ export class Renderer {
 
   _clampPan() {
     const map = this.game.map;
+    if (this.view3D) {
+      // The iso projection has its own bbox-centered origin; the 2D
+      // wrap/strict clamps would either teleport the camera (wrap) or
+      // pin pan to zero (non-wrap fit). Allow a generous free-pan
+      // range in tile units instead.
+      const limit = (map.width + map.height);
+      this.panX = Math.max(-limit, Math.min(limit, this.panX));
+      this.panY = Math.max(-limit, Math.min(limit, this.panY));
+      return;
+    }
     if (map.wrap) {
       // Globe-style wrap: normalize into one canonical period so float
       // accumulation can't drift unboundedly across long sessions.
@@ -133,6 +162,11 @@ export class Renderer {
 
     ctx.fillStyle = "#06080d";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    if (this.view3D) {
+      this._draw3D(now);
+      return;
+    }
 
     const mapPxW = map.width * ts;
     const mapPxH = map.height * ts;
@@ -194,6 +228,8 @@ export class Renderer {
       ctx.stroke();
     }
 
+    if (this.showConflicts) this.drawConflicts();
+
     if (this.showMoves) this.drawMoves();
 
     this.drawArmies(now);
@@ -213,6 +249,36 @@ export class Renderer {
       const alpha = 0.10 + 0.20 * (owner.strength / owner.maxStrength);
       ctx.fillStyle = hexToRgba(owner.player.color, alpha);
       ctx.fillRect(tile.pos.x * ts, tile.pos.y * ts, ts, ts);
+    }
+  }
+
+  // Faint red residue on tiles where combat just resolved. Each
+  // recorded conflict paints a square whose alpha fades linearly to
+  // zero over conflictFadeTicks and scales with the strength engaged
+  // in that fight; overlapping conflicts compound via alpha blending,
+  // so a tile under sustained attack stays visibly red.
+  drawConflicts() {
+    const ctx = this.ctx;
+    const ts = this.tileSize;
+    const game = this.game;
+    const conflicts = game.recentConflicts;
+    if (!conflicts || conflicts.length === 0) return;
+    const fade = game.conflictFadeTicks || 30;
+    const tick = game.tick;
+    // A two-army max-strength clash is the natural saturation point;
+    // above that the alpha cap takes over.
+    const refMagnitude = Math.max(1, (game.maxArmy || 6) * 2);
+    const maxAlpha = 0.55;
+    for (let i = 0; i < conflicts.length; i++) {
+      const c = conflicts[i];
+      const age = tick - c.tick;
+      if (age >= fade || age < 0) continue;
+      const ageFactor = 1 - age / fade;
+      const sizeFactor = Math.min(1, c.magnitude / refMagnitude);
+      const alpha = maxAlpha * ageFactor * sizeFactor;
+      if (alpha <= 0) continue;
+      ctx.fillStyle = `rgba(220,40,40,${alpha})`;
+      ctx.fillRect(c.x * ts, c.y * ts, ts, ts);
     }
   }
 
@@ -455,6 +521,182 @@ export class Renderer {
       ts - width
     );
   }
+
+  // Compute the iso-projection parameters used by the 3D view. Pulled
+  // out so picking (pixelToTile) and drawing share the exact same
+  // geometry — otherwise hover targeting drifts off-cell.
+  _iso3DLayout() {
+    const map = this.game.map;
+    const W = map.width;
+    const H = map.height;
+    if (!W || !H) return null;
+    const cw = this.canvas.width;
+    const ch = this.canvas.height;
+    // GameView doesn't expose game.maxArmy; derive the height ceiling
+    // from the actual armies' caps so non-default maxArmy configs (or
+    // tech multipliers) still scale columns correctly. Fall back to 6
+    // (the engine default) when no armies have been seeded yet.
+    let maxArmy = 0;
+    for (const a of this.game.armies) {
+      if (a.maxStrength > maxArmy) maxArmy = a.maxStrength;
+    }
+    if (!maxArmy) maxArmy = this.game.maxArmy || 6;
+    // Each strength point lifts the column by heightPerUnit tile-units.
+    // 0.35 is enough that a maxed army (~6) towers above a fresh spawn
+    // (~1) while still leaving headroom inside the canvas.
+    const heightPerUnit = 0.35;
+    const isoWUnits = (W + H) / 2;
+    const isoHUnits = (W + H) / 4 + maxArmy * heightPerUnit;
+    const margin = 0.92;
+    const baseTs = Math.min(cw / isoWUnits, ch / isoHUnits) * margin;
+    const ts = baseTs * this.zoom;
+    const hScale = ts * heightPerUnit;
+    const bboxW = (W + H) * ts / 2;
+    const bboxH = (W + H) * ts / 4 + maxArmy * hScale;
+    // cx/cy is the screen position of cell (0,0,0). Centering the bbox
+    // requires offsetting by H*ts/2 (left edge of bbox is at cell (0,H))
+    // and maxArmy*hScale (top edge at the tallest possible column).
+    const cx = (cw - bboxW) / 2 + H * ts / 2 - this.panX * ts;
+    const cy = (ch - bboxH) / 2 + maxArmy * hScale - this.panY * ts;
+    return { cx, cy, ts, hScale, W, H };
+  }
+
+  _draw3D(now) {
+    const ctx = this.ctx;
+    const game = this.game;
+    const layout = this._iso3DLayout();
+    if (!layout) return;
+    const { cx, cy, ts, hScale, W, H } = layout;
+    const map = game.map;
+
+    const project = (gx, gy, gz) => ({
+      x: cx + (gx - gy) * ts / 2,
+      y: cy + (gx + gy) * ts / 4 - gz * hScale,
+    });
+
+    ctx.lineJoin = "miter";
+    const outline = this.showGrid ? "rgba(0,0,0,0.32)" : null;
+
+    // Painter's algorithm: cells with smaller (gx+gy) are deeper into
+    // the scene and must be drawn first so nearer columns paint over
+    // them. Cells at the same diagonal don't overlap each other (only
+    // distinct rows of the iso lattice can stack on screen).
+    const totalDiag = W + H - 1;
+    for (let sum = 0; sum < totalDiag; sum++) {
+      const minX = Math.max(0, sum - (H - 1));
+      const maxX = Math.min(W - 1, sum);
+      for (let gx = minX; gx <= maxX; gx++) {
+        const gy = sum - gx;
+        const tile = map.getTile(gx, gy);
+        if (!tile) continue;
+        this._draw3DCell(tile, gx, gy, project, outline);
+      }
+    }
+
+    if (this.hoverTile) {
+      this._outline3DTop(this.hoverTile, "rgba(255,255,255,0.55)", project, 2);
+    }
+    if (this.selectedTile) {
+      this._outline3DTop(this.selectedTile, "#ffffff", project, 3);
+    }
+  }
+
+  _draw3DCell(tile, gx, gy, project, outline) {
+    const ctx = this.ctx;
+    const owner = tile.ownerArmy();
+    let color;
+    let h;
+    if (owner && owner.player) {
+      color = owner.player.color;
+      // Strength → height. Floor at a thin slab so even a 0.5-strength
+      // army still reads as a colored marker, not as bare ground.
+      h = Math.max(0.15, owner.strength);
+    } else {
+      // Neutral: a tinted slab that's clearly distinct from the
+      // background but doesn't compete with player columns.
+      color = "#1c2230";
+      h = 0.08;
+    }
+
+    const tlt = project(gx, gy, h);
+    const trt = project(gx + 1, gy, h);
+    const brt = project(gx + 1, gy + 1, h);
+    const blt = project(gx, gy + 1, h);
+    const trg = project(gx + 1, gy, 0);
+    const brg = project(gx + 1, gy + 1, 0);
+    const blg = project(gx, gy + 1, 0);
+
+    // Right face (visible in this projection because +x runs to the
+    // right side of the camera). Slightly darkened so the column has
+    // visible volume even when its top color is bright.
+    ctx.fillStyle = shade(color, 0.7);
+    ctx.beginPath();
+    ctx.moveTo(trt.x, trt.y);
+    ctx.lineTo(brt.x, brt.y);
+    ctx.lineTo(brg.x, brg.y);
+    ctx.lineTo(trg.x, trg.y);
+    ctx.closePath();
+    ctx.fill();
+    if (outline) { ctx.strokeStyle = outline; ctx.lineWidth = 1; ctx.stroke(); }
+
+    // Front face (the +y face — closer to the camera in this iso).
+    ctx.fillStyle = shade(color, 0.5);
+    ctx.beginPath();
+    ctx.moveTo(blt.x, blt.y);
+    ctx.lineTo(brt.x, brt.y);
+    ctx.lineTo(brg.x, brg.y);
+    ctx.lineTo(blg.x, blg.y);
+    ctx.closePath();
+    ctx.fill();
+    if (outline) { ctx.strokeStyle = outline; ctx.lineWidth = 1; ctx.stroke(); }
+
+    // Top face — the player's color at full brightness. This is the
+    // surface that reads as the Voronoi region from above.
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(tlt.x, tlt.y);
+    ctx.lineTo(trt.x, trt.y);
+    ctx.lineTo(brt.x, brt.y);
+    ctx.lineTo(blt.x, blt.y);
+    ctx.closePath();
+    ctx.fill();
+    if (outline) { ctx.strokeStyle = outline; ctx.lineWidth = 1; ctx.stroke(); }
+
+    // Accent rim on the top edge for owned tiles — separates same-color
+    // neighbors at a glance even when their heights match.
+    if (owner && owner.player) {
+      ctx.strokeStyle = owner.player.accent;
+      ctx.lineWidth = 1.25;
+      ctx.beginPath();
+      ctx.moveTo(tlt.x, tlt.y);
+      ctx.lineTo(trt.x, trt.y);
+      ctx.lineTo(brt.x, brt.y);
+      ctx.lineTo(blt.x, blt.y);
+      ctx.closePath();
+      ctx.stroke();
+    }
+  }
+
+  _outline3DTop(tile, color, project, width) {
+    const ctx = this.ctx;
+    const owner = tile.ownerArmy();
+    const h = owner && owner.player ? Math.max(0.15, owner.strength) : 0.08;
+    const gx = tile.pos.x;
+    const gy = tile.pos.y;
+    const a = project(gx, gy, h);
+    const b = project(gx + 1, gy, h);
+    const c = project(gx + 1, gy + 1, h);
+    const d = project(gx, gy + 1, h);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.lineTo(c.x, c.y);
+    ctx.lineTo(d.x, d.y);
+    ctx.closePath();
+    ctx.stroke();
+  }
 }
 
 export function hexToRgba(hex, a) {
@@ -464,4 +706,15 @@ export function hexToRgba(hex, a) {
   const g = (bigint >> 8) & 255;
   const b = bigint & 255;
   return `rgba(${r},${g},${b},${a})`;
+}
+
+// Multiply an `#rrggbb` color's RGB channels by `factor`. Used to
+// derive side-face shading from the top-face player color in 3D mode.
+export function shade(hex, factor) {
+  const m = hex.replace("#", "");
+  const bigint = parseInt(m.length === 3 ? m.split("").map((c) => c + c).join("") : m, 16);
+  const r = Math.max(0, Math.min(255, Math.round(((bigint >> 16) & 255) * factor)));
+  const g = Math.max(0, Math.min(255, Math.round(((bigint >> 8) & 255) * factor)));
+  const b = Math.max(0, Math.min(255, Math.round((bigint & 255) * factor)));
+  return `rgb(${r},${g},${b})`;
 }
