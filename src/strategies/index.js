@@ -56,6 +56,9 @@ import Forge from "./Forge.js";
 import Tidewatcher from "./Tidewatcher.js";
 import Smith from "./Smith.js";
 import Coastal from "./Coastal.js";
+import Huddle from "./Huddle.js";
+import Pulse from "./Pulse.js";
+import Escort from "./Escort.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -123,6 +126,9 @@ export const ALL_STRATEGY_LIST = [
   Tidewatcher,
   Smith,
   Coastal,
+  Huddle,
+  Pulse,
+  Escort,
   ...GENERATED,
   ...DESCENDANTS,
 ];
