@@ -10,6 +10,7 @@
   "scripts": {
     "tournament": "node tournament/run.js",
     "rank": "node tournament/rank.js",
+    "rr": "node tournament/rr.js",
     "serve": "python3 -m http.server 8000"
   }
 }
