@@ -320,6 +320,7 @@ export class EngineHost {
     });
 
     const recentMoves = game.recentMoves.map((m) => ({ ...m }));
+    const recentConflicts = game.recentConflicts.map((c) => ({ ...c }));
 
     // Strategy-overlay plan caches. Only included when the client has
     // toggled overlay on; otherwise we'd ship ~4 bytes/tile/player every
@@ -355,9 +356,12 @@ export class EngineHost {
       mapHeight: game.map.height,
       mapWrap: game.map.wrap,
       moveFadeTicks: game.moveFadeTicks,
+      conflictFadeTicks: game.conflictFadeTicks,
+      maxArmy: game.maxArmy,
       armies,
       playerTotals,
       recentMoves,
+      recentConflicts,
       history,
       plans,
     };

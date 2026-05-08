@@ -11,6 +11,7 @@ export class Renderer {
     this.showTerritory = true;
     this.showGlow = true;
     this.showMoves = true;
+    this.showConflicts = true;
     this.showOverlay = false;
     // "circle" | "line": visual used to depict an in-flight move.
     this.moveStyle = "circle";
@@ -227,6 +228,8 @@ export class Renderer {
       ctx.stroke();
     }
 
+    if (this.showConflicts) this.drawConflicts();
+
     if (this.showMoves) this.drawMoves();
 
     this.drawArmies(now);
@@ -246,6 +249,36 @@ export class Renderer {
       const alpha = 0.10 + 0.20 * (owner.strength / owner.maxStrength);
       ctx.fillStyle = hexToRgba(owner.player.color, alpha);
       ctx.fillRect(tile.pos.x * ts, tile.pos.y * ts, ts, ts);
+    }
+  }
+
+  // Faint red residue on tiles where combat just resolved. Each
+  // recorded conflict paints a square whose alpha fades linearly to
+  // zero over conflictFadeTicks and scales with the strength engaged
+  // in that fight; overlapping conflicts compound via alpha blending,
+  // so a tile under sustained attack stays visibly red.
+  drawConflicts() {
+    const ctx = this.ctx;
+    const ts = this.tileSize;
+    const game = this.game;
+    const conflicts = game.recentConflicts;
+    if (!conflicts || conflicts.length === 0) return;
+    const fade = game.conflictFadeTicks || 30;
+    const tick = game.tick;
+    // A two-army max-strength clash is the natural saturation point;
+    // above that the alpha cap takes over.
+    const refMagnitude = Math.max(1, (game.maxArmy || 6) * 2);
+    const maxAlpha = 0.55;
+    for (let i = 0; i < conflicts.length; i++) {
+      const c = conflicts[i];
+      const age = tick - c.tick;
+      if (age >= fade || age < 0) continue;
+      const ageFactor = 1 - age / fade;
+      const sizeFactor = Math.min(1, c.magnitude / refMagnitude);
+      const alpha = maxAlpha * ageFactor * sizeFactor;
+      if (alpha <= 0) continue;
+      ctx.fillStyle = `rgba(220,40,40,${alpha})`;
+      ctx.fillRect(c.x * ts, c.y * ts, ts, ts);
     }
   }
 

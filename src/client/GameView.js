@@ -102,6 +102,9 @@ export class GameView {
     this.armies = [];
     this.recentMoves = [];
     this.moveFadeTicks = 8;
+    this.recentConflicts = [];
+    this.conflictFadeTicks = 45;
+    this.maxArmy = 6;
     this.history = [];
     // Toggled by the renderer's territory check; safe to leave false
     // since the worker recomputes territory before each snapshot.
@@ -154,6 +157,7 @@ export class GameView {
     this.armies = [];
     this._armiesById.clear();
     this.recentMoves = [];
+    this.recentConflicts = [];
     this.history = [];
     if (this.map.width === width && this.map.height === height && this.map.wrap === wrap) {
       for (const t of this.map.tiles) t.armies.length = 0;
@@ -186,6 +190,8 @@ export class GameView {
     this.tick = snapshot.tick;
     this.elapsed = snapshot.elapsed;
     this.moveFadeTicks = snapshot.moveFadeTicks;
+    if (snapshot.conflictFadeTicks != null) this.conflictFadeTicks = snapshot.conflictFadeTicks;
+    if (snapshot.maxArmy != null) this.maxArmy = snapshot.maxArmy;
 
     // Reuse map if dims unchanged. The init flow calls applyMap
     // explicitly; here we only catch a config mismatch defensively.
@@ -245,6 +251,7 @@ export class GameView {
 
     // Recent moves: plain copies, no shared refs.
     this.recentMoves = snapshot.recentMoves || [];
+    this.recentConflicts = snapshot.recentConflicts || [];
 
     // History: replace wholesale - bounded by maxHistory in the engine.
     this.history = snapshot.history || [];

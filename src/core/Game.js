@@ -60,6 +60,22 @@ export class Game {
     this._territoryDirty = true;
     this.recentMoves = [];
     this.moveFadeTicks = 8;
+    // Recently-resolved combats, used by the renderer to paint a red
+    // residue on contested tiles. magnitude = total strength engaged
+    // in the fight; the renderer fades alpha with age and scales by
+    // magnitude so heavy/sustained conflicts read as deeper red.
+    this.recentConflicts = [];
+    this.conflictFadeTicks = 45;
+  }
+
+  recordConflict(tile, magnitude) {
+    if (!tile || !(magnitude > 0)) return;
+    this.recentConflicts.push({
+      x: tile.pos.x,
+      y: tile.pos.y,
+      magnitude,
+      tick: this.tick,
+    });
   }
 
   recordMove(fromTile, toTile, player, power) {
@@ -241,6 +257,16 @@ export class Game {
       moves.length = w;
     }
 
+    if (this.recentConflicts.length > 0) {
+      const conflicts = this.recentConflicts;
+      const cutoff = tick - this.conflictFadeTicks;
+      let w = 0;
+      for (let i = 0; i < conflicts.length; i++) {
+        if (conflicts[i].tick > cutoff) conflicts[w++] = conflicts[i];
+      }
+      conflicts.length = w;
+    }
+
     if (this._deadCount > 32 && this._deadCount * 4 > armies.length) {
       this._compactArmies();
     }
@@ -321,6 +347,7 @@ export class Game {
     this._deadCount = 0;
     this._dirtyTiles.length = 0;
     this.recentMoves.length = 0;
+    this.recentConflicts.length = 0;
     this.tick = 0;
     this.elapsed = 0;
     this.history.length = 0;
