@@ -10,7 +10,9 @@ const SAMPLE_BOT = `// Paste a strategy module here. Self-contained ES modules o
 //
 // API quick reference (full notes: docs/strategies.md):
 //
-//   act(army, game)              runs every tick, once per army
+//   act(army, game)              runs once per accumulated move credit
+//                                (credit ticks at the production rate,
+//                                so movement scales with growth)
 //
 //   army.tile                    your tile (or null mid-move)
 //   army.tile.neighbors[i]       adjacent tile or null (W=0,E=1,N=2,S=3)
