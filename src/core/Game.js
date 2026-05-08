@@ -209,14 +209,23 @@ export class Game {
     // free recharge tick before the new owner has acted.
     if (this.movementModel === "budget") {
       const baseRate = this.baseBudgetRecharge * interval * 30; // tickInterval is 1/30 by default; normalize to ~1 per tick.
-      const cap = this.maxBudget;
+      const baseCap = this.maxBudget;
       const tiles = this.map.tiles;
       for (let i = 0; i < tiles.length; i++) {
         const tile = tiles[i];
         const armies = tile.armies;
         if (armies.length !== 1) continue;
         const owner = armies[0].player;
+        // Move tech multiplies BOTH recharge rate AND budget cap. A
+        // high-move tile fills faster *and* holds more, so the
+        // archetype scales coherently — quick small jabs recover
+        // their work fast, while a saved-up alpha strike can also
+        // be larger. Cap is owner-dependent: when a tile changes
+        // hands, the new ceiling is set by the new owner's tech
+        // (the budget itself was just reset to 0 in resolveConflicts
+        // and will climb to the new cap from there).
         const mult = owner?.techMults?.moveRecharge ?? 1;
+        const cap = baseCap * mult;
         const next = tile.budget + baseRate * mult;
         tile.budget = next > cap ? cap : next;
       }
