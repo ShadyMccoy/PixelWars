@@ -129,33 +129,40 @@ async function runOne(opts) {
     );
   }
 
-  // Drumline-specific pairwise (sorted by global rating).
-  const drumEnc = pairEnc.get("Drumline");
-  const drumWin = pairWin.get("Drumline");
-  let drumlineRow = null;
-  if (drumEnc) {
+  // Pairwise summaries for the named candidate bots (the ones we're
+  // actually evaluating, which won't have priors). Each gets total
+  // encounters/wins across the field, so we can compare apples to
+  // apples even when their played-counts differ from matchmaker
+  // info-gain anchoring.
+  const targets = ["Drumline", "Sniper", "Hammer", "Stockpile"];
+  const targetSummaries = {};
+  for (const tname of targets) {
+    const enc = pairEnc.get(tname);
+    if (!enc) continue;
+    const wins = pairWin.get(tname);
+    let totalEnc = 0, totalWin = 0;
     const rows = [];
-    for (const [opp, n] of drumEnc.entries()) {
-      const w = drumWin.get(opp) ?? 0;
+    for (const [opp, n] of enc.entries()) {
+      const w = wins.get(opp) ?? 0;
+      totalEnc += n;
+      totalWin += w;
       rows.push({
         name: opp,
         encounters: n,
         wins: w,
         winRate: n ? +(w / n).toFixed(3) : 0,
-        globalRating: priors?.[opp]?.rating ?? null,
       });
     }
-    rows.sort((a, b) => (b.globalRating ?? 0) - (a.globalRating ?? 0));
-    let totalEnc = 0, totalWin = 0;
-    for (const r of rows) { totalEnc += r.encounters; totalWin += r.wins; }
-    drumlineRow = {
+    rows.sort((a, b) => b.encounters - a.encounters);
+    targetSummaries[tname] = {
       rows,
       totalEnc,
       totalWin,
       overall: totalEnc ? totalWin / totalEnc : 0,
     };
-    console.log(`\nDrumline overall pairwise: ${totalWin}/${totalEnc} = ${(100 * drumlineRow.overall).toFixed(1)}%`);
+    console.log(`${tname} pairwise: ${totalWin}/${totalEnc} = ${(100 * targetSummaries[tname].overall).toFixed(1)}%`);
   }
+  const drumlineRow = targetSummaries["Drumline"] ?? null;
 
   const rhoR = spearman(standings, "rating", "winRate");
   const rhoG = spearman(standings.filter((r) => r.globalRating != null), "rating", "globalRating");
@@ -167,6 +174,7 @@ async function runOne(opts) {
     opts,
     standings,
     drumline: drumlineRow,
+    targets: targetSummaries,
     correlations: { rhoRatingWinRate: rhoR, rhoRatingGlobal: rhoG },
   }, null, 2) + "\n", "utf8");
   console.log(`Wrote ${outPath}`);
