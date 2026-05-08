@@ -1,6 +1,6 @@
 {
   "config": {
-    "matches": 30,
+    "matches": 5000,
     "k": 5,
     "map": "lab1",
     "pool": [
@@ -21,136 +21,136 @@
   "rows": [
     {
       "name": "SP_random",
-      "rating": 2258.355516842207,
-      "plays": 12,
-      "win": 12,
+      "rating": 2962.632242186083,
+      "plays": 2091,
+      "win": 2091,
       "winRate": 1,
       "avgPlace": 1,
-      "avgTerr": 658.25,
+      "avgTerr": 657.6542324246772,
       "surviveRate": 1,
       "elimRate": 0
     },
     {
-      "name": "Berserker",
-      "rating": 1641.325717242076,
-      "plays": 13,
-      "win": 5,
-      "winRate": 0.38461538461538464,
-      "avgPlace": 2.0769230769230766,
-      "avgTerr": 253.30769230769232,
-      "surviveRate": 0.38461538461538464,
-      "elimRate": 0.6153846153846154
-    },
-    {
       "name": "Random",
-      "rating": 1630.1863841778186,
-      "plays": 12,
-      "win": 7,
-      "winRate": 0.5833333333333334,
-      "avgPlace": 2.083333333333333,
-      "avgTerr": 384,
-      "surviveRate": 0.5833333333333334,
-      "elimRate": 0.4166666666666667
+      "rating": 1677.7179511422833,
+      "plays": 2073,
+      "win": 1333,
+      "winRate": 0.6430294259527255,
+      "avgPlace": 1.8118668596237337,
+      "avgTerr": 423.58080077182825,
+      "surviveRate": 0.6430294259527255,
+      "elimRate": 0.3569705740472745
     },
     {
       "name": "SP_zero",
-      "rating": 1611.3287829753858,
-      "plays": 13,
-      "win": 1,
-      "winRate": 0.07692307692307693,
-      "avgPlace": 2.3076923076923075,
-      "avgTerr": 18.46153846153846,
-      "surviveRate": 0.07692307692307693,
-      "elimRate": 0.9230769230769231
+      "rating": 1526.8868216876713,
+      "plays": 1995,
+      "win": 212,
+      "winRate": 0.10626566416040101,
+      "avgPlace": 2.417042606516291,
+      "avgTerr": 25.619548872180452,
+      "surviveRate": 0.10676691729323308,
+      "elimRate": 0.8932330827067669
+    },
+    {
+      "name": "Berserker",
+      "rating": 1518.2949783075783,
+      "plays": 2068,
+      "win": 593,
+      "winRate": 0.2867504835589942,
+      "avgPlace": 2.38926499032882,
+      "avgTerr": 179.9095744680851,
+      "surviveRate": 0.2867504835589942,
+      "elimRate": 0.7132495164410058
     },
     {
       "name": "SP_inner3_jitter",
-      "rating": 1490.3272884509545,
-      "plays": 11,
-      "win": 2,
-      "winRate": 0.18181818181818182,
-      "avgPlace": 2.7272727272727275,
-      "avgTerr": 119.81818181818181,
-      "surviveRate": 0.18181818181818182,
-      "elimRate": 0.8181818181818182
-    },
-    {
-      "name": "SP_quadonly_jitter",
-      "rating": 1407.110686052848,
-      "plays": 13,
-      "win": 0,
-      "winRate": 0,
-      "avgPlace": 3.3076923076923075,
-      "avgTerr": 0,
-      "surviveRate": 0,
-      "elimRate": 1
-    },
-    {
-      "name": "SP_seed",
-      "rating": 1400.6233843125804,
-      "plays": 11,
-      "win": 0,
-      "winRate": 0,
-      "avgPlace": 3.5454545454545454,
-      "avgTerr": 0,
-      "surviveRate": 0,
-      "elimRate": 1
+      "rating": 1494.503086111891,
+      "plays": 2074,
+      "win": 369,
+      "winRate": 0.17791706846673094,
+      "avgPlace": 2.5241080038572807,
+      "avgTerr": 125.55448408871746,
+      "surviveRate": 0.24011571841851495,
+      "elimRate": 0.759884281581485
     },
     {
       "name": "Cautious",
-      "rating": 1353.2436757011292,
-      "plays": 12,
-      "win": 3,
-      "winRate": 0.25,
-      "avgPlace": 3.1666666666666665,
-      "avgTerr": 165,
-      "surviveRate": 0.25,
-      "elimRate": 0.75
+      "rating": 1337.117119088939,
+      "plays": 2132,
+      "win": 361,
+      "winRate": 0.16932457786116323,
+      "avgPlace": 3.094277673545966,
+      "avgTerr": 111.7560975609756,
+      "surviveRate": 0.17682926829268292,
+      "elimRate": 0.823170731707317
+    },
+    {
+      "name": "SP_quadonly_jitter",
+      "rating": 1267.5226493277196,
+      "plays": 2110,
+      "win": 19,
+      "winRate": 0.00900473933649289,
+      "avgPlace": 3.7170616113744077,
+      "avgTerr": 1.9033175355450236,
+      "surviveRate": 0.07109004739336493,
+      "elimRate": 0.9289099526066351
     },
     {
       "name": "SP_jitter01",
-      "rating": 1338.011705938066,
-      "plays": 11,
+      "rating": 1261.3445458061876,
+      "plays": 2122,
       "win": 0,
       "winRate": 0,
-      "avgPlace": 3.6363636363636362,
-      "avgTerr": 0.5454545454545454,
-      "surviveRate": 0.09090909090909091,
-      "elimRate": 0.9090909090909091
-    },
-    {
-      "name": "SP_jitter05",
-      "rating": 1320.746025096636,
-      "plays": 13,
-      "win": 0,
-      "winRate": 0,
-      "avgPlace": 3.8461538461538463,
-      "avgTerr": 0.6923076923076923,
-      "surviveRate": 0.07692307692307693,
-      "elimRate": 0.9230769230769231
+      "avgPlace": 3.74693685202639,
+      "avgTerr": 1.318096135721018,
+      "surviveRate": 0.06691800188501414,
+      "elimRate": 0.9330819981149858
     },
     {
       "name": "SP_quadonly_seed",
-      "rating": 1284.7955646302241,
-      "plays": 14,
-      "win": 0,
-      "winRate": 0,
-      "avgPlace": 4.071428571428571,
-      "avgTerr": 0.21428571428571427,
-      "surviveRate": 0.07142857142857142,
-      "elimRate": 0.9285714285714286
+      "rating": 1252.0536793160104,
+      "plays": 2065,
+      "win": 2,
+      "winRate": 0.0009685230024213075,
+      "avgPlace": 3.7685230024213077,
+      "avgTerr": 1.363680387409201,
+      "surviveRate": 0.07409200968523003,
+      "elimRate": 0.92590799031477
+    },
+    {
+      "name": "SP_jitter05",
+      "rating": 1243.8080708647617,
+      "plays": 2050,
+      "win": 18,
+      "winRate": 0.00878048780487805,
+      "avgPlace": 3.8078048780487803,
+      "avgTerr": 3.285853658536585,
+      "surviveRate": 0.06439024390243903,
+      "elimRate": 0.935609756097561
+    },
+    {
+      "name": "SP_seed",
+      "rating": 1241.5232753538253,
+      "plays": 2079,
+      "win": 2,
+      "winRate": 0.000962000962000962,
+      "avgPlace": 3.8455988455988455,
+      "avgTerr": 1.2275132275132274,
+      "surviveRate": 0.06253006253006253,
+      "elimRate": 0.9374699374699375
     },
     {
       "name": "Defender",
-      "rating": 1263.945268580074,
-      "plays": 15,
+      "rating": 1216.5955808070494,
+      "plays": 2141,
       "win": 0,
       "winRate": 0,
-      "avgPlace": 3.933333333333333,
-      "avgTerr": 0,
-      "surviveRate": 0,
-      "elimRate": 1
+      "avgPlace": 3.821111630079402,
+      "avgTerr": 0.7664642690331621,
+      "surviveRate": 0.031760859411489956,
+      "elimRate": 0.96823914058851
     }
   ],
-  "generatedAt": "2026-05-08T17:09:05.429Z"
+  "generatedAt": "2026-05-08T17:22:19.508Z"
 }
