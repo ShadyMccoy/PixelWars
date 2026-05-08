@@ -44,6 +44,12 @@ import Sniper from "./Sniper.js";
 import Hammer from "./Hammer.js";
 import Stockpile from "./Stockpile.js";
 import Reservoir from "./Reservoir.js";
+import Convex from "./Convex.js";
+import Cleaver from "./Cleaver.js";
+import Coward from "./Coward.js";
+import Reaper from "./Reaper.js";
+import Flanker from "./Flanker.js";
+import Drifter from "./Drifter.js";
 import Beachhead from "./Beachhead.js";
 import Cordon from "./Cordon.js";
 import Forge from "./Forge.js";
@@ -102,6 +108,12 @@ export const ALL_STRATEGY_LIST = [
   Hammer,
   Stockpile,
   Reservoir,
+  Convex,
+  Cleaver,
+  Coward,
+  Reaper,
+  Flanker,
+  Drifter,
   Beachhead,
   Cordon,
   Forge,
