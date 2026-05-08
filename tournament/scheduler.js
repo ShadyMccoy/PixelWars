@@ -16,13 +16,19 @@ import { expandManyToOrderings } from "./stalemateExpand.js";
 // Rating shape mirrors the original Glicko output (rating, rd, played)
 // so downstream consumers — season.js, spawn.js, SeasonViewer.js —
 // don't need to know we swapped the underlying model. RD is a synthetic
-// uncertainty derived from match count: 350 for unplayed bots, falling
-// to ~50 once a bot has many games. PL itself doesn't expose RD; this
-// is a stand-in that preserves the "new bots are uncertain" semantics.
+// uncertainty derived from match count, scaling 1/sqrt(N). PL itself
+// doesn't expose RD; this is a stand-in that preserves the "new bots
+// are uncertain" semantics and drives the info-gain matchmaker.
+//
+// MIN_RD is intentionally low so that bots at 50 plays still look
+// distinctly more uncertain than bots at 400 plays — without that, the
+// matchmaker treats every well-played bot as equally calibrated and
+// fails to give extra exposure to top-rated newcomers whose ratings
+// haven't fully settled.
 const RATING_BASE = 1000;
 const RATING_SCALE = 400;
 const NEW_RD = 350;
-const MIN_RD = 50;
+const MIN_RD = 5;
 
 function skillToRating(skill) {
   return RATING_BASE + RATING_SCALE * Math.log10(skill);
@@ -288,8 +294,11 @@ export function runRatingTournament({
 }
 
 // Pick a lineup of K bots that maximizes information gain:
-//   - anchor on the highest-RD bot (the most uncertain one — usually
-//     a freshly spawned descendant)
+//   - anchor on the bot with the highest weighted RD (uncertainty x
+//     rating bonus), so brand-new bots win when they exist and, once
+//     they're calibrated, top-of-board bots whose ratings are still
+//     noisy get priority over equally-uncertain mid-pack bots —
+//     misranking at the top costs more than misranking at the bottom
 //   - fill with K-1 *known* bots (low-RD, well-rated) sampled from
 //     the active pool, so the anchor is calibrated against varied
 //     opponents from the established field rather than against other
@@ -299,13 +308,22 @@ export function runRatingTournament({
 // settle into ratings they automatically join the known pool. The
 // sample weights low-RD candidates higher (more reference value)
 // while still letting any known bot show up over many matches.
+function anchorWeightOf({ rating, played }) {
+  // 1 + (rating-1000)/200: a 1000-rated bot scores 1x its RD, a
+  // 1200-rated bot 2x. Keeps brand-new (rd=350) bots dominant when
+  // they exist, but among bots near the RD floor the rating tilt
+  // routes more matches to top-of-board newcomers.
+  const rd = rdFromPlayed(played);
+  const ratingBonus = 1 + Math.max(0, (rating - RATING_BASE) / 200);
+  return rd * ratingBonus;
+}
+
 function pickInfoGainLineup(strategies, live, k, rng) {
-  // Anchor: the bot with the most to learn this match.
   let anchor = strategies[0];
-  let anchorRd = rdFromPlayed(live.get(anchor.name).played);
+  let anchorWeight = anchorWeightOf(live.get(anchor.name));
   for (const s of strategies) {
-    const rd = rdFromPlayed(live.get(s.name).played);
-    if (rd > anchorRd) { anchor = s; anchorRd = rd; }
+    const w = anchorWeightOf(live.get(s.name));
+    if (w > anchorWeight) { anchor = s; anchorWeight = w; }
   }
 
   // Split the rest into "known" (RD <= median) and "other" candidates.

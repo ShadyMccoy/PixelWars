@@ -1,0 +1,4535 @@
+{
+  "A": "Conqueror_g8_4d842b",
+  "B": "Conqueror_g8_2c6b71",
+  "C": "Conqueror_g10_e067cc",
+  "lineup": [
+    "Conqueror_g8_4d842b",
+    "Conqueror_g8_2c6b71",
+    "Conqueror_g10_e067cc"
+  ],
+  "MAP": {
+    "width": 45,
+    "height": 45,
+    "growth": 1.2,
+    "maxArmy": 12,
+    "wrap": true
+  },
+  "POSITIONS": [
+    {
+      "x": 11,
+      "y": 8,
+      "strength": 1
+    },
+    {
+      "x": 34,
+      "y": 23,
+      "strength": 1
+    },
+    {
+      "x": 11,
+      "y": 38,
+      "strength": 1
+    }
+  ],
+  "snapshotEvery": 25,
+  "aggregate": {
+    "winsBySlot": [
+      0,
+      15,
+      0
+    ],
+    "sumCaptures": [
+      [
+        0,
+        390,
+        1155
+      ],
+      [
+        8880,
+        0,
+        8250
+      ],
+      [
+        750,
+        1065,
+        0
+      ]
+    ],
+    "sumFromNeutral": [
+      5700,
+      9210,
+      5430
+    ],
+    "sumToNeutral": [
+      1605,
+      405,
+      1845
+    ],
+    "finalTerrSums": [
+      0,
+      30360,
+      0
+    ],
+    "finalTerrSurvSums": [
+      0,
+      30360,
+      0
+    ],
+    "finalTerrSurvCounts": [
+      0,
+      15,
+      0
+    ],
+    "elimTicks": [
+      [
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494
+      ],
+      [],
+      [
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494,
+        494
+      ]
+    ],
+    "matchTicks": [
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494,
+      494
+    ]
+  },
+  "runs": [
+    {
+      "seed": 88242417,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242418,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242419,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242420,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242421,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242422,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242423,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242424,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242425,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242426,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242427,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242428,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242429,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242430,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    },
+    {
+      "seed": 88242431,
+      "ticks": 494,
+      "endReason": "winner",
+      "eliminated": [
+        494,
+        null,
+        494
+      ],
+      "finalTerr": [
+        0,
+        2024,
+        0
+      ],
+      "captures": [
+        [
+          0,
+          26,
+          77
+        ],
+        [
+          592,
+          0,
+          550
+        ],
+        [
+          50,
+          71,
+          0
+        ]
+      ],
+      "fromNeutral": [
+        380,
+        614,
+        362
+      ],
+      "toNeutral": [
+        107,
+        27,
+        123
+      ],
+      "territoryByTick": [
+        {
+          "tick": 25,
+          "terr": [
+            513,
+            599,
+            528
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 50,
+          "terr": [
+            594,
+            724,
+            611
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 75,
+          "terr": [
+            613,
+            763,
+            635
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 100,
+          "terr": [
+            605,
+            788,
+            616
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 125,
+          "terr": [
+            582,
+            817,
+            607
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 150,
+          "terr": [
+            556,
+            856,
+            599
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 175,
+          "terr": [
+            517,
+            903,
+            584
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 200,
+          "terr": [
+            479,
+            960,
+            563
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 225,
+          "terr": [
+            451,
+            1027,
+            531
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 250,
+          "terr": [
+            423,
+            1091,
+            499
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 275,
+          "terr": [
+            386,
+            1163,
+            461
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 300,
+          "terr": [
+            360,
+            1229,
+            422
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 325,
+          "terr": [
+            313,
+            1307,
+            388
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 350,
+          "terr": [
+            262,
+            1403,
+            346
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 375,
+          "terr": [
+            220,
+            1494,
+            298
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 400,
+          "terr": [
+            170,
+            1598,
+            240
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 425,
+          "terr": [
+            116,
+            1716,
+            181
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 450,
+          "terr": [
+            71,
+            1831,
+            113
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "tick": 475,
+          "terr": [
+            22,
+            1956,
+            39
+          ],
+          "alive": [
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "winnerSlot": 1,
+      "winnerName": "Conqueror_g8_2c6b71"
+    }
+  ]
+}

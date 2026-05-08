@@ -28,7 +28,6 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, "..");
 const STRATEGIES_DIR = resolve(REPO_ROOT, "src", "strategies");
 const DESCENDANTS_REGISTRY = resolve(STRATEGIES_DIR, "descendants.js");
-const DOCS_DIR = resolve(REPO_ROOT, "docs");
 const MAX_WINNER_SOURCES = 3;
 
 // Find or synthesize the parent's source. Most bots live as
@@ -138,9 +137,6 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
     config: season.mapConfig ?? null,
   } : null;
 
-  // Engine docs — the agent has no way to discover the API otherwise.
-  const docs = await loadDocs();
-
   // Parent's character tech (if any). Without this in the prompt, the
   // spawn agent has no way to know that tech is a tunable axis - it
   // defaults to inheriting the parent's allocation via spread.
@@ -170,7 +166,6 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
     losses,
     winnerSources,
     mapInfo,
-    docs,
     seasonId: season?.id ?? null,
   });
 
@@ -182,18 +177,6 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
     prompt,
     losses,
   };
-}
-
-async function loadDocs() {
-  const out = {};
-  for (const name of ["strategies.md", "engine-api.md", "techs.md"]) {
-    try {
-      out[name] = await readFile(resolve(DOCS_DIR, name), "utf8");
-    } catch {
-      out[name] = null;
-    }
-  }
-  return out;
 }
 
 // Walk recent losses, dedupe winners (skipping the parent and any
@@ -225,7 +208,7 @@ async function collectWinnerSources(losses, parentName) {
 
 function buildPrompt({
   parentName, newName, parentSource, parentPath, parentTech,
-  losses, winnerSources, mapInfo, docs, seasonId,
+  losses, winnerSources, mapInfo, seasonId,
 }) {
   const parentRel = parentPath.replace(REPO_ROOT + "/", "");
   const lossSection = losses.length === 0
@@ -256,19 +239,15 @@ function buildPrompt({
     return blocks.length ? `\n## Bots that beat the parent\n\n${blocks.join("\n\n")}\n` : "";
   })();
 
-  const docsSection = (() => {
-    const blocks = [];
-    if (docs["strategies.md"]) {
-      blocks.push(`### \`docs/strategies.md\`\n\n${docs["strategies.md"].trim()}`);
-    }
-    if (docs["engine-api.md"]) {
-      blocks.push(`### \`docs/engine-api.md\`\n\n${docs["engine-api.md"].trim()}`);
-    }
-    if (docs["techs.md"]) {
-      blocks.push(`### \`docs/techs.md\`\n\n${docs["techs.md"].trim()}`);
-    }
-    return blocks.length ? `\n## Game / API reference\n\n${blocks.join("\n\n---\n\n")}\n` : "";
-  })();
+  const docsSection =
+`\n## Game / API reference
+
+Read these only if you need them — most tweaks won't:
+
+- \`docs/strategies.md\` — bot file shape, \`act(army, game)\` contract, helpers
+- \`docs/engine-api.md\` — fields you can read on \`army\`, \`tile\`, \`player\`, \`game\`
+- \`docs/techs.md\` — tech knob slopes and effects
+`;
 
   const techSection = parentTech
     ? `\n## Parent's character tech\n\nThe parent currently runs:\n\n` +
@@ -294,18 +273,22 @@ function buildPrompt({
 
   return `# Spawn descendant: ${newName}
 
-You are creating a descendant of the bot **${parentName}** in the
-PixelWars tournament. The task is exactly:
+You are creating a descendant of **${parentName}** in the PixelWars
+tournament. This is one step in a long hill-climb: many short
+iterations, each measured by a tournament season. Tournament data is
+the validator — your job is to make ONE small, hypothesis-driven change
+that you expect to nudge the rating up, not to reinvent the bot.
 
-> Improve this bot.
-
-The descendant takes inspiration from the parent but is free to
-diverge. Tune a constant, restructure the kernel, swap the fallback
-strategy, change the thesis entirely — whatever you think will rank
-higher than the parent in the next season. Loosely related is fine;
-this is exploration, not a minimal A/B test. The only hard rules are
-that the file must be self-contained, default-export a working
-strategy with the right \`name\`, and not break the engine API.
+Guidelines:
+- Pick one targeted change: tune a constant, swap a small branch,
+  re-allocate tech, etc. Resist whole-thesis rewrites.
+- State the hypothesis in a brief comment ("expect this to help against
+  X because Y" — reference the loss context below when relevant).
+- Don't read the docs unless you actually need a field or helper you
+  can't infer from the parent source. Don't run extra greps or tests
+  before writing — the season will tell you if you were right.
+- File must be self-contained, default-export a working strategy with
+  the right \`name\`, and not break the engine API.
 
 ## Test environment
 

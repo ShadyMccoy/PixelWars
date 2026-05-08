@@ -1,0 +1,2099 @@
+{
+  "A": "Conqueror_g8_4d842b",
+  "B": "Conqueror_g8_2c6b71",
+  "MAP": {
+    "width": 45,
+    "height": 45,
+    "growth": 1.2,
+    "maxArmy": 12,
+    "wrap": true
+  },
+  "POS_X": {
+    "x": 11,
+    "y": 8,
+    "strength": 1
+  },
+  "POS_Y": {
+    "x": 34,
+    "y": 23,
+    "strength": 1
+  },
+  "conditions": [
+    {
+      "label": "slot0=A at posX=(11,8) | slot1=B at posY=(34,23)",
+      "n": 30,
+      "aWins": 30,
+      "bWins": 0,
+      "meanTicks": 902,
+      "runs": [
+        {
+          "seed": 88242417,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242418,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242419,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242420,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242421,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242422,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242423,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242424,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242425,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242426,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242427,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242428,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242429,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242430,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242431,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242432,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242433,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242434,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242435,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242436,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242437,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242438,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242439,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242440,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242441,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242442,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242443,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242444,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242445,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        },
+        {
+          "seed": 88242446,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 902
+          },
+          "ticks": 902
+        }
+      ]
+    },
+    {
+      "label": "slot0=B at posX=(11,8) | slot1=A at posY=(34,23)",
+      "n": 30,
+      "aWins": 0,
+      "bWins": 30,
+      "meanTicks": 1028,
+      "runs": [
+        {
+          "seed": 88242417,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242418,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242419,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242420,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242421,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242422,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242423,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242424,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242425,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242426,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242427,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242428,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242429,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242430,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242431,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242432,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242433,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242434,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242435,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242436,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242437,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242438,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242439,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242440,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242441,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242442,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242443,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242444,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242445,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        },
+        {
+          "seed": 88242446,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 1028
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 1028
+        }
+      ]
+    },
+    {
+      "label": "slot0=A at posY=(34,23) | slot1=B at posX=(11,8)",
+      "n": 30,
+      "aWins": 30,
+      "bWins": 0,
+      "meanTicks": 938,
+      "runs": [
+        {
+          "seed": 88242417,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242418,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242419,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242420,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242421,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242422,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242423,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242424,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242425,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242426,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242427,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242428,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242429,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242430,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242431,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242432,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242433,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242434,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242435,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242436,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242437,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242438,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242439,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242440,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242441,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242442,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242443,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242444,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242445,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        },
+        {
+          "seed": 88242446,
+          "winner": "Conqueror_g8_4d842b",
+          "a": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "b": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 938
+          },
+          "ticks": 938
+        }
+      ]
+    },
+    {
+      "label": "slot0=B at posY=(34,23) | slot1=A at posX=(11,8)",
+      "n": 30,
+      "aWins": 0,
+      "bWins": 30,
+      "meanTicks": 989,
+      "runs": [
+        {
+          "seed": 88242417,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242418,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242419,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242420,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242421,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242422,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242423,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242424,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242425,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242426,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242427,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242428,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242429,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242430,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242431,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242432,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242433,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242434,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242435,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242436,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242437,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242438,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242439,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242440,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242441,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242442,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242443,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242444,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242445,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        },
+        {
+          "seed": 88242446,
+          "winner": "Conqueror_g8_2c6b71",
+          "a": {
+            "place": 1,
+            "terr": 0,
+            "survived": false,
+            "elim": 989
+          },
+          "b": {
+            "place": 0,
+            "terr": 2025,
+            "survived": true,
+            "elim": null
+          },
+          "ticks": 989
+        }
+      ]
+    }
+  ]
+}

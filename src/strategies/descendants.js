@@ -5,6 +5,10 @@
 // overwritten the next time a descendant is registered.
 
 import Conqueror_g10_447dc3 from "./Conqueror_g10_447dc3.js";
+import Conqueror_g10_6c5e88 from "./Conqueror_g10_6c5e88.js";
+import Conqueror_g10_a5c12c from "./Conqueror_g10_a5c12c.js";
+import Conqueror_g10_a9c8bc from "./Conqueror_g10_a9c8bc.js";
+import Conqueror_g10_c1e73e from "./Conqueror_g10_c1e73e.js";
 import Conqueror_g10_e067cc from "./Conqueror_g10_e067cc.js";
 import Conqueror_g10_ed740d from "./Conqueror_g10_ed740d.js";
 import Conqueror_g10_f5e8bf from "./Conqueror_g10_f5e8bf.js";
@@ -13,7 +17,9 @@ import Conqueror_g11_15ba79 from "./Conqueror_g11_15ba79.js";
 import Conqueror_g11_6c48eb from "./Conqueror_g11_6c48eb.js";
 import Conqueror_g11_755fa9 from "./Conqueror_g11_755fa9.js";
 import Conqueror_g11_95d739 from "./Conqueror_g11_95d739.js";
+import Conqueror_g11_cb02bc from "./Conqueror_g11_cb02bc.js";
 import Conqueror_g11_e13995 from "./Conqueror_g11_e13995.js";
+import Conqueror_g12_f23241 from "./Conqueror_g12_f23241.js";
 import Conqueror_g1_879a88 from "./Conqueror_g1_879a88.js";
 import Conqueror_g2_083569 from "./Conqueror_g2_083569.js";
 import Conqueror_g2_0aeb3a from "./Conqueror_g2_0aeb3a.js";
@@ -37,6 +43,7 @@ import Conqueror_g4_3fd4ce from "./Conqueror_g4_3fd4ce.js";
 import Conqueror_g4_868391 from "./Conqueror_g4_868391.js";
 import Conqueror_g4_a7924b from "./Conqueror_g4_a7924b.js";
 import Conqueror_g4_b6afb7 from "./Conqueror_g4_b6afb7.js";
+import Conqueror_g4_be92c1 from "./Conqueror_g4_be92c1.js";
 import Conqueror_g4_cbb4b0 from "./Conqueror_g4_cbb4b0.js";
 import Conqueror_g4_cd6684 from "./Conqueror_g4_cd6684.js";
 import Conqueror_g4_de5d02 from "./Conqueror_g4_de5d02.js";
@@ -47,6 +54,7 @@ import Conqueror_g5_25aa91 from "./Conqueror_g5_25aa91.js";
 import Conqueror_g5_2a3d2a from "./Conqueror_g5_2a3d2a.js";
 import Conqueror_g5_3d9064 from "./Conqueror_g5_3d9064.js";
 import Conqueror_g5_4c1ea4 from "./Conqueror_g5_4c1ea4.js";
+import Conqueror_g5_4ca8e8 from "./Conqueror_g5_4ca8e8.js";
 import Conqueror_g5_5003d1 from "./Conqueror_g5_5003d1.js";
 import Conqueror_g5_5a9922 from "./Conqueror_g5_5a9922.js";
 import Conqueror_g5_5bc895 from "./Conqueror_g5_5bc895.js";
@@ -54,6 +62,7 @@ import Conqueror_g5_60c874 from "./Conqueror_g5_60c874.js";
 import Conqueror_g5_6e396f from "./Conqueror_g5_6e396f.js";
 import Conqueror_g5_71ab3f from "./Conqueror_g5_71ab3f.js";
 import Conqueror_g5_82140e from "./Conqueror_g5_82140e.js";
+import Conqueror_g5_897d51 from "./Conqueror_g5_897d51.js";
 import Conqueror_g5_930cc7 from "./Conqueror_g5_930cc7.js";
 import Conqueror_g5_b3b641 from "./Conqueror_g5_b3b641.js";
 import Conqueror_g5_b451ab from "./Conqueror_g5_b451ab.js";
@@ -62,7 +71,9 @@ import Conqueror_g5_cabbd8 from "./Conqueror_g5_cabbd8.js";
 import Conqueror_g5_d70030 from "./Conqueror_g5_d70030.js";
 import Conqueror_g5_e78ad3 from "./Conqueror_g5_e78ad3.js";
 import Conqueror_g5_eccc35 from "./Conqueror_g5_eccc35.js";
+import Conqueror_g5_edeed5 from "./Conqueror_g5_edeed5.js";
 import Conqueror_g5_f15bbe from "./Conqueror_g5_f15bbe.js";
+import Conqueror_g5_f15d3e from "./Conqueror_g5_f15d3e.js";
 import Conqueror_g5_fbf131 from "./Conqueror_g5_fbf131.js";
 import Conqueror_g5_ff0e8a from "./Conqueror_g5_ff0e8a.js";
 import Conqueror_g6_0cd740 from "./Conqueror_g6_0cd740.js";
@@ -70,47 +81,70 @@ import Conqueror_g6_159029 from "./Conqueror_g6_159029.js";
 import Conqueror_g6_15ea9a from "./Conqueror_g6_15ea9a.js";
 import Conqueror_g6_1cded0 from "./Conqueror_g6_1cded0.js";
 import Conqueror_g6_20faee from "./Conqueror_g6_20faee.js";
+import Conqueror_g6_5791bf from "./Conqueror_g6_5791bf.js";
 import Conqueror_g6_5a4345 from "./Conqueror_g6_5a4345.js";
 import Conqueror_g6_7865bd from "./Conqueror_g6_7865bd.js";
 import Conqueror_g6_8329c4 from "./Conqueror_g6_8329c4.js";
+import Conqueror_g6_874a2a from "./Conqueror_g6_874a2a.js";
 import Conqueror_g6_8fe9fc from "./Conqueror_g6_8fe9fc.js";
 import Conqueror_g6_91ad51 from "./Conqueror_g6_91ad51.js";
 import Conqueror_g6_936d2f from "./Conqueror_g6_936d2f.js";
 import Conqueror_g6_9eb2e4 from "./Conqueror_g6_9eb2e4.js";
 import Conqueror_g6_aa7266 from "./Conqueror_g6_aa7266.js";
 import Conqueror_g6_b5f83a from "./Conqueror_g6_b5f83a.js";
+import Conqueror_g6_b70bfa from "./Conqueror_g6_b70bfa.js";
+import Conqueror_g6_c4c8d1 from "./Conqueror_g6_c4c8d1.js";
+import Conqueror_g6_f47ef4 from "./Conqueror_g6_f47ef4.js";
+import Conqueror_g6_fbb329 from "./Conqueror_g6_fbb329.js";
 import Conqueror_g7_0cfdd6 from "./Conqueror_g7_0cfdd6.js";
 import Conqueror_g7_143859 from "./Conqueror_g7_143859.js";
 import Conqueror_g7_31769b from "./Conqueror_g7_31769b.js";
 import Conqueror_g7_3b651e from "./Conqueror_g7_3b651e.js";
 import Conqueror_g7_3f7da6 from "./Conqueror_g7_3f7da6.js";
+import Conqueror_g7_5acd36 from "./Conqueror_g7_5acd36.js";
 import Conqueror_g7_6b2e1a from "./Conqueror_g7_6b2e1a.js";
 import Conqueror_g7_98d20f from "./Conqueror_g7_98d20f.js";
 import Conqueror_g7_b36709 from "./Conqueror_g7_b36709.js";
 import Conqueror_g7_b6c861 from "./Conqueror_g7_b6c861.js";
 import Conqueror_g7_d17330 from "./Conqueror_g7_d17330.js";
 import Conqueror_g7_efa4e0 from "./Conqueror_g7_efa4e0.js";
+import Conqueror_g8_00a477 from "./Conqueror_g8_00a477.js";
 import Conqueror_g8_15e6f9 from "./Conqueror_g8_15e6f9.js";
 import Conqueror_g8_174911 from "./Conqueror_g8_174911.js";
+import Conqueror_g8_1c5660 from "./Conqueror_g8_1c5660.js";
 import Conqueror_g8_25adb0 from "./Conqueror_g8_25adb0.js";
 import Conqueror_g8_2c6b71 from "./Conqueror_g8_2c6b71.js";
+import Conqueror_g8_30b712 from "./Conqueror_g8_30b712.js";
+import Conqueror_g8_3280dd from "./Conqueror_g8_3280dd.js";
 import Conqueror_g8_4d842b from "./Conqueror_g8_4d842b.js";
+import Conqueror_g8_529370 from "./Conqueror_g8_529370.js";
+import Conqueror_g8_529c9b from "./Conqueror_g8_529c9b.js";
 import Conqueror_g8_579783 from "./Conqueror_g8_579783.js";
+import Conqueror_g8_5c68e4 from "./Conqueror_g8_5c68e4.js";
 import Conqueror_g8_74e11b from "./Conqueror_g8_74e11b.js";
 import Conqueror_g8_7c11fe from "./Conqueror_g8_7c11fe.js";
+import Conqueror_g8_82d39b from "./Conqueror_g8_82d39b.js";
+import Conqueror_g8_838926 from "./Conqueror_g8_838926.js";
 import Conqueror_g8_90fd52 from "./Conqueror_g8_90fd52.js";
 import Conqueror_g8_912a4c from "./Conqueror_g8_912a4c.js";
 import Conqueror_g8_9d8b65 from "./Conqueror_g8_9d8b65.js";
 import Conqueror_g8_a9c587 from "./Conqueror_g8_a9c587.js";
 import Conqueror_g8_c3d8b0 from "./Conqueror_g8_c3d8b0.js";
+import Conqueror_g8_d001cc from "./Conqueror_g8_d001cc.js";
+import Conqueror_g8_d45283 from "./Conqueror_g8_d45283.js";
+import Conqueror_g9_01de66 from "./Conqueror_g9_01de66.js";
 import Conqueror_g9_1052df from "./Conqueror_g9_1052df.js";
 import Conqueror_g9_192ea5 from "./Conqueror_g9_192ea5.js";
 import Conqueror_g9_1e065b from "./Conqueror_g9_1e065b.js";
 import Conqueror_g9_4b8dd5 from "./Conqueror_g9_4b8dd5.js";
 import Conqueror_g9_52a3a8 from "./Conqueror_g9_52a3a8.js";
+import Conqueror_g9_a22c1e from "./Conqueror_g9_a22c1e.js";
 import Conqueror_g9_bb8efc from "./Conqueror_g9_bb8efc.js";
 import Conqueror_g9_bbe71a from "./Conqueror_g9_bbe71a.js";
+import Conqueror_g9_c703a2 from "./Conqueror_g9_c703a2.js";
 import Conqueror_g9_c81d7f from "./Conqueror_g9_c81d7f.js";
+import Conqueror_g9_d2499d from "./Conqueror_g9_d2499d.js";
+import Conqueror_g9_ee6e4c from "./Conqueror_g9_ee6e4c.js";
 import Conqueror_g9_f7d113 from "./Conqueror_g9_f7d113.js";
 import Conqueror_g9_fd075f from "./Conqueror_g9_fd075f.js";
 import Conqueror_g9_ff6438 from "./Conqueror_g9_ff6438.js";
@@ -160,6 +194,10 @@ import Trinity_g1_3786cc from "./Trinity_g1_3786cc.js";
 
 export const DESCENDANTS = [
   Conqueror_g10_447dc3,
+  Conqueror_g10_6c5e88,
+  Conqueror_g10_a5c12c,
+  Conqueror_g10_a9c8bc,
+  Conqueror_g10_c1e73e,
   Conqueror_g10_e067cc,
   Conqueror_g10_ed740d,
   Conqueror_g10_f5e8bf,
@@ -168,7 +206,9 @@ export const DESCENDANTS = [
   Conqueror_g11_6c48eb,
   Conqueror_g11_755fa9,
   Conqueror_g11_95d739,
+  Conqueror_g11_cb02bc,
   Conqueror_g11_e13995,
+  Conqueror_g12_f23241,
   Conqueror_g1_879a88,
   Conqueror_g2_083569,
   Conqueror_g2_0aeb3a,
@@ -192,6 +232,7 @@ export const DESCENDANTS = [
   Conqueror_g4_868391,
   Conqueror_g4_a7924b,
   Conqueror_g4_b6afb7,
+  Conqueror_g4_be92c1,
   Conqueror_g4_cbb4b0,
   Conqueror_g4_cd6684,
   Conqueror_g4_de5d02,
@@ -202,6 +243,7 @@ export const DESCENDANTS = [
   Conqueror_g5_2a3d2a,
   Conqueror_g5_3d9064,
   Conqueror_g5_4c1ea4,
+  Conqueror_g5_4ca8e8,
   Conqueror_g5_5003d1,
   Conqueror_g5_5a9922,
   Conqueror_g5_5bc895,
@@ -209,6 +251,7 @@ export const DESCENDANTS = [
   Conqueror_g5_6e396f,
   Conqueror_g5_71ab3f,
   Conqueror_g5_82140e,
+  Conqueror_g5_897d51,
   Conqueror_g5_930cc7,
   Conqueror_g5_b3b641,
   Conqueror_g5_b451ab,
@@ -217,7 +260,9 @@ export const DESCENDANTS = [
   Conqueror_g5_d70030,
   Conqueror_g5_e78ad3,
   Conqueror_g5_eccc35,
+  Conqueror_g5_edeed5,
   Conqueror_g5_f15bbe,
+  Conqueror_g5_f15d3e,
   Conqueror_g5_fbf131,
   Conqueror_g5_ff0e8a,
   Conqueror_g6_0cd740,
@@ -225,47 +270,70 @@ export const DESCENDANTS = [
   Conqueror_g6_15ea9a,
   Conqueror_g6_1cded0,
   Conqueror_g6_20faee,
+  Conqueror_g6_5791bf,
   Conqueror_g6_5a4345,
   Conqueror_g6_7865bd,
   Conqueror_g6_8329c4,
+  Conqueror_g6_874a2a,
   Conqueror_g6_8fe9fc,
   Conqueror_g6_91ad51,
   Conqueror_g6_936d2f,
   Conqueror_g6_9eb2e4,
   Conqueror_g6_aa7266,
   Conqueror_g6_b5f83a,
+  Conqueror_g6_b70bfa,
+  Conqueror_g6_c4c8d1,
+  Conqueror_g6_f47ef4,
+  Conqueror_g6_fbb329,
   Conqueror_g7_0cfdd6,
   Conqueror_g7_143859,
   Conqueror_g7_31769b,
   Conqueror_g7_3b651e,
   Conqueror_g7_3f7da6,
+  Conqueror_g7_5acd36,
   Conqueror_g7_6b2e1a,
   Conqueror_g7_98d20f,
   Conqueror_g7_b36709,
   Conqueror_g7_b6c861,
   Conqueror_g7_d17330,
   Conqueror_g7_efa4e0,
+  Conqueror_g8_00a477,
   Conqueror_g8_15e6f9,
   Conqueror_g8_174911,
+  Conqueror_g8_1c5660,
   Conqueror_g8_25adb0,
   Conqueror_g8_2c6b71,
+  Conqueror_g8_30b712,
+  Conqueror_g8_3280dd,
   Conqueror_g8_4d842b,
+  Conqueror_g8_529370,
+  Conqueror_g8_529c9b,
   Conqueror_g8_579783,
+  Conqueror_g8_5c68e4,
   Conqueror_g8_74e11b,
   Conqueror_g8_7c11fe,
+  Conqueror_g8_82d39b,
+  Conqueror_g8_838926,
   Conqueror_g8_90fd52,
   Conqueror_g8_912a4c,
   Conqueror_g8_9d8b65,
   Conqueror_g8_a9c587,
   Conqueror_g8_c3d8b0,
+  Conqueror_g8_d001cc,
+  Conqueror_g8_d45283,
+  Conqueror_g9_01de66,
   Conqueror_g9_1052df,
   Conqueror_g9_192ea5,
   Conqueror_g9_1e065b,
   Conqueror_g9_4b8dd5,
   Conqueror_g9_52a3a8,
+  Conqueror_g9_a22c1e,
   Conqueror_g9_bb8efc,
   Conqueror_g9_bbe71a,
+  Conqueror_g9_c703a2,
   Conqueror_g9_c81d7f,
+  Conqueror_g9_d2499d,
+  Conqueror_g9_ee6e4c,
   Conqueror_g9_f7d113,
   Conqueror_g9_fd075f,
   Conqueror_g9_ff6438,
