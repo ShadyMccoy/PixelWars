@@ -6,9 +6,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T00:33:33.639Z"
+      "archivedAt": null
     },
     {
       "name": "Repel",
@@ -16,9 +16,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T01:20:59.808Z"
+      "archivedAt": null
     },
     {
       "name": "Trinity",
@@ -26,9 +26,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T01:20:59.625Z"
+      "archivedAt": null
     },
     {
       "name": "Aggressive",
@@ -36,9 +36,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T01:20:59.597Z"
+      "archivedAt": null
     },
     {
       "name": "Defender",
@@ -46,9 +46,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T08:15:40.163Z"
+      "archivedAt": null
     },
     {
       "name": "Random",
@@ -56,9 +56,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T22:47:18.529Z"
+      "archivedAt": null
     },
     {
       "name": "Berserker",
@@ -66,9 +66,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T23:15:40.559Z"
+      "archivedAt": null
     },
     {
       "name": "Cautious",
@@ -76,9 +76,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T21:29:29.591Z"
+      "archivedAt": null
     },
     {
       "name": "Swarm",
@@ -86,9 +86,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T23:23:05.430Z"
+      "archivedAt": null
     },
     {
       "name": "Opportunist",
@@ -96,9 +96,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T05:36:49.778Z"
+      "archivedAt": null
     },
     {
       "name": "Hunter",
@@ -106,9 +106,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T21:39:36.063Z"
+      "archivedAt": null
     },
     {
       "name": "Turtle",
@@ -116,9 +116,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T21:53:34.569Z"
+      "archivedAt": null
     },
     {
       "name": "Phalanx",
@@ -126,9 +126,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T23:08:54.550Z"
+      "archivedAt": null
     },
     {
       "name": "Vampire",
@@ -136,9 +136,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-08T00:21:30.252Z"
+      "archivedAt": null
     },
     {
       "name": "Tactician",
@@ -146,9 +146,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-08T05:10:31.437Z"
+      "archivedAt": null
     },
     {
       "name": "Scout",
@@ -156,9 +156,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T08:24:26.581Z"
+      "archivedAt": null
     },
     {
       "name": "Avalanche",
@@ -166,9 +166,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-08T03:21:04.918Z"
+      "archivedAt": null
     },
     {
       "name": "Bully",
@@ -176,9 +176,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T00:12:18.993Z"
+      "archivedAt": null
     },
     {
       "name": "Adaptive",
@@ -186,9 +186,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T01:20:59.531Z"
+      "archivedAt": null
     },
     {
       "name": "Membrane",
@@ -196,9 +196,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T21:56:02.480Z"
+      "archivedAt": null
     },
     {
       "name": "Crusader",
@@ -206,9 +206,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T22:07:00.779Z"
+      "archivedAt": null
     },
     {
       "name": "Vanguard",
@@ -216,9 +216,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T23:33:47.062Z"
+      "archivedAt": null
     },
     {
       "name": "Spearhead",
@@ -226,9 +226,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T21:06:49.973Z"
+      "archivedAt": null
     },
     {
       "name": "Surge",
@@ -236,9 +236,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T08:24:26.695Z"
+      "archivedAt": null
     },
     {
       "name": "Wildfire",
@@ -246,9 +246,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T21:24:37.994Z"
+      "archivedAt": null
     },
     {
       "name": "Bulwark",
@@ -256,9 +256,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T20:12:23.053Z"
+      "archivedAt": null
     },
     {
       "name": "TideWall",
@@ -266,9 +266,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T00:04:13.673Z"
+      "archivedAt": null
     },
     {
       "name": "Conductor",
@@ -276,9 +276,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T00:31:42.121Z"
+      "archivedAt": null
     },
     {
       "name": "Conqueror",
@@ -286,9 +286,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T22:10:20.113Z"
+      "archivedAt": null
     },
     {
       "name": "Stalker",
@@ -296,9 +296,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T23:16:19.282Z"
+      "archivedAt": null
     },
     {
       "name": "Citadel",
@@ -306,9 +306,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T01:20:59.473Z"
+      "archivedAt": null
     },
     {
       "name": "Lance",
@@ -316,9 +316,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T00:16:29.839Z"
+      "archivedAt": null
     },
     {
       "name": "Frontier",
@@ -326,9 +326,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T23:10:11.601Z"
+      "archivedAt": null
     },
     {
       "name": "PressureSink",
@@ -336,9 +336,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T21:08:11.075Z"
+      "archivedAt": null
     },
     {
       "name": "CitadelSortie",
@@ -346,9 +346,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T23:28:08.843Z"
+      "archivedAt": null
     },
     {
       "name": "Pinwheel",
@@ -356,9 +356,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-08T03:23:25.386Z"
+      "archivedAt": null
     },
     {
       "name": "Anvil",
@@ -366,9 +366,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-07T21:41:55.725Z"
+      "archivedAt": null
     },
     {
       "name": "Skirmisher",
@@ -376,9 +376,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T23:39:55.527Z"
+      "archivedAt": null
     },
     {
       "name": "Tempo",
@@ -386,9 +386,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": "2026-05-06T20:19:22.875Z"
+      "archivedAt": null
     },
     {
       "name": "Hunter_01",
@@ -2626,9 +2626,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-07T22:27:28.532Z",
-      "archivedAt": "2026-05-08T00:41:31.132Z"
+      "archivedAt": null
     },
     {
       "name": "Settler",
@@ -2636,9 +2636,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": false,
+      "active": true,
       "createdAt": "2026-05-07T22:27:28.532Z",
-      "archivedAt": "2026-05-07T23:19:27.246Z"
+      "archivedAt": null
     },
     {
       "name": "Conqueror_g10_447dc3",
