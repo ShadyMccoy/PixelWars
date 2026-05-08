@@ -12,6 +12,7 @@ export class Game {
     maxArmy = 6,
     decay = 0.05,
     attackerBonus = 1.4,
+    combatModel = "linear",
     maxHistory = 240,
     seed = null,
   } = {}) {
@@ -26,6 +27,16 @@ export class Game {
     this.maxArmy = maxArmy;
     this.decay = decay;
     this.attackerBonus = attackerBonus;
+    // "linear" (default): winner pays loser_eff/winner_mult raw —
+    //   flat subtractive, no nonlinear reward for overkill.
+    // "lanchester": winner's post-fight effective strength is
+    //   sqrt(winner_eff^2 - loser_eff^2). Concentration of force
+    //   compounds — a 2x force ratio is ~4x more efficient — so
+    //   shaping mass at the breakthrough pays directly. Bots tuned
+    //   on linear (Conqueror's enemy/1.4 + MARGIN commit math) are
+    //   not optimal here; the closed-form commit becomes a strict
+    //   underestimate.
+    this.combatModel = combatModel;
     this.history = [];
     this.maxHistory = maxHistory;
     this.seed = seed;
