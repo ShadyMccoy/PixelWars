@@ -17,6 +17,7 @@ export class Controls {
     this.toggleTerritory = $("#toggle-territory");
     this.toggleGlow = $("#toggle-glow");
     this.toggleMoves = $("#toggle-moves");
+    this.toggleConflicts = $("#toggle-conflicts");
     this.moveStyle = $("#move-style");
     this.toggleOverlay = $("#toggle-overlay");
     this.toggle3D = $("#toggle-3d");
@@ -51,6 +52,12 @@ export class Controls {
       this.app.renderer.showMoves = this.toggleMoves.checked;
       this.app.markDirty();
     });
+    if (this.toggleConflicts) {
+      this.toggleConflicts.addEventListener("change", () => {
+        this.app.renderer.showConflicts = this.toggleConflicts.checked;
+        this.app.markDirty();
+      });
+    }
     if (this.moveStyle) {
       this.moveStyle.value = this.app.renderer.moveStyle;
       this.moveStyle.addEventListener("change", () => {

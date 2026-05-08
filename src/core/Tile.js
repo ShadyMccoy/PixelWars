@@ -92,6 +92,15 @@ export class Tile {
     const game = grouped[0] && grouped[0].game;
     const bonus = (game && game.attackerBonus) || 1;
     const model = (game && game.combatModel) || "linear";
+
+    // Total strength engaged across all sides — fed to the renderer as
+    // conflict magnitude so the red residue scales with fight size.
+    // Only meaningful when at least two distinct players collided here;
+    // single-player merges are not conflicts.
+    let engagedStrength = 0;
+    if (grouped.length > 1) {
+      for (let i = 0; i < grouped.length; i++) engagedStrength += grouped[i].strength;
+    }
     const armyMult = (army) => {
       const m = army.player.techMults;
       if (army.isAttacker) return bonus * (m ? m.atk : 1);
@@ -136,6 +145,10 @@ export class Tile {
       survivor.isAttacker = false;
       this.armies.push(survivor);
       survivor.tile = this;
+    }
+
+    if (engagedStrength > 0 && game && game.recordConflict) {
+      game.recordConflict(this, engagedStrength);
     }
   }
 
