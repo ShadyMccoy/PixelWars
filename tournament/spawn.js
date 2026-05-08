@@ -279,7 +279,17 @@ function buildPrompt({
       `by adding a \`tech\` field to the exported object — see ` +
       `\`docs/techs.md\` for slopes and effects. Inheriting via spread ` +
       `from the parent keeps the parent's tech; adding \`tech: { ... }\` ` +
-      `replaces it.\n`
+      `replaces it.\n\n` +
+      `**Tech is historically under-explored in this lineage.** Past ` +
+      `descendants overwhelmingly preserve the parent's tech and tune ` +
+      `only strategy code, which means there is little synergy between ` +
+      `the two: a move-heavy tech runs strategies that don't actually ` +
+      `exploit movement, and an attack-focused strategy runs on tech ` +
+      `that doesn't amplify its kills. If your descendant's strategy ` +
+      `change leans on a particular axis (more aggression, more ` +
+      `expansion, more defense), consider re-allocating tech to match — ` +
+      `that's a free 10-15% multiplier on the relevant per-turn output ` +
+      `that nobody is currently claiming.\n`
     : "";
 
   return `# Spawn descendant: ${newName}
