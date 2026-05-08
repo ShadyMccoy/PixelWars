@@ -68,7 +68,7 @@ you're moving to.`,
     const tile = army.tile;
     if (!tile) return;
     const x = featurize(army, featBuf);
-    forward(x, this.weights, scoreBuf, FEATURE_COUNT, DIRECTIONS);
+    forward(x, SEED_WEIGHTS, scoreBuf, FEATURE_COUNT, DIRECTIONS);
     const dir = argmax(scoreBuf, DIRECTIONS);
     const target = tile.neighbors[dir];
     if (target) army.attack(target, army.attackPower);
