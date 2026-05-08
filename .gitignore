@@ -3,7 +3,6 @@ old js/*
 built/*
 .claude/
 tournament/interesting.json
-tournament/matches.jsonl
 tournament/seasons.json
 tournament/loop-run.log
 tournament/exp-lanchester-*.json
