@@ -39,6 +39,7 @@ import Skirmisher from "./Skirmisher.js";
 import Tempo from "./Tempo.js";
 import Empire from "./Empire.js";
 import Settler from "./Settler.js";
+import Smartiepants from "./Smartiepants.js";
 import Drumline from "./Drumline.js";
 import Sniper from "./Sniper.js";
 import Hammer from "./Hammer.js";
@@ -110,6 +111,7 @@ export const ALL_STRATEGY_LIST = [
   Tempo,
   Empire,
   Settler,
+  Smartiepants,
   Drumline,
   Sniper,
   Hammer,
