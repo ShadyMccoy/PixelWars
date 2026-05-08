@@ -53,7 +53,7 @@ budget that makes the strategy possible.
 Expected to dismantle bots that stay locked in adjacent-only
 play (the entire current lineage). Expected to lose to its
 mirror or to other ranged bots that can counter-snipe.`,
-  tech: { move: 75, stack: 0, prod: 5, atk: 15, def: 5 },
+  tech: { move: 50, stack: 0, prod: 25, atk: 20, def: 5 },
   act(army, game) {
     const tile = army.tile;
     if (!tile) return;
@@ -65,8 +65,15 @@ mirror or to other ranged bots that can counter-snipe.`,
     const h = game.map.height;
     const budget = tile.budget;
     const workCap = budget * BUDGET_FRACTION;
+
+    // Hard rule: never commit more than half this army's strength to
+    // a snipe. v1/v2 of Sniper sent full attackPower to remote
+    // targets, leaving the source tile at ~0.5 strength — instant
+    // kill by any adjacent enemy next tick. Keeping >=50% home
+    // preserves the launch base.
+    const maxSelfCommit = sLimit * 0.5;
+
     if (workCap <= 0.5) {
-      // Budget too low for a meaningful snipe — defer to local play.
       Conqueror.act(army, game);
       return;
     }
@@ -74,7 +81,6 @@ mirror or to other ranged bots that can counter-snipe.`,
     let bestTarget = null;
     let bestScore = -Infinity;
     let bestPower = 0;
-    let bestDist = 0;
 
     for (let dy = -RADIUS; dy <= RADIUS; dy++) {
       for (let dx = -RADIUS; dx <= RADIUS; dx++) {
@@ -87,7 +93,7 @@ mirror or to other ranged bots that can counter-snipe.`,
         const target = game.map.getTile(tx, ty);
         if (!target) continue;
         const tArmies = target.armies;
-        if (tArmies.length === 0) continue; // empty — let Conqueror handle expansion
+        if (tArmies.length === 0) continue;
         let friendly = false;
         let enemy = 0;
         for (let k = 0; k < tArmies.length; k++) {
@@ -96,25 +102,30 @@ mirror or to other ranged bots that can counter-snipe.`,
           enemy += a.strength;
         }
         if (friendly) continue;
+        // Don't waste a snipe on trivial enemies — adjacent fallback
+        // can pick those up cheaper and without exposing the home.
+        if (enemy < 2.0) continue;
 
-        // Max raw power we can deliver at this distance with the
-        // budget-fraction work cap. Also clamped by the army's own
-        // sLimit (we can't send more strength than we have).
+        // Minimum-but-margin commit under Lanchester: pick the
+        // smallest P such that sqrt((P*atkMult)^2 - enemy^2) leaves
+        // us at least 1.0 raw strength on the captured tile after.
+        // Closed form: P >= sqrt(1.0^2 + (enemy/atkMult)^2). Add a
+        // 1.1x safety margin to absorb tile-defense or simultaneous
+        // arrivals.
+        const minPower = Math.sqrt(1.0 + (enemy / atkMult) ** 2) * 1.1;
+        // Cap by all three constraints: budget at this distance, the
+        // army's keep-half-home rule, and the army's strength.
         const maxPowerByBudget = workCap / dist;
-        const maxPower = maxPowerByBudget < sLimit ? maxPowerByBudget : sLimit;
-        if (maxPower <= 0.5) continue;
-        // Under Lanchester we need post-fight effective > 0 with
-        // some margin. If maxPower * atkMult <= enemy, the fight is
-        // a loss. Need a comfortable margin so we don't trade for
-        // nothing.
-        if (maxPower * atkMult <= enemy * 1.15) continue;
+        const ceiling = Math.min(maxPowerByBudget, maxSelfCommit, sLimit);
+        if (minPower > ceiling) continue;
 
+        // Score: prefer killing the biggest reachable enemy and
+        // slightly prefer closer (cheaper, more reliable).
         const score = enemy - 0.3 * dist;
         if (score > bestScore) {
           bestScore = score;
           bestTarget = target;
-          bestPower = maxPower;
-          bestDist = dist;
+          bestPower = minPower;
         }
       }
     }
@@ -124,7 +135,6 @@ mirror or to other ranged bots that can counter-snipe.`,
       return;
     }
 
-    // No good snipe — adjacent action via parent chassis.
     Conqueror.act(army, game);
   },
 };
