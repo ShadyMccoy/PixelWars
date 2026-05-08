@@ -1,16 +1,18 @@
-import Conqueror from "./Conqueror.js";
+import Parent from "./Conqueror_g13_b41df9.js";
 
 const BONUS = 1.4;
-// Frontier tiles always act — no point hoarding budget when there's
-// an enemy adjacent. Interior tiles (no enemy adjacent and all
-// friendly neighbors near-cap) idle to let budget recharge to its
-// move-tech-scaled cap, then occasionally launch a long-range
-// teleport at a high-value vulnerable enemy.
-const SCAN_RADIUS = 4;
-// Idle threshold: don't act on interior tiles unless budget is at
-// least this fraction of the cap. Lower = more acts (less saving),
-// higher = bigger but rarer strikes.
-const STRIKE_BUDGET_FRACTION = 0.85;
+// Search radius for opportunistic ranged strikes from interior
+// tiles. Same constraint as Sniper — at distance > 3 the cost
+// formula power*dist+1 plus a meaningful power requires more
+// budget than even a fully-charged tile typically holds.
+const SCAN_RADIUS = 3;
+// Trigger interior strike when tile budget exceeds this fraction of
+// the budget cap. 0.85 means we wait until the tile is nearly
+// charged before firing.
+const STRIKE_THRESHOLD = 0.85;
+// Min target enemy strength worth a ranged strike — small enemies
+// are best handled by adjacent kills (someone else's job).
+const MIN_TARGET_STRENGTH = 2.5;
 
 function isInterior(tile, pid) {
   const n = tile.neighbors;
@@ -18,17 +20,16 @@ function isInterior(tile, pid) {
     const t = n[i];
     if (!t) continue;
     const armies = t.armies;
-    if (armies.length === 0) return false; // empty neighbor = expand opportunity
+    if (armies.length === 0) return false;
     let foundFriendly = false;
     for (let k = 0; k < armies.length; k++) {
       const a = armies[k];
       if (a.player.id === pid) {
         foundFriendly = true;
-        // Friendly with room = reinforce opportunity.
         if (a.strength < a.maxStrength - 0.5) return false;
       }
     }
-    if (!foundFriendly) return false; // enemy adjacent — frontier
+    if (!foundFriendly) return false;
   }
   return true;
 }
@@ -38,78 +39,62 @@ export default {
   author: "claude",
   version: 1,
   description:
-    "Frontier tiles play Conqueror; interior tiles idle to let the per-tile budget cap charge fully, then teleport opportunistic alphas at vulnerable enemies across the map.",
-  summary: `New ruleset (movementModel="budget") gives high-move tiles
-a meaningful storage capacity (move:60 -> ~2.0x base cap = 24 work
-units on lab1). Most bots burn this every tick without realizing
-the cap exists; Stockpile turns it into a strategic resource.
+    "Conqueror_g13 chassis on the frontier; interior tiles idle to let budget charge to cap, then teleport opportunistic alphas at vulnerable enemies in range. Strict upgrade over the chassis: idle saves the +1 move overhead, ranged strikes monetize otherwise-wasted budget.",
+  summary: `An earlier Stockpile draft replaced the chassis tech with
+high-move/low-prod to enable big alphas. The chassis fallback then
+ran with starved tech and the bot underperformed on most ticks. v2
+keeps g14_8d5369's validated chassis tech and adds two thin
+behaviors that should each be a strict upgrade:
 
-Per-army logic:
-  1. Frontier check: if any neighbor is empty, owned by an enemy,
-     or contains a non-cap friendly that wants reinforcement, this
-     tile is on a frontier — defer entirely to Conqueror.act for
-     normal adjacent play. Frontier budget is best spent now.
-  2. Otherwise the tile is interior. If tile.budget < 0.85 * cap
-     (cap is just budget * 1.0 here, see note below), idle this
-     tick — let budget recharge.
-  3. Tile is interior AND budget is near cap. Scan SCAN_RADIUS=4
-     for the best enemy-tile target where work-cost (power x
-     distance) fits in available budget AND the resulting commit
-     wins under Lanchester (effective W > 1.15x effective L).
-  4. Land the teleport. The captured tile resets to budget=0 by
-     conquest rule, but our home tile keeps any leftover budget
-     so we can refill faster.
+  1. Frontier (any non-friendly neighbor or non-cap friendly):
+     defer to the chassis (Conqueror_g13_b41df9). The chassis is
+     already validated against the lineage in this case.
+  2. Interior (all neighbors are maxed friendlies): the chassis
+     would Pass-3 stencil into a wasted reinforce or do nothing
+     useful. Instead, gate on tile.budget >= 0.85 * cap. If the
+     budget is near full, scan for a vulnerable enemy in range
+     <=3 and fire a min-Lanchester teleport. Otherwise, idle.
 
-Step 2's cap reference: we don't have direct access to the
-maxBudget * moveRecharge cap from the strategy, so we infer the
-cap as "budget at the highest value we've observed" via a
-per-army state field. Simpler proxy: budget is "near cap" once it
-stops growing. We use a reasonable fixed threshold (BUDGET >= 8)
-that approximates 85% of the typical capped budget under move:60
-on lab1 — close enough; the goal is "wait for nearly full,"
-not "wait for exactly full."
+Idle tiles avoid paying the +1 move-overhead. Range strikes only
+fire when the chassis would have done a low-value action anyway,
+so the bot is at minimum chassis-equivalent and sometimes better.
 
-Tech: {move:60, stack:0, prod:5, atk:25, def:10}. move:60 buys
-2.0x recharge + 2.0x cap (24 work units) — the storage matters
-for Stockpile and 2x recharge keeps the strategy responsive.
-prod:5 is intentionally weak: Stockpile's interior tiles are
-already saturated at maxArmy, so prod past that is wasted on
-them; the bot's edge is in *spending* saved-up budget, not in
-producing more strength. atk:25 amplifies Lanchester for
-strikes. def:10 light cushion.
+The cap-aware threshold is approximate: we don't have direct
+access to the maxBudget * moveRecharge cap from the strategy.
+Move:76 -> moveRecharge ~2.12 -> cap ~25.4. 0.85 * 25.4 = ~21.6;
+we use a slightly softer floor of 16 budget to also work for
+lower-move techs.
 
-Expected wins: against bots that fritter budget every tick on
-maxed-friendly reinforcement (every existing Conqueror). Expected
-losses: in long matches where the interior never gets a clean
-snipe and Stockpile is just a passive Conqueror — and in mirror
-matches where neither bot finds a target.`,
-  tech: { move: 60, stack: 0, prod: 5, atk: 25, def: 10 },
+Tech mirrors the chassis champion {move:76, stack:0, prod:16,
+atk:5, def:3} so the rule-aware additions are pure strict upgrade.`,
+  tech: { move: 76, stack: 0, prod: 16, atk: 5, def: 3 },
   act(army, game) {
     const tile = army.tile;
     if (!tile) return;
     const sLimit = army.attackPower;
-    if (sLimit <= 0.5) return;
+    if (sLimit <= 0.5) {
+      Parent.act(army, game);
+      return;
+    }
     const pid = army.player.id;
 
-    // Frontier? Defer to Conqueror immediately.
+    // Frontier? Defer to chassis.
     if (!isInterior(tile, pid)) {
-      Conqueror.act(army, game);
+      Parent.act(army, game);
       return;
     }
 
-    // Interior. Wait until budget is near cap before we strike.
-    // Approximate threshold: under move:60 (this bot's tech), cap
-    // is maxBudget * 2.0 = 24 on lab1; 85% of that is ~20.
-    // We use a softer floor that also works for lower-move
-    // techs in case this strategy is ever loaded with a different
-    // loadout: budget must be at least 8 (~67% of neutral cap).
-    if (tile.budget < 8) return;
+    // Interior with low budget: idle (don't pay +1 overhead for
+    // wasted reinforce moves).
+    if (tile.budget < 16) return;
 
-    // Scan for a vulnerable enemy in range.
+    // Budget is near cap. Scan for a ranged strike.
     const w = game.map.width;
     const h = game.map.height;
     const atkMult = (army.player.techMults?.atk ?? 1) * BONUS;
     const budget = tile.budget;
+    const workCap = budget * 0.7;
+
     let bestTarget = null;
     let bestScore = -Infinity;
     let bestPower = 0;
@@ -134,17 +119,19 @@ matches where neither bot finds a target.`,
           enemy += a.strength;
         }
         if (friendly) continue;
-        // Cost formula: power * dist + 1. Max deliverable power is
-        // (budget - 1) / dist.
-        const maxPowerByBudget = (budget - 1) / dist;
-        const maxPower = maxPowerByBudget < sLimit ? maxPowerByBudget : sLimit;
-        if (maxPower <= 0.5) continue;
-        if (maxPower * atkMult <= enemy * 1.15) continue;
+        if (enemy < MIN_TARGET_STRENGTH) continue;
+
+        const minPower = Math.sqrt(1.0 + (enemy / atkMult) ** 2) * 1.1;
+        const maxPowerByBudget = (workCap - 1) / dist;
+        const maxSelfCommit = sLimit * 0.5;
+        const ceiling = Math.min(maxPowerByBudget, maxSelfCommit, sLimit);
+        if (minPower > ceiling) continue;
+
         const score = enemy - 0.2 * dist;
         if (score > bestScore) {
           bestScore = score;
           bestTarget = target;
-          bestPower = maxPower;
+          bestPower = minPower;
         }
       }
     }
@@ -154,6 +141,8 @@ matches where neither bot finds a target.`,
       return;
     }
 
-    // Nothing to strike. Stay idle this tick — preserve budget.
+    // No clean strike, full budget — let chassis fall through (it
+    // may find a stencil move worth the overhead).
+    Parent.act(army, game);
   },
 };

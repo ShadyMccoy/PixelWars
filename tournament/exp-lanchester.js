@@ -134,7 +134,7 @@ async function runOne(opts) {
   // encounters/wins across the field, so we can compare apples to
   // apples even when their played-counts differ from matchmaker
   // info-gain anchoring.
-  const targets = ["Drumline", "Sniper", "Hammer", "Stockpile"];
+  const targets = ["Drumline", "Sniper", "Hammer", "Stockpile", "Reservoir"];
   const targetSummaries = {};
   for (const tname of targets) {
     const enc = pairEnc.get(tname);

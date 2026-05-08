@@ -1,119 +1,167 @@
+import { sumStrength } from "../core/Army.js";
+import Parent from "./Conqueror_g13_b41df9.js";
 import Conqueror from "./Conqueror.js";
 
 const BONUS = 1.4;
+const MARGIN = 0.45;
+const BACKING_WEIGHT = 0.4;
+const RETAKE_W = 0.8;
+const FRIENDLY_W = 0.4;
+const RETAKE_VETO = 1.5;
+
+// Same chassis as Conqueror_g13_b41df9 with one change in Pass 1:
+// instead of committing the closed-form min-overkill (enemy/BONUS +
+// MARGIN), commit the army's full attackPower clamped by the
+// engine's budget rule. Under Lanchester combat the surplus is
+// preserved as raw strength on the captured tile (sqrt(W^2 - L^2)
+// >> W - L for W >> L), and under cost = power*dist+1 the +1
+// overhead is paid once whether we send 1.5 or 8 strength — so
+// max-commit is strictly more efficient per move.
+const HEMI = (() => {
+  const w = [], e = [], n = [], s = [];
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      const idx = i * 5 + j;
+      const dx = j - 2;
+      const dy = i - 2;
+      if (dx < 0) w.push(idx);
+      if (dx > 0) e.push(idx);
+      if (dy < 0) n.push(idx);
+      if (dy > 0) s.push(idx);
+    }
+  }
+  return [w, e, n, s];
+})();
 
 export default {
   name: "Hammer",
   author: "claude",
   version: 1,
   description:
-    "Adjacent-only over-commit: pick the strongest beatable enemy and dump max attackPower (clamped by budget) instead of Conqueror's minimum-overkill formula. Lanchester rewards the surplus.",
-  summary: `Conqueror's chassis commits exactly enemy/1.4 + 0.5
-strength to a kill — calibrated for linear combat, where overkill
-earns nothing. Under combatModel="lanchester" that formula becomes
-a strict under-commit: post-fight survivor effective strength is
-sqrt(W^2 - L^2), so a 2x ratio is ~4x more efficient than 1.01x.
-Min-overkill leaves the survivor at ~0 strength, then the
-budget-clamping in budget mode means even that survivor is
-underfunded for follow-up moves.
+    "Conqueror_g13 chassis with Pass 1 max-commit: pick the best adjacent kill via hemisphere/territory scoring, then commit attackPower (engine clamps to budget). Lanchester preserves the surplus; cost-formula's +1 overhead is paid once per move regardless of size.",
+  summary: `Conqueror's chassis under linear+classic was tuned to
+commit exactly enemy/1.4 + 0.45 — saves strength for the next
+tick. Under combatModel="lanchester" + cost = power*dist+1, that
+calculus inverts:
 
-Hammer ignores the closed-form commit math entirely. For each
-adjacent direction it picks the best beatable enemy by enemy
-strength + a small backing/territory bonus, then fires
-attackPower (full available, clamped automatically by the engine
-to budget). Under Lanchester this is rarely wasteful: any
-"overkill" returns as more raw strength preserved on the
-captured tile. Under budget mode, sending more than the budget
-allows is a no-op (engine clamps), so there's no downside to
-asking for max.
+  - Lanchester: sqrt(W^2 - L^2) preserves vastly more strength
+    when W >> L. The surplus you commit comes back as raw post-
+    fight strength on the captured tile, ready for follow-up.
+  - Cost formula: each move pays +1 overhead. Sending 1.5 power
+    costs 2.5; sending 8 power costs 9. Per delivered strength,
+    the big move is much cheaper.
 
-Per army:
-  1. Scan 4 neighbors for any beatable enemy. Beatable =
-     attackPower * atkMult * BONUS > enemy_strength * 1.05 (small
-     safety margin against Lanchester near-tie annihilation).
-  2. Among beatable enemies, pick the one with the highest
-     (enemy_strength + 0.4 * adjacent_friendly_strength) — kills
-     a bigger threat with more friendly support, mirroring
-     Conqueror's hemisphere bias but without the kernel cost.
-  3. Commit attackPower (the engine's budget clamp does the rest).
-  4. No beatable adjacent enemy: fall through to Conqueror.act
-     for stencil-based moves.
+Hammer keeps Conqueror_g13's Pass 1 kill scorer (hemisphere
+backing + territory friendly weight + retake veto) to pick the
+best target, but commits the army's full attackPower instead of
+min-overkill. The engine clamps to budget automatically, so on
+low-budget ticks Hammer behaves like the chassis; on full-budget
+ticks Hammer dumps decisively and the captured tile lands with
+much more raw strength left over.
 
-Tech is brutally offensive: {move:30, stack:0, prod:20, atk:40,
-def:10}. atk:40 is much higher than the lineage's typical 4-5
-because Lanchester rewards atk multiplicatively in the ratio:
-high atk means our effective W is much larger than the
-defender's L, and sqrt(W^2 - L^2) approaches W — we keep almost
-all our raw strength after winning. move:30 (1.2x recharge +
-1.2x cap) is enough for adjacent-only play. prod:20 keeps
-strength replenishing. def:10 buys some durability on the rare
-tick we can't kill first.
+Pass 2 (no kill, has expand/reinforce target) and Pass 3 (stencil
+stalemate) are inherited unchanged from Parent — they're not the
+locus of the over-commit thesis and the chassis already handles
+those cases well.
 
-Expected to crush bots that under-commit (every classic-tuned
-Conqueror). Expected to lose to other over-commit bots whose
-strength regen keeps up better, or to ranged bots (Sniper) that
-exploit Hammer's adjacent-only horizon.`,
-  tech: { move: 60, stack: 0, prod: 10, atk: 20, def: 10 },
+Tech mirrors g14_8d5369's validated chassis loadout {move:76,
+stack:0, prod:16, atk:5, def:3} so the comparison isolates the
+strategic delta — max-commit on Pass 1 — from any tech tuning.`,
+  tech: { move: 76, stack: 0, prod: 16, atk: 5, def: 3 },
   act(army, game) {
     const tile = army.tile;
     if (!tile) return;
     const sLimit = army.attackPower;
-    if (sLimit <= 0.5) return;
+    if (sLimit <= 0.5) {
+      Conqueror.act(army, game);
+      return;
+    }
     const neighbors = tile.neighbors;
     const pid = army.player.id;
-    const atkMult = (army.player.techMults?.atk ?? 1) * BONUS;
-    const myEff = sLimit * atkMult;
+    const stencil = tile.stencil5;
+    const viewer = army.player;
 
     let bestKill = null;
     let bestScore = -Infinity;
+    let hasOtherTarget = false;
     for (let i = 0; i < 4; i++) {
       const t = neighbors[i];
       if (!t) continue;
-      const tArmies = t.armies;
-      if (tArmies.length === 0) continue;
-      let friendly = false;
+      const armies = t.armies;
+      if (armies.length === 0) { hasOtherTarget = true; continue; }
+      let friendlyArmy = null;
       let enemy = 0;
-      for (let k = 0; k < tArmies.length; k++) {
-        const a = tArmies[k];
-        if (a.player.id === pid) { friendly = true; break; }
-        enemy += a.strength;
+      for (let k = 0; k < armies.length; k++) {
+        const a = armies[k];
+        if (a.player.id === pid) friendlyArmy = a;
+        else enemy += a.strength;
       }
-      if (friendly) continue;
-      // Need to overwhelm with margin under Lanchester: if myEff is
-      // only slightly above enemy, sqrt(myEff^2 - enemy^2) ~ 0 and
-      // we trade for nothing. 1.05x margin avoids the near-tie
-      // annihilation zone.
-      if (myEff <= enemy * 1.05) continue;
+      if (enemy > 0) {
+        // Beatable check stays at min-overkill — we still need
+        // sLimit >= the bare-minimum to win. We just don't commit
+        // only that minimum.
+        const needed = enemy / BONUS + MARGIN;
+        if (needed > sLimit) continue;
 
-      // Backing bias: prefer kills supported by adjacent friendly
-      // strength on neighbors of the target.
-      let backing = 0;
-      const tn = t.neighbors;
-      for (let j = 0; j < 4; j++) {
-        const nt = tn[j];
-        if (!nt || nt === tile) continue;
-        const ntArmies = nt.armies;
-        for (let k = 0; k < ntArmies.length; k++) {
-          const a = ntArmies[k];
-          if (a.player.id === pid) backing += a.strength;
+        let backup = 0;
+        let friend = 0;
+        const tn = t.neighbors;
+        for (let j = 0; j < 4; j++) {
+          const tt = tn[j];
+          if (!tt || tt === tile) continue;
+          const ttArmies = tt.armies;
+          let tnE = 0, tnF = 0;
+          for (let k = 0; k < ttArmies.length; k++) {
+            const a = ttArmies[k];
+            if (a.player.id === pid) tnF += a.strength;
+            else tnE += a.strength;
+          }
+          if (tnE > backup) backup = tnE;
+          if (tnF > friend) friend = tnF;
         }
-      }
+        if (backup >= RETAKE_VETO) continue;
 
-      const score = enemy + 0.4 * backing;
-      if (score > bestScore) {
-        bestScore = score;
-        bestKill = t;
+        let backing = 0;
+        if (stencil) {
+          const idxs = HEMI[i];
+          for (let k = 0; k < idxs.length; k++) {
+            const cell = stencil[idxs[k]];
+            if (!cell) continue;
+            const cArmies = cell.armies;
+            if (cArmies.length === 0) continue;
+            const e = -sumStrength(cArmies, viewer);
+            if (e > 0) backing += e;
+          }
+        }
+        const score = enemy
+          + BACKING_WEIGHT * backing
+          - RETAKE_W * backup
+          + FRIENDLY_W * friend;
+        if (score > bestScore) {
+          bestScore = score;
+          bestKill = t;
+        }
+        continue;
+      }
+      if (friendlyArmy && friendlyArmy.strength < friendlyArmy.maxStrength - 0.5) {
+        hasOtherTarget = true;
       }
     }
 
     if (bestKill) {
-      // Commit max — engine clamps to budget. Lanchester preserves
-      // surplus as raw strength on the captured tile.
+      // Max commit instead of min-overkill. Engine clamps to
+      // budget; Lanchester preserves the surplus.
       army.attack(bestKill, sLimit);
       return;
     }
 
-    // No beatable adjacent enemy — defer for stencil expansion.
-    Conqueror.act(army, game);
+    // No adjacent kill — defer to chassis for stencil-based moves
+    // and reinforcements. The chassis handles those cases well;
+    // the over-commit thesis only applies to kills.
+    if (hasOtherTarget) {
+      Conqueror.act(army, game);
+      return;
+    }
+    Parent.act(army, game);
   },
 };
