@@ -40,4 +40,17 @@ export const MAPS = {
     players: 3,
     positions: (n) => linePositions(n, { width: 24, height: 18 }),
   },
+  // Head-to-head map for the round-robin / upset framework. Two bots
+  // spawn on opposite sides of a wrap line; map small enough that
+  // contact happens fast and matches usually decide before maxTicks.
+  // Untuned — picked by analogy to bracket1 (same growth/maxArmy,
+  // smaller footprint to scale with player count). If RR runs surface
+  // chronic stalemates we should sweep this through the discriminate
+  // pipeline at K=2.
+  duel1: {
+    name: "duel1",
+    config: { width: 20, height: 14, growth: 1.8, maxArmy: 12, wrap: true },
+    players: 2,
+    positions: (n) => linePositions(n, { width: 20, height: 14 }),
+  },
 };
