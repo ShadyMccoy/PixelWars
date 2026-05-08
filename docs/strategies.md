@@ -82,7 +82,9 @@ interval`) and `act` only runs when at least 1 credit has banked, then
 1 credit is deducted. This keeps movement frequency proportional to
 growth — doubling growth doubles both production and move rate, so the
 production:logistics ratio is invariant across game speeds. Credit is
-capped at 1 (no large stockpiles).
+capped at 8 and any banked credit is burned in the same tick once it
+crosses 1, so an army that idled in its backfield can unleash a burst
+of moves when an opening finally appears.
 
 You decide what *this* army does; you don't see or control your other
 armies directly. State you store on `army` persists for the army's
