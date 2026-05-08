@@ -18,6 +18,14 @@ export class Army {
     this.isAttacker = false;
     this.lastTick = 0;
     this.bornAt = 0;
+    // Movement is rate-limited: act() runs once per accumulated credit,
+    // not once per tick. Credit ticks up at the production rate
+    // (growth × prodMult × interval), so movement frequency stays in
+    // proportion to growth no matter how the game-level rate is set —
+    // changing growth scales production AND movement together instead
+    // of just shifting the production:logistics ratio. Initialized
+    // off the seeded rng so armies don't all fire on the same tick.
+    this.moveCredit = game && game.rng ? game.rng() : 0;
   }
 
   // Maximum strength this army can commit to a single attack while
@@ -177,6 +185,16 @@ export class Army {
     this.strength = s;
     const strat = this.player.strategy;
     if (!strat) return;
+    // Accumulate move credit at the production rate. Cap at 1 so a
+    // bot that idled in its backfield can't unleash a stockpile of
+    // attacks when an opening appears — at most one ready move.
+    let credit = this.moveCredit + interval * growth * prodMult;
+    if (credit > 1) credit = 1;
+    if (credit < 1) {
+      this.moveCredit = credit;
+      return;
+    }
+    this.moveCredit = credit - 1;
     if (typeof strat === "function") strat(this, this.game);
     else if (typeof strat.act === "function") strat.act(this, this.game);
   }
