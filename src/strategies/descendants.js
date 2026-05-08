@@ -299,9 +299,52 @@ import Frontier_g4_e7abc2 from "./Frontier_g4_e7abc2.js";
 import Frontier_g4_ed149c from "./Frontier_g4_ed149c.js";
 import Frontier_g4_f08051 from "./Frontier_g4_f08051.js";
 import Frontier_g4_f847e1 from "./Frontier_g4_f847e1.js";
+import Frontier_g5_0074db from "./Frontier_g5_0074db.js";
+import Frontier_g5_08405f from "./Frontier_g5_08405f.js";
+import Frontier_g5_10d84e from "./Frontier_g5_10d84e.js";
+import Frontier_g5_13f712 from "./Frontier_g5_13f712.js";
+import Frontier_g5_19072d from "./Frontier_g5_19072d.js";
+import Frontier_g5_39557a from "./Frontier_g5_39557a.js";
+import Frontier_g5_45432a from "./Frontier_g5_45432a.js";
+import Frontier_g5_47b55c from "./Frontier_g5_47b55c.js";
+import Frontier_g5_50ee8e from "./Frontier_g5_50ee8e.js";
+import Frontier_g5_5fbcad from "./Frontier_g5_5fbcad.js";
+import Frontier_g5_61ab47 from "./Frontier_g5_61ab47.js";
+import Frontier_g5_62b210 from "./Frontier_g5_62b210.js";
+import Frontier_g5_6e5f42 from "./Frontier_g5_6e5f42.js";
+import Frontier_g5_705be5 from "./Frontier_g5_705be5.js";
 import Frontier_g5_794766 from "./Frontier_g5_794766.js";
+import Frontier_g5_7b94f1 from "./Frontier_g5_7b94f1.js";
+import Frontier_g5_7e5be5 from "./Frontier_g5_7e5be5.js";
+import Frontier_g5_8000dc from "./Frontier_g5_8000dc.js";
+import Frontier_g5_874469 from "./Frontier_g5_874469.js";
+import Frontier_g5_8aa39c from "./Frontier_g5_8aa39c.js";
+import Frontier_g5_8cad6d from "./Frontier_g5_8cad6d.js";
+import Frontier_g5_8fe4be from "./Frontier_g5_8fe4be.js";
+import Frontier_g5_91ec24 from "./Frontier_g5_91ec24.js";
+import Frontier_g5_93505a from "./Frontier_g5_93505a.js";
+import Frontier_g5_9cee1f from "./Frontier_g5_9cee1f.js";
+import Frontier_g5_9e31b8 from "./Frontier_g5_9e31b8.js";
+import Frontier_g5_ac4732 from "./Frontier_g5_ac4732.js";
+import Frontier_g5_ad0136 from "./Frontier_g5_ad0136.js";
+import Frontier_g5_af5648 from "./Frontier_g5_af5648.js";
+import Frontier_g5_b7d338 from "./Frontier_g5_b7d338.js";
+import Frontier_g5_c1f7f1 from "./Frontier_g5_c1f7f1.js";
+import Frontier_g5_c5a7bc from "./Frontier_g5_c5a7bc.js";
+import Frontier_g5_cdd0ca from "./Frontier_g5_cdd0ca.js";
+import Frontier_g5_ce16cd from "./Frontier_g5_ce16cd.js";
 import Frontier_g5_cf09fe from "./Frontier_g5_cf09fe.js";
+import Frontier_g5_d0eeb0 from "./Frontier_g5_d0eeb0.js";
+import Frontier_g5_d30fa8 from "./Frontier_g5_d30fa8.js";
+import Frontier_g5_d8f209 from "./Frontier_g5_d8f209.js";
+import Frontier_g5_d9fd90 from "./Frontier_g5_d9fd90.js";
 import Frontier_g5_e3c10c from "./Frontier_g5_e3c10c.js";
+import Frontier_g5_e66353 from "./Frontier_g5_e66353.js";
+import Frontier_g5_ee21bc from "./Frontier_g5_ee21bc.js";
+import Frontier_g5_f07611 from "./Frontier_g5_f07611.js";
+import Frontier_g5_f20bb8 from "./Frontier_g5_f20bb8.js";
+import Frontier_g5_f56ad5 from "./Frontier_g5_f56ad5.js";
+import Frontier_g6_88caaf from "./Frontier_g6_88caaf.js";
 import Membrane_g1_b3e9aa from "./Membrane_g1_b3e9aa.js";
 import Membrane_g1_b9f1d5 from "./Membrane_g1_b9f1d5.js";
 import Membrane_g2_86704b from "./Membrane_g2_86704b.js";
@@ -640,9 +683,52 @@ export const DESCENDANTS = [
   Frontier_g4_ed149c,
   Frontier_g4_f08051,
   Frontier_g4_f847e1,
+  Frontier_g5_0074db,
+  Frontier_g5_08405f,
+  Frontier_g5_10d84e,
+  Frontier_g5_13f712,
+  Frontier_g5_19072d,
+  Frontier_g5_39557a,
+  Frontier_g5_45432a,
+  Frontier_g5_47b55c,
+  Frontier_g5_50ee8e,
+  Frontier_g5_5fbcad,
+  Frontier_g5_61ab47,
+  Frontier_g5_62b210,
+  Frontier_g5_6e5f42,
+  Frontier_g5_705be5,
   Frontier_g5_794766,
+  Frontier_g5_7b94f1,
+  Frontier_g5_7e5be5,
+  Frontier_g5_8000dc,
+  Frontier_g5_874469,
+  Frontier_g5_8aa39c,
+  Frontier_g5_8cad6d,
+  Frontier_g5_8fe4be,
+  Frontier_g5_91ec24,
+  Frontier_g5_93505a,
+  Frontier_g5_9cee1f,
+  Frontier_g5_9e31b8,
+  Frontier_g5_ac4732,
+  Frontier_g5_ad0136,
+  Frontier_g5_af5648,
+  Frontier_g5_b7d338,
+  Frontier_g5_c1f7f1,
+  Frontier_g5_c5a7bc,
+  Frontier_g5_cdd0ca,
+  Frontier_g5_ce16cd,
   Frontier_g5_cf09fe,
+  Frontier_g5_d0eeb0,
+  Frontier_g5_d30fa8,
+  Frontier_g5_d8f209,
+  Frontier_g5_d9fd90,
   Frontier_g5_e3c10c,
+  Frontier_g5_e66353,
+  Frontier_g5_ee21bc,
+  Frontier_g5_f07611,
+  Frontier_g5_f20bb8,
+  Frontier_g5_f56ad5,
+  Frontier_g6_88caaf,
   Membrane_g1_b3e9aa,
   Membrane_g1_b9f1d5,
   Membrane_g2_86704b,
