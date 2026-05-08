@@ -10,6 +10,12 @@ export class Tile {
     this.ownership = 0;
     this.ownerId = 0;
     this.dirty = false;
+    // Per-tile movement budget in work units (strength × distance).
+    // Recharges per tick (modulated by owner's move-tech multiplier),
+    // is clamped on use (min of requested work and available budget),
+    // and resets to 0 when the tile changes hands. Only consulted in
+    // "budget" movement mode; classic mode ignores it.
+    this.budget = 0;
   }
 
   registerArmy(army) {
@@ -38,10 +44,15 @@ export class Tile {
 
     const grouped = [];
     const groupedPids = [];
+    // Identify the previous holder (army that was already on the tile,
+    // not arrived this tick) for conquest detection. If no
+    // non-attacker is present the tile was effectively neutral.
+    let prevHolderPid = null;
     for (let k = 0; k < list.length; k++) {
       const a = list[k];
       if (!a.alive) continue;
       const pid = a.player.id;
+      if (!a.isAttacker && prevHolderPid === null) prevHolderPid = pid;
       let merged = false;
       for (let g = 0; g < groupedPids.length; g++) {
         if (groupedPids[g] === pid) {
@@ -61,21 +72,32 @@ export class Tile {
       }
     }
 
-    // Risk-style: attackers fight with bonus effective strength, so even
-    // a slightly-smaller attacker can dislodge a defender, and a
+    // Risk-style: attackers fight with bonus effective strength, so
+    // even a slightly-smaller attacker can dislodge a defender, and a
     // larger attacker keeps more troops after a successful conquest.
     // Per-player tech further multiplies: atkMult on attackers,
-    // defMult on defenders. realLoss inverts whichever multiplier the
-    // *winning* side carried, since effLoss is in effective-strength
-    // units.
-    const bonus = (grouped[0] && grouped[0].game && grouped[0].game.attackerBonus) || 1;
+    // defMult on defenders.
+    //
+    // Two combat models, switched at the Game level:
+    //   linear (default): winner's post-fight raw strength is
+    //     (wE - lE) / wMult — flat subtractive, overkill earns
+    //     nothing nonlinear, equal effective forces annihilate.
+    //   lanchester: winner's post-fight effective strength is
+    //     sqrt(wE^2 - lE^2). A 2x ratio is ~4x more efficient than
+    //     a 1.01x ratio, so concentrating mass at a breakthrough
+    //     pays compounding dividends. Bots tuned on linear (e.g.
+    //     Conqueror's enemy/1.4 + MARGIN commit math) under-commit
+    //     here — closed-form min-overkill becomes a strict
+    //     underestimate of the right attack size.
+    const game = grouped[0] && grouped[0].game;
+    const bonus = (game && game.attackerBonus) || 1;
+    const model = (game && game.combatModel) || "linear";
     const armyMult = (army) => {
       const m = army.player.techMults;
       if (army.isAttacker) return bonus * (m ? m.atk : 1);
       return m ? m.def : 1;
     };
     const eff = (army) => army.strength * armyMult(army);
-    const realLoss = (army, effLoss) => effLoss / armyMult(army);
 
     let survivor = null;
     for (let i = 0; i < grouped.length; i++) {
@@ -87,18 +109,28 @@ export class Tile {
       }
       const aE = eff(army);
       const sE = eff(survivor);
-      if (aE > sE) {
-        army.strength -= realLoss(army, sE);
-        if (army.strength < 0.5) army.die();
-        survivor.die();
-        survivor = army.alive ? army : null;
+      const winner = aE >= sE ? army : survivor;
+      const loser = aE >= sE ? survivor : army;
+      const wE = aE >= sE ? aE : sE;
+      const lE = aE >= sE ? sE : aE;
+      let postRaw;
+      if (model === "lanchester") {
+        const sq = wE * wE - lE * lE;
+        postRaw = sq > 0 ? Math.sqrt(sq) / armyMult(winner) : 0;
       } else {
-        survivor.strength -= realLoss(survivor, aE);
-        if (survivor.strength < 0.5) survivor.die();
-        army.die();
-        if (!survivor.alive) survivor = null;
+        postRaw = wE > lE ? (wE - lE) / armyMult(winner) : 0;
       }
+      winner.strength = postRaw;
+      if (winner.strength < 0.5) winner.die();
+      loser.die();
+      survivor = winner.alive ? winner : null;
     }
+
+    // Conquest reset: if ownership of the tile changes (or the tile
+    // empties out entirely), zero the per-tile movement budget. Only
+    // meaningful in "budget" movement mode; otherwise it's a no-op.
+    const newPid = survivor && survivor.alive ? survivor.player.id : null;
+    if (newPid !== prevHolderPid) this.budget = 0;
 
     if (survivor && survivor.alive) {
       survivor.isAttacker = false;
