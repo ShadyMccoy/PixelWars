@@ -44,6 +44,9 @@ import Sniper from "./Sniper.js";
 import Hammer from "./Hammer.js";
 import Stockpile from "./Stockpile.js";
 import Reservoir from "./Reservoir.js";
+import Convex from "./Convex.js";
+import Cleaver from "./Cleaver.js";
+import Coward from "./Coward.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -99,6 +102,9 @@ export const ALL_STRATEGY_LIST = [
   Hammer,
   Stockpile,
   Reservoir,
+  Convex,
+  Cleaver,
+  Coward,
   ...GENERATED,
   ...DESCENDANTS,
 ];
