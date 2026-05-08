@@ -38,8 +38,13 @@ export class HUD {
     const title = strat?.name ?? player.name ?? "";
     const body = strat?.summary || strat?.description || "";
     const showCodeBtn = !!strat?.name;
+    const rating = this.app?.ratings?.[strat?.name];
+    const ratingHtml = rating != null
+      ? `<div class="strat-tooltip-rating" title="League rating">Rating ${rating}</div>`
+      : "";
     this.tooltip.innerHTML = `
       <div class="strat-tooltip-title">${escapeHtml(title)}</div>
+      ${ratingHtml}
       ${body ? `<div class="strat-tooltip-body">${escapeHtml(body)}</div>` : ""}
       ${renderTechLoadout(player)}
       ${showCodeBtn ? `<button class="btn-mini strat-tooltip-code" data-strat-name="${escapeHtml(strat.name)}">&lt;/&gt; View code</button>` : ""}
@@ -108,9 +113,14 @@ export class HUD {
 
       const head = document.createElement("div");
       head.className = "player-head";
+      const rating = this.app?.ratings?.[player.strategy?.name];
+      const ratingHtml = rating != null
+        ? `<span class="player-rating" title="League rating">${rating}</span>`
+        : "";
       head.innerHTML = `
         <span class="player-dot" style="background:${player.color}"></span>
         <span class="player-name">${escapeHtml(player.name)}</span>
+        ${ratingHtml}
         <span class="player-stat" title="Strength">⬢ <b data-stat="strength">0</b></span>
         <span class="player-stat" title="Territory">▣ <b data-stat="territory">0</b></span>
       `;
