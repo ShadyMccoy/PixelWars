@@ -37,6 +37,8 @@ import {
   markArchived,
 } from "./lineageStore.js";
 import { prepareSpawnTask, registerDescendant } from "./spawn.js";
+import { prepareCull, applyCull } from "./cull.js";
+import { prepareRevive, applyRevive } from "./revive.js";
 import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
 import { techFromPartial } from "../src/core/Tech.js";
 import { writeFile, readFile } from "node:fs/promises";
@@ -112,6 +114,23 @@ Lineage (genetic descendant feature):
                         src/strategies/, register in lineage + index.
                         Also archives the globally weakest active bot
                         (with a family-suicide guard).
+  --prepare-cull FAMILY  Plan a kinship-diversity cull of FAMILY: keep
+                        the most distantly-related members active and
+                        archive the rest (siblings/parent-child get
+                        pruned first). Dry-run by default; pair with
+                        --apply-cull to commit. --cull-keep N controls
+                        how many to keep (default: ceil(active/2)).
+  --cull-keep N          Number of active members to retain in the cull.
+  --apply-cull           Actually archive the planned cull list.
+  --prepare-revive       Plan a revive: un-archive older gen-0 founders
+                        (oldest first by createdAt). Skips factory
+                        parameter-sweep bots by default — pass
+                        --include-factory to include them. Cap with
+                        --revive-count N. Dry-run unless --apply-revive.
+  --revive-count N       Cap the revive list at N bots (default: all).
+  --include-factory      Include factory parameter-sweep founders
+                        (Hunter_01..10, Pacifist_*, Drift_*, etc.).
+  --apply-revive         Actually un-archive the planned revive list.
 
 Misc:
   --list              List active strategies and exit
@@ -160,6 +179,13 @@ function parseArgs(argv) {
     descendantParent: null,
     descendantFile: null,
     descendantSeason: null,
+    prepareCull: null,
+    cullKeep: null,
+    applyCull: false,
+    prepareRevive: false,
+    reviveCount: null,
+    includeFactory: false,
+    applyRevive: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -200,6 +226,13 @@ function parseArgs(argv) {
       case "--parent": opts.descendantParent = next(); break;
       case "--file": opts.descendantFile = next(); break;
       case "--birth-season": opts.descendantSeason = parseInt(next(), 10); break;
+      case "--prepare-cull": opts.prepareCull = next(); break;
+      case "--cull-keep": opts.cullKeep = parseInt(next(), 10); break;
+      case "--apply-cull": opts.applyCull = true; break;
+      case "--prepare-revive": opts.prepareRevive = true; break;
+      case "--revive-count": opts.reviveCount = parseInt(next(), 10); break;
+      case "--include-factory": opts.includeFactory = true; break;
+      case "--apply-revive": opts.applyRevive = true; break;
       case "--archive-bottom": opts.archiveBottom = parseInt(next(), 10); break;
       case "--trim-to": opts.trimTo = parseInt(next(), 10); break;
       case "--archive-add": opts.archiveAdd = next().split(",").map((s) => s.trim()).filter(Boolean); break;
@@ -890,6 +923,86 @@ async function cmdRegisterDescendant(opts) {
   }
 }
 
+async function cmdPrepareCull(opts) {
+  let plan;
+  try {
+    plan = await prepareCull({ family: opts.prepareCull, keepCount: opts.cullKeep });
+  } catch (e) { console.error(e.message); process.exit(1); }
+
+  const { family, keep, cull, ratings, totalActive, keepCount, distToKeep } = plan;
+  console.log(
+    `Cull plan for family "${family}": ${totalActive} active → keep ${keepCount}, ` +
+    `archive ${cull.length} (kinship-diversity, farthest-point on family tree).`,
+  );
+  console.log(`\nKeep (${keep.length}):`);
+  console.log(`  ${"#".padStart(3)}  ${"bot".padEnd(22)} ${"gen".padStart(4)}  ${"rating".padStart(7)}  reason`);
+  keep.forEach((b, i) => {
+    const reason = i === 0 ? "highest-rated seed" : "farthest from kept";
+    console.log(
+      `  ${String(i + 1).padStart(3)}  ${b.name.padEnd(22)} ${`g${b.generation}`.padStart(4)}  ` +
+      `${String(ratings.get(b.name)).padStart(7)}  ${reason}`,
+    );
+  });
+
+  if (cull.length === 0) {
+    console.log(`\nNothing to archive.`);
+    return;
+  }
+
+  console.log(`\nCull (${cull.length}, ordered by closest kin first):`);
+  console.log(`  ${"#".padStart(3)}  ${"bot".padEnd(22)} ${"gen".padStart(4)}  ${"rating".padStart(7)}  ${"distToKeep".padStart(10)}`);
+  cull.forEach((b, i) => {
+    const d = distToKeep.get(b.name);
+    const dStr = Number.isFinite(d) ? String(d) : "∞";
+    console.log(
+      `  ${String(i + 1).padStart(3)}  ${b.name.padEnd(22)} ${`g${b.generation}`.padStart(4)}  ` +
+      `${String(ratings.get(b.name)).padStart(7)}  ${dStr.padStart(10)}`,
+    );
+  });
+
+  if (opts.applyCull) {
+    const archived = await applyCull(plan);
+    console.log(`\nArchived ${archived.length} bot${archived.length === 1 ? "" : "s"}.`);
+    console.log(`(re-import the strategies module — i.e. re-run anything else — to pick up the change)`);
+  } else {
+    console.log(`\nDry run — pass --apply-cull to archive these ${cull.length} bots.`);
+  }
+}
+
+async function cmdPrepareRevive(opts) {
+  const plan = await prepareRevive({
+    count: opts.reviveCount,
+    includeFactory: opts.includeFactory,
+  });
+  console.log(
+    `Revive plan (pool: ${plan.pool}): ` +
+    `${plan.revive.length} to un-archive, ${plan.skipped.length} skipped ` +
+    `(of ${plan.totalArchived} total archived bots).`,
+  );
+  if (plan.revive.length === 0) {
+    console.log(`\nNothing to revive.`);
+    return;
+  }
+  console.log(`\nRevive (${plan.revive.length}, ordered by createdAt asc):`);
+  console.log(`  ${"#".padStart(3)}  ${"bot".padEnd(22)} ${"family".padEnd(18)} ${"createdAt"}`);
+  plan.revive.forEach((b, i) => {
+    console.log(
+      `  ${String(i + 1).padStart(3)}  ${b.name.padEnd(22)} ${b.family.padEnd(18)} ${b.createdAt.slice(0, 10)}`,
+    );
+  });
+  if (plan.skipped.length) {
+    console.log(`\nSkipped by --revive-count (${plan.skipped.length}): ${plan.skipped.map((b) => b.name).join(", ")}`);
+  }
+
+  if (opts.applyRevive) {
+    const names = await applyRevive(plan);
+    console.log(`\nRevived ${names.length} bot${names.length === 1 ? "" : "s"}.`);
+    console.log(`(re-import the strategies module — i.e. re-run anything else — to pick up the change)`);
+  } else {
+    console.log(`\nDry run — pass --apply-revive to un-archive these ${plan.revive.length} bots.`);
+  }
+}
+
 async function cmdBackfillLineages() {
   const names = ALL_STRATEGY_LIST.map((s) => s.name);
   const added = await ensureFoundersForNames(names);
@@ -1104,6 +1217,8 @@ async function main() {
   if (opts.backfillLineages) return cmdBackfillLineages();
   if (opts.prepareSpawn) return cmdPrepareSpawn(opts);
   if (opts.registerDescendant) return cmdRegisterDescendant(opts);
+  if (opts.prepareCull) return cmdPrepareCull(opts);
+  if (opts.prepareRevive) return cmdPrepareRevive(opts);
   if (opts.replay) return cmdReplay(opts);
   if (opts.league) return cmdLeague(opts);
   if (opts.season) return cmdSeason(opts);
