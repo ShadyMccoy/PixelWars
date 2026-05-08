@@ -141,7 +141,30 @@ export class Game {
     const tick = this.tick;
     const growth = this.growth;
     const decay = this.decay;
-    for (let i = 0; i < armies.length; i++) {
+    // Shuffle the iteration order over pre-existing armies each tick.
+    // Within-tick semantics are sequential (an army's attack commits
+    // immediately and is visible to later armies), so deterministic
+    // iteration order gave lower-index players a structural advantage
+    // on contested empty tiles. Shuffling removes the persistent slot
+    // bias while keeping per-seed determinism. Armies spawned during
+    // this tick (appended to `armies` by `attack`) are still visited
+    // afterward in append order — that cascade behavior is unchanged.
+    const n = armies.length;
+    const order = new Array(n);
+    for (let i = 0; i < n; i++) order[i] = i;
+    for (let i = n - 1; i > 0; i--) {
+      const j = (this.rng() * (i + 1)) | 0;
+      const t = order[i]; order[i] = order[j]; order[j] = t;
+    }
+    for (let oi = 0; oi < n; oi++) {
+      const a = armies[order[oi]];
+      if (!a.alive) continue;
+      if (a.lastTick < tick) {
+        a.run(interval, growth, decay);
+        a.lastTick = tick;
+      }
+    }
+    for (let i = n; i < armies.length; i++) {
       const a = armies[i];
       if (!a.alive) continue;
       if (a.lastTick < tick) {
