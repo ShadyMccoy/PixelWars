@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-05-08T17:56:24.643Z",
+  "matches": 100,
+  "rows": [
+    {
+      "name": "Conduit-g0",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 347.29,
+      "gradient": 0,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g0.25",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 349.12,
+      "gradient": 0.25,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g0.5",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 349.42,
+      "gradient": 0.5,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g0.75",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 348.72,
+      "gradient": 0.75,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g1",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 347.7,
+      "gradient": 1,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g1.5",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 348.69,
+      "gradient": 1.5,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g2",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 347.57,
+      "gradient": 2,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g3",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 348.85,
+      "gradient": 3,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g5",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 347.09,
+      "gradient": 5,
+      "winRate": 1
+    },
+    {
+      "name": "Conduit-g10",
+      "wins": 100,
+      "played": 100,
+      "avgTerr": 344.95,
+      "gradient": 10,
+      "winRate": 1
+    }
+  ]
+}
