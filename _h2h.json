@@ -1,0 +1,505 @@
+{
+  "opts": {
+    "seeds": 1,
+    "baseSeed": 88242417,
+    "snapshot": 200,
+    "ticks": 4000,
+    "json": true,
+    "verbose": false
+  },
+  "summary": {
+    "matches": 1,
+    "per": [
+      {
+        "name": "Conqueror_g8_4d842b",
+        "played": 1,
+        "wins": 0,
+        "avgFinish": 2,
+        "finishHist": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "avgEliminatedAt": 1555,
+        "survivedCount": 0
+      },
+      {
+        "name": "Conqueror_g10_e067cc",
+        "played": 1,
+        "wins": 0,
+        "avgFinish": 3,
+        "finishHist": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "avgEliminatedAt": 1492,
+        "survivedCount": 0
+      },
+      {
+        "name": "Conqueror_g8_2c6b71",
+        "played": 1,
+        "wins": 1,
+        "avgFinish": 0,
+        "finishHist": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "avgEliminatedAt": null,
+        "survivedCount": 1
+      },
+      {
+        "name": "Conqueror_g6_15ea9a",
+        "played": 1,
+        "wins": 0,
+        "avgFinish": 4,
+        "finishHist": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "avgEliminatedAt": 928,
+        "survivedCount": 0
+      },
+      {
+        "name": "Conqueror_g2_6b59e8",
+        "played": 1,
+        "wins": 0,
+        "avgFinish": 5,
+        "finishHist": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "avgEliminatedAt": 755,
+        "survivedCount": 0
+      },
+      {
+        "name": "Conqueror_g9_c81d7f",
+        "played": 1,
+        "wins": 0,
+        "avgFinish": 1,
+        "finishHist": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "avgEliminatedAt": 1626,
+        "survivedCount": 0
+      }
+    ],
+    "pairwise_4d842b_vs_2c6b71": {
+      "4d842b_finishes_higher": 0,
+      "2c6b71_finishes_higher": 1,
+      "ties": 0,
+      "sample": [
+        {
+          "seed": 88242417,
+          "r4": 2,
+          "r2": 0,
+          "winnerOfPair": "2c6b71"
+        }
+      ]
+    }
+  },
+  "results": [
+    {
+      "seed": 88242417,
+      "ticks": 1626,
+      "endReason": "winner",
+      "ranking": [
+        {
+          "name": "Conqueror_g8_2c6b71",
+          "terr": 2025,
+          "str": 10993.02,
+          "eliminatedAt": null,
+          "survived": true
+        },
+        {
+          "name": "Conqueror_g9_c81d7f",
+          "terr": 0,
+          "str": 0,
+          "eliminatedAt": 1626,
+          "survived": false
+        },
+        {
+          "name": "Conqueror_g8_4d842b",
+          "terr": 0,
+          "str": 0,
+          "eliminatedAt": 1555,
+          "survived": false
+        },
+        {
+          "name": "Conqueror_g10_e067cc",
+          "terr": 0,
+          "str": 0,
+          "eliminatedAt": 1492,
+          "survived": false
+        },
+        {
+          "name": "Conqueror_g6_15ea9a",
+          "terr": 0,
+          "str": 0,
+          "eliminatedAt": 928,
+          "survived": false
+        },
+        {
+          "name": "Conqueror_g2_6b59e8",
+          "terr": 0,
+          "str": 0,
+          "eliminatedAt": 755,
+          "survived": false
+        }
+      ],
+      "snapshots": [
+        {
+          "tick": 200,
+          "per": [
+            {
+              "name": "Conqueror_g8_4d842b",
+              "terr": 399,
+              "str": 929.1,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g10_e067cc",
+              "terr": 291,
+              "str": 618.1,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g8_2c6b71",
+              "terr": 378,
+              "str": 900.8,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g6_15ea9a",
+              "terr": 317,
+              "str": 657.9,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g2_6b59e8",
+              "terr": 305,
+              "str": 703.1,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g9_c81d7f",
+              "terr": 315,
+              "str": 640.7,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "tick": 400,
+          "per": [
+            {
+              "name": "Conqueror_g8_4d842b",
+              "terr": 454,
+              "str": 1177.8,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g10_e067cc",
+              "terr": 255,
+              "str": 610.7,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g8_2c6b71",
+              "terr": 435,
+              "str": 1232.1,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g6_15ea9a",
+              "terr": 258,
+              "str": 557.8,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g2_6b59e8",
+              "terr": 244,
+              "str": 605,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g9_c81d7f",
+              "terr": 362,
+              "str": 886,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "tick": 600,
+          "per": [
+            {
+              "name": "Conqueror_g8_4d842b",
+              "terr": 440,
+              "str": 1090.1,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g10_e067cc",
+              "terr": 265,
+              "str": 624.8,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g8_2c6b71",
+              "terr": 527,
+              "str": 1462.1,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g6_15ea9a",
+              "terr": 184,
+              "str": 379.1,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g2_6b59e8",
+              "terr": 137,
+              "str": 239.3,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g9_c81d7f",
+              "terr": 456,
+              "str": 1185.3,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "tick": 800,
+          "per": [
+            {
+              "name": "Conqueror_g8_4d842b",
+              "terr": 510,
+              "str": 1459.4,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g10_e067cc",
+              "terr": 265,
+              "str": 605.8,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g8_2c6b71",
+              "terr": 676,
+              "str": 2072,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g6_15ea9a",
+              "terr": 53,
+              "str": 80.8,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g2_6b59e8",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g9_c81d7f",
+              "terr": 509,
+              "str": 1350.3,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "tick": 1000,
+          "per": [
+            {
+              "name": "Conqueror_g8_4d842b",
+              "terr": 508,
+              "str": 1421.8,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g10_e067cc",
+              "terr": 234,
+              "str": 479.2,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g8_2c6b71",
+              "terr": 771,
+              "str": 2420.9,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g6_15ea9a",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g2_6b59e8",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g9_c81d7f",
+              "terr": 495,
+              "str": 1431.4,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "tick": 1200,
+          "per": [
+            {
+              "name": "Conqueror_g8_4d842b",
+              "terr": 495,
+              "str": 1326,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g10_e067cc",
+              "terr": 165,
+              "str": 346,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g8_2c6b71",
+              "terr": 888,
+              "str": 2993.8,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g6_15ea9a",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g2_6b59e8",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g9_c81d7f",
+              "terr": 461,
+              "str": 1316.9,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "tick": 1400,
+          "per": [
+            {
+              "name": "Conqueror_g8_4d842b",
+              "terr": 300,
+              "str": 548.9,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g10_e067cc",
+              "terr": 52,
+              "str": 69.4,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g8_2c6b71",
+              "terr": 1210,
+              "str": 4126.6,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g6_15ea9a",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g2_6b59e8",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g9_c81d7f",
+              "terr": 440,
+              "str": 1131.4,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "tick": 1600,
+          "per": [
+            {
+              "name": "Conqueror_g8_4d842b",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g10_e067cc",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g8_2c6b71",
+              "terr": 1961,
+              "str": 9570.3,
+              "alive": true
+            },
+            {
+              "name": "Conqueror_g6_15ea9a",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g2_6b59e8",
+              "terr": 0,
+              "str": 0,
+              "alive": false
+            },
+            {
+              "name": "Conqueror_g9_c81d7f",
+              "terr": 58,
+              "str": 89.6,
+              "alive": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

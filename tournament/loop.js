@@ -33,11 +33,11 @@ const DEFAULT_AGENT_CMD = "claude -p";
 
 // Auto-matches: scale rating-phase match count to the active pool's
 // uncertainty deficit, so quiet iterations (few new/uncertain bots) run
-// short seasons and noisy ones (many fresh descendants) run long. RD
-// floor is ~50 at played=49, so each below-floor bot contributes
-// (49 - played) to the deficit; sum across active bots = total matches
-// the info-gain matchmaker needs to drive every uncertain bot to floor.
-const FLOOR_PLAYED = 49;
+// short seasons and noisy ones (many fresh descendants) run long. Each
+// bot below FLOOR_PLAYED contributes (FLOOR_PLAYED - played) to the
+// deficit; sum across active bots = total matches the info-gain
+// matchmaker needs to drive every uncertain bot to the floor.
+const FLOOR_PLAYED = 100;
 const AUTO_MIN_MATCHES = 30;
 const AUTO_MAX_MATCHES = 250;
 

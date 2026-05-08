@@ -1,701 +1,989 @@
 {
-  "generatedAt": "2026-05-08T00:41:45.921Z",
-  "matchCount": 2097,
+  "generatedAt": "2026-05-08T03:41:11.270Z",
+  "matchCount": 4149,
   "iterations": 29,
   "converged": true,
   "players": [
     {
-      "name": "Conqueror_g8_4d842b",
-      "rating": 1277,
-      "skill": 4.920238,
-      "matches": 22,
-      "wins": 13,
-      "avgFinish": 0.292
+      "name": "Conqueror_g5_f15d3e",
+      "rating": 1180,
+      "skill": 2.820489,
+      "matches": 60,
+      "wins": 26,
+      "avgFinish": 0.408
     },
     {
-      "name": "Conqueror_g8_912a4c",
-      "rating": 1216,
-      "skill": 3.462331,
-      "matches": 23,
-      "wins": 12,
-      "avgFinish": 0.297
+      "name": "Conqueror_g8_5c68e4",
+      "rating": 1176,
+      "skill": 2.753969,
+      "matches": 42,
+      "wins": 19,
+      "avgFinish": 0.384
     },
     {
-      "name": "Conqueror_g11_755fa9",
-      "rating": 1207,
-      "skill": 3.297803,
-      "matches": 23,
-      "wins": 11,
-      "avgFinish": 0.396
+      "name": "Conqueror_g9_01de66",
+      "rating": 1158,
+      "skill": 2.481272,
+      "matches": 18,
+      "wins": 7,
+      "avgFinish": 0.362
     },
     {
-      "name": "Conqueror_g4_de5d02",
-      "rating": 1164,
-      "skill": 2.576334,
-      "matches": 23,
-      "wins": 10,
-      "avgFinish": 0.374
-    },
-    {
-      "name": "Conqueror_g11_95d739",
-      "rating": 1152,
-      "skill": 2.396692,
-      "matches": 20,
-      "wins": 8,
-      "avgFinish": 0.376
-    },
-    {
-      "name": "Conqueror_g9_1e065b",
+      "name": "Conqueror_g6_b70bfa",
       "rating": 1151,
-      "skill": 2.384723,
-      "matches": 23,
-      "wins": 9,
-      "avgFinish": 0.451
+      "skill": 2.387938,
+      "matches": 36,
+      "wins": 15,
+      "avgFinish": 0.411
     },
     {
-      "name": "Conqueror_g8_579783",
-      "rating": 1142,
-      "skill": 2.267232,
-      "matches": 22,
-      "wins": 8,
-      "avgFinish": 0.427
+      "name": "Conqueror_g8_3280dd",
+      "rating": 1151,
+      "skill": 2.385291,
+      "matches": 44,
+      "wins": 16,
+      "avgFinish": 0.413
     },
     {
-      "name": "Conqueror_g8_74e11b",
+      "name": "Conqueror_g8_00a477",
+      "rating": 1138,
+      "skill": 2.206989,
+      "matches": 33,
+      "wins": 12,
+      "avgFinish": 0.431
+    },
+    {
+      "name": "Conqueror_g5_897d51",
+      "rating": 1137,
+      "skill": 2.19794,
+      "matches": 48,
+      "wins": 18,
+      "avgFinish": 0.413
+    },
+    {
+      "name": "Conqueror_g8_15e6f9",
       "rating": 1121,
-      "skill": 2.009714,
-      "matches": 100,
-      "wins": 37,
-      "avgFinish": 0.486
-    },
-    {
-      "name": "Conqueror_g11_6c48eb",
-      "rating": 1118,
-      "skill": 1.967508,
-      "matches": 132,
-      "wins": 49,
-      "avgFinish": 0.488
-    },
-    {
-      "name": "Conqueror_g3_be9a58",
-      "rating": 1109,
-      "skill": 1.874855,
-      "matches": 122,
-      "wins": 41,
+      "skill": 2.011393,
+      "matches": 134,
+      "wins": 46,
       "avgFinish": 0.465
     },
     {
-      "name": "Conqueror_g6_9eb2e4",
-      "rating": 1108,
-      "skill": 1.867171,
-      "matches": 323,
-      "wins": 108,
-      "avgFinish": 0.481
+      "name": "Conqueror_g8_579783",
+      "rating": 1112,
+      "skill": 1.90772,
+      "matches": 171,
+      "wins": 58,
+      "avgFinish": 0.463
     },
     {
-      "name": "Conqueror_g8_7c11fe",
-      "rating": 1108,
-      "skill": 1.864335,
-      "matches": 15,
-      "wins": 5,
-      "avgFinish": 0.48
+      "name": "Conqueror_g8_4d842b",
+      "rating": 1109,
+      "skill": 1.876647,
+      "matches": 113,
+      "wins": 37,
+      "avgFinish": 0.46
     },
     {
-      "name": "Conqueror_g8_90fd52",
+      "name": "Conqueror_g8_912a4c",
+      "rating": 1107,
+      "skill": 1.855142,
+      "matches": 217,
+      "wins": 71,
+      "avgFinish": 0.463
+    },
+    {
+      "name": "Conqueror_g9_d2499d",
+      "rating": 1107,
+      "skill": 1.854354,
+      "matches": 37,
+      "wins": 11,
+      "avgFinish": 0.474
+    },
+    {
+      "name": "Conqueror_g8_82d39b",
       "rating": 1106,
-      "skill": 1.837033,
-      "matches": 15,
-      "wins": 5,
-      "avgFinish": 0.453
+      "skill": 1.843463,
+      "matches": 31,
+      "wins": 10,
+      "avgFinish": 0.42
+    },
+    {
+      "name": "Conqueror_g9_1e065b",
+      "rating": 1101,
+      "skill": 1.788002,
+      "matches": 139,
+      "wins": 43,
+      "avgFinish": 0.483
+    },
+    {
+      "name": "Conqueror_g6_9eb2e4",
+      "rating": 1098,
+      "skill": 1.754277,
+      "matches": 490,
+      "wins": 159,
+      "avgFinish": 0.475
+    },
+    {
+      "name": "Conqueror_g5_edeed5",
+      "rating": 1097,
+      "skill": 1.748706,
+      "matches": 26,
+      "wins": 8,
+      "avgFinish": 0.357
     },
     {
       "name": "Conqueror_g10_447dc3",
-      "rating": 1100,
-      "skill": 1.778221,
-      "matches": 86,
-      "wins": 30,
-      "avgFinish": 0.462
+      "rating": 1094,
+      "skill": 1.720824,
+      "matches": 211,
+      "wins": 67,
+      "avgFinish": 0.454
+    },
+    {
+      "name": "Conqueror_g11_755fa9",
+      "rating": 1091,
+      "skill": 1.689916,
+      "matches": 192,
+      "wins": 55,
+      "avgFinish": 0.474
+    },
+    {
+      "name": "Conqueror_g4_3fd4ce",
+      "rating": 1091,
+      "skill": 1.688804,
+      "matches": 476,
+      "wins": 149,
+      "avgFinish": 0.516
     },
     {
       "name": "Conqueror_g7_3b651e",
-      "rating": 1098,
-      "skill": 1.755234,
-      "matches": 329,
-      "wins": 110,
-      "avgFinish": 0.502
+      "rating": 1090,
+      "skill": 1.679012,
+      "matches": 499,
+      "wins": 162,
+      "avgFinish": 0.497
     },
     {
-      "name": "Conqueror_g5_0b2647",
-      "rating": 1092,
-      "skill": 1.695708,
-      "matches": 103,
-      "wins": 33,
-      "avgFinish": 0.535
-    },
-    {
-      "name": "Conqueror_g11_15ba79",
-      "rating": 1086,
-      "skill": 1.643265,
-      "matches": 20,
-      "wins": 6,
-      "avgFinish": 0.424
+      "name": "Conqueror_g7_efa4e0",
+      "rating": 1090,
+      "skill": 1.68088,
+      "matches": 672,
+      "wins": 207,
+      "avgFinish": 0.496
     },
     {
       "name": "Conqueror_g8_25adb0",
+      "rating": 1088,
+      "skill": 1.66272,
+      "matches": 383,
+      "wins": 115,
+      "avgFinish": 0.47
+    },
+    {
+      "name": "Conqueror_g8_d001cc",
+      "rating": 1088,
+      "skill": 1.659057,
+      "matches": 11,
+      "wins": 3,
+      "avgFinish": 0.345
+    },
+    {
+      "name": "Conqueror_g6_fbb329",
       "rating": 1085,
-      "skill": 1.634576,
-      "matches": 146,
-      "wins": 44,
-      "avgFinish": 0.495
+      "skill": 1.630921,
+      "matches": 26,
+      "wins": 7,
+      "avgFinish": 0.464
+    },
+    {
+      "name": "Conqueror_g11_6c48eb",
+      "rating": 1084,
+      "skill": 1.619249,
+      "matches": 280,
+      "wins": 85,
+      "avgFinish": 0.521
+    },
+    {
+      "name": "Conqueror_g8_1c5660",
+      "rating": 1082,
+      "skill": 1.607615,
+      "matches": 33,
+      "wins": 10,
+      "avgFinish": 0.403
+    },
+    {
+      "name": "Conqueror_g9_192ea5",
+      "rating": 1079,
+      "skill": 1.575814,
+      "matches": 185,
+      "wins": 51,
+      "avgFinish": 0.503
     },
     {
       "name": "Conqueror_g7_31769b",
-      "rating": 1082,
-      "skill": 1.605976,
+      "rating": 1076,
+      "skill": 1.545102,
       "matches": 282,
       "wins": 87,
       "avgFinish": 0.49
     },
     {
-      "name": "Conqueror_g7_efa4e0",
-      "rating": 1080,
-      "skill": 1.589257,
-      "matches": 334,
-      "wins": 99,
-      "avgFinish": 0.54
+      "name": "Conqueror_g6_f47ef4",
+      "rating": 1075,
+      "skill": 1.54231,
+      "matches": 23,
+      "wins": 6,
+      "avgFinish": 0.433
     },
     {
-      "name": "Conqueror_g9_fd075f",
-      "rating": 1079,
-      "skill": 1.572711,
-      "matches": 131,
-      "wins": 38,
-      "avgFinish": 0.567
+      "name": "Conqueror_g9_4b8dd5",
+      "rating": 1074,
+      "skill": 1.526949,
+      "matches": 93,
+      "wins": 25,
+      "avgFinish": 0.511
     },
     {
-      "name": "Conqueror_g4_a7924b",
-      "rating": 1078,
-      "skill": 1.571182,
-      "matches": 15,
-      "wins": 4,
-      "avgFinish": 0.493
+      "name": "Conqueror_g9_ff6438",
+      "rating": 1073,
+      "skill": 1.521514,
+      "matches": 122,
+      "wins": 32,
+      "avgFinish": 0.528
     },
     {
-      "name": "Conqueror_g9_192ea5",
-      "rating": 1078,
-      "skill": 1.568935,
-      "matches": 15,
-      "wins": 4,
-      "avgFinish": 0.533
+      "name": "Conqueror_g8_2c6b71",
+      "rating": 1069,
+      "skill": 1.486036,
+      "matches": 321,
+      "wins": 84,
+      "avgFinish": 0.512
+    },
+    {
+      "name": "Conqueror_g8_838926",
+      "rating": 1064,
+      "skill": 1.446657,
+      "matches": 20,
+      "wins": 5,
+      "avgFinish": 0.478
+    },
+    {
+      "name": "Conqueror_g11_15ba79",
+      "rating": 1063,
+      "skill": 1.43623,
+      "matches": 158,
+      "wins": 39,
+      "avgFinish": 0.529
+    },
+    {
+      "name": "Conqueror_g11_95d739",
+      "rating": 1062,
+      "skill": 1.432964,
+      "matches": 207,
+      "wins": 52,
+      "avgFinish": 0.518
+    },
+    {
+      "name": "Conqueror_g3_be9a58",
+      "rating": 1060,
+      "skill": 1.411704,
+      "matches": 350,
+      "wins": 88,
+      "avgFinish": 0.519
+    },
+    {
+      "name": "Conqueror_g7_98d20f",
+      "rating": 1058,
+      "skill": 1.40038,
+      "matches": 574,
+      "wins": 152,
+      "avgFinish": 0.537
     },
     {
       "name": "Conqueror_g6_1cded0",
-      "rating": 1076,
-      "skill": 1.547099,
-      "matches": 350,
-      "wins": 104,
-      "avgFinish": 0.516
-    },
-    {
-      "name": "Conqueror_g8_15e6f9",
-      "rating": 1074,
-      "skill": 1.52983,
-      "matches": 15,
-      "wins": 4,
-      "avgFinish": 0.427
-    },
-    {
-      "name": "Conqueror_g8_9d8b65",
-      "rating": 1067,
-      "skill": 1.472617,
-      "matches": 93,
-      "wins": 27,
-      "avgFinish": 0.555
-    },
-    {
-      "name": "Conqueror_g8_174911",
-      "rating": 1065,
-      "skill": 1.451087,
-      "matches": 371,
-      "wins": 103,
-      "avgFinish": 0.526
+      "rating": 1056,
+      "skill": 1.382135,
+      "matches": 570,
+      "wins": 147,
+      "avgFinish": 0.53
     },
     {
       "name": "Conqueror_g9_52a3a8",
-      "rating": 1063,
-      "skill": 1.437726,
+      "rating": 1056,
+      "skill": 1.378881,
       "matches": 86,
       "wins": 24,
       "avgFinish": 0.515
     },
     {
-      "name": "Conqueror_g11_e13995",
-      "rating": 1062,
-      "skill": 1.424869,
+      "name": "Conqueror_g4_be92c1",
+      "rating": 1053,
+      "skill": 1.353673,
       "matches": 20,
       "wins": 5,
-      "avgFinish": 0.506
+      "avgFinish": 0.518
     },
     {
-      "name": "Conqueror_g10_f5e8bf",
-      "rating": 1061,
-      "skill": 1.418773,
-      "matches": 134,
-      "wins": 33,
-      "avgFinish": 0.567
+      "name": "Conqueror_g8_74e11b",
+      "rating": 1050,
+      "skill": 1.334068,
+      "matches": 237,
+      "wins": 60,
+      "avgFinish": 0.548
     },
     {
-      "name": "Conqueror_g5_930cc7",
-      "rating": 1060,
-      "skill": 1.410271,
-      "matches": 249,
-      "wins": 69,
-      "avgFinish": 0.542
+      "name": "Conqueror_g9_fd075f",
+      "rating": 1050,
+      "skill": 1.336456,
+      "matches": 399,
+      "wins": 94,
+      "avgFinish": 0.552
     },
     {
       "name": "Conqueror_g9_c81d7f",
-      "rating": 1060,
-      "skill": 1.410839,
+      "rating": 1048,
+      "skill": 1.317237,
       "matches": 117,
       "wins": 31,
       "avgFinish": 0.529
     },
     {
-      "name": "Conqueror_g2_6b59e8",
-      "rating": 1059,
-      "skill": 1.408101,
-      "matches": 83,
-      "wins": 23,
+      "name": "Conqueror_g4_de5d02",
+      "rating": 1046,
+      "skill": 1.300105,
+      "matches": 163,
+      "wins": 36,
+      "avgFinish": 0.525
+    },
+    {
+      "name": "Conqueror_g12_f23241",
+      "rating": 1042,
+      "skill": 1.275676,
+      "matches": 24,
+      "wins": 6,
+      "avgFinish": 0.461
+    },
+    {
+      "name": "Conqueror_g8_529370",
+      "rating": 1042,
+      "skill": 1.273613,
+      "matches": 23,
+      "wins": 5,
+      "avgFinish": 0.59
+    },
+    {
+      "name": "Conqueror_g8_174911",
+      "rating": 1040,
+      "skill": 1.256369,
+      "matches": 604,
+      "wins": 136,
+      "avgFinish": 0.531
+    },
+    {
+      "name": "Conqueror_g10_f5e8bf",
+      "rating": 1039,
+      "skill": 1.248475,
+      "matches": 246,
+      "wins": 56,
       "avgFinish": 0.564
     },
     {
       "name": "Conqueror_g10_e067cc",
-      "rating": 1054,
-      "skill": 1.362573,
-      "matches": 119,
-      "wins": 29,
+      "rating": 1038,
+      "skill": 1.243379,
+      "matches": 342,
+      "wins": 75,
+      "avgFinish": 0.531
+    },
+    {
+      "name": "Conqueror_g8_7c11fe",
+      "rating": 1038,
+      "skill": 1.246166,
+      "matches": 134,
+      "wins": 27,
       "avgFinish": 0.547
     },
     {
-      "name": "Conqueror_g8_2c6b71",
-      "rating": 1054,
-      "skill": 1.365049,
-      "matches": 101,
-      "wins": 26,
-      "avgFinish": 0.569
+      "name": "Conqueror_g11_03759c",
+      "rating": 1035,
+      "skill": 1.224116,
+      "matches": 111,
+      "wins": 21,
+      "avgFinish": 0.575
     },
     {
-      "name": "Conqueror_g6_15ea9a",
-      "rating": 1048,
-      "skill": 1.317461,
-      "matches": 297,
-      "wins": 77,
-      "avgFinish": 0.547
+      "name": "Conqueror_g5_0b2647",
+      "rating": 1035,
+      "skill": 1.223864,
+      "matches": 282,
+      "wins": 59,
+      "avgFinish": 0.548
     },
     {
       "name": "Conqueror_g6_5a4345",
-      "rating": 1048,
-      "skill": 1.315998,
-      "matches": 84,
-      "wins": 20,
-      "avgFinish": 0.534
+      "rating": 1032,
+      "skill": 1.204581,
+      "matches": 277,
+      "wins": 55,
+      "avgFinish": 0.543
     },
     {
-      "name": "Conqueror_g4_3fd4ce",
-      "rating": 1044,
-      "skill": 1.287961,
-      "matches": 244,
-      "wins": 58,
-      "avgFinish": 0.57
+      "name": "Conqueror_g6_15ea9a",
+      "rating": 1031,
+      "skill": 1.193762,
+      "matches": 507,
+      "wins": 111,
+      "avgFinish": 0.567
     },
     {
-      "name": "Conqueror_g5_b451ab",
-      "rating": 1042,
-      "skill": 1.276409,
-      "matches": 336,
-      "wins": 83,
-      "avgFinish": 0.574
+      "name": "Conqueror_g11_cb02bc",
+      "rating": 1030,
+      "skill": 1.187973,
+      "matches": 25,
+      "wins": 5,
+      "avgFinish": 0.648
     },
     {
       "name": "Conqueror_g6_20faee",
-      "rating": 1037,
-      "skill": 1.235294,
+      "rating": 1030,
+      "skill": 1.190039,
       "matches": 63,
       "wins": 15,
       "avgFinish": 0.55
     },
     {
-      "name": "Conqueror_g7_98d20f",
-      "rating": 1036,
-      "skill": 1.229062,
-      "matches": 337,
-      "wins": 80,
-      "avgFinish": 0.562
+      "name": "Conqueror_g5_930cc7",
+      "rating": 1029,
+      "skill": 1.178332,
+      "matches": 444,
+      "wins": 93,
+      "avgFinish": 0.568
     },
     {
-      "name": "Conqueror_g9_ff6438",
-      "rating": 1032,
-      "skill": 1.201034,
-      "matches": 15,
-      "wins": 3,
-      "avgFinish": 0.493
-    },
-    {
-      "name": "Conqueror_g5_b3b641",
-      "rating": 1031,
-      "skill": 1.192225,
-      "matches": 69,
-      "wins": 15,
-      "avgFinish": 0.587
-    },
-    {
-      "name": "Conqueror_g6_8329c4",
-      "rating": 1030,
-      "skill": 1.187799,
-      "matches": 35,
-      "wins": 8,
-      "avgFinish": 0.619
-    },
-    {
-      "name": "Conqueror_g7_0cfdd6",
+      "name": "Conqueror_g11_e13995",
       "rating": 1028,
-      "skill": 1.173917,
-      "matches": 264,
-      "wins": 60,
+      "skill": 1.171563,
+      "matches": 82,
+      "wins": 16,
+      "avgFinish": 0.55
+    },
+    {
+      "name": "Conqueror_g2_6b59e8",
+      "rating": 1027,
+      "skill": 1.169841,
+      "matches": 276,
+      "wins": 54,
+      "avgFinish": 0.531
+    },
+    {
+      "name": "Conqueror_g4_a7924b",
+      "rating": 1027,
+      "skill": 1.165715,
+      "matches": 120,
+      "wins": 23,
+      "avgFinish": 0.549
+    },
+    {
+      "name": "Conqueror_g5_b451ab",
+      "rating": 1027,
+      "skill": 1.170463,
+      "matches": 559,
+      "wins": 119,
       "avgFinish": 0.574
     },
     {
+      "name": "Conqueror_g5_b3b641",
+      "rating": 1023,
+      "skill": 1.139271,
+      "matches": 246,
+      "wins": 44,
+      "avgFinish": 0.541
+    },
+    {
       "name": "Conqueror_g7_b36709",
-      "rating": 1028,
-      "skill": 1.17355,
+      "rating": 1023,
+      "skill": 1.140659,
       "matches": 191,
       "wins": 41,
       "avgFinish": 0.588
     },
     {
+      "name": "Conqueror_g7_0cfdd6",
+      "rating": 1019,
+      "skill": 1.114171,
+      "matches": 264,
+      "wins": 60,
+      "avgFinish": 0.574
+    },
+    {
+      "name": "Conqueror_g4_1f6790",
+      "rating": 1018,
+      "skill": 1.110727,
+      "matches": 473,
+      "wins": 95,
+      "avgFinish": 0.571
+    },
+    {
       "name": "Conqueror_g5_2a3d2a",
-      "rating": 1026,
-      "skill": 1.161198,
-      "matches": 250,
-      "wins": 55,
-      "avgFinish": 0.591
+      "rating": 1017,
+      "skill": 1.103573,
+      "matches": 353,
+      "wins": 71,
+      "avgFinish": 0.58
+    },
+    {
+      "name": "Conqueror_g6_8329c4",
+      "rating": 1017,
+      "skill": 1.102005,
+      "matches": 35,
+      "wins": 8,
+      "avgFinish": 0.619
+    },
+    {
+      "name": "Conqueror_g7_3f7da6",
+      "rating": 1016,
+      "skill": 1.093518,
+      "matches": 464,
+      "wins": 91,
+      "avgFinish": 0.571
+    },
+    {
+      "name": "Conqueror_g9_a22c1e",
+      "rating": 1016,
+      "skill": 1.095014,
+      "matches": 16,
+      "wins": 3,
+      "avgFinish": 0.492
     },
     {
       "name": "Conqueror_g2_e0f65e",
-      "rating": 1020,
-      "skill": 1.122712,
+      "rating": 1014,
+      "skill": 1.083685,
       "matches": 43,
       "wins": 9,
       "avgFinish": 0.574
     },
     {
+      "name": "Conqueror_g7_5acd36",
+      "rating": 1010,
+      "skill": 1.05665,
+      "matches": 16,
+      "wins": 3,
+      "avgFinish": 0.475
+    },
+    {
+      "name": "Conqueror_g10_a5c12c",
+      "rating": 1009,
+      "skill": 1.053267,
+      "matches": 17,
+      "wins": 3,
+      "avgFinish": 0.614
+    },
+    {
+      "name": "Conqueror_g2_e90f66",
+      "rating": 1008,
+      "skill": 1.044361,
+      "matches": 488,
+      "wins": 92,
+      "avgFinish": 0.604
+    },
+    {
       "name": "Conqueror_g8_a9c587",
-      "rating": 1019,
-      "skill": 1.11872,
+      "rating": 1007,
+      "skill": 1.043238,
       "matches": 68,
       "wins": 15,
       "avgFinish": 0.572
     },
     {
-      "name": "Conqueror_g8_c3d8b0",
-      "rating": 1019,
-      "skill": 1.117665,
-      "matches": 15,
-      "wins": 3,
-      "avgFinish": 0.56
-    },
-    {
-      "name": "Conqueror_g4_1f6790",
-      "rating": 1017,
-      "skill": 1.100888,
-      "matches": 279,
-      "wins": 59,
-      "avgFinish": 0.591
-    },
-    {
-      "name": "Conqueror_g7_3f7da6",
-      "rating": 1015,
-      "skill": 1.089567,
-      "matches": 302,
-      "wins": 59,
-      "avgFinish": 0.589
-    },
-    {
       "name": "Conqueror_g9_bb8efc",
-      "rating": 1015,
-      "skill": 1.090327,
+      "rating": 1007,
+      "skill": 1.039786,
       "matches": 69,
       "wins": 15,
       "avgFinish": 0.605
     },
     {
-      "name": "Conqueror_g5_d70030",
-      "rating": 1010,
-      "skill": 1.056246,
-      "matches": 301,
-      "wins": 55,
-      "avgFinish": 0.606
+      "name": "Conqueror_g8_90fd52",
+      "rating": 1004,
+      "skill": 1.025811,
+      "matches": 118,
+      "wins": 19,
+      "avgFinish": 0.623
     },
     {
-      "name": "Conqueror_g2_e90f66",
+      "name": "Conqueror_g8_9d8b65",
       "rating": 1002,
-      "skill": 1.010017,
-      "matches": 310,
-      "wins": 56,
-      "avgFinish": 0.593
+      "skill": 1.014256,
+      "matches": 314,
+      "wins": 51,
+      "avgFinish": 0.636
+    },
+    {
+      "name": "Conqueror_g5_d70030",
+      "rating": 998,
+      "skill": 0.987455,
+      "matches": 527,
+      "wins": 84,
+      "avgFinish": 0.604
+    },
+    {
+      "name": "Conqueror_g7_d17330",
+      "rating": 993,
+      "skill": 0.958526,
+      "matches": 290,
+      "wins": 41,
+      "avgFinish": 0.591
     },
     {
       "name": "Conqueror_g9_bbe71a",
-      "rating": 985,
-      "skill": 0.91839,
+      "rating": 990,
+      "skill": 0.945627,
+      "matches": 102,
+      "wins": 13,
+      "avgFinish": 0.607
+    },
+    {
+      "name": "Conqueror_g5_4ca8e8",
+      "rating": 974,
+      "skill": 0.860959,
+      "matches": 11,
+      "wins": 1,
+      "avgFinish": 0.382
+    },
+    {
+      "name": "Conqueror_g8_529c9b",
+      "rating": 972,
+      "skill": 0.84953,
       "matches": 15,
       "wins": 2,
       "avgFinish": 0.56
     },
     {
-      "name": "Conqueror_g7_d17330",
-      "rating": 970,
-      "skill": 0.841188,
-      "matches": 93,
-      "wins": 10,
-      "avgFinish": 0.66
+      "name": "Conqueror_g9_c703a2",
+      "rating": 972,
+      "skill": 0.849107,
+      "matches": 11,
+      "wins": 1,
+      "avgFinish": 0.6
+    },
+    {
+      "name": "Conqueror_g8_c3d8b0",
+      "rating": 968,
+      "skill": 0.831236,
+      "matches": 131,
+      "wins": 13,
+      "avgFinish": 0.605
+    },
+    {
+      "name": "Conqueror_g8_30b712",
+      "rating": 966,
+      "skill": 0.820678,
+      "matches": 9,
+      "wins": 1,
+      "avgFinish": 0.556
     },
     {
       "name": "Conqueror_g9_f7d113",
-      "rating": 970,
-      "skill": 0.840041,
+      "rating": 966,
+      "skill": 0.820369,
       "matches": 269,
       "wins": 37,
       "avgFinish": 0.642
     },
     {
+      "name": "Conqueror_g6_c4c8d1",
+      "rating": 965,
+      "skill": 0.816821,
+      "matches": 11,
+      "wins": 1,
+      "avgFinish": 0.418
+    },
+    {
+      "name": "Conqueror_g6_874a2a",
+      "rating": 961,
+      "skill": 0.797498,
+      "matches": 11,
+      "wins": 1,
+      "avgFinish": 0.327
+    },
+    {
+      "name": "Conqueror_g6_5791bf",
+      "rating": 952,
+      "skill": 0.756838,
+      "matches": 11,
+      "wins": 1,
+      "avgFinish": 0.418
+    },
+    {
+      "name": "Conqueror_g9_1052df",
+      "rating": 944,
+      "skill": 0.725091,
+      "matches": 134,
+      "wins": 8,
+      "avgFinish": 0.878
+    },
+    {
+      "name": "Conqueror_g9_ee6e4c",
+      "rating": 941,
+      "skill": 0.713837,
+      "matches": 15,
+      "wins": 2,
+      "avgFinish": 0.633
+    },
+    {
       "name": "Membrane_g2_d8fdcf",
-      "rating": 928,
-      "skill": 0.660326,
+      "rating": 925,
+      "skill": 0.648138,
       "matches": 50,
       "wins": 4,
       "avgFinish": 0.612
     },
     {
-      "name": "Conqueror_g9_1052df",
-      "rating": 883,
-      "skill": 0.50945,
-      "matches": 15,
+      "name": "Conqueror_g10_c1e73e",
+      "rating": 920,
+      "skill": 0.631123,
+      "matches": 11,
       "wins": 0,
-      "avgFinish": 0.867
+      "avgFinish": 0.764
+    },
+    {
+      "name": "Conqueror_g10_a9c8bc",
+      "rating": 905,
+      "skill": 0.578549,
+      "matches": 10,
+      "wins": 0,
+      "avgFinish": 0.46
+    },
+    {
+      "name": "Conqueror_g8_d45283",
+      "rating": 900,
+      "skill": 0.563792,
+      "matches": 11,
+      "wins": 0,
+      "avgFinish": 0.4
+    },
+    {
+      "name": "Conqueror_g10_6c5e88",
+      "rating": 881,
+      "skill": 0.505444,
+      "matches": 16,
+      "wins": 0,
+      "avgFinish": 0.662
     },
     {
       "name": "Pinwheel",
       "rating": 881,
-      "skill": 0.502977,
-      "matches": 299,
+      "skill": 0.502919,
+      "matches": 463,
       "wins": 1,
-      "avgFinish": 0.439
+      "avgFinish": 0.39
+    },
+    {
+      "name": "Tactician",
+      "rating": 880,
+      "skill": 0.502127,
+      "matches": 462,
+      "wins": 0,
+      "avgFinish": 0.409
+    },
+    {
+      "name": "Cluster_08",
+      "rating": 876,
+      "skill": 0.490937,
+      "matches": 192,
+      "wins": 0,
+      "avgFinish": 0.256
+    },
+    {
+      "name": "Patient_08",
+      "rating": 876,
+      "skill": 0.4906,
+      "matches": 202,
+      "wins": 0,
+      "avgFinish": 0.276
+    },
+    {
+      "name": "Drift_S",
+      "rating": 873,
+      "skill": 0.481552,
+      "matches": 451,
+      "wins": 0,
+      "avgFinish": 0.531
     },
     {
       "name": "Empire",
-      "rating": 877,
-      "skill": 0.49324,
+      "rating": 871,
+      "skill": 0.477078,
       "matches": 65,
       "wins": 2,
       "avgFinish": 0.446
     },
     {
-      "name": "Cluster_08",
-      "rating": 874,
-      "skill": 0.483666,
-      "matches": 70,
-      "wins": 0,
-      "avgFinish": 0.269
-    },
-    {
-      "name": "Patient_08",
-      "rating": 873,
-      "skill": 0.481532,
-      "matches": 83,
-      "wins": 0,
-      "avgFinish": 0.313
-    },
-    {
-      "name": "Drift_S",
-      "rating": 871,
-      "skill": 0.47601,
-      "matches": 303,
-      "wins": 0,
-      "avgFinish": 0.593
-    },
-    {
-      "name": "Tactician",
-      "rating": 870,
-      "skill": 0.473005,
-      "matches": 259,
-      "wins": 0,
-      "avgFinish": 0.498
-    },
-    {
-      "name": "Pacifist_02",
-      "rating": 867,
-      "skill": 0.463937,
-      "matches": 75,
-      "wins": 0,
-      "avgFinish": 0.269
-    },
-    {
       "name": "Avalanche",
-      "rating": 866,
-      "skill": 0.461325,
-      "matches": 257,
+      "rating": 870,
+      "skill": 0.473641,
+      "matches": 403,
       "wins": 0,
-      "avgFinish": 0.361
+      "avgFinish": 0.327
+    },
+    {
+      "name": "Pacifist_03",
+      "rating": 864,
+      "skill": 0.457051,
+      "matches": 487,
+      "wins": 0,
+      "avgFinish": 0.276
+    },
+    {
+      "name": "Pacifist_08",
+      "rating": 860,
+      "skill": 0.445701,
+      "matches": 380,
+      "wins": 0,
+      "avgFinish": 0.296
+    },
+    {
+      "name": "Cluster_02",
+      "rating": 857,
+      "skill": 0.438679,
+      "matches": 373,
+      "wins": 0,
+      "avgFinish": 0.304
     },
     {
       "name": "Cluster_09",
-      "rating": 863,
-      "skill": 0.453861,
+      "rating": 857,
+      "skill": 0.438326,
       "matches": 56,
       "wins": 0,
       "avgFinish": 0.314
     },
     {
-      "name": "Pacifist_08",
-      "rating": 859,
-      "skill": 0.444951,
-      "matches": 269,
-      "wins": 0,
-      "avgFinish": 0.312
-    },
-    {
-      "name": "Drift_WvS",
-      "rating": 858,
-      "skill": 0.441068,
-      "matches": 271,
-      "wins": 0,
-      "avgFinish": 0.382
-    },
-    {
-      "name": "Vampire",
-      "rating": 858,
-      "skill": 0.440606,
-      "matches": 217,
-      "wins": 0,
-      "avgFinish": 0.625
-    },
-    {
-      "name": "Pacifist_03",
+      "name": "Pacifist_02",
       "rating": 857,
-      "skill": 0.44011,
-      "matches": 307,
+      "skill": 0.439664,
+      "matches": 75,
       "wins": 0,
-      "avgFinish": 0.3
-    },
-    {
-      "name": "Pacifist_10",
-      "rating": 856,
-      "skill": 0.437287,
-      "matches": 258,
-      "wins": 0,
-      "avgFinish": 0.309
-    },
-    {
-      "name": "Phalanx_g1_5b920f",
-      "rating": 856,
-      "skill": 0.435711,
-      "matches": 55,
-      "wins": 0,
-      "avgFinish": 0.389
+      "avgFinish": 0.269
     },
     {
       "name": "Settler",
-      "rating": 856,
-      "skill": 0.436261,
+      "rating": 855,
+      "skill": 0.433084,
       "matches": 36,
       "wins": 0,
       "avgFinish": 0.244
     },
     {
-      "name": "Cluster_02",
-      "rating": 853,
-      "skill": 0.428515,
-      "matches": 246,
+      "name": "Vampire",
+      "rating": 852,
+      "skill": 0.426362,
+      "matches": 217,
       "wins": 0,
-      "avgFinish": 0.33
+      "avgFinish": 0.625
     },
     {
-      "name": "Pacifist_09",
-      "rating": 852,
-      "skill": 0.427385,
-      "matches": 195,
+      "name": "Drift_WvS",
+      "rating": 851,
+      "skill": 0.423015,
+      "matches": 271,
+      "wins": 0,
+      "avgFinish": 0.382
+    },
+    {
+      "name": "Phalanx_g1_5b920f",
+      "rating": 851,
+      "skill": 0.424983,
+      "matches": 55,
+      "wins": 0,
+      "avgFinish": 0.389
+    },
+    {
+      "name": "Pacifist_10",
+      "rating": 849,
+      "skill": 0.419543,
+      "matches": 258,
       "wins": 0,
       "avgFinish": 0.309
     },
     {
       "name": "Swarm",
-      "rating": 852,
-      "skill": 0.425812,
+      "rating": 849,
+      "skill": 0.420153,
       "matches": 43,
       "wins": 0,
       "avgFinish": 0.563
     },
     {
+      "name": "Pacifist_04",
+      "rating": 847,
+      "skill": 0.415319,
+      "matches": 9,
+      "wins": 0,
+      "avgFinish": 0.222
+    },
+    {
+      "name": "Pacifist_09",
+      "rating": 847,
+      "skill": 0.415651,
+      "matches": 195,
+      "wins": 0,
+      "avgFinish": 0.309
+    },
+    {
       "name": "Cluster_07",
-      "rating": 851,
-      "skill": 0.422978,
+      "rating": 846,
+      "skill": 0.412257,
       "matches": 58,
       "wins": 0,
       "avgFinish": 0.324
     },
     {
       "name": "Patient_10",
-      "rating": 849,
-      "skill": 0.41991,
+      "rating": 846,
+      "skill": 0.412457,
       "matches": 52,
       "wins": 0,
       "avgFinish": 0.315
     },
     {
-      "name": "Pacifist_04",
-      "rating": 847,
-      "skill": 0.413611,
-      "matches": 9,
-      "wins": 0,
-      "avgFinish": 0.222
-    },
-    {
       "name": "Pacifist_06",
-      "rating": 846,
-      "skill": 0.412432,
+      "rating": 843,
+      "skill": 0.404882,
       "matches": 18,
       "wins": 0,
       "avgFinish": 0.289
     },
     {
       "name": "Berserker",
-      "rating": 843,
-      "skill": 0.403962,
+      "rating": 841,
+      "skill": 0.399668,
       "matches": 27,
       "wins": 0,
       "avgFinish": 0.541
     },
     {
       "name": "Drift_EvN",
-      "rating": 836,
-      "skill": 0.388041,
+      "rating": 834,
+      "skill": 0.383774,
       "matches": 27,
       "wins": 0,
       "avgFinish": 0.4
     },
     {
       "name": "Phalanx",
-      "rating": 835,
-      "skill": 0.385922,
+      "rating": 829,
+      "skill": 0.372899,
       "matches": 18,
       "wins": 0,
       "avgFinish": 0.256
     },
     {
       "name": "Pacifist_01",
-      "rating": 824,
-      "skill": 0.362836,
+      "rating": 822,
+      "skill": 0.358843,
       "matches": 9,
       "wins": 0,
       "avgFinish": 0.267

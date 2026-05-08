@@ -166,9 +166,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:21:04.918Z"
     },
     {
       "name": "Bully",
@@ -356,9 +356,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:23:25.386Z"
     },
     {
       "name": "Anvil",
@@ -666,9 +666,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:16:00.788Z"
     },
     {
       "name": "Patient_09",
@@ -726,9 +726,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:05:27.101Z"
     },
     {
       "name": "Drift_NE",
@@ -816,9 +816,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:18:24.632Z"
     },
     {
       "name": "Pacifist_04",
@@ -866,9 +866,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T02:51:16.332Z"
     },
     {
       "name": "Pacifist_09",
@@ -1006,9 +1006,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T02:57:51.538Z"
     },
     {
       "name": "Cluster_03",
@@ -1066,9 +1066,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:09:01.023Z"
     },
     {
       "name": "Cluster_09",
@@ -1776,9 +1776,9 @@
       "parent": "Conqueror_g3_51d626",
       "generation": 4,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T20:25:35.130Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:36:41.784Z"
     },
     {
       "name": "Stalker_g2_62478c",
@@ -2026,9 +2026,9 @@
       "parent": "Conqueror_g4_868391",
       "generation": 5,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T22:07:00.765Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:01:27.705Z"
     },
     {
       "name": "Conqueror_g5_82140e",
@@ -2086,9 +2086,9 @@
       "parent": "Conqueror_g3_c24a38",
       "generation": 4,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T22:29:48.893Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:31:30.972Z"
     },
     {
       "name": "Conqueror_g4_cbb4b0",
@@ -2116,9 +2116,9 @@
       "parent": "Conqueror_g6_aa7266",
       "generation": 7,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T22:39:13.091Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:19:53.176Z"
     },
     {
       "name": "Conqueror_g3_4a7a4a",
@@ -2216,9 +2216,9 @@
       "parent": "Conqueror_g6_aa7266",
       "generation": 7,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T23:14:22.804Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:22:21.921Z"
     },
     {
       "name": "Conqueror_g4_cd6684",
@@ -2236,9 +2236,9 @@
       "parent": "Conqueror_g7_0cfdd6",
       "generation": 8,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T23:17:43.749Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:37:50.695Z"
     },
     {
       "name": "Conqueror_g5_3d9064",
@@ -2276,9 +2276,9 @@
       "parent": "Conqueror_g5_5003d1",
       "generation": 6,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T23:33:47.046Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:13:45.803Z"
     },
     {
       "name": "Conqueror_g2_cae59e",
@@ -2416,9 +2416,9 @@
       "parent": "Conqueror_g1_879a88",
       "generation": 2,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T00:09:13.481Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:10:39.598Z"
     },
     {
       "name": "Conqueror_g2_0aeb3a",
@@ -2476,9 +2476,9 @@
       "parent": "Conqueror_g5_b3b641",
       "generation": 6,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T00:26:59.146Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:25:11.519Z"
     },
     {
       "name": "Conqueror_g7_143859",
@@ -2526,9 +2526,9 @@
       "parent": "Conqueror_g5_0b2647",
       "generation": 6,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T00:37:46.192Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:28:50.456Z"
     },
     {
       "name": "Conqueror_g7_d17330",
@@ -2546,9 +2546,9 @@
       "parent": "Conqueror_g6_7865bd",
       "generation": 7,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T00:52:30.465Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:15:15.256Z"
     },
     {
       "name": "Conqueror_g10_ed740d",
@@ -2596,9 +2596,9 @@
       "parent": "Conqueror_g7_31769b",
       "generation": 8,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T21:46:51.338Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T02:54:05.302Z"
     },
     {
       "name": "Conqueror_g8_2c6b71",
@@ -2606,9 +2606,9 @@
       "parent": "Conqueror_g7_31769b",
       "generation": 8,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T21:48:17.226Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:32:41.834Z"
     },
     {
       "name": "Conqueror_g8_174911",
@@ -2646,9 +2646,9 @@
       "parent": "Conqueror_g9_c81d7f",
       "generation": 10,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T23:04:32.141Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T02:55:48.353Z"
     },
     {
       "name": "Conqueror_g6_20faee",
@@ -2666,9 +2666,9 @@
       "parent": "Conqueror_g10_447dc3",
       "generation": 11,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T23:08:54.530Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:12:18.018Z"
     },
     {
       "name": "Conqueror_g9_fd075f",
@@ -2706,9 +2706,9 @@
       "parent": "Conqueror_g5_0b2647",
       "generation": 6,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T23:17:57.759Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:26:06.059Z"
     },
     {
       "name": "Conqueror_g3_be9a58",
@@ -2716,9 +2716,9 @@
       "parent": "Conqueror_g2_6b59e8",
       "generation": 3,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T23:19:27.228Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:39:26.768Z"
     },
     {
       "name": "Conqueror_g10_e067cc",
@@ -2726,9 +2726,9 @@
       "parent": "Conqueror_g9_52a3a8",
       "generation": 10,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T23:23:05.412Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:30:18.809Z"
     },
     {
       "name": "Conqueror_g10_f5e8bf",
@@ -2736,9 +2736,9 @@
       "parent": "Conqueror_g9_c81d7f",
       "generation": 10,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T23:24:46.112Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:07:04.424Z"
     },
     {
       "name": "Conqueror_g9_1e065b",
@@ -2756,9 +2756,9 @@
       "parent": "Conqueror_g8_74e11b",
       "generation": 9,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T00:03:17.402Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:35:14.439Z"
     },
     {
       "name": "Conqueror_g11_15ba79",
@@ -2766,9 +2766,9 @@
       "parent": "Conqueror_g10_e067cc",
       "generation": 11,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T00:05:51.689Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:40:57.383Z"
     },
     {
       "name": "Conqueror_g9_bbe71a",
@@ -2786,9 +2786,9 @@
       "parent": "Conqueror_g7_31769b",
       "generation": 8,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T00:11:17.609Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T02:49:05.981Z"
     },
     {
       "name": "Conqueror_g8_90fd52",
@@ -2876,9 +2876,9 @@
       "parent": "Conqueror_g7_3b651e",
       "generation": 8,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T00:34:21.515Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T03:27:38.915Z"
     },
     {
       "name": "Conqueror_g11_e13995",
@@ -2936,8 +2936,348 @@
       "parent": "Conqueror_g8_2c6b71",
       "generation": 9,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T00:45:44.014Z",
+      "archivedAt": "2026-05-08T02:47:22.823Z"
+    },
+    {
+      "name": "Conqueror_g8_529c9b",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_3f7da6",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T02:47:22.803Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g5_897d51",
+      "family": "Conqueror",
+      "parent": "Conqueror_g4_3fd4ce",
+      "generation": 5,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T02:49:05.963Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g9_ee6e4c",
+      "family": "Conqueror",
+      "parent": "Conqueror_g8_174911",
+      "generation": 9,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T02:51:16.316Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g12_f23241",
+      "family": "Conqueror",
+      "parent": "Conqueror_g11_6c48eb",
+      "generation": 12,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T02:54:05.285Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g11_cb02bc",
+      "family": "Conqueror",
+      "parent": "Conqueror_g10_f5e8bf",
+      "generation": 11,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T02:55:48.335Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g7_5acd36",
+      "family": "Conqueror",
+      "parent": "Conqueror_g6_5a4345",
+      "generation": 7,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T02:57:51.519Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g10_a5c12c",
+      "family": "Conqueror",
+      "parent": "Conqueror_g9_ee6e4c",
+      "generation": 10,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:01:27.688Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g6_b70bfa",
+      "family": "Conqueror",
+      "parent": "Conqueror_g5_897d51",
+      "generation": 6,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:05:27.084Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_1c5660",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_efa4e0",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:07:04.408Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g4_be92c1",
+      "family": "Conqueror",
+      "parent": "Conqueror_g3_be9a58",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:09:01.006Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_529370",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_3b651e",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:10:39.581Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g5_edeed5",
+      "family": "Conqueror",
+      "parent": "Conqueror_g4_be92c1",
+      "generation": 5,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:12:18.000Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_30b712",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_3b651e",
+      "generation": 8,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T03:13:45.786Z",
+      "archivedAt": "2026-05-08T03:17:16.747Z"
+    },
+    {
+      "name": "Conqueror_g8_00a477",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_efa4e0",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:15:15.239Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g6_fbb329",
+      "family": "Conqueror",
+      "parent": "Conqueror_g5_930cc7",
+      "generation": 6,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:16:00.770Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_5c68e4",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_98d20f",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:17:16.731Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_82d39b",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_98d20f",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:18:24.615Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_3280dd",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_98d20f",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:19:53.159Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g9_c703a2",
+      "family": "Conqueror",
+      "parent": "Conqueror_g8_5c68e4",
+      "generation": 9,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:21:04.900Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_838926",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_d17330",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:22:21.904Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g5_f15d3e",
+      "family": "Conqueror",
+      "parent": "Conqueror_g4_3fd4ce",
+      "generation": 5,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:23:25.369Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_d45283",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_efa4e0",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:25:11.502Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g5_4ca8e8",
+      "family": "Conqueror",
+      "parent": "Conqueror_g4_3fd4ce",
+      "generation": 5,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:26:06.042Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g6_c4c8d1",
+      "family": "Conqueror",
+      "parent": "Conqueror_g5_b451ab",
+      "generation": 6,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:27:38.891Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g6_f47ef4",
+      "family": "Conqueror",
+      "parent": "Conqueror_g5_f15d3e",
+      "generation": 6,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:28:50.438Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g10_6c5e88",
+      "family": "Conqueror",
+      "parent": "Conqueror_g9_192ea5",
+      "generation": 10,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:30:18.792Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g10_a9c8bc",
+      "family": "Conqueror",
+      "parent": "Conqueror_g9_1e065b",
+      "generation": 10,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T03:31:30.955Z",
+      "archivedAt": "2026-05-08T03:33:51.650Z"
+    },
+    {
+      "name": "Conqueror_g10_c1e73e",
+      "family": "Conqueror",
+      "parent": "Conqueror_g9_1e065b",
+      "generation": 10,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:32:41.819Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g6_5791bf",
+      "family": "Conqueror",
+      "parent": "Conqueror_g5_b451ab",
+      "generation": 6,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:33:51.634Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g9_d2499d",
+      "family": "Conqueror",
+      "parent": "Conqueror_g8_15e6f9",
+      "generation": 9,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:35:14.421Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g6_874a2a",
+      "family": "Conqueror",
+      "parent": "Conqueror_g5_b451ab",
+      "generation": 6,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:36:41.767Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g9_a22c1e",
+      "family": "Conqueror",
+      "parent": "Conqueror_g8_15e6f9",
+      "generation": 9,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:37:50.679Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g9_01de66",
+      "family": "Conqueror",
+      "parent": "Conqueror_g8_912a4c",
+      "generation": 9,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:39:26.750Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Conqueror_g8_d001cc",
+      "family": "Conqueror",
+      "parent": "Conqueror_g7_efa4e0",
+      "generation": 8,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T03:40:57.366Z",
       "archivedAt": null
     }
   ]

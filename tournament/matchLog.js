@@ -5,10 +5,13 @@
 //
 // Entry shape:
 //   { ts, map, seed, ticks, endReason,
-//     ranking: [{ name, place, eliminatedAt, territory, strength, survived }] }
+//     ranking: [{ name, slot, place, eliminatedAt, territory, strength, survived }] }
 //
-// `name` is the canonical strategy name (matches `strategy.name`). `place`
-// is 0 = best, K-1 = worst, matching arena.js's pre-sorted ranking.
+// `name` is the canonical strategy name (matches `strategy.name`).
+// `slot` is the lineup index (0 = first seated). `place` is 0 = best,
+// K-1 = worst, matching arena.js's pre-sorted ranking. We keep `slot`
+// to detect tick-order / position bias post-hoc — historical entries
+// (logged before this field was added) only carry `place`.
 
 import { appendFile, readFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -33,6 +36,7 @@ export function buildMatchEntry({ map, result }) {
     stalemate: result.stalemate ?? false,
     ranking: result.ranking.map((r, place) => ({
       name: r.strategy,
+      slot: r.slot,
       place,
       eliminatedAt: r.eliminatedAt,
       territory: r.territory,
