@@ -17,12 +17,14 @@ import { dirname, resolve, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { addDescendant, loadLineages, markArchived } from "./lineageStore.js";
 import { loadLatestSeason } from "./seasonStore.js";
+import { loadRankings } from "./rankingsStore.js";
 import { writeArchive, ARCHIVE_PATH } from "./archiveFile.js";
 import { CHARACTER_TECHS } from "../src/strategies/characterTechs.js";
 import { getStrategy } from "../src/strategies/index.js";
 import { NEUTRAL_TECH } from "../src/core/Tech.js";
 
 const ASSUMED_RATING = 1500; // for bots without a rating yet (e.g. fresh founders)
+const ANCESTOR_CHAIN_DEPTH = 8;
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, "..");
@@ -89,6 +91,71 @@ function shortId() {
   return Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0");
 }
 
+// Resolve a bot's tech allocation. Prefer .tech on the loaded strategy
+// default-export (covers descendants and most hand-authored bots), then
+// the CHARACTER_TECHS map (covers factory bots like Pacifist_NN and a
+// few hand-authored ones like Settler), then neutral. Reading from
+// CHARACTER_TECHS first was wrong: descendants aren't in that map, so
+// rendering would claim every Conqueror_gN ran neutral 20/20/20/20/20
+// even when its source said move:90.
+function getTechFor(name) {
+  try {
+    const loaded = getStrategy(name);
+    return loaded?.tech ?? CHARACTER_TECHS[name] ?? { ...NEUTRAL_TECH };
+  } catch {
+    return CHARACTER_TECHS[name] ?? { ...NEUTRAL_TECH };
+  }
+}
+
+// Walk the lineage chain back from `parentName`, oldest-first, up to
+// `depth` entries. Each entry carries the bot's tech allocation and
+// current rating (null if the bot isn't in rankings.json — e.g. an
+// archived ancestor). Used by buildPrompt to render the lineage tech
+// trajectory table that shows the spawn agent which axes have moved
+// and which have been frozen across recent generations.
+function collectAncestorChain({ parentName, lineages, rankings, depth }) {
+  const byName = new Map(lineages.map((b) => [b.name, b]));
+  const ratingByName = new Map();
+  if (rankings?.players) {
+    for (const p of rankings.players) ratingByName.set(p.name, p.rating);
+  }
+  const chain = [];
+  let cur = parentName;
+  while (cur && chain.length < depth) {
+    const rec = byName.get(cur);
+    if (!rec) break;
+    chain.push({
+      name: cur,
+      generation: rec.generation,
+      parent: rec.parent,
+      tech: getTechFor(cur),
+      rating: ratingByName.has(cur) ? ratingByName.get(cur) : null,
+    });
+    cur = rec.parent;
+  }
+  return chain.reverse();
+}
+
+function renderAncestorTable(ancestors) {
+  if (!ancestors.length) return "";
+  const header =
+    "| Gen | Bot | move | stack | prod | atk | def | Rating | Δ vs parent |\n" +
+    "|---|---|---:|---:|---:|---:|---:|---:|---:|";
+  const rows = ancestors.map((a, i) => {
+    const prev = ancestors[i - 1];
+    const rating = a.rating != null ? String(a.rating) : "—";
+    let delta;
+    if (i === 0 || prev?.rating == null || a.rating == null) delta = "—";
+    else {
+      const d = a.rating - prev.rating;
+      delta = d > 0 ? `+${d}` : String(d);
+    }
+    const t = a.tech;
+    return `| g${a.generation} | \`${a.name}\` | ${t.move} | ${t.stack} | ${t.prod} | ${t.atk} | ${t.def} | ${rating} | ${delta} |`;
+  });
+  return [header, ...rows].join("\n");
+}
+
 // Pick a unique name for the descendant: <Family>_g<N>_<shortid>.
 async function suggestDescendantName(parent, lineages) {
   const parentRec = lineages.find((b) => b.name === parent);
@@ -137,32 +204,24 @@ export async function prepareSpawnTask(parentName, { lossLimit = 5 } = {}) {
     config: season.mapConfig ?? null,
   } : null;
 
-  // Parent's character tech (if any). Without this in the prompt, the
-  // spawn agent has no way to know that tech is a tunable axis - it
-  // defaults to inheriting the parent's allocation via spread.
-  // Resolution: prefer .tech on the loaded strategy default-export
-  // (covers descendants and most hand-authored bots), then the
-  // CHARACTER_TECHS map (covers factory bots and a few hand-authored
-  // ones like Settler), then neutral. Reading from CHARACTER_TECHS
-  // first was wrong: descendants aren't in that map, so the prompt
-  // claimed every Conqueror_gN parent ran neutral 20/20/20/20/20 even
-  // when its source file said move:90. The agents reconciled by
-  // reading tech off the source code, but the dedicated section was
-  // silently misleading and probably suppressed tech exploration.
-  let parentTech;
-  try {
-    const loaded = getStrategy(parentName);
-    parentTech = loaded?.tech ?? CHARACTER_TECHS[parentName] ?? { ...NEUTRAL_TECH };
-  } catch {
-    parentTech = CHARACTER_TECHS[parentName] ?? { ...NEUTRAL_TECH };
-  }
+  // Lineage tech trajectory: the last N ancestors back from the parent
+  // (inclusive), each with its tech allocation and current rating. Goal
+  // is to give the spawn agent data instead of prose: when the move/prod
+  // columns have been frozen for 8 generations and rating barely moved,
+  // the agent can see the under-explored axis directly. Replaces an
+  // earlier prose nudge that told the agent "tech is under-explored" —
+  // the data should make that self-evident.
+  const rankings = await loadRankings();
+  const ancestors = collectAncestorChain({
+    parentName, lineages, rankings, depth: ANCESTOR_CHAIN_DEPTH,
+  });
 
   const prompt = buildPrompt({
     parentName,
     newName,
     parentSource: parentSrc.source,
     parentPath: parentSrc.path,
-    parentTech,
+    ancestors,
     losses,
     winnerSources,
     mapInfo,
@@ -207,7 +266,7 @@ async function collectWinnerSources(losses, parentName) {
 }
 
 function buildPrompt({
-  parentName, newName, parentSource, parentPath, parentTech,
+  parentName, newName, parentSource, parentPath, ancestors,
   losses, winnerSources, mapInfo, seasonId,
 }) {
   const parentRel = parentPath.replace(REPO_ROOT + "/", "");
@@ -249,26 +308,19 @@ Read these only if you need them — most tweaks won't:
 - \`docs/techs.md\` — tech knob slopes and effects
 `;
 
-  const techSection = parentTech
-    ? `\n## Parent's character tech\n\nThe parent currently runs:\n\n` +
-      `\`\`\`json\n${JSON.stringify(parentTech, null, 2)}\n\`\`\`\n\n` +
+  const techSection = ancestors?.length
+    ? `\n## Lineage tech trajectory\n\n` +
       `Tech allocates 100 points across {move, stack, prod, atk, def}; ` +
       `each knob shifts a per-turn multiplier (move = garrison floor, ` +
-      `others = output multipliers). The descendant can override this ` +
-      `by adding a \`tech\` field to the exported object — see ` +
-      `\`docs/techs.md\` for slopes and effects. Inheriting via spread ` +
-      `from the parent keeps the parent's tech; adding \`tech: { ... }\` ` +
-      `replaces it.\n\n` +
-      `**Tech is historically under-explored in this lineage.** Past ` +
-      `descendants overwhelmingly preserve the parent's tech and tune ` +
-      `only strategy code, which means there is little synergy between ` +
-      `the two: a move-heavy tech runs strategies that don't actually ` +
-      `exploit movement, and an attack-focused strategy runs on tech ` +
-      `that doesn't amplify its kills. If your descendant's strategy ` +
-      `change leans on a particular axis (more aggression, more ` +
-      `expansion, more defense), consider re-allocating tech to match — ` +
-      `that's a free 10-15% multiplier on the relevant per-turn output ` +
-      `that nobody is currently claiming.\n`
+      `others = output multipliers). Inheriting via spread keeps the ` +
+      `parent's tech (last row below); adding \`tech: { ... }\` ` +
+      `replaces it. See \`docs/techs.md\` for slopes and effects.\n\n` +
+      `Recent ancestors back from the parent, oldest first, with each ` +
+      `bot's current rating and the rating gap to its own parent in ` +
+      `this chain. Frozen columns and small Δs are signals that an axis ` +
+      `is unexplored, not that it's been ruled out.\n\n` +
+      renderAncestorTable(ancestors) +
+      `\n`
     : "";
 
   return `# Spawn descendant: ${newName}
