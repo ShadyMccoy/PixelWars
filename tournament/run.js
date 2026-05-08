@@ -19,9 +19,8 @@
 
 import { STRATEGY_LIST, ALL_STRATEGY_LIST, ARCHIVED_STRATEGY_LIST, getStrategy } from "../src/strategies/index.js";
 import { MAPS } from "./maps.js";
-import { runFfaTournament, runPoolTournament, runRatingTournament } from "./scheduler.js";
+import { runFfaTournament, runPoolTournament, runRatingTournament, runBracketTournament } from "./scheduler.js";
 import { runLeague } from "./league.js";
-import { runSeason } from "./season.js";
 import { saveSeason, getSeasonStorePath } from "./seasonStore.js";
 import { runMatch } from "./arena.js";
 import { detectFlags, FLAG_TAGS } from "./flags.js";
@@ -255,6 +254,26 @@ function printStandings(standings, meta) {
       );
     });
   }
+}
+
+function printStableRankings(refit, activeNames, topN) {
+  const activeSet = new Set(activeNames);
+  const active = refit.players.filter((p) => activeSet.has(p.name));
+  const top = active.slice(0, topN);
+  console.log(
+    `\nStable rankings (cumulative · refit on ${refit.matchCount} matches · ${active.length} active bots, top ${top.length} shown)`,
+  );
+  console.log(
+    `${pad("#", 4)}  ${pad("Strategy", 18)}  ${pad("Rating", 6, true)}  ${pad("Plyd", 5, true)}  ${pad("Wins", 5, true)}  ${pad("Win%", 6, true)}  ${pad("AvgFin", 6, true)}`,
+  );
+  console.log("-".repeat(70));
+  top.forEach((p, i) => {
+    const winPct = p.matches > 0 ? (p.wins / p.matches * 100).toFixed(1) + "%" : "-";
+    const avgFin = p.avgFinish != null ? p.avgFinish.toFixed(3) : "-";
+    console.log(
+      `${pad(i + 1, 4)}  ${pad(p.name, 18)}  ${pad(p.rating, 6, true)}  ${pad(p.matches, 5, true)}  ${pad(p.wins, 5, true)}  ${pad(winPct, 6, true)}  ${pad(avgFin, 6, true)}`,
+    );
+  });
 }
 
 function isNeutralTech(tech) {
@@ -562,10 +581,16 @@ async function cmdSeason(opts) {
 
   const matchCount = opts.matches ?? 200;
   const flaggedEntries = [];
-  const matchEntries = [];
+  // Split match entries by phase so we can append rating-phase results
+  // to the log and refit rankings.json *before* picking the bracket
+  // field — the field is then drawn from long-term stable ratings
+  // rather than the tiny-sample in-season fit.
+  const ratingMatchEntries = [];
+  const bracketMatchEntries = [];
   const onMatch = (phase, idx, result, lineup) => {
     const lineupNames = lineup.map((s) => s.name);
-    matchEntries.push(buildMatchEntry({
+    const target = phase === "bracket" ? bracketMatchEntries : ratingMatchEntries;
+    target.push(buildMatchEntry({
       map: phase === "bracket" ? opts.seasonBracketMap : opts.map,
       result,
     }));
@@ -605,52 +630,124 @@ async function cmdSeason(opts) {
     );
   }
 
-  const season = runSeason({
+  // === Phase 1: rating tournament. ===
+  const ratingResult = runRatingTournament({
     strategies,
     map,
     poolSize: opts.pool,
     matches: matchCount,
     baseSeed: opts.seed,
     maxTicks: opts.ticks,
-    bracketMap,
-    bracketTopN: opts.seasonTop,
-    brackets: opts.seasonBrackets,
-    onMatch,
     priors,
+    onMatch: (m, result, lineup) => onMatch("rating", m, result, lineup),
   });
+
+  // Append rating-phase matches to the log and refit rankings.json on
+  // the full history. The post-refit ratings are the *stable* view of
+  // skill — a per-season fit on ~30 matches is too noisy, since each
+  // bot only plays a handful of matches and a 3-of-3 winner can spike
+  // to 1500+ on luck. We use the refit to (a) crown the rating-leader
+  // champion, (b) seed the bracket field, and (c) print as the primary
+  // leaderboard.
+  let refreshed = null;
+  if (ratingMatchEntries.length) {
+    await appendMatches(ratingMatchEntries);
+    const allLog = await loadMatches();
+    const currentLog = filterCurrentVersion(allLog);
+    if (currentLog.length > 0) {
+      refreshed = buildRankings(currentLog);
+      await saveRankings(refreshed);
+    }
+  }
+
+  // Pick rating-leader champion + bracket field from the stable refit.
+  // First-ever run with no log falls back to in-season standings.
+  const activeNames = new Set(STRATEGY_LIST.map((s) => s.name));
+  let ratingChampion = null;
+  let topNames = [];
+  if (refreshed) {
+    const stableActive = refreshed.players.filter((p) => activeNames.has(p.name));
+    ratingChampion = stableActive[0]?.name ?? ratingResult.standings[0]?.name ?? null;
+    const desiredTopN = Math.max(3, Math.min(opts.seasonTop, stableActive.length));
+    topNames = stableActive.slice(0, desiredTopN).map((p) => p.name);
+  } else {
+    ratingChampion = ratingResult.standings[0]?.name ?? null;
+    const desiredTopN = Math.max(3, Math.min(opts.seasonTop, ratingResult.standings.length));
+    topNames = ratingResult.standings.slice(0, desiredTopN).map((s) => s.name);
+  }
+
+  // === Phase 2: bracket tournament among the top of the stable field. ===
+  const topStrategies = topNames
+    .map((name) => strategies.find((s) => s.name === name))
+    .filter(Boolean);
+  let bracket = null;
+  if (topStrategies.length >= 3) {
+    bracket = runBracketTournament({
+      strategies: topStrategies,
+      map: bracketMap,
+      brackets: opts.seasonBrackets,
+      baseSeed: (opts.seed + 100003) >>> 0,
+      maxTicks: opts.ticks,
+      onMatch: (m, result, lineup) => onMatch("bracket", m, result, lineup),
+    });
+  }
+  const bracketChampion = bracket?.champion ?? null;
+
+  // Append bracket-phase matches and refit again so rankings.json
+  // reflects both phases and the next season's matchmaker has fully
+  // up-to-date priors.
+  if (bracketMatchEntries.length) {
+    await appendMatches(bracketMatchEntries);
+    const allLog = await loadMatches();
+    const currentLog = filterCurrentVersion(allLog);
+    if (currentLog.length > 0) {
+      refreshed = buildRankings(currentLog);
+      await saveRankings(refreshed);
+    }
+  }
+
+  // Build champions list. The same bot can win both kinds (rare but
+  // by design — dominant bots get two spawn slots).
+  const champions = [];
+  if (ratingChampion) champions.push({ kind: "rating-leader", name: ratingChampion });
+  if (bracketChampion) champions.push({ kind: "bracket", name: bracketChampion });
 
   // Per-champion recent loss context — useful for the spawn agent.
   const losses = {};
-  const championNames = new Set(season.champions.map((c) => c.name));
+  const championNames = new Set(champions.map((c) => c.name));
   for (const name of championNames) {
-    losses[name] = recentLossesFor(name, season.rating.results, 5);
+    losses[name] = recentLossesFor(name, ratingResult.results, 5);
   }
 
   if (opts.json) {
     process.stdout.write(JSON.stringify({
       meta: { map: opts.map, bracketMap: opts.seasonBracketMap, ticks: opts.ticks, seed: opts.seed, pool: opts.pool, matches: matchCount },
-      champions: season.champions,
-      topField: season.topField,
-      ratingStandings: season.rating.standings,
-      bracketOverall: season.bracket?.overall ?? null,
-      bracketWinners: season.bracket?.winners ?? null,
+      champions,
+      topField: topNames,
+      ratingStandings: ratingResult.standings,
+      stableRankings: refreshed?.players ?? null,
+      bracketOverall: bracket?.overall ?? null,
+      bracketWinners: bracket?.winners ?? null,
       flagged: flaggedEntries,
       losses,
     }, null, 2) + "\n");
   } else {
-    printStandings(season.rating.standings.slice(0, Math.max(opts.seasonTop, 10)), {
+    if (refreshed) {
+      printStableRankings(refreshed, [...activeNames], Math.max(opts.seasonTop, 10));
+    }
+    printStandings(ratingResult.standings.slice(0, Math.max(opts.seasonTop, 10)), {
       map: opts.map, ticks: opts.ticks, seed: opts.seed,
-      modeLabel: `season · rating phase · ${matchCount} matches · K=${opts.pool} · ${strategies.length} bots`,
+      modeLabel: `in-season ratings (this season's matches only · noisy on small samples) · ${matchCount} matches · K=${opts.pool} · ${strategies.length} bots`,
     });
-    if (season.bracket) {
-      console.log(`\nBracket (top ${season.bracket.fieldSize} on ${opts.seasonBracketMap}, ${season.bracket.brackets} K=3 brackets):`);
-      season.bracket.overall.forEach((r, i) => {
+    if (bracket) {
+      console.log(`\nBracket (top ${bracket.fieldSize} on ${opts.seasonBracketMap}, ${bracket.brackets} K=3 brackets, field drawn from stable rankings):`);
+      bracket.overall.forEach((r, i) => {
         console.log(`  ${String(i + 1).padStart(2)}. ${r.name.padEnd(18)} finals=${r.finalWins} roundWins=${r.roundWins} PPG=${r.pointsPerGame.toFixed(2)}`);
       });
-      console.log(`  bracket winners: ${season.bracket.winners.map((w) => w.champion).join(", ")}`);
+      console.log(`  bracket winners: ${bracket.winners.map((w) => w.champion).join(", ")}`);
     }
     console.log(`\nChampions:`);
-    for (const c of season.champions) {
+    for (const c of champions) {
       console.log(`  ${c.kind.padEnd(16)} → ${c.name}`);
     }
     if (flaggedEntries.length) {
@@ -658,10 +755,10 @@ async function cmdSeason(opts) {
     }
   }
 
-  // Persist full ratings + condensed standings. Full ratings drive
-  // archival decisions on spawn (need to find the globally weakest
-  // active bot, which may not be in the top-N visible standings).
-  const fullRatings = season.rating.standings.map((s) => ({
+  // Persist full in-season ratings + condensed standings. Full ratings
+  // are kept for traceability of the per-season fit; archival decisions
+  // on spawn use rankings.json (the stable refit) directly.
+  const fullRatings = ratingResult.standings.map((s) => ({
     name: s.name, rating: s.rating, rd: s.rd, played: s.played,
   }));
   const stored = await saveSeason({
@@ -672,20 +769,20 @@ async function cmdSeason(opts) {
     poolSize: opts.pool,
     matches: matchCount,
     baseSeed: opts.seed,
-    champions: season.champions,
-    topField: season.topField,
+    champions,
+    topField: topNames,
     ratings: fullRatings,
-    standings: season.rating.standings.slice(0, Math.max(opts.seasonTop, 20)).map((s) => ({
+    standings: ratingResult.standings.slice(0, Math.max(opts.seasonTop, 20)).map((s) => ({
       name: s.name, rating: s.rating, rd: s.rd, played: s.played,
       wins: s.wins, pointsPerGame: +s.pointsPerGame.toFixed(3),
     })),
-    bracket: season.bracket
+    bracket: bracket
       ? {
-          fieldSize: season.bracket.fieldSize,
-          brackets: season.bracket.brackets,
-          champion: season.bracket.champion,
-          overall: season.bracket.overall,
-          winners: season.bracket.winners,
+          fieldSize: bracket.fieldSize,
+          brackets: bracket.brackets,
+          champion: bracket.champion,
+          overall: bracket.overall,
+          winners: bracket.winners,
         }
       : null,
     losses,
@@ -699,23 +796,11 @@ async function cmdSeason(opts) {
     console.log(`Saved ${added.length} new entr${added.length === 1 ? "y" : "ies"} to ${getStorePath()}.`);
   }
 
-  if (matchEntries.length) {
-    await appendMatches(matchEntries);
-    if (!opts.json) {
-      console.log(`Logged ${matchEntries.length} matches to ${getMatchLogPath()}.`);
-    }
-
-    // Refresh rankings.json so the next season's matchmaker has
-    // up-to-date priors (rating + match counts) for info-gain
-    // lineups. We refit PL on the current-rules subset of the log.
-    const allLog = await loadMatches();
-    const currentLog = filterCurrentVersion(allLog);
-    if (currentLog.length > 0) {
-      const refreshed = buildRankings(currentLog);
-      await saveRankings(refreshed);
-      if (!opts.json) {
-        console.log(`Refreshed ${getRankingsPath()} (${refreshed.players.length} players, ${refreshed.matchCount} matches).`);
-      }
+  const totalMatches = ratingMatchEntries.length + bracketMatchEntries.length;
+  if (totalMatches && !opts.json) {
+    console.log(`Logged ${totalMatches} matches to ${getMatchLogPath()}.`);
+    if (refreshed) {
+      console.log(`Refreshed ${getRankingsPath()} (${refreshed.players.length} players, ${refreshed.matchCount} matches).`);
     }
   }
 }
