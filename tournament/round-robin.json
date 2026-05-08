@@ -1,0 +1,2238 @@
+{
+  "generatedAt": "2026-05-08T06:33:28.544Z",
+  "map": "duel1",
+  "mapConfig": {
+    "width": 20,
+    "height": 14,
+    "growth": 1.8,
+    "maxArmy": 12,
+    "wrap": true
+  },
+  "baseSeed": 1,
+  "seedsPerPair": 6,
+  "maxTicks": 4000,
+  "bots": [
+    "Avalanche",
+    "Cluster_08",
+    "Conqueror_g14_8d5369",
+    "Drift_S",
+    "Empire",
+    "Membrane_g2_d8fdcf",
+    "Pinwheel",
+    "Tactician"
+  ],
+  "pairs": [
+    {
+      "a": "Avalanche",
+      "b": "Cluster_08",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 0,
+      "draws": 6,
+      "aTerritory": 1296,
+      "bTerritory": 384,
+      "totalTicks": 24000,
+      "seeds": [
+        {
+          "seed": 1,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 216,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 2,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 216,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 3,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 216,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 4,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 216,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 5,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 216,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 6,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 216,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        }
+      ]
+    },
+    {
+      "a": "Avalanche",
+      "b": "Conqueror_g14_8d5369",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1680,
+      "totalTicks": 1719,
+      "seeds": [
+        {
+          "seed": 1010,
+          "ticks": 301,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 1011,
+          "ticks": 281,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 1012,
+          "ticks": 279,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 1013,
+          "ticks": 280,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 1014,
+          "ticks": 288,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 1015,
+          "ticks": 290,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Avalanche",
+      "b": "Drift_S",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 0,
+      "draws": 6,
+      "aTerritory": 1008,
+      "bTerritory": 672,
+      "totalTicks": 24000,
+      "seeds": [
+        {
+          "seed": 2019,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 168,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 2020,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 168,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 2021,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 168,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 2022,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 168,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 2023,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 168,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 2024,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 168,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        }
+      ]
+    },
+    {
+      "a": "Avalanche",
+      "b": "Empire",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1679,
+      "totalTicks": 882,
+      "seeds": [
+        {
+          "seed": 3028,
+          "ticks": 142,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 3029,
+          "ticks": 139,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 3030,
+          "ticks": 171,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 3031,
+          "ticks": 138,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 3032,
+          "ticks": 135,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 3033,
+          "ticks": 157,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Avalanche",
+      "b": "Membrane_g2_d8fdcf",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1677,
+      "totalTicks": 351,
+      "seeds": [
+        {
+          "seed": 4037,
+          "ticks": 58,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 4038,
+          "ticks": 55,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 4039,
+          "ticks": 57,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 4040,
+          "ticks": 66,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 4041,
+          "ticks": 56,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 4042,
+          "ticks": 59,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Avalanche",
+      "b": "Pinwheel",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1675,
+      "totalTicks": 787,
+      "seeds": [
+        {
+          "seed": 5046,
+          "ticks": 138,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 5047,
+          "ticks": 138,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 5048,
+          "ticks": 133,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 5049,
+          "ticks": 122,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 5050,
+          "ticks": 129,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 278,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 5051,
+          "ticks": 127,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Avalanche",
+      "b": "Tactician",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1677,
+      "bTerritory": 0,
+      "totalTicks": 4146,
+      "seeds": [
+        {
+          "seed": 6055,
+          "ticks": 691,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 6056,
+          "ticks": 698,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 6057,
+          "ticks": 655,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 6058,
+          "ticks": 661,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 6059,
+          "ticks": 786,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 6060,
+          "ticks": 655,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Cluster_08",
+      "b": "Conqueror_g14_8d5369",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1680,
+      "totalTicks": 1832,
+      "seeds": [
+        {
+          "seed": 7064,
+          "ticks": 303,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 7065,
+          "ticks": 308,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 7066,
+          "ticks": 304,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 7067,
+          "ticks": 304,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 7068,
+          "ticks": 306,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 7069,
+          "ticks": 307,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Cluster_08",
+      "b": "Drift_S",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 0,
+      "draws": 6,
+      "aTerritory": 384,
+      "bTerritory": 672,
+      "totalTicks": 24000,
+      "seeds": [
+        {
+          "seed": 8073,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 8074,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 8075,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 8076,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 8077,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 8078,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 112,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        }
+      ]
+    },
+    {
+      "a": "Cluster_08",
+      "b": "Empire",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1676,
+      "totalTicks": 878,
+      "seeds": [
+        {
+          "seed": 9082,
+          "ticks": 143,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 9083,
+          "ticks": 144,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 9084,
+          "ticks": 145,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 9085,
+          "ticks": 151,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 9086,
+          "ticks": 144,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 9087,
+          "ticks": 151,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 278,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Cluster_08",
+      "b": "Membrane_g2_d8fdcf",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1678,
+      "totalTicks": 461,
+      "seeds": [
+        {
+          "seed": 10091,
+          "ticks": 67,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 10092,
+          "ticks": 56,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 10093,
+          "ticks": 52,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 10094,
+          "ticks": 60,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 10095,
+          "ticks": 168,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 10096,
+          "ticks": 58,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Cluster_08",
+      "b": "Pinwheel",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1676,
+      "totalTicks": 868,
+      "seeds": [
+        {
+          "seed": 11100,
+          "ticks": 149,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 11101,
+          "ticks": 148,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 11102,
+          "ticks": 151,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 11103,
+          "ticks": 131,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 11104,
+          "ticks": 138,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 11105,
+          "ticks": 151,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Cluster_08",
+      "b": "Tactician",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 0,
+      "draws": 6,
+      "aTerritory": 384,
+      "bTerritory": 384,
+      "totalTicks": 24000,
+      "seeds": [
+        {
+          "seed": 12109,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 12110,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 12111,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 12112,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 12113,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 12114,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 64,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        }
+      ]
+    },
+    {
+      "a": "Conqueror_g14_8d5369",
+      "b": "Drift_S",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1680,
+      "bTerritory": 0,
+      "totalTicks": 920,
+      "seeds": [
+        {
+          "seed": 13118,
+          "ticks": 152,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 13119,
+          "ticks": 159,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 13120,
+          "ticks": 151,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 13121,
+          "ticks": 152,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 13122,
+          "ticks": 155,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 13123,
+          "ticks": 151,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Conqueror_g14_8d5369",
+      "b": "Empire",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1680,
+      "bTerritory": 0,
+      "totalTicks": 1810,
+      "seeds": [
+        {
+          "seed": 14127,
+          "ticks": 266,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 14128,
+          "ticks": 294,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 14129,
+          "ticks": 315,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 14130,
+          "ticks": 310,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 14131,
+          "ticks": 302,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 14132,
+          "ticks": 323,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Conqueror_g14_8d5369",
+      "b": "Membrane_g2_d8fdcf",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1662,
+      "totalTicks": 419,
+      "seeds": [
+        {
+          "seed": 15136,
+          "ticks": 71,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 15137,
+          "ticks": 74,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 278,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 15138,
+          "ticks": 70,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 277,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 15139,
+          "ticks": 67,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 270,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 15140,
+          "ticks": 68,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 15141,
+          "ticks": 69,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Conqueror_g14_8d5369",
+      "b": "Pinwheel",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1679,
+      "bTerritory": 0,
+      "totalTicks": 1341,
+      "seeds": [
+        {
+          "seed": 16145,
+          "ticks": 220,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 16146,
+          "ticks": 221,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 16147,
+          "ticks": 232,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 16148,
+          "ticks": 225,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 16149,
+          "ticks": 221,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 16150,
+          "ticks": 222,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Conqueror_g14_8d5369",
+      "b": "Tactician",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1678,
+      "bTerritory": 0,
+      "totalTicks": 572,
+      "seeds": [
+        {
+          "seed": 17154,
+          "ticks": 107,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 17155,
+          "ticks": 95,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 17156,
+          "ticks": 89,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 17157,
+          "ticks": 97,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 17158,
+          "ticks": 92,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 17159,
+          "ticks": 92,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Drift_S",
+      "b": "Empire",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1677,
+      "totalTicks": 1116,
+      "seeds": [
+        {
+          "seed": 18163,
+          "ticks": 195,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 18164,
+          "ticks": 192,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 18165,
+          "ticks": 169,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 18166,
+          "ticks": 184,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 18167,
+          "ticks": 206,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 18168,
+          "ticks": 170,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 278,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Drift_S",
+      "b": "Membrane_g2_d8fdcf",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1675,
+      "totalTicks": 307,
+      "seeds": [
+        {
+          "seed": 19172,
+          "ticks": 55,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 19173,
+          "ticks": 46,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 278,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 19174,
+          "ticks": 52,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 19175,
+          "ticks": 54,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 19176,
+          "ticks": 47,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 278,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 19177,
+          "ticks": 53,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Drift_S",
+      "b": "Pinwheel",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1667,
+      "totalTicks": 976,
+      "seeds": [
+        {
+          "seed": 20181,
+          "ticks": 173,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 20182,
+          "ticks": 151,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 274,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 20183,
+          "ticks": 178,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 20184,
+          "ticks": 165,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 275,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 20185,
+          "ticks": 153,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 20186,
+          "ticks": 156,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Drift_S",
+      "b": "Tactician",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 0,
+      "draws": 6,
+      "aTerritory": 672,
+      "bTerritory": 384,
+      "totalTicks": 24000,
+      "seeds": [
+        {
+          "seed": 21190,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 112,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 21191,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 112,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 21192,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 112,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 21193,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 112,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 21194,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 112,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 21195,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 112,
+          "bTerritory": 64,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        }
+      ]
+    },
+    {
+      "a": "Empire",
+      "b": "Membrane_g2_d8fdcf",
+      "games": 6,
+      "aWins": 0,
+      "bWins": 6,
+      "draws": 0,
+      "aTerritory": 0,
+      "bTerritory": 1677,
+      "totalTicks": 611,
+      "seeds": [
+        {
+          "seed": 22199,
+          "ticks": 68,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 22200,
+          "ticks": 72,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 22201,
+          "ticks": 225,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 280,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 22202,
+          "ticks": 77,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 22203,
+          "ticks": 75,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        },
+        {
+          "seed": 22204,
+          "ticks": 94,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 0,
+          "bTerritory": 279,
+          "aSurvived": false,
+          "bSurvived": true,
+          "winner": "b"
+        }
+      ]
+    },
+    {
+      "a": "Empire",
+      "b": "Pinwheel",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1676,
+      "bTerritory": 0,
+      "totalTicks": 1980,
+      "seeds": [
+        {
+          "seed": 23208,
+          "ticks": 308,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 23209,
+          "ticks": 425,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 23210,
+          "ticks": 312,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 23211,
+          "ticks": 348,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 23212,
+          "ticks": 281,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 23213,
+          "ticks": 306,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Empire",
+      "b": "Tactician",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1673,
+      "bTerritory": 0,
+      "totalTicks": 614,
+      "seeds": [
+        {
+          "seed": 24217,
+          "ticks": 91,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 277,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 24218,
+          "ticks": 103,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 24219,
+          "ticks": 102,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 24220,
+          "ticks": 113,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 24221,
+          "ticks": 104,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 24222,
+          "ticks": 101,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Membrane_g2_d8fdcf",
+      "b": "Pinwheel",
+      "games": 6,
+      "aWins": 5,
+      "bWins": 0,
+      "draws": 1,
+      "aTerritory": 1674,
+      "bTerritory": 1,
+      "totalTicks": 4325,
+      "seeds": [
+        {
+          "seed": 25226,
+          "ticks": 80,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 25227,
+          "ticks": 4000,
+          "endReason": "max-ticks",
+          "stalemate": true,
+          "aTerritory": 279,
+          "bTerritory": 1,
+          "aSurvived": true,
+          "bSurvived": true,
+          "winner": "draw"
+        },
+        {
+          "seed": 25228,
+          "ticks": 65,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 25229,
+          "ticks": 66,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 25230,
+          "ticks": 58,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 25231,
+          "ticks": 56,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Membrane_g2_d8fdcf",
+      "b": "Tactician",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1671,
+      "bTerritory": 0,
+      "totalTicks": 257,
+      "seeds": [
+        {
+          "seed": 26235,
+          "ticks": 48,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 26236,
+          "ticks": 40,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 26237,
+          "ticks": 45,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 26238,
+          "ticks": 43,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 26239,
+          "ticks": 43,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 26240,
+          "ticks": 38,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 276,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    },
+    {
+      "a": "Pinwheel",
+      "b": "Tactician",
+      "games": 6,
+      "aWins": 6,
+      "bWins": 0,
+      "draws": 0,
+      "aTerritory": 1670,
+      "bTerritory": 0,
+      "totalTicks": 664,
+      "seeds": [
+        {
+          "seed": 27244,
+          "ticks": 100,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 279,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 27245,
+          "ticks": 111,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 27246,
+          "ticks": 118,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 27247,
+          "ticks": 116,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 278,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 27248,
+          "ticks": 116,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 280,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        },
+        {
+          "seed": 27249,
+          "ticks": 103,
+          "endReason": "winner",
+          "stalemate": false,
+          "aTerritory": 277,
+          "bTerritory": 0,
+          "aSurvived": true,
+          "bSurvived": false,
+          "winner": "a"
+        }
+      ]
+    }
+  ]
+}
