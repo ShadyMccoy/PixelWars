@@ -84,6 +84,18 @@ Tradeoffs:
     rather than planned routes. That's fine for a Lanchester
     pump — strength conveys outward as fast as it's produced.
 
+Ablation (tournament/exp-conduit-tuning.js):
+  - 1v1 vs parent: every gradient in {0, 0.25, 0.5, 0.75, 1, 1.5,
+    2, 3, 5, 10} wins 100/100. The relay mechanism itself is the
+    win; threshold is largely insensitive at absolute scale.
+    Territory delta narrowly favors g=0.5 (349.4) over the others
+    (344-349), so we keep it.
+  - 2-hop horizon (sum half-weighted pressure from
+    neighbors-of-neighbors): clear regression, ~1.5 places worse
+    than 1-hop in an 8-way ablation. Propagation across friendlies
+    adds noise that the chassis Pass 3 handles better directly.
+    Don't extend the scan depth.
+
 Tech mirrors the parent's {move:80, stack:0, prod:12, atk:4,
 def:4}. The relay is a strategy-only delta so the comparison
 isolates the Lanchester pump from tech tuning.`,
