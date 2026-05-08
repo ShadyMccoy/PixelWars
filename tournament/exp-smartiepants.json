@@ -1,0 +1,156 @@
+{
+  "config": {
+    "matches": 30,
+    "k": 5,
+    "map": "lab1",
+    "pool": [
+      "SP_seed",
+      "SP_jitter01",
+      "SP_jitter05",
+      "SP_random",
+      "SP_zero",
+      "SP_quadonly_seed",
+      "SP_quadonly_jitter",
+      "SP_inner3_jitter",
+      "Random",
+      "Defender",
+      "Cautious",
+      "Berserker"
+    ]
+  },
+  "rows": [
+    {
+      "name": "SP_random",
+      "rating": 2258.355516842207,
+      "plays": 12,
+      "win": 12,
+      "winRate": 1,
+      "avgPlace": 1,
+      "avgTerr": 658.25,
+      "surviveRate": 1,
+      "elimRate": 0
+    },
+    {
+      "name": "Berserker",
+      "rating": 1641.325717242076,
+      "plays": 13,
+      "win": 5,
+      "winRate": 0.38461538461538464,
+      "avgPlace": 2.0769230769230766,
+      "avgTerr": 253.30769230769232,
+      "surviveRate": 0.38461538461538464,
+      "elimRate": 0.6153846153846154
+    },
+    {
+      "name": "Random",
+      "rating": 1630.1863841778186,
+      "plays": 12,
+      "win": 7,
+      "winRate": 0.5833333333333334,
+      "avgPlace": 2.083333333333333,
+      "avgTerr": 384,
+      "surviveRate": 0.5833333333333334,
+      "elimRate": 0.4166666666666667
+    },
+    {
+      "name": "SP_zero",
+      "rating": 1611.3287829753858,
+      "plays": 13,
+      "win": 1,
+      "winRate": 0.07692307692307693,
+      "avgPlace": 2.3076923076923075,
+      "avgTerr": 18.46153846153846,
+      "surviveRate": 0.07692307692307693,
+      "elimRate": 0.9230769230769231
+    },
+    {
+      "name": "SP_inner3_jitter",
+      "rating": 1490.3272884509545,
+      "plays": 11,
+      "win": 2,
+      "winRate": 0.18181818181818182,
+      "avgPlace": 2.7272727272727275,
+      "avgTerr": 119.81818181818181,
+      "surviveRate": 0.18181818181818182,
+      "elimRate": 0.8181818181818182
+    },
+    {
+      "name": "SP_quadonly_jitter",
+      "rating": 1407.110686052848,
+      "plays": 13,
+      "win": 0,
+      "winRate": 0,
+      "avgPlace": 3.3076923076923075,
+      "avgTerr": 0,
+      "surviveRate": 0,
+      "elimRate": 1
+    },
+    {
+      "name": "SP_seed",
+      "rating": 1400.6233843125804,
+      "plays": 11,
+      "win": 0,
+      "winRate": 0,
+      "avgPlace": 3.5454545454545454,
+      "avgTerr": 0,
+      "surviveRate": 0,
+      "elimRate": 1
+    },
+    {
+      "name": "Cautious",
+      "rating": 1353.2436757011292,
+      "plays": 12,
+      "win": 3,
+      "winRate": 0.25,
+      "avgPlace": 3.1666666666666665,
+      "avgTerr": 165,
+      "surviveRate": 0.25,
+      "elimRate": 0.75
+    },
+    {
+      "name": "SP_jitter01",
+      "rating": 1338.011705938066,
+      "plays": 11,
+      "win": 0,
+      "winRate": 0,
+      "avgPlace": 3.6363636363636362,
+      "avgTerr": 0.5454545454545454,
+      "surviveRate": 0.09090909090909091,
+      "elimRate": 0.9090909090909091
+    },
+    {
+      "name": "SP_jitter05",
+      "rating": 1320.746025096636,
+      "plays": 13,
+      "win": 0,
+      "winRate": 0,
+      "avgPlace": 3.8461538461538463,
+      "avgTerr": 0.6923076923076923,
+      "surviveRate": 0.07692307692307693,
+      "elimRate": 0.9230769230769231
+    },
+    {
+      "name": "SP_quadonly_seed",
+      "rating": 1284.7955646302241,
+      "plays": 14,
+      "win": 0,
+      "winRate": 0,
+      "avgPlace": 4.071428571428571,
+      "avgTerr": 0.21428571428571427,
+      "surviveRate": 0.07142857142857142,
+      "elimRate": 0.9285714285714286
+    },
+    {
+      "name": "Defender",
+      "rating": 1263.945268580074,
+      "plays": 15,
+      "win": 0,
+      "winRate": 0,
+      "avgPlace": 3.933333333333333,
+      "avgTerr": 0,
+      "surviveRate": 0,
+      "elimRate": 1
+    }
+  ],
+  "generatedAt": "2026-05-08T17:09:05.429Z"
+}
