@@ -39,6 +39,7 @@ import Skirmisher from "./Skirmisher.js";
 import Tempo from "./Tempo.js";
 import Empire from "./Empire.js";
 import Settler from "./Settler.js";
+import Smartiepants from "./Smartiepants.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -89,6 +90,7 @@ export const ALL_STRATEGY_LIST = [
   Tempo,
   Empire,
   Settler,
+  Smartiepants,
   ...GENERATED,
   ...DESCENDANTS,
 ];
