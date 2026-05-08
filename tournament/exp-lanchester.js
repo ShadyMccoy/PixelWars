@@ -24,6 +24,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 function parseArgs(argv) {
   const opts = {
     model: "linear",
+    movement: "classic",
     matches: 1000,
     seed: 1,
     out: null,
@@ -36,6 +37,7 @@ function parseArgs(argv) {
     const next = () => argv[++i];
     switch (a) {
       case "--model": opts.model = next(); break;
+      case "--movement": opts.movement = next(); break;
       case "--matches": opts.matches = parseInt(next(), 10); break;
       case "--seed": opts.seed = parseInt(next(), 10); break;
       case "--out": opts.out = next(); break;
@@ -65,10 +67,10 @@ async function runOne(opts) {
   const baseMap = MAPS[opts.map];
   const map = {
     ...baseMap,
-    config: { ...baseMap.config, combatModel: opts.model },
+    config: { ...baseMap.config, combatModel: opts.model, movementModel: opts.movement },
   };
   const strategies = STRATEGY_LIST.slice();
-  console.log(`Field: ${strategies.length} bots. Model: ${opts.model}.`);
+  console.log(`Field: ${strategies.length} bots. Combat: ${opts.model}. Movement: ${opts.movement}.`);
   console.log(`${opts.matches} K=${opts.pool} matches on ${opts.map}, seed=${opts.seed}.`);
   const seedRankings = await loadRankings();
   const priors = seedRankings ? priorMap(seedRankings) : null;
