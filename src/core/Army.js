@@ -185,18 +185,21 @@ export class Army {
     this.strength = s;
     const strat = this.player.strategy;
     if (!strat) return;
-    // Accumulate move credit at the production rate. Cap at 1 so a
-    // bot that idled in its backfield can't unleash a stockpile of
-    // attacks when an opening appears — at most one ready move.
+    // Accumulate move credit at the production rate, but cap at 8 so an
+    // idle backfield army banks enough for a real burst when an opening
+    // appears — without growing an unbounded stockpile over a long match.
+    // Credit is then burned in a loop so the burst lands in one tick
+    // instead of drip-feeding one move per growth-period.
     let credit = this.moveCredit + interval * growth * prodMult;
-    if (credit > 1) credit = 1;
-    if (credit < 1) {
-      this.moveCredit = credit;
-      return;
+    if (credit > 8) credit = 8;
+    this.moveCredit = credit;
+    if (credit < 1) return;
+    const actFn = typeof strat === "function" ? strat : strat.act;
+    if (typeof actFn !== "function") return;
+    while (this.moveCredit >= 1 && this.alive) {
+      this.moveCredit -= 1;
+      actFn(this, this.game);
     }
-    this.moveCredit = credit - 1;
-    if (typeof strat === "function") strat(this, this.game);
-    else if (typeof strat.act === "function") strat.act(this, this.game);
   }
 
   weakestAdjacent(gradient = null) {
