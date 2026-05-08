@@ -24,9 +24,16 @@ export class Army {
   // still satisfying its player's tech-derived garrison floor. All
   // strategies should reach for attackPower instead of `strength - 1`
   // so the floor scales with the move tech automatically.
+  //
+  // In "budget" movementModel the garrison floor is gone; the engine
+  // only enforces a minimum 0.5 left behind so the source tile doesn't
+  // pop empty mid-tick. Bots can throw more strength forward, but the
+  // per-tile budget will clamp how much actually arrives.
   get attackPower() {
-    const garrison = this.player.minGarrison ?? 1;
-    const v = this.strength - garrison;
+    const floor = this.game?.movementModel === "budget"
+      ? 0.5
+      : (this.player.minGarrison ?? 1);
+    const v = this.strength - floor;
     return v > 0 ? v : 0;
   }
 
@@ -59,7 +66,69 @@ export class Army {
     return true;
   }
 
+  // Wrap-aware Euclidean distance from src to dst, in tiles. Used as
+  // the work multiplier for movement budget in "budget" mode.
+  _distance(src, dst) {
+    const w = this.game.map.width;
+    const h = this.game.map.height;
+    let dx = dst.pos.x - src.pos.x;
+    let dy = dst.pos.y - src.pos.y;
+    if (dx > w / 2) dx -= w; else if (dx < -w / 2) dx += w;
+    if (dy > h / 2) dy -= h; else if (dy < -h / 2) dy += h;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
   attack(tile, power) {
+    // Budget movement model: the bot can ask for any (non-self) tile.
+    // The engine computes Euclidean distance, treats power × distance
+    // as work-units, and clamps actual delivered power to whatever
+    // work the source tile's budget can pay for. Adjacent moves
+    // (distance 1) clamp directly against the budget; longer moves
+    // get a smaller effective power for the same budget. Conquest of
+    // the destination resets *its* budget to 0 in resolveConflicts.
+    if (this.game.movementModel === "budget") {
+      if (!tile || this.tile === tile) return false;
+      if (power <= 0.5) return false;
+      const src = this.tile;
+      if (!src) return false;
+      const dist = this._distance(src, tile);
+      if (dist <= 0) return false;
+      const requestedWork = power * dist;
+      const budget = src.budget;
+      const actualWork = requestedWork < budget ? requestedWork : budget;
+      const actualPower = actualWork / dist;
+      if (actualPower <= 0.5) return false;
+      // Engine sanity: keep at least 0.5 strength behind so the
+      // source tile doesn't pop empty mid-tick. Lower bound; the
+      // garrison floor is otherwise gone in budget mode.
+      if (this.strength - actualPower < 0.5) return false;
+      src.budget = budget - actualWork;
+      this.game.recordMove(src, tile, this.player, actualPower);
+      this.strength -= actualPower;
+      const pid = this.player.id;
+      const existing = tile.armies;
+      for (let i = 0; i < existing.length; i++) {
+        const other = existing[i];
+        if (other.alive && other.player.id === pid) {
+          let s = other.strength + actualPower;
+          const max = other.maxStrength;
+          if (s > max) s = max;
+          other.strength = s;
+          return true;
+        }
+      }
+      const newArmy = new Army({
+        pos: tile.pos,
+        player: this.player,
+        strength: actualPower,
+        game: this.game,
+        maxStrength: this.game.maxArmy,
+        tile,
+      });
+      newArmy.isAttacker = true;
+      this.game.spawnArmy(newArmy, tile);
+      return true;
+    }
     if (!this.isAttackValid(tile, power)) return false;
     this.game.recordMove(this.tile, tile, this.player, power);
     this.strength -= power;

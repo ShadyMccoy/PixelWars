@@ -10,6 +10,12 @@ export class Tile {
     this.ownership = 0;
     this.ownerId = 0;
     this.dirty = false;
+    // Per-tile movement budget in work units (strength × distance).
+    // Recharges per tick (modulated by owner's move-tech multiplier),
+    // is clamped on use (min of requested work and available budget),
+    // and resets to 0 when the tile changes hands. Only consulted in
+    // "budget" movement mode; classic mode ignores it.
+    this.budget = 0;
   }
 
   registerArmy(army) {
@@ -38,10 +44,15 @@ export class Tile {
 
     const grouped = [];
     const groupedPids = [];
+    // Identify the previous holder (army that was already on the tile,
+    // not arrived this tick) for conquest detection. If no
+    // non-attacker is present the tile was effectively neutral.
+    let prevHolderPid = null;
     for (let k = 0; k < list.length; k++) {
       const a = list[k];
       if (!a.alive) continue;
       const pid = a.player.id;
+      if (!a.isAttacker && prevHolderPid === null) prevHolderPid = pid;
       let merged = false;
       for (let g = 0; g < groupedPids.length; g++) {
         if (groupedPids[g] === pid) {
@@ -114,6 +125,12 @@ export class Tile {
       loser.die();
       survivor = winner.alive ? winner : null;
     }
+
+    // Conquest reset: if ownership of the tile changes (or the tile
+    // empties out entirely), zero the per-tile movement budget. Only
+    // meaningful in "budget" movement mode; otherwise it's a no-op.
+    const newPid = survivor && survivor.alive ? survivor.player.id : null;
+    if (newPid !== prevHolderPid) this.budget = 0;
 
     if (survivor && survivor.alive) {
       survivor.isAttacker = false;

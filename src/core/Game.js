@@ -13,6 +13,9 @@ export class Game {
     decay = 0.05,
     attackerBonus = 1.4,
     combatModel = "linear",
+    movementModel = "classic",
+    maxBudget = null,         // budget mode: cap. null -> defaults to maxArmy.
+    baseBudgetRecharge = 1.0, // budget mode: budget gained per tick at neutral move-tech.
     maxHistory = 240,
     seed = null,
   } = {}) {
@@ -37,6 +40,18 @@ export class Game {
     //   not optimal here; the closed-form commit becomes a strict
     //   underestimate.
     this.combatModel = combatModel;
+    // "classic" (default): adjacent-only attacks, garrison floor from
+    //   the move tech. Existing 391 bots target this model.
+    // "budget": tile-local movement budget recharges per tick (scaled
+    //   by the owner's move-tech multiplier), measured in work units
+    //   (strength × Euclidean distance). Attack targets can be any
+    //   tile; the engine clamps actual delivered power so the
+    //   work spent never exceeds the source tile's budget. Conquest
+    //   resets the captured tile's budget to 0, which gives defenders
+    //   a structural tempo advantage and makes blitz raids costly.
+    this.movementModel = movementModel;
+    this.maxBudget = maxBudget != null ? maxBudget : maxArmy;
+    this.baseBudgetRecharge = baseBudgetRecharge;
     this.history = [];
     this.maxHistory = maxHistory;
     this.seed = seed;
@@ -184,6 +199,28 @@ export class Game {
       }
     }
     this.map.resolveConflicts(this._dirtyTiles);
+
+    // Budget mode: each owned tile recharges its movement budget by
+    // baseRecharge × owner.move-tech-multiplier, capped at maxBudget.
+    // Tiles without an army (neutral) are skipped — their budget was
+    // already reset to 0 on whatever conquest left them empty, and
+    // there's no owner to define the recharge rate. Done after combat
+    // resolution so just-conquered tiles (budget=0) don't sneak in a
+    // free recharge tick before the new owner has acted.
+    if (this.movementModel === "budget") {
+      const baseRate = this.baseBudgetRecharge * interval * 30; // tickInterval is 1/30 by default; normalize to ~1 per tick.
+      const cap = this.maxBudget;
+      const tiles = this.map.tiles;
+      for (let i = 0; i < tiles.length; i++) {
+        const tile = tiles[i];
+        const armies = tile.armies;
+        if (armies.length !== 1) continue;
+        const owner = armies[0].player;
+        const mult = owner?.techMults?.moveRecharge ?? 1;
+        const next = tile.budget + baseRate * mult;
+        tile.budget = next > cap ? cap : next;
+      }
+    }
 
     if (this.recentMoves.length > 0) {
       const moves = this.recentMoves;
