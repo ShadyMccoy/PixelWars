@@ -47,6 +47,9 @@ import Reservoir from "./Reservoir.js";
 import Convex from "./Convex.js";
 import Cleaver from "./Cleaver.js";
 import Coward from "./Coward.js";
+import Reaper from "./Reaper.js";
+import Flanker from "./Flanker.js";
+import Drifter from "./Drifter.js";
 import { GENERATED } from "./generated.js";
 import { DESCENDANTS } from "./descendants.js";
 import { ARCHIVED } from "./archive.js";
@@ -105,6 +108,9 @@ export const ALL_STRATEGY_LIST = [
   Convex,
   Cleaver,
   Coward,
+  Reaper,
+  Flanker,
+  Drifter,
   ...GENERATED,
   ...DESCENDANTS,
 ];
