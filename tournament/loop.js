@@ -41,6 +41,13 @@ const FLOOR_PLAYED = 100;
 const AUTO_MIN_MATCHES = 30;
 const AUTO_MAX_MATCHES = 1000;
 
+// Pool narrowing: each season runs on (top N rated) ∪ (random K from
+// outside the top N) ∪ (all unrated active bots). Wildcards are
+// re-rolled every iteration so the long tail rotates through over time
+// rather than running every season on the entire active pool.
+const TOP_KEEP = 50;
+const RANDOM_WILDCARDS = 10;
+
 const HELP = `Usage: node tournament/loop.js [options]
 
 Autonomous descendant-spawn loop.
@@ -120,49 +127,104 @@ function runCmd(cmd, args, { input = null, captureStdout = false, captureStderr 
   });
 }
 
-// Read rankings.json (post-last-season priors) and compute the number
-// of rating-phase matches needed to drive every active bot's synthetic
-// RD to the floor. Bots already at floor contribute 0; fresh bots
-// missing from rankings.json contribute the full FLOOR_PLAYED.
-async function pickAutoMatches() {
+// Random sample without replacement; deterministic only if `rng` is
+// passed. Default to Math.random so each loop iteration draws fresh
+// wildcards and the tail rotates over time.
+function sampleK(arr, k, rng = Math.random) {
+  if (arr.length <= k) return arr.slice();
+  const pool = arr.slice();
+  const out = [];
+  for (let i = 0; i < k; i++) {
+    const j = Math.floor(rng() * pool.length);
+    out.push(pool.splice(j, 1)[0]);
+  }
+  return out;
+}
+
+// Read rankings.json (post-last-season priors) and decide:
+//   - which bots to enter in this season's rating tournament: top N
+//     rated + K random wildcards from outside the top + all unrated
+//     active bots (new descendants need calibration);
+//   - how many rating-phase matches to run, scaled to the pool's
+//     uncertainty deficit so quiet iterations run short and noisy ones
+//     run long. FLOOR_PLAYED clipped to the narrowed pool — bots that
+//     aren't entered don't contribute to the match budget.
+async function planSeason() {
   const indexUrl = pathToFileURL(resolve(REPO_ROOT, "src/strategies/index.js")).href + `?bust=${Date.now()}`;
   const stratMod = await import(indexUrl);
   const activeNames = stratMod.STRATEGY_LIST.map((s) => s.name);
 
-  let priors = {};
+  const ratings = new Map();
+  const priors = {};
   try {
     const txt = await readFile(resolve(REPO_ROOT, "tournament/rankings.json"), "utf8");
     const data = JSON.parse(txt);
     for (const p of data.players ?? []) {
+      ratings.set(p.name, p.rating);
       priors[p.name] = { played: p.matches ?? 0 };
     }
   } catch (e) {
     if (e.code !== "ENOENT") throw e;
-    // No rankings yet: every active bot is fresh, deficit = N * FLOOR_PLAYED.
+    // No rankings yet: every active bot is fresh and unrated.
+  }
+
+  let pool;
+  let topCount = 0;
+  let wildcardCount = 0;
+  let unratedCount = 0;
+  if (ratings.size === 0) {
+    // First-ever run: nothing rated yet, run on the full active set.
+    pool = activeNames.slice();
+    unratedCount = pool.length;
+  } else {
+    const rated = activeNames.filter((n) => ratings.has(n));
+    const unrated = activeNames.filter((n) => !ratings.has(n));
+    rated.sort((a, b) => ratings.get(b) - ratings.get(a));
+    const top = rated.slice(0, TOP_KEEP);
+    const tail = rated.slice(TOP_KEEP);
+    const wildcards = sampleK(tail, RANDOM_WILDCARDS);
+    pool = [...new Set([...top, ...wildcards, ...unrated])];
+    topCount = top.length;
+    wildcardCount = wildcards.length;
+    unratedCount = unrated.length;
   }
 
   let deficit = 0;
   let uncertain = 0;
-  for (const name of activeNames) {
+  for (const name of pool) {
     const played = priors[name]?.played ?? 0;
     const d = Math.max(0, FLOOR_PLAYED - played);
     if (d > 0) uncertain++;
     deficit += d;
   }
   const matches = Math.max(AUTO_MIN_MATCHES, Math.min(AUTO_MAX_MATCHES, deficit));
-  return { matches, uncertain, deficit, activeCount: activeNames.length };
+  return {
+    pool, matches, uncertain, deficit,
+    activeCount: activeNames.length,
+    topCount, wildcardCount, unratedCount,
+  };
 }
 
 async function runSeason(seasonArgs) {
   const userArgs = seasonArgs.trim() ? seasonArgs.trim().split(/\s+/) : [];
   const userSpecifiedMatches = userArgs.includes("--matches");
+  const userSpecifiedBots = userArgs.includes("--bots");
 
   const args = ["tournament/run.js", "--season"];
   if (userArgs.length) args.push(...userArgs);
-  if (!userSpecifiedMatches) {
-    const plan = await pickAutoMatches();
-    log(`Auto-matches: ${plan.matches} (deficit=${plan.deficit} across ${plan.uncertain}/${plan.activeCount} uncertain bots)`);
-    args.push("--matches", String(plan.matches));
+
+  if (!userSpecifiedBots || !userSpecifiedMatches) {
+    const plan = await planSeason();
+    if (!userSpecifiedBots) {
+      log(`Pool: ${plan.pool.length} bots ` +
+          `(top ${plan.topCount} + ${plan.wildcardCount} wildcards + ${plan.unratedCount} unrated, ` +
+          `from ${plan.activeCount} active)`);
+      args.push("--bots", plan.pool.join(","));
+    }
+    if (!userSpecifiedMatches) {
+      log(`Auto-matches: ${plan.matches} (deficit=${plan.deficit} across ${plan.uncertain}/${plan.pool.length} uncertain bots)`);
+      args.push("--matches", String(plan.matches));
+    }
   }
 
   log(`Running season: node ${args.join(" ")}`);

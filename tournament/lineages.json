@@ -6,9 +6,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:53:52.843Z"
     },
     {
       "name": "Repel",
@@ -16,9 +16,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:25:25.820Z"
     },
     {
       "name": "Trinity",
@@ -26,9 +26,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:51:50.207Z"
     },
     {
       "name": "Aggressive",
@@ -36,9 +36,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:34:27.222Z"
     },
     {
       "name": "Defender",
@@ -56,9 +56,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:24:04.993Z"
     },
     {
       "name": "Berserker",
@@ -66,9 +66,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:30:55.497Z"
     },
     {
       "name": "Cautious",
@@ -76,9 +76,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:32:06.318Z"
     },
     {
       "name": "Swarm",
@@ -86,9 +86,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:59:20.807Z"
     },
     {
       "name": "Opportunist",
@@ -96,9 +96,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:50:08.528Z"
     },
     {
       "name": "Hunter",
@@ -106,9 +106,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:43:27.507Z"
     },
     {
       "name": "Turtle",
@@ -116,9 +116,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:09:57.987Z"
     },
     {
       "name": "Phalanx",
@@ -126,9 +126,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:03:46.297Z"
     },
     {
       "name": "Vampire",
@@ -136,9 +136,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:00:58.516Z"
     },
     {
       "name": "Tactician",
@@ -146,9 +146,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:48:00.686Z"
     },
     {
       "name": "Scout",
@@ -156,9 +156,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:23:26.866Z"
     },
     {
       "name": "Avalanche",
@@ -166,9 +166,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:51:18.613Z"
     },
     {
       "name": "Bully",
@@ -176,9 +176,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:36:20.031Z"
     },
     {
       "name": "Adaptive",
@@ -186,9 +186,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:58:07.724Z"
     },
     {
       "name": "Membrane",
@@ -196,9 +196,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:57:21.189Z"
     },
     {
       "name": "Crusader",
@@ -206,9 +206,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:46:08.717Z"
     },
     {
       "name": "Vanguard",
@@ -216,9 +216,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:55:40.337Z"
     },
     {
       "name": "Spearhead",
@@ -226,9 +226,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:16:08.675Z"
     },
     {
       "name": "Surge",
@@ -236,9 +236,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:46:55.163Z"
     },
     {
       "name": "Wildfire",
@@ -246,9 +246,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:48:01.635Z"
     },
     {
       "name": "Bulwark",
@@ -256,9 +256,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:03:05.660Z"
     },
     {
       "name": "TideWall",
@@ -266,9 +266,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:21:09.922Z"
     },
     {
       "name": "Conductor",
@@ -276,9 +276,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:17:58.812Z"
     },
     {
       "name": "Conqueror",
@@ -286,9 +286,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:40:55.456Z"
     },
     {
       "name": "Stalker",
@@ -296,9 +296,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:44:37.959Z"
     },
     {
       "name": "Citadel",
@@ -306,9 +306,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:59:20.453Z"
     },
     {
       "name": "Lance",
@@ -316,9 +316,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:38:19.993Z"
     },
     {
       "name": "Frontier",
@@ -326,9 +326,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:40:10.701Z"
     },
     {
       "name": "PressureSink",
@@ -336,9 +336,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:38:53.240Z"
     },
     {
       "name": "CitadelSortie",
@@ -346,9 +346,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:45:06.651Z"
     },
     {
       "name": "Pinwheel",
@@ -356,9 +356,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:27:33.442Z"
     },
     {
       "name": "Anvil",
@@ -366,9 +366,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:58:00.842Z"
     },
     {
       "name": "Skirmisher",
@@ -376,9 +376,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:51:49.681Z"
     },
     {
       "name": "Tempo",
@@ -386,9 +386,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:34:59.187Z"
     },
     {
       "name": "Hunter_01",
@@ -2636,9 +2636,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T22:27:28.532Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:28:35.031Z"
     },
     {
       "name": "Conqueror_g10_447dc3",
@@ -2676,9 +2676,9 @@
       "parent": "Conqueror_g8_9d8b65",
       "generation": 9,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-07T23:10:38.070Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:08:16.315Z"
     },
     {
       "name": "Conqueror_g9_bb8efc",
@@ -2826,9 +2826,9 @@
       "parent": "Conqueror_g7_31769b",
       "generation": 8,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T00:20:07.906Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:01:55.079Z"
     },
     {
       "name": "Conqueror_g9_192ea5",
@@ -2946,9 +2946,9 @@
       "parent": "Conqueror_g7_3f7da6",
       "generation": 8,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T02:47:22.803Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:45:43.018Z"
     },
     {
       "name": "Conqueror_g5_897d51",
@@ -2966,9 +2966,9 @@
       "parent": "Conqueror_g8_174911",
       "generation": 9,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T02:51:16.316Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:54:12.143Z"
     },
     {
       "name": "Conqueror_g12_f23241",
@@ -2996,9 +2996,9 @@
       "parent": "Conqueror_g6_5a4345",
       "generation": 7,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T02:57:51.519Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:56:11.062Z"
     },
     {
       "name": "Conqueror_g10_a5c12c",
@@ -3016,9 +3016,9 @@
       "parent": "Conqueror_g5_897d51",
       "generation": 6,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T03:05:27.084Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:05:31.292Z"
     },
     {
       "name": "Conqueror_g8_1c5660",
@@ -3126,9 +3126,9 @@
       "parent": "Conqueror_g8_5c68e4",
       "generation": 9,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T03:21:04.900Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:38:54.753Z"
     },
     {
       "name": "Conqueror_g8_838926",
@@ -3216,9 +3216,9 @@
       "parent": "Conqueror_g9_1e065b",
       "generation": 10,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T03:32:41.819Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:48:42.344Z"
     },
     {
       "name": "Conqueror_g6_5791bf",
@@ -3226,9 +3226,9 @@
       "parent": "Conqueror_g5_b451ab",
       "generation": 6,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T03:33:51.634Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:32:40.157Z"
     },
     {
       "name": "Conqueror_g9_d2499d",
@@ -3286,9 +3286,9 @@
       "parent": "Conqueror_g9_a22c1e",
       "generation": 10,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T03:42:48.315Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:56:02.369Z"
     },
     {
       "name": "Conqueror_g8_bfcb0e",
@@ -3306,9 +3306,9 @@
       "parent": "Conqueror_g8_d001cc",
       "generation": 9,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T03:45:53.646Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:01:24.774Z"
     },
     {
       "name": "Conqueror_g9_b68f52",
@@ -3336,9 +3336,9 @@
       "parent": "Conqueror_g5_f15d3e",
       "generation": 6,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T03:51:09.323Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:06:35.362Z"
     },
     {
       "name": "Conqueror_g6_127cef",
@@ -3466,9 +3466,9 @@
       "parent": "Conqueror_g8_3280dd",
       "generation": 9,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T04:11:01.926Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:10:38.053Z"
     },
     {
       "name": "Conqueror_g7_a94876",
@@ -3476,9 +3476,9 @@
       "parent": "Conqueror_g6_53407c",
       "generation": 7,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T04:12:13.294Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:30:20.875Z"
     },
     {
       "name": "Conqueror_g10_34ca94",
@@ -3536,9 +3536,9 @@
       "parent": "Conqueror_g8_bfcb0e",
       "generation": 9,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T04:25:10.139Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:13:47.282Z"
     },
     {
       "name": "Conqueror_g13_037c96",
@@ -3546,9 +3546,9 @@
       "parent": "Conqueror_g12_f23241",
       "generation": 13,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T04:27:59.307Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:07:04.689Z"
     },
     {
       "name": "Conqueror_g9_aa6fcf",
@@ -3586,9 +3586,9 @@
       "parent": "Conqueror_g10_34ca94",
       "generation": 11,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T04:36:00.072Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:11:47.683Z"
     },
     {
       "name": "Conqueror_g11_898e1e",
@@ -3626,9 +3626,9 @@
       "parent": "Conqueror_g14_7d3830",
       "generation": 15,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T04:45:27.854Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:04:57.118Z"
     },
     {
       "name": "Conqueror_g15_e978b4",
@@ -3646,9 +3646,9 @@
       "parent": "Conqueror_g15_e978b4",
       "generation": 16,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T04:49:15.526Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:50:02.013Z"
     },
     {
       "name": "Conqueror_g15_9bb6eb",
@@ -3686,9 +3686,9 @@
       "parent": "Conqueror_g16_e79590",
       "generation": 17,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T04:59:53.592Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:15:21.570Z"
     },
     {
       "name": "Conqueror_g15_8c3a18",
@@ -3696,9 +3696,9 @@
       "parent": "Conqueror_g14_2ae72f",
       "generation": 15,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:01:47.901Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:54:45.157Z"
     },
     {
       "name": "Conqueror_g14_2486d3",
@@ -3726,9 +3726,9 @@
       "parent": "Conqueror_g17_6d0fb0",
       "generation": 18,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:08:50.209Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:57:22.768Z"
     },
     {
       "name": "Conqueror_g18_6a26b3",
@@ -3776,9 +3776,9 @@
       "parent": "Conqueror_g19_9533e3",
       "generation": 20,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:19:40.388Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:14:13.422Z"
     },
     {
       "name": "Conqueror_g20_43253a",
@@ -3806,9 +3806,9 @@
       "parent": "Conqueror_g14_8d5369",
       "generation": 15,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:25:37.647Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:56:28.340Z"
     },
     {
       "name": "Conqueror_g15_46bdef",
@@ -3836,9 +3836,9 @@
       "parent": "Conqueror_g13_b41df9",
       "generation": 14,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:32:19.423Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:17:24.057Z"
     },
     {
       "name": "Conqueror_g15_313179",
@@ -3856,9 +3856,9 @@
       "parent": "Conqueror_g20_43253a",
       "generation": 21,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:36:49.614Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:19:54.530Z"
     },
     {
       "name": "Conqueror_g15_ca7fc2",
@@ -3866,9 +3866,9 @@
       "parent": "Conqueror_g14_8d5369",
       "generation": 15,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:40:00.098Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T17:53:16.000Z"
     },
     {
       "name": "Conqueror_g15_2c15dc",
@@ -3876,9 +3876,9 @@
       "parent": "Conqueror_g14_8d5369",
       "generation": 15,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:42:41.066Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T18:42:44.493Z"
     },
     {
       "name": "Conqueror_g15_5f1772",
@@ -3886,9 +3886,9 @@
       "parent": "Conqueror_g14_8d5369",
       "generation": 15,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-08T05:46:17.160Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T19:19:21.897Z"
     },
     {
       "name": "Conqueror_g15_7de828",
@@ -3899,6 +3899,906 @@
       "active": false,
       "createdAt": "2026-05-08T05:47:53.387Z",
       "archivedAt": "2026-05-08T16:28:28.462Z"
+    },
+    {
+      "name": "Frontier_g1_cca945",
+      "family": "Frontier",
+      "parent": "Frontier",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:45:42.998Z",
+      "archivedAt": "2026-05-08T17:46:07.812Z"
+    },
+    {
+      "name": "Frontier_g1_68f73e",
+      "family": "Frontier",
+      "parent": "Frontier",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:46:07.793Z",
+      "archivedAt": "2026-05-08T17:47:34.021Z"
+    },
+    {
+      "name": "Frontier_g1_855294",
+      "family": "Frontier",
+      "parent": "Frontier",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:47:34.002Z",
+      "archivedAt": "2026-05-08T17:49:36.237Z"
+    },
+    {
+      "name": "PressureSink_g1_8f121c",
+      "family": "PressureSink",
+      "parent": "PressureSink",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:48:00.665Z",
+      "archivedAt": "2026-05-08T19:21:46.683Z"
+    },
+    {
+      "name": "Frontier_g1_0c6381",
+      "family": "Frontier",
+      "parent": "Frontier",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:49:36.218Z",
+      "archivedAt": "2026-05-08T19:43:21.567Z"
+    },
+    {
+      "name": "Frontier_g2_461435",
+      "family": "Frontier",
+      "parent": "Frontier_g1_855294",
+      "generation": 2,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:50:08.511Z",
+      "archivedAt": "2026-05-08T19:40:57.554Z"
+    },
+    {
+      "name": "Frontier_g2_cebd38",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:51:18.594Z",
+      "archivedAt": "2026-05-08T17:52:48.778Z"
+    },
+    {
+      "name": "Frontier_g3_8c5891",
+      "family": "Frontier",
+      "parent": "Frontier_g2_461435",
+      "generation": 3,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:51:49.665Z",
+      "archivedAt": "2026-05-08T19:42:26.079Z"
+    },
+    {
+      "name": "Frontier_g2_34255e",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:52:48.760Z",
+      "archivedAt": "2026-05-08T18:41:34.062Z"
+    },
+    {
+      "name": "Frontier_g3_bd5683",
+      "family": "Frontier",
+      "parent": "Frontier_g2_cebd38",
+      "generation": 3,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:53:15.983Z",
+      "archivedAt": "2026-05-08T19:00:06.474Z"
+    },
+    {
+      "name": "Frontier_g3_61b131",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:54:12.124Z",
+      "archivedAt": "2026-05-08T17:59:57.611Z"
+    },
+    {
+      "name": "Frontier_g3_eaf9b1",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:54:45.140Z",
+      "archivedAt": "2026-05-08T19:12:45.756Z"
+    },
+    {
+      "name": "Frontier_g1_24609d",
+      "family": "Frontier",
+      "parent": "Frontier",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:56:02.352Z",
+      "archivedAt": "2026-05-08T19:36:52.590Z"
+    },
+    {
+      "name": "Frontier_g4_66af38",
+      "family": "Frontier",
+      "parent": "Frontier_g3_61b131",
+      "generation": 4,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:56:28.322Z",
+      "archivedAt": "2026-05-08T18:01:43.805Z"
+    },
+    {
+      "name": "Frontier_g1_ed1ff5",
+      "family": "Frontier",
+      "parent": "Frontier",
+      "generation": 1,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:57:22.751Z",
+      "archivedAt": "2026-05-08T19:26:03.506Z"
+    },
+    {
+      "name": "Frontier_g5_794766",
+      "family": "Frontier",
+      "parent": "Frontier_g4_66af38",
+      "generation": 5,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:58:07.706Z",
+      "archivedAt": "2026-05-08T18:50:46.377Z"
+    },
+    {
+      "name": "Frontier_g2_ddb046",
+      "family": "Frontier",
+      "parent": "Frontier_g1_ed1ff5",
+      "generation": 2,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:59:20.435Z",
+      "archivedAt": "2026-05-08T19:08:50.964Z"
+    },
+    {
+      "name": "Frontier_g3_ad3d81",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T17:59:57.593Z",
+      "archivedAt": "2026-05-08T18:39:53.762Z"
+    },
+    {
+      "name": "Frontier_g4_e7abc2",
+      "family": "Frontier",
+      "parent": "Frontier_g3_ad3d81",
+      "generation": 4,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T18:00:58.499Z",
+      "archivedAt": "2026-05-08T18:52:35.644Z"
+    },
+    {
+      "name": "Frontier_g3_69a9ba",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T18:01:43.785Z",
+      "archivedAt": "2026-05-08T18:54:28.794Z"
+    },
+    {
+      "name": "Frontier_g4_ed149c",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:38:54.735Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_9413f3",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:39:53.745Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_95721f",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:40:55.438Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_743627",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:41:34.044Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_4accfa",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:42:44.474Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_a9b303",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:43:27.487Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_be2ba4",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:44:37.941Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_c9d674",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:45:06.633Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_047f81",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:46:08.699Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_a4f587",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:46:55.145Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_0542d0",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:48:01.618Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_f847e1",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:48:42.323Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_31f0e7",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:50:01.995Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_ead23b",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:50:46.360Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_0585a4",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:51:50.189Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_93d27c",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:52:35.625Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_a58a75",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:53:52.826Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_ca36f8",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:54:28.777Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_7586de",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:55:40.319Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_109513",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:56:11.044Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_e4fec1",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:57:21.170Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_0e5bae",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:58:00.825Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_96bf79",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T18:59:20.789Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_8b31d1",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:00:06.456Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_235131",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:01:24.756Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_2ee563",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:01:55.062Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_b88518",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:03:05.642Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_2b6d95",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:03:46.277Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_a450d6",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:04:57.099Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_7eb24f",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:05:31.272Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_39c6ff",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:06:35.343Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_f08051",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:07:04.670Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_374617",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:08:16.296Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_bea70f",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T19:08:50.946Z",
+      "archivedAt": "2026-05-08T19:55:51.674Z"
+    },
+    {
+      "name": "Frontier_g4_7f5175",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:09:57.968Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_3a1706",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": false,
+      "createdAt": "2026-05-08T19:10:38.034Z",
+      "archivedAt": "2026-05-08T19:55:23.352Z"
+    },
+    {
+      "name": "Frontier_g4_340f64",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:11:47.665Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_d3143e",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:12:45.737Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_95c28c",
+      "family": "Frontier",
+      "parent": "Frontier_g1_ed1ff5",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:13:47.264Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_de0710",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:14:13.403Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_cd9f16",
+      "family": "Frontier",
+      "parent": "Frontier_g1_ed1ff5",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:15:21.551Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_66ca72",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:16:08.657Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_6592a6",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:17:24.038Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_5e42eb",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:17:58.794Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_cadf18",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:19:21.874Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_813934",
+      "family": "Frontier",
+      "parent": "Frontier_g1_ed1ff5",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:19:54.510Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_bfd073",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:21:09.903Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_9bd0a1",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:21:46.664Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_d46c2b",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:23:26.847Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_be69df",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:24:04.965Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_4ee980",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:25:25.796Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_c1a729",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:26:03.480Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_bd2a33",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:27:33.419Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_a24505",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:28:35.007Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_02c70c",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:30:20.851Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_e70e81",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:30:55.478Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_453833",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:32:06.297Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_9c2544",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:32:40.132Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_749873",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:34:27.196Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_d5eb84",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:34:59.159Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_9372ec",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:36:20.011Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_1d7ef8",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:36:52.571Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_38bfff",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:38:19.967Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_8ceade",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:38:53.216Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_3e007c",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:40:10.677Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g4_490175",
+      "family": "Frontier",
+      "parent": "Frontier_g3_eaf9b1",
+      "generation": 4,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:40:57.529Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g2_92abec",
+      "family": "Frontier",
+      "parent": "Frontier_g1_0c6381",
+      "generation": 2,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:42:26.056Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g3_524421",
+      "family": "Frontier",
+      "parent": "Frontier_g2_34255e",
+      "generation": 3,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:43:21.547Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g5_cf09fe",
+      "family": "Frontier",
+      "parent": "Frontier_g4_a58a75",
+      "generation": 5,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:55:23.333Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g5_e3c10c",
+      "family": "Frontier",
+      "parent": "Frontier_g4_a58a75",
+      "generation": 5,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T19:55:51.654Z",
+      "archivedAt": null
     }
   ]
 }

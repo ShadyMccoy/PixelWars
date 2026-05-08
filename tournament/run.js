@@ -677,11 +677,9 @@ async function cmdSeason(opts) {
 
   // Append rating-phase matches to the log and refit rankings.json on
   // the full history. The post-refit ratings are the *stable* view of
-  // skill — a per-season fit on ~30 matches is too noisy, since each
-  // bot only plays a handful of matches and a 3-of-3 winner can spike
-  // to 1500+ on luck. We use the refit to (a) crown the rating-leader
-  // champion, (b) seed the bracket field, and (c) print as the primary
-  // leaderboard.
+  // skill, used to (a) crown the rating-leader champion and (b) print
+  // as the primary leaderboard. The bracket field comes from this
+  // season's in-season standings instead — see below.
   let refreshed = null;
   if (ratingMatchEntries.length) {
     await appendMatches(ratingMatchEntries);
@@ -693,23 +691,28 @@ async function cmdSeason(opts) {
     }
   }
 
-  // Pick rating-leader champion + bracket field from the stable refit.
-  // First-ever run with no log falls back to in-season standings.
+  // Rating-leader champion: stable refit. The cumulative view filters
+  // out one-season hot-streak luck, so the "rating leader" crown stays
+  // honest. First-ever run with no log falls back to in-season.
   const activeNames = new Set(STRATEGY_LIST.map((s) => s.name));
   let ratingChampion = null;
-  let topNames = [];
   if (refreshed) {
     const stableActive = refreshed.players.filter((p) => activeNames.has(p.name));
     ratingChampion = stableActive[0]?.name ?? ratingResult.standings[0]?.name ?? null;
-    const desiredTopN = Math.max(3, Math.min(opts.seasonTop, stableActive.length));
-    topNames = stableActive.slice(0, desiredTopN).map((p) => p.name);
   } else {
     ratingChampion = ratingResult.standings[0]?.name ?? null;
-    const desiredTopN = Math.max(3, Math.min(opts.seasonTop, ratingResult.standings.length));
-    topNames = ratingResult.standings.slice(0, desiredTopN).map((s) => s.name);
   }
 
-  // === Phase 2: bracket tournament among the top of the stable field. ===
+  // Bracket field: this season's in-season standings, NOT the stable
+  // refit. Reason: the bracket is the playoff for *this* season — it
+  // should reward bots that performed under the current matchmaking
+  // and rule set. The cumulative refit can lag behind a recent rule
+  // change for many seasons, sending the bracket field with bots whose
+  // high stable rating is largely older-meta debt.
+  const desiredTopN = Math.max(3, Math.min(opts.seasonTop, ratingResult.standings.length));
+  const topNames = ratingResult.standings.slice(0, desiredTopN).map((s) => s.name);
+
+  // === Phase 2: bracket tournament among this season's top performers. ===
   const topStrategies = topNames
     .map((name) => strategies.find((s) => s.name === name))
     .filter(Boolean);
@@ -773,7 +776,7 @@ async function cmdSeason(opts) {
       modeLabel: `in-season ratings (this season's matches only · noisy on small samples) · ${matchCount} matches · K=${opts.pool} · ${strategies.length} bots`,
     });
     if (bracket) {
-      console.log(`\nBracket (top ${bracket.fieldSize} on ${opts.seasonBracketMap}, ${bracket.brackets} K=3 brackets, field drawn from stable rankings):`);
+      console.log(`\nBracket (top ${bracket.fieldSize} on ${opts.seasonBracketMap}, ${bracket.brackets} K=3 brackets, field drawn from in-season standings):`);
       bracket.overall.forEach((r, i) => {
         console.log(`  ${String(i + 1).padStart(2)}. ${r.name.padEnd(18)} finals=${r.finalWins} roundWins=${r.roundWins} PPG=${r.pointsPerGame.toFixed(2)}`);
       });
