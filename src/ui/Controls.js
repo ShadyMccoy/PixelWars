@@ -19,6 +19,7 @@ export class Controls {
     this.toggleMoves = $("#toggle-moves");
     this.moveStyle = $("#move-style");
     this.toggleOverlay = $("#toggle-overlay");
+    this.toggle3D = $("#toggle-3d");
     this.tickLabel = $("#tick-label");
     this.seedPill = $("#seed-pill");
     this.eventLog = $("#event-log");
@@ -60,6 +61,13 @@ export class Controls {
     this.toggleOverlay.addEventListener("change", () => {
       this.app.setOverlay(this.toggleOverlay.checked);
     });
+    if (this.toggle3D) {
+      this.toggle3D.addEventListener("change", () => {
+        this.app.renderer.view3D = this.toggle3D.checked;
+        this.app.renderer.resetView();
+        this.app.markDirty();
+      });
+    }
 
     document.addEventListener("keydown", (e) => {
       if (e.target.matches("input, select, textarea")) return;
