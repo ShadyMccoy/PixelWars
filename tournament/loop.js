@@ -39,7 +39,7 @@ const DEFAULT_AGENT_CMD = "claude -p";
 // matchmaker needs to drive every uncertain bot to the floor.
 const FLOOR_PLAYED = 100;
 const AUTO_MIN_MATCHES = 30;
-const AUTO_MAX_MATCHES = 250;
+const AUTO_MAX_MATCHES = 1000;
 
 const HELP = `Usage: node tournament/loop.js [options]
 
