@@ -35,6 +35,7 @@ import {
   familiesByName,
   getLineageStorePath,
   markArchived,
+  markActive,
 } from "./lineageStore.js";
 import { prepareSpawnTask, registerDescendant } from "./spawn.js";
 import { prepareCull, applyCull } from "./cull.js";
@@ -460,8 +461,24 @@ async function cmdArchiveList(opts) {
   for (const name of cur) console.log(`  ${name}`);
 }
 
+// Mirror archive.js writes into lineages.json so applyArchivalForSpawn's
+// later union (existing archive ∪ all lineage records with active=false)
+// doesn't undo a manual --archive-remove or fail to follow a manual
+// --archive-add. Bots without a lineage record (e.g. factory parameter
+// sweeps) are silently skipped — markActive/markArchived are best-effort.
+async function syncLineageActive(names, active) {
+  for (const name of names) {
+    try {
+      if (active) await markActive(name);
+      else await markArchived(name);
+    } catch { /* no lineage record — fine */ }
+  }
+}
+
 async function cmdArchiveClear(opts) {
+  const wasArchived = currentArchive();
   await writeArchive([]);
+  await syncLineageActive(wasArchived, true);
   console.log(`Archive cleared. ${ALL_STRATEGY_LIST.length} active strategies.`);
 }
 
@@ -477,6 +494,7 @@ async function cmdArchiveAdd(opts) {
     if (!cur.has(name)) { cur.add(name); added.push(name); }
   }
   const final = await writeArchive([...cur]);
+  await syncLineageActive(opts.archiveAdd, false);
   console.log(`Archived ${added.length} new bot${added.length === 1 ? "" : "s"} (${final.length} total): ${added.join(", ") || "(none new)"}`);
 }
 
@@ -487,6 +505,7 @@ async function cmdArchiveRemove(opts) {
     if (cur.delete(name)) removed.push(name);
   }
   const final = await writeArchive([...cur]);
+  await syncLineageActive(opts.archiveRemove, true);
   console.log(`Removed ${removed.length} bot${removed.length === 1 ? "" : "s"} from archive (${final.length} remain): ${removed.join(", ") || "(none)"}`);
 }
 

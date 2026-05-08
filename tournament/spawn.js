@@ -309,16 +309,13 @@ Read these only if you need them — most tweaks won't:
 `;
 
   const techSection = ancestors?.length
-    ? `\n## Lineage tech trajectory\n\n` +
-      `Tech allocates 100 points across {move, stack, prod, atk, def}; ` +
-      `each knob shifts a per-turn multiplier (move = garrison floor, ` +
-      `others = output multipliers). Inheriting via spread keeps the ` +
-      `parent's tech (last row below); adding \`tech: { ... }\` ` +
-      `replaces it. See \`docs/techs.md\` for slopes and effects.\n\n` +
-      `Recent ancestors back from the parent, oldest first, with each ` +
-      `bot's current rating and the rating gap to its own parent in ` +
-      `this chain. Frozen columns and small Δs are signals that an axis ` +
-      `is unexplored, not that it's been ruled out.\n\n` +
+    ? `\n## Lineage tech trajectory (for context only — tech is locked)\n\n` +
+      `Recent ancestors back from the parent, oldest first, showing how ` +
+      `tech and rating have moved across this lineage. The point of this ` +
+      `table is to make it obvious that the lineage has been ` +
+      `hill-climbing tech allocation and the gains have flattened — ` +
+      `that's exactly why your descendant must NOT change tech. Inherit ` +
+      `the parent's tech and put your one change into the act() logic.\n\n` +
       renderAncestorTable(ancestors) +
       `\n`
     : "";
@@ -332,8 +329,14 @@ the validator — your job is to make ONE small, hypothesis-driven change
 that you expect to nudge the rating up, not to reinvent the bot.
 
 Guidelines:
-- Pick one targeted change: tune a constant, swap a small branch,
-  re-allocate tech, etc. Resist whole-thesis rewrites.
+- Pick one targeted change to the **logic**: tune a constant in the
+  act() body, swap a small branch, change a threshold, refine a role
+  rule. Resist whole-thesis rewrites.
+- **Do not change \`tech\`.** Inherit the parent's tech via spread (or
+  copy it verbatim). This lineage has been hill-climbing tech for many
+  generations and the gains have flattened — we're testing whether
+  logic mutations can push past that ceiling. A descendant whose only
+  diff is tech numbers is not what we want here.
 - State the hypothesis in a brief comment ("expect this to help against
   X because Y" — reference the loss context below when relevant).
 - Don't read the docs unless you actually need a field or helper you

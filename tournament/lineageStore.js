@@ -123,6 +123,21 @@ export async function markArchived(name, { season = null } = {}) {
   return rec;
 }
 
+// Mark a bot active again. Idempotent. Inverse of markArchived: clears
+// archivedAt/archivedSeason so applyArchivalForSpawn's lineage-derived
+// archive list won't re-archive the bot on the next spawn.
+export async function markActive(name) {
+  const store = await readStore();
+  const rec = store.bots.find((b) => b.name === name);
+  if (!rec) return null;
+  if (rec.active === true) return rec;
+  rec.active = true;
+  rec.archivedAt = null;
+  delete rec.archivedSeason;
+  await writeStore(store);
+  return rec;
+}
+
 // Tree (kinship) distance between two bots, in edges, via their lowest
 // common ancestor. Self = 0; parent/child = 1; siblings = 2; cousins = 4.
 // Bots in different families return Infinity. Founders (parent === null)
