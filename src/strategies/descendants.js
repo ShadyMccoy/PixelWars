@@ -300,6 +300,7 @@ import Frontier_g4_ed149c from "./Frontier_g4_ed149c.js";
 import Frontier_g4_f08051 from "./Frontier_g4_f08051.js";
 import Frontier_g4_f847e1 from "./Frontier_g4_f847e1.js";
 import Frontier_g5_794766 from "./Frontier_g5_794766.js";
+import Frontier_g5_c97458 from "./Frontier_g5_c97458.js";
 import Frontier_g5_cf09fe from "./Frontier_g5_cf09fe.js";
 import Frontier_g5_e3c10c from "./Frontier_g5_e3c10c.js";
 import Membrane_g1_b3e9aa from "./Membrane_g1_b3e9aa.js";
@@ -641,6 +642,7 @@ export const DESCENDANTS = [
   Frontier_g4_f08051,
   Frontier_g4_f847e1,
   Frontier_g5_794766,
+  Frontier_g5_c97458,
   Frontier_g5_cf09fe,
   Frontier_g5_e3c10c,
   Membrane_g1_b3e9aa,

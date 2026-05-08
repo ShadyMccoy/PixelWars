@@ -46,9 +46,9 @@
       "parent": null,
       "generation": 0,
       "birthSeason": null,
-      "active": true,
+      "active": false,
       "createdAt": "2026-05-06T05:27:00.755Z",
-      "archivedAt": null
+      "archivedAt": "2026-05-08T20:34:38.968Z"
     },
     {
       "name": "Random",
@@ -4798,6 +4798,16 @@
       "birthSeason": null,
       "active": true,
       "createdAt": "2026-05-08T19:55:51.654Z",
+      "archivedAt": null
+    },
+    {
+      "name": "Frontier_g5_c97458",
+      "family": "Frontier",
+      "parent": "Frontier_g4_a58a75",
+      "generation": 5,
+      "birthSeason": null,
+      "active": true,
+      "createdAt": "2026-05-08T20:34:38.947Z",
       "archivedAt": null
     }
   ]

@@ -252,6 +252,7 @@ export const ARCHIVED = [
   "Crusader_g1_352d0a",
   "Crusader_g1_5ae640",
   "Crusader_g1_5f8b45",
+  "Defender",
   "Drift_E",
   "Drift_EvN",
   "Drift_N",
