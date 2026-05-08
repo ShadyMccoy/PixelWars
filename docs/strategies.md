@@ -76,10 +76,17 @@ otherwise the neutral `{20,20,20,20,20}` split applies. See
 
 ## The `act(army, game)` contract
 
-`act` is called once per army per tick. You decide what *this* army does;
-you don't see or control your other armies directly. State you store on
-`army` persists for the army's lifetime; state on `game` persists for the
-match.
+`act` is called once per accumulated *move credit*, not once per tick.
+Each army gains credit at the production rate (`growth × prodMult ×
+interval`) and `act` only runs when at least 1 credit has banked, then
+1 credit is deducted. This keeps movement frequency proportional to
+growth — doubling growth doubles both production and move rate, so the
+production:logistics ratio is invariant across game speeds. Credit is
+capped at 1 (no large stockpiles).
+
+You decide what *this* army does; you don't see or control your other
+armies directly. State you store on `army` persists for the army's
+lifetime; state on `game` persists for the match.
 
 ### What you read from `army`
 
