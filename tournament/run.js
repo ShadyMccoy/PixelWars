@@ -543,6 +543,7 @@ async function cmdArchiveBottom(opts) {
   // hand-edit if they want exceptions.
 
   const final = await writeArchive([...archive]);
+  await syncLineageActive([...archive], false);
   console.log(`Archived ${final.length} bots from the bottom ${N} tier${N === 1 ? "" : "s"} of each league:`);
   for (const b of breakdown) console.log(`  ${b.map.padEnd(8)} contributed ${b.count} bots`);
   console.log(`\nActive pool now: ${ALL_STRATEGY_LIST.length - final.length} bots`);

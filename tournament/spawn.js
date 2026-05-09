@@ -23,7 +23,6 @@ import { CHARACTER_TECHS } from "../src/strategies/characterTechs.js";
 import { getStrategy } from "../src/strategies/index.js";
 import { NEUTRAL_TECH } from "../src/core/Tech.js";
 
-const ASSUMED_RATING = 1500; // for bots without a rating yet (e.g. fresh founders)
 const ANCESTOR_CHAIN_DEPTH = 8;
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -427,8 +426,6 @@ export async function applyArchivalForSpawn(newBotName) {
   const ratings = new Map();
   for (const r of (season?.ratings ?? [])) ratings.set(r.name, r.rating);
 
-  const ratingOf = (name) => ratings.get(name) ?? ASSUMED_RATING;
-
   // Active = lineage.active === true. The just-registered descendant is
   // active too, but we exclude it from archival candidates (it has no
   // rating yet, and archiving it would defeat the spawn).
@@ -445,37 +442,47 @@ export async function applyArchivalForSpawn(newBotName) {
   // Stage 1: prefer to cull P's own weak transitive descendants. A
   // descendant of P that's rated below P hasn't improved on the parent —
   // it's clone-spam and shouldn't take up someone else's pool slot.
-  // Targets the lowest-rated such descendant.
+  // Targets the lowest-rated such descendant. Skips unrated bots: an
+  // unrated descendant hasn't had a chance to play yet, and ASSUMED_RATING
+  // (1500) would falsely mark it as "stronger than parent" anyway.
   const parentName = newRec.parent;
-  if (parentName) {
-    const parentRating = ratingOf(parentName);
+  if (parentName && ratings.has(parentName)) {
+    const parentRating = ratings.get(parentName);
     const subtree = collectActiveDescendantsOf(parentName, activeBots, lineages);
     const weakClones = subtree
-      .filter((b) => ratingOf(b.name) < parentRating)
+      .filter((b) => ratings.has(b.name))
+      .filter((b) => ratings.get(b.name) < parentRating)
       .filter(isSafeCull)
-      .sort((a, b) => ratingOf(a.name) - ratingOf(b.name));
+      .sort((a, b) => ratings.get(a.name) - ratings.get(b.name));
     if (weakClones.length > 0) {
       const cand = weakClones[0];
       decisions.push({
         name: cand.name,
         reason: "weak-clone-of-parent",
-        rating: ratingOf(cand.name),
+        rating: ratings.get(cand.name),
       });
     }
   }
 
   // Stage 2: fall back to global weakest, family-suicide-guarded.
+  // Restricted to *rated* bots — unrated newcomers haven't earned a
+  // verdict yet, and treating their ASSUMED_RATING (1500) as a real
+  // rating caused champions (~1270) to be culled in their place.
   if (decisions.length === 0) {
-    const sorted = activeBots.slice().sort((a, b) => ratingOf(a.name) - ratingOf(b.name));
+    const sorted = activeBots
+      .filter((b) => ratings.has(b.name))
+      .slice()
+      .sort((a, b) => ratings.get(a.name) - ratings.get(b.name));
     for (const cand of sorted) {
       if (!isSafeCull(cand)) continue;
-      decisions.push({ name: cand.name, reason: "global-weakest-on-spawn", rating: ratingOf(cand.name) });
+      decisions.push({ name: cand.name, reason: "global-weakest-on-spawn", rating: ratings.get(cand.name) });
       break;
     }
   }
 
+  const seasonId = season?.id ?? null;
   for (const d of decisions) {
-    await markArchived(d.name);
+    await markArchived(d.name, { season: seasonId });
   }
   if (decisions.length > 0) {
     // Union the lineage-derived archived names with whatever is already
