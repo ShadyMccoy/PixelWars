@@ -12,7 +12,7 @@ export class Game {
     maxArmy = 6,
     decay = 0.05,
     attackerBonus = 1.4,
-    combatModel = "linear",
+    combatModel = "lanchester",
     movementModel = "classic",
     maxBudget = null,         // budget mode: cap. null -> defaults to maxArmy.
     baseBudgetRecharge = 1.0, // budget mode: budget gained per tick at neutral move-tech.
@@ -30,15 +30,13 @@ export class Game {
     this.maxArmy = maxArmy;
     this.decay = decay;
     this.attackerBonus = attackerBonus;
-    // "linear" (default): winner pays loser_eff/winner_mult raw —
-    //   flat subtractive, no nonlinear reward for overkill.
-    // "lanchester": winner's post-fight effective strength is
-    //   sqrt(winner_eff^2 - loser_eff^2). Concentration of force
-    //   compounds — a 2x force ratio is ~4x more efficient — so
-    //   shaping mass at the breakthrough pays directly. Bots tuned
-    //   on linear (Conqueror's enemy/1.4 + MARGIN commit math) are
-    //   not optimal here; the closed-form commit becomes a strict
-    //   underestimate.
+    // "lanchester" (default): post(i) = sqrt(max(0, e_i² − Σ_{j≠i} e_j²)).
+    //   N-way symmetric square-law -- every side simultaneously fights
+    //   the union of all the others. Concentration of force compounds:
+    //   2x ratio is ~4x more efficient, coalitions out-fight a single
+    //   larger side once their summed squares cross.
+    // "linear": post(i) = e_i − Σ_{j≠i} e_j. Additive damage; ganging
+    //   up is purely cumulative.
     this.combatModel = combatModel;
     // "classic" (default): adjacent-only attacks, garrison floor from
     //   the move tech. Existing 391 bots target this model.
@@ -66,6 +64,11 @@ export class Game {
     // magnitude so heavy/sustained conflicts read as deeper red.
     this.recentConflicts = [];
     this.conflictFadeTicks = 45;
+    // Per-tick move queue. Strategies' army.attack() calls push entries
+    // here during the act() phase; the engine drains them after every
+    // army has acted. This is what makes moves simultaneous: no army
+    // sees another army's outgoing move while deciding its own.
+    this._pendingMoves = [];
   }
 
   recordConflict(tile, magnitude) {
@@ -156,6 +159,45 @@ export class Game {
     return army;
   }
 
+  // Apply one queued move from the pending-moves drain. Deducts power
+  // from the source army (and the source-tile budget in budget mode),
+  // then spawns a fresh attacker army on the destination. We spawn a
+  // new Army even when a friendly already holds the destination so the
+  // attacker bonus contribution survives into resolveConflicts; the
+  // same-player merge happens there via joinForces with the wasAttacker
+  // flag preserved.
+  _commitMove(m) {
+    const army = m.army;
+    if (!army || !army.alive) return;
+    const power = m.power;
+    if (!(power > 0)) return;
+    if (army.strength - power < 0) return;
+    army.strength -= power;
+    if (this.movementModel === "budget" && m.work && m.srcTile) {
+      const next = m.srcTile.budget - m.work;
+      m.srcTile.budget = next > 0 ? next : 0;
+    }
+    const dest = m.destTile;
+    if (!dest) return;
+    const newArmy = new Army({
+      pos: dest.pos,
+      player: army.player,
+      strength: power,
+      game: this,
+      maxStrength: this.maxArmy,
+      tile: dest,
+    });
+    newArmy.isAttacker = true;
+    newArmy.bornAt = this.tick;
+    this.armies.push(newArmy);
+    dest.registerArmy(newArmy);
+    if (dest.armies.length > 1 && !dest.dirty) {
+      dest.dirty = true;
+      this._dirtyTiles.push(dest);
+    }
+    this._territoryDirty = true;
+  }
+
   placeArmy({ x, y, player, strength = 1 }) {
     const tile = this.map.getTile(x, y);
     if (!tile) return null;
@@ -183,37 +225,55 @@ export class Game {
     const tick = this.tick;
     const growth = this.growth;
     const decay = this.decay;
-    // Shuffle the iteration order over pre-existing armies each tick.
-    // Within-tick semantics are sequential (an army's attack commits
-    // immediately and is visible to later armies), so deterministic
-    // iteration order gave lower-index players a structural advantage
-    // on contested empty tiles. Shuffling removes the persistent slot
-    // bias while keeping per-seed determinism. Armies spawned during
-    // this tick (appended to `armies` by `attack`) are still visited
-    // afterward in append order — that cascade behavior is unchanged.
-    const n = armies.length;
-    const order = new Array(n);
-    for (let i = 0; i < n; i++) order[i] = i;
-    for (let i = n - 1; i > 0; i--) {
-      const j = (this.rng() * (i + 1)) | 0;
-      const t = order[i]; order[i] = order[j]; order[j] = t;
-    }
-    for (let oi = 0; oi < n; oi++) {
-      const a = armies[order[oi]];
-      if (!a.alive) continue;
-      if (a.lastTick < tick) {
-        a.run(interval, growth, decay);
-        a.lastTick = tick;
-      }
-    }
-    for (let i = n; i < armies.length; i++) {
+
+    // Phase A: production. Grow strength and bank movement credit on
+    // every living army. No strategy code runs here -- we want a fully
+    // settled world before any army decides its move.
+    const eligible = [];
+    for (let i = 0; i < armies.length; i++) {
       const a = armies[i];
       if (!a.alive) continue;
       if (a.lastTick < tick) {
-        a.run(interval, growth, decay);
+        a.runGrowth(interval, growth, decay);
         a.lastTick = tick;
       }
+      if (a.canActThisTick()) eligible.push(a);
     }
+
+    // Phase B: simultaneous decision. Shuffle the act order so equally-
+    // valid same-tile targeting breaks ties uniformly at random instead
+    // of by army-index. Each army's act() runs once and any attack()
+    // calls only enqueue moves into _pendingMoves -- no strength deltas,
+    // no tile.armies mutation. Bots see the start-of-tick world.
+    const n = eligible.length;
+    for (let i = n - 1; i > 0; i--) {
+      const j = (this.rng() * (i + 1)) | 0;
+      const t = eligible[i]; eligible[i] = eligible[j]; eligible[j] = t;
+    }
+    for (let i = 0; i < n; i++) {
+      const a = eligible[i];
+      if (!a.alive) continue;
+      a.runAct();
+    }
+
+    // Phase C: commit queued moves. Deduct source strength and budget,
+    // spawn one fresh attacker army per move on the destination tile.
+    // No friendly fold-in here: same-player armies that arrive on the
+    // same tile get merged in resolveConflicts, which preserves the
+    // attacker bonus contribution from each contributor.
+    const moves = this._pendingMoves;
+    for (let i = 0; i < moves.length; i++) {
+      this._commitMove(moves[i]);
+    }
+    moves.length = 0;
+    for (let i = 0; i < eligible.length; i++) {
+      const a = eligible[i];
+      a._queuedSpend = 0;
+      a._queuedWork = 0;
+    }
+
+    // Phase D: resolve combats on every tile that ended up with more
+    // than one army.
     this.map.resolveConflicts(this._dirtyTiles);
 
     // Budget mode: each owned tile recharges its movement budget by
@@ -346,6 +406,7 @@ export class Game {
     this.armies.length = 0;
     this._deadCount = 0;
     this._dirtyTiles.length = 0;
+    this._pendingMoves.length = 0;
     this.recentMoves.length = 0;
     this.recentConflicts.length = 0;
     this.tick = 0;

@@ -18,13 +18,13 @@ export class Army {
     this.isAttacker = false;
     this.lastTick = 0;
     this.bornAt = 0;
-    // Movement is rate-limited: act() runs once per accumulated credit,
-    // not once per tick. Credit ticks up at the production rate
-    // (growth × prodMult × interval), so movement frequency stays in
-    // proportion to growth no matter how the game-level rate is set —
-    // changing growth scales production AND movement together instead
-    // of just shifting the production:logistics ratio. Initialized
-    // off the seeded rng so armies don't all fire on the same tick.
+    // Movement is rate-limited: act() runs at most once per tick, only
+    // when accumulated credit ≥ 1. Credit ticks up at the production
+    // rate (growth × prodMult × interval), so movement frequency stays
+    // in proportion to growth — changing growth scales production AND
+    // movement together instead of just shifting the production:logistics
+    // ratio. Initialized off the seeded rng so armies don't all fire on
+    // the same tick.
     this.moveCredit = game && game.rng ? game.rng() : 0;
   }
 
@@ -37,11 +37,15 @@ export class Army {
   // only enforces a minimum 0.5 left behind so the source tile doesn't
   // pop empty mid-tick. Bots can throw more strength forward, but the
   // per-tile budget will clamp how much actually arrives.
+  //
+  // Subtracts strength already queued by earlier attack() calls in the
+  // same tick so a strategy that fires twice can't request more than
+  // it actually has. Other armies' moves are NOT visible.
   get attackPower() {
     const floor = this.game?.movementModel === "budget"
       ? 0.5
       : (this.player.minGarrison ?? 1);
-    const v = this.strength - floor;
+    const v = this.strength - (this._queuedSpend || 0) - floor;
     return v > 0 ? v : 0;
   }
 
@@ -87,94 +91,64 @@ export class Army {
   }
 
   attack(tile, power) {
-    // Budget movement model: the bot can ask for any (non-self) tile.
-    // Cost formula has a flat per-move overhead: cost = power *
-    // distance + 1. The +1 is a fixed fee per move regardless of
-    // distance, so many small moves are strictly more expensive
-    // than fewer larger moves carrying the same total power. Engine
-    // clamps actual delivered power to whatever the source tile's
-    // budget can pay for; conquest of the destination resets *its*
-    // budget to 0 in resolveConflicts.
+    // Simultaneous-resolution: attack() queues a move into game._pendingMoves
+    // and validates it against start-of-tick state. No mutation of strength,
+    // budgets, or tile.armies happens here -- Game.step commits all queued
+    // moves after every army's act() has run, so bots never see each others'
+    // moves in flight. _queuedSpend / _queuedWork track cumulative requests
+    // by THIS army within the same tick so successive attack() calls can't
+    // overdraw the army's own strength or its source-tile budget.
+    if (!tile || this.tile === tile) return false;
+    if (power <= 0.5) return false;
+    const src = this.tile;
+    if (!src) return false;
+
     if (this.game.movementModel === "budget") {
-      if (!tile || this.tile === tile) return false;
-      if (power <= 0.5) return false;
-      const src = this.tile;
-      if (!src) return false;
       const dist = this._distance(src, tile);
       if (dist <= 0) return false;
       // cost = power * distance + 1. Solve actualPower from clamped
-      // actualWork: actualPower = (actualWork - 1) / dist.
+      // actualWork: actualPower = (actualWork - 1) / dist. Budget is
+      // shared with any earlier queued moves from the same source tile
+      // this tick (only this army can hold the tile, so _queuedWork
+      // captures all draws against src.budget).
       const requestedWork = power * dist + 1;
-      const budget = src.budget;
-      const actualWork = requestedWork < budget ? requestedWork : budget;
+      const remainingBudget = src.budget - (this._queuedWork || 0);
+      const actualWork = requestedWork < remainingBudget ? requestedWork : remainingBudget;
       const actualPower = (actualWork - 1) / dist;
       if (actualPower <= 0.5) return false;
       // Engine sanity: keep at least 0.5 strength behind so the
-      // source tile doesn't pop empty mid-tick. Lower bound; the
-      // garrison floor is otherwise gone in budget mode.
-      if (this.strength - actualPower < 0.5) return false;
-      src.budget = budget - actualWork;
-      this.game.recordMove(src, tile, this.player, actualPower);
-      this.strength -= actualPower;
-      const pid = this.player.id;
-      const existing = tile.armies;
-      for (let i = 0; i < existing.length; i++) {
-        const other = existing[i];
-        if (other.alive && other.player.id === pid) {
-          let s = other.strength + actualPower;
-          const max = other.maxStrength;
-          if (s > max) s = max;
-          other.strength = s;
-          return true;
-        }
-      }
-      const newArmy = new Army({
-        pos: tile.pos,
-        player: this.player,
-        strength: actualPower,
-        game: this.game,
-        maxStrength: this.game.maxArmy,
-        tile,
+      // source tile doesn't pop empty when the move commits.
+      if (this.strength - (this._queuedSpend || 0) - actualPower < 0.5) return false;
+      this._queuedSpend = (this._queuedSpend || 0) + actualPower;
+      this._queuedWork = (this._queuedWork || 0) + actualWork;
+      this.game._pendingMoves.push({
+        army: this,
+        srcTile: src,
+        destTile: tile,
+        power: actualPower,
+        work: actualWork,
       });
-      newArmy.isAttacker = true;
-      this.game.spawnArmy(newArmy, tile);
+      this.game.recordMove(src, tile, this.player, actualPower);
       return true;
     }
-    if (!this.isAttackValid(tile, power)) return false;
-    this.game.recordMove(this.tile, tile, this.player, power);
-    this.strength -= power;
-    // Fast-path: if a friendly already holds the target tile, transfer
-    // strength directly without allocating a new Army. Mirrors the
-    // engine-level invariant in Game.spawnArmy.
-    const pid = this.player.id;
-    const existing = tile.armies;
-    for (let i = 0; i < existing.length; i++) {
-      const other = existing[i];
-      if (other.alive && other.player.id === pid) {
-        let s = other.strength + power;
-        const max = other.maxStrength;
-        if (s > max) s = max;
-        other.strength = s;
-        return true;
-      }
-    }
-    // Pass the engine-level base maxArmy here; the Army constructor
-    // re-applies the player's stack multiplier. Using this.maxStrength
-    // would compound the multiplier on every spawn.
-    const newArmy = new Army({
-      pos: tile.pos,
-      player: this.player,
-      strength: power,
-      game: this.game,
-      maxStrength: this.game.maxArmy,
-      tile,
+
+    // Classic mode: garrison floor enforced by minGarrison.
+    const garrison = this.player.minGarrison ?? 1;
+    if (this.strength - (this._queuedSpend || 0) - power < garrison) return false;
+    this._queuedSpend = (this._queuedSpend || 0) + power;
+    this.game._pendingMoves.push({
+      army: this,
+      srcTile: src,
+      destTile: tile,
+      power,
     });
-    newArmy.isAttacker = true;
-    this.game.spawnArmy(newArmy, tile);
+    this.game.recordMove(src, tile, this.player, power);
     return true;
   }
 
-  run(interval, growth, decay = 0) {
+  // Grow strength and bank movement credit. Called in the production
+  // phase before any army runs act(); does not invoke strategy code.
+  runGrowth(interval, growth, decay = 0) {
     const mults = this.player.techMults;
     const prodMult = mults ? mults.prod : 1;
     const cur = this.strength;
@@ -183,23 +157,30 @@ export class Army {
     if (s > max) s = max;
     if (s < 0) s = 0;
     this.strength = s;
-    const strat = this.player.strategy;
-    if (!strat) return;
-    // Accumulate move credit at the production rate, but cap at 8 so an
-    // idle backfield army banks enough for a real burst when an opening
-    // appears — without growing an unbounded stockpile over a long match.
-    // Credit is then burned in a loop so the burst lands in one tick
-    // instead of drip-feeding one move per growth-period.
     let credit = this.moveCredit + interval * growth * prodMult;
     if (credit > 8) credit = 8;
     this.moveCredit = credit;
-    if (credit < 1) return;
+    this._queuedSpend = 0;
+    this._queuedWork = 0;
+  }
+
+  canActThisTick() {
+    if (!this.alive) return false;
+    if (this.moveCredit < 1) return false;
+    const strat = this.player.strategy;
+    return !!strat;
+  }
+
+  // Run the bot's strategy once. Burns one credit. Strategy attack() calls
+  // queue moves into game._pendingMoves; nothing about the world has
+  // mutated by the time act() returns.
+  runAct() {
+    const strat = this.player.strategy;
+    if (!strat) return;
     const actFn = typeof strat === "function" ? strat : strat.act;
     if (typeof actFn !== "function") return;
-    while (this.moveCredit >= 1 && this.alive) {
-      this.moveCredit -= 1;
-      actFn(this, this.game);
-    }
+    this.moveCredit -= 1;
+    actFn(this, this.game);
   }
 
   weakestAdjacent(gradient = null) {
