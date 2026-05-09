@@ -169,6 +169,7 @@ class App {
       lineupStrategies: strategies,
       lineupTech: entry.lineupTech ?? null,
       startPositions: entry.startPositions,
+      ratings: this.ratings,
     });
     this.renderer.resetView();
     this.renderer.resize();
@@ -259,6 +260,7 @@ class App {
       startPositions: positions,
       seed: useSeed,
       customStrategies: this.customBots.serializeUsed(strategies.map((s) => s.name)),
+      ratings: this.ratings,
     });
     this.renderer.resetView();
     this.renderer.resize();
