@@ -16,6 +16,13 @@ export class Player {
     // its source tile, derived from the move tech. Strategies use it
     // via army.attackPower; the engine enforces it in isAttackValid.
     this.minGarrison = this.techMults.move;
+    // Active player orders (move/etc) for the bot-command system. Each
+    // tick the engine expands these into per-army _pendingMoves entries
+    // and decrements ttl; expired orders are dropped automatically.
+    // Bots that implement the plan(game, player) API mutate this list
+    // via game.issueOrder / game.cancelOrder; bots that only have the
+    // legacy act(army, game) callback never touch it.
+    this.orders = [];
   }
 
   equals(other) {
