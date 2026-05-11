@@ -190,7 +190,7 @@ class App {
     updateUrl(this.currentMatch);
   }
 
-  loadCustomMap({ width, height, growth, maxArmy, attritionRate, wrap, numPlayers, botNames = null, fixedLineup = false, seed = null, startPositions = null }) {
+  loadCustomMap({ width, height, growth, maxArmy, attritionRate, orderBudget, wrap, numPlayers, botNames = null, fixedLineup = false, seed = null, startPositions = null }) {
     // Transient ad-hoc map: build a Game with the user's config and seat
     // N bots in a ring. If `botNames` is given:
     //   - fixedLineup=true: use the names in order (Reset path).
@@ -236,7 +236,7 @@ class App {
     // Snapshot the chosen lineup so Reset reproduces the same matchup
     // (different seed, same bots & map config).
     this.lastCustomArgs = {
-      width, height, growth, maxArmy, attritionRate, wrap, numPlayers,
+      width, height, growth, maxArmy, attritionRate, orderBudget, wrap, numPlayers,
       botNames: strategies.map((s) => s.name),
       fixedLineup: true,
     };
@@ -247,7 +247,7 @@ class App {
       kind: "custom",
       id: null,
       map: "custom",
-      mapConfig: { width, height, growth, maxArmy, attritionRate, wrap },
+      mapConfig: { width, height, growth, maxArmy, attritionRate, orderBudget, wrap },
       seed: useSeed,
       lineup: strategies.map((s) => s.name),
       lineupTech: null,
@@ -255,7 +255,7 @@ class App {
     };
 
     this.engine.loadCustom({
-      mapConfig: { width, height, growth, maxArmy, attritionRate, wrap },
+      mapConfig: { width, height, growth, maxArmy, attritionRate, orderBudget, wrap },
       lineupStrategies: strategies,
       startPositions: positions,
       seed: useSeed,
@@ -300,6 +300,7 @@ class App {
       growth: c.growth,
       maxArmy: c.maxArmy,
       attritionRate: c.attritionRate,
+      orderBudget: c.orderBudget,
       wrap: c.wrap,
       numPlayers,
     });
@@ -311,6 +312,7 @@ class App {
         growth: c.growth,
         maxArmy: c.maxArmy,
         attritionRate: c.attritionRate,
+        orderBudget: c.orderBudget,
         wrap: !!c.wrap,
         numPlayers: numPlayers ?? this.mapEditor.read().numPlayers,
         botNames: hasLineup ? info.lineup : null,
@@ -362,6 +364,7 @@ class App {
       growth: cfg.growth,
       maxArmy: cfg.maxArmy,
       attritionRate: cfg.attritionRate,
+      orderBudget: cfg.orderBudget,
       wrap: !!cfg.wrap,
       numPlayers: info.lineup.length,
       botNames: info.lineup,

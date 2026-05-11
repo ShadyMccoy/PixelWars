@@ -58,6 +58,7 @@ import Tidewatcher from "./Tidewatcher.js";
 import Smith from "./Smith.js";
 import Coastal from "./Coastal.js";
 import Huddle from "./Huddle.js";
+import Painter from "./Painter.js";
 import Pulse from "./Pulse.js";
 import Escort from "./Escort.js";
 import Conduit from "./Conduit.js";
@@ -70,6 +71,7 @@ import { NEUTRAL_TECH } from "../core/Tech.js";
 // Every bot ever defined. Order matters — it's the canonical listing for
 // `--list` and (after filtering) the default tournament pool.
 export const ALL_STRATEGY_LIST = [
+  Painter,
   SlowAndSteady,
   Repel,
   Trinity,

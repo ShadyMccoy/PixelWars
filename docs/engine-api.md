@@ -68,6 +68,34 @@ import { sumStrength, totalStrength } from "../core/Army.js";
 | `sumStrength(armies, viewer)`   | **Signed** sum: friendlies of `viewer` add, enemies subtract. Useful for "is this tile net-friendly to me?". |
 | `totalStrength(armies)`         | Plain unsigned sum. |
 
+## Order-based bots (`plan(game, player)`)
+
+A strategy can define `plan(game, player)` instead of (or alongside — though armies pick one path based on owner) `act(army, game)`. The engine calls `plan` once per player per tick during Phase B; the bot issues orders that drive its armies for many ticks without per-army micromanagement.
+
+```js
+export default {
+  name: "MyBot",
+  plan(game, player) {
+    if (player.orders.length > 0) return;             // existing order still active
+    game.issueOrder(player, {
+      region: { x: 0, y: 0, w: game.map.width, h: game.map.height },  // wrap-aware rect
+      vector: { dx: 1, dy: 0 },                       // push east
+      intensity: 0.85,                                // 0..1; fraction of attackPower per tick
+      ttl: 20,                                        // ticks; auto-decrements, auto-removed
+      commitment: "campaign",                         // 'skirmish' | 'push' | 'campaign'
+    });
+  },
+}
+```
+
+| Call | Effect |
+|------|--------|
+| `game.issueOrder(player, spec)` | Adds an order. Returns the order (with `id`) on success, `null` if `player.orders.length >= game.orderBudget`. |
+| `game.cancelOrder(player, id)`  | Removes one order by id. |
+| `player.orders`                 | Read-only-ish array of the player's currently-active orders. Sorted in issue order. |
+
+Each tick, the engine expands all of a player's orders into per-army moves: every army of that player whose tile falls inside *any* order's region picks its target neighbor by the strength-weighted sum of those orders' vectors, and commits `attackPower × clamped(Σintensity, 1)` toward it. Armies on order-less tiles are idle. Bots that only define `act` are unaffected — the two paths coexist per player.
+
 ## What you can't do
 
 - Read or mutate other players' armies.
