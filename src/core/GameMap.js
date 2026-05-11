@@ -82,12 +82,31 @@ export class GameMap {
 
   resolveConflicts(dirty) {
     if (dirty) {
-      for (let i = 0; i < dirty.length; i++) {
+      // Snapshot the initial dirty set: any tiles spawned/queued during
+      // processing are appended to `dirty` by Game.spawnArmy and must
+      // be processed on the NEXT tick, not folded into this one.
+      const initialLen = dirty.length;
+      for (let i = 0; i < initialLen; i++) {
         const t = dirty[i];
         t.dirty = false;
         t.resolveConflicts();
       }
-      dirty.length = 0;
+      // Compact: drop processed tiles that are no longer contested,
+      // keep ones that still have a mix of players engaged so their
+      // staged attrition continues next tick. Tiles appended during
+      // processing (indices >= initialLen) stay in place.
+      let w = 0;
+      for (let i = 0; i < initialLen; i++) {
+        const t = dirty[i];
+        if (t.isContested()) {
+          t.dirty = true;
+          dirty[w++] = t;
+        }
+      }
+      for (let i = initialLen; i < dirty.length; i++) {
+        dirty[w++] = dirty[i];
+      }
+      dirty.length = w;
       return;
     }
     const tiles = this.tiles;

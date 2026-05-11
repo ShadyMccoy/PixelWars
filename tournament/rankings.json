@@ -1,256 +1,256 @@
 {
-  "generatedAt": "2026-05-09T03:16:43.412Z",
-  "matchCount": 900,
-  "iterations": 64,
+  "generatedAt": "2026-05-11T04:01:06.010Z",
+  "matchCount": 3100,
+  "iterations": 101,
   "converged": true,
   "players": [
     {
       "name": "Frontier_g6_7f7121",
-      "rating": 1533,
-      "skill": 21.505692,
-      "matches": 180,
-      "wins": 142,
-      "avgFinish": 0.064
+      "rating": 1697,
+      "skill": 55.298901,
+      "matches": 622,
+      "wins": 559,
+      "avgFinish": 0.03
     },
     {
       "name": "Frontier_g3_e2e665",
-      "rating": 1466,
-      "skill": 14.583761,
-      "matches": 163,
-      "wins": 119,
-      "avgFinish": 0.077
+      "rating": 1473,
+      "skill": 15.187135,
+      "matches": 577,
+      "wins": 415,
+      "avgFinish": 0.082
     },
     {
       "name": "Frontier_g7_435834",
-      "rating": 1457,
-      "skill": 13.873295,
-      "matches": 182,
-      "wins": 127,
-      "avgFinish": 0.098
+      "rating": 1446,
+      "skill": 13.058224,
+      "matches": 614,
+      "wins": 420,
+      "avgFinish": 0.104
     },
     {
       "name": "Frontier_g7_36e4fc",
-      "rating": 1448,
-      "skill": 13.216798,
-      "matches": 185,
-      "wins": 131,
-      "avgFinish": 0.112
+      "rating": 1409,
+      "skill": 10.520286,
+      "matches": 624,
+      "wins": 408,
+      "avgFinish": 0.115
     },
     {
       "name": "Frontier_g6_508d1f",
-      "rating": 1403,
-      "skill": 10.181768,
-      "matches": 182,
-      "wins": 116,
-      "avgFinish": 0.113
+      "rating": 1363,
+      "skill": 8.10148,
+      "matches": 620,
+      "wins": 364,
+      "avgFinish": 0.127
     },
     {
       "name": "TideWall",
-      "rating": 1153,
-      "skill": 2.417138,
-      "matches": 171,
-      "wins": 59,
-      "avgFinish": 0.257
-    },
-    {
-      "name": "Spearhead",
-      "rating": 1071,
-      "skill": 1.508105,
-      "matches": 177,
-      "wins": 45,
-      "avgFinish": 0.285
-    },
-    {
-      "name": "Conduit",
-      "rating": 1052,
-      "skill": 1.349503,
-      "matches": 189,
-      "wins": 31,
-      "avgFinish": 0.364
-    },
-    {
-      "name": "Phalanx",
-      "rating": 973,
-      "skill": 0.858492,
-      "matches": 165,
-      "wins": 5,
-      "avgFinish": 0.632
+      "rating": 1209,
+      "skill": 3.336651,
+      "matches": 593,
+      "wins": 246,
+      "avgFinish": 0.201
     },
     {
       "name": "Citadel",
-      "rating": 948,
-      "skill": 0.743178,
-      "matches": 189,
-      "wins": 10,
-      "avgFinish": 0.466
+      "rating": 1048,
+      "skill": 1.316384,
+      "matches": 643,
+      "wins": 107,
+      "avgFinish": 0.367
     },
     {
-      "name": "Frontier_g4_a433b8",
-      "rating": 944,
-      "skill": 0.726049,
-      "matches": 187,
-      "wins": 0,
-      "avgFinish": 0.268
-    },
-    {
-      "name": "Crusader",
-      "rating": 926,
-      "skill": 0.652605,
-      "matches": 188,
-      "wins": 15,
-      "avgFinish": 0.578
-    },
-    {
-      "name": "Forge",
-      "rating": 913,
-      "skill": 0.606309,
-      "matches": 174,
-      "wins": 2,
-      "avgFinish": 0.5
-    },
-    {
-      "name": "Beachhead",
-      "rating": 908,
-      "skill": 0.587739,
-      "matches": 180,
-      "wins": 4,
+      "name": "Phalanx",
+      "rating": 1017,
+      "skill": 1.100719,
+      "matches": 552,
+      "wins": 37,
       "avgFinish": 0.487
     },
     {
       "name": "Huddle",
-      "rating": 905,
-      "skill": 0.577462,
-      "matches": 170,
-      "wins": 1,
-      "avgFinish": 0.621
-    },
-    {
-      "name": "Conqueror",
-      "rating": 904,
-      "skill": 0.576138,
-      "matches": 164,
-      "wins": 3,
-      "avgFinish": 0.606
-    },
-    {
-      "name": "Hammer",
-      "rating": 903,
-      "skill": 0.57236,
-      "matches": 179,
-      "wins": 4,
-      "avgFinish": 0.478
-    },
-    {
-      "name": "Stalker",
-      "rating": 897,
-      "skill": 0.553761,
-      "matches": 183,
-      "wins": 3,
-      "avgFinish": 0.567
-    },
-    {
-      "name": "Drumline",
-      "rating": 891,
-      "skill": 0.534388,
-      "matches": 171,
-      "wins": 2,
-      "avgFinish": 0.505
-    },
-    {
-      "name": "Convex",
-      "rating": 881,
-      "skill": 0.503326,
-      "matches": 170,
-      "wins": 0,
-      "avgFinish": 0.698
+      "rating": 973,
+      "skill": 0.85608,
+      "matches": 612,
+      "wins": 19,
+      "avgFinish": 0.544
     },
     {
       "name": "Flanker",
-      "rating": 876,
-      "skill": 0.489654,
-      "matches": 165,
-      "wins": 0,
-      "avgFinish": 0.648
+      "rating": 962,
+      "skill": 0.801572,
+      "matches": 621,
+      "wins": 15,
+      "avgFinish": 0.542
     },
     {
-      "name": "Cordon",
+      "name": "Convex",
+      "rating": 960,
+      "skill": 0.792331,
+      "matches": 606,
+      "wins": 16,
+      "avgFinish": 0.602
+    },
+    {
+      "name": "Spearhead",
+      "rating": 950,
+      "skill": 0.749444,
+      "matches": 606,
+      "wins": 50,
+      "avgFinish": 0.487
+    },
+    {
+      "name": "Conduit",
+      "rating": 925,
+      "skill": 0.649596,
+      "matches": 627,
+      "wins": 28,
+      "avgFinish": 0.515
+    },
+    {
+      "name": "Stalker",
+      "rating": 918,
+      "skill": 0.623907,
+      "matches": 610,
+      "wins": 12,
+      "avgFinish": 0.561
+    },
+    {
+      "name": "Frontier_g4_a433b8",
+      "rating": 912,
+      "skill": 0.602725,
+      "matches": 594,
+      "wins": 0,
+      "avgFinish": 0.276
+    },
+    {
+      "name": "Conqueror",
+      "rating": 894,
+      "skill": 0.543325,
+      "matches": 584,
+      "wins": 15,
+      "avgFinish": 0.583
+    },
+    {
+      "name": "Hammer",
+      "rating": 883,
+      "skill": 0.509262,
+      "matches": 627,
+      "wins": 3,
+      "avgFinish": 0.528
+    },
+    {
+      "name": "Drumline",
       "rating": 874,
-      "skill": 0.484369,
-      "matches": 164,
+      "skill": 0.482904,
+      "matches": 604,
       "wins": 0,
-      "avgFinish": 0.739
+      "avgFinish": 0.536
     },
     {
-      "name": "Smith",
-      "rating": 866,
-      "skill": 0.462523,
-      "matches": 182,
-      "wins": 0,
-      "avgFinish": 0.656
+      "name": "Forge",
+      "rating": 874,
+      "skill": 0.485171,
+      "matches": 614,
+      "wins": 2,
+      "avgFinish": 0.538
     },
     {
-      "name": "Pulse",
-      "rating": 857,
-      "skill": 0.438866,
-      "matches": 154,
+      "name": "Beachhead",
+      "rating": 873,
+      "skill": 0.480886,
+      "matches": 624,
       "wins": 0,
-      "avgFinish": 0.717
+      "avgFinish": 0.525
     },
     {
-      "name": "Drifter",
-      "rating": 856,
-      "skill": 0.437302,
-      "matches": 175,
-      "wins": 0,
-      "avgFinish": 0.784
-    },
-    {
-      "name": "Anvil",
-      "rating": 855,
-      "skill": 0.434905,
-      "matches": 185,
-      "wins": 0,
-      "avgFinish": 0.791
+      "name": "Crusader",
+      "rating": 868,
+      "skill": 0.467691,
+      "matches": 601,
+      "wins": 17,
+      "avgFinish": 0.768
     },
     {
       "name": "Membrane",
-      "rating": 855,
-      "skill": 0.432889,
-      "matches": 162,
+      "rating": 865,
+      "skill": 0.459037,
+      "matches": 581,
       "wins": 0,
-      "avgFinish": 0.459
+      "avgFinish": 0.421
+    },
+    {
+      "name": "Smith",
+      "rating": 862,
+      "skill": 0.450786,
+      "matches": 614,
+      "wins": 0,
+      "avgFinish": 0.586
+    },
+    {
+      "name": "Cordon",
+      "rating": 851,
+      "skill": 0.424783,
+      "matches": 566,
+      "wins": 0,
+      "avgFinish": 0.788
+    },
+    {
+      "name": "Drifter",
+      "rating": 850,
+      "skill": 0.42257,
+      "matches": 577,
+      "wins": 0,
+      "avgFinish": 0.724
     },
     {
       "name": "Trinity",
-      "rating": 855,
-      "skill": 0.434817,
-      "matches": 166,
+      "rating": 846,
+      "skill": 0.412901,
+      "matches": 600,
       "wins": 0,
-      "avgFinish": 0.786
-    },
-    {
-      "name": "Pinwheel",
-      "rating": 844,
-      "skill": 0.407107,
-      "matches": 175,
-      "wins": 0,
-      "avgFinish": 0.787
-    },
-    {
-      "name": "Reaper",
-      "rating": 843,
-      "skill": 0.405325,
-      "matches": 156,
-      "wins": 0,
-      "avgFinish": 0.813
+      "avgFinish": 0.837
     },
     {
       "name": "Coward",
-      "rating": 841,
-      "skill": 0.399547,
-      "matches": 167,
+      "rating": 844,
+      "skill": 0.406213,
+      "matches": 549,
       "wins": 0,
-      "avgFinish": 0.703
+      "avgFinish": 0.654
+    },
+    {
+      "name": "Anvil",
+      "rating": 843,
+      "skill": 0.404072,
+      "matches": 621,
+      "wins": 0,
+      "avgFinish": 0.772
+    },
+    {
+      "name": "Reaper",
+      "rating": 841,
+      "skill": 0.400206,
+      "matches": 577,
+      "wins": 0,
+      "avgFinish": 0.753
+    },
+    {
+      "name": "Pulse",
+      "rating": 840,
+      "skill": 0.399054,
+      "matches": 554,
+      "wins": 0,
+      "avgFinish": 0.712
+    },
+    {
+      "name": "Pinwheel",
+      "rating": 832,
+      "skill": 0.379282,
+      "matches": 586,
+      "wins": 0,
+      "avgFinish": 0.828
     }
   ]
 }

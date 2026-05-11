@@ -11,8 +11,9 @@ export class Game {
     growth = 1,
     maxArmy = 6,
     decay = 0.05,
-    attackerBonus = 1.4,
+    attackerBonus = 1.0,
     combatModel = "lanchester",
+    attritionRate = 0.06,
     movementModel = "classic",
     maxBudget = null,         // budget mode: cap. null -> defaults to maxArmy.
     baseBudgetRecharge = 1.0, // budget mode: budget gained per tick at neutral move-tech.
@@ -29,15 +30,46 @@ export class Game {
     this.growth = growth;
     this.maxArmy = maxArmy;
     this.decay = decay;
+    // Legacy global multiplier for invader effective strength. Kept on
+    // the Game object so bots that read game.attackerBonus for their
+    // commit math don't crash, but default is now 1.0 — Lanchester's
+    // square law produces the "concentrating force wins decisively"
+    // dynamic that the flat 1.4 used to encode, and a staged-combat
+    // perpetual bonus would make attackers absurdly strong.
     this.attackerBonus = attackerBonus;
-    // "lanchester" (default): post(i) = sqrt(max(0, e_i² − Σ_{j≠i} e_j²)).
-    //   N-way symmetric square-law -- every side simultaneously fights
-    //   the union of all the others. Concentration of force compounds:
-    //   2x ratio is ~4x more efficient, coalitions out-fight a single
-    //   larger side once their summed squares cross.
-    // "linear": post(i) = e_i − Σ_{j≠i} e_j. Additive damage; ganging
-    //   up is purely cumulative.
+    // Combat is staged across multiple ticks (see Tile.resolveConflicts).
+    // combatModel controls the pressure curve fed into per-tick attrition:
+    //   "lanchester" (default): pressure uses sum-of-squared enemy raw
+    //     strengths, so a 2x ratio compounds (~4x damage advantage).
+    //     Concentrating mass at the breakthrough still pays even under
+    //     staged resolution.
+    //   "linear": pressure uses raw enemy strength. Equal forces bleed
+    //     at the same rate per tick; no nonlinear reward for overkill.
     this.combatModel = combatModel;
+    // Per-tick attrition on contested tiles has two components:
+    //   attritionRate × pressure  — percentage shaping. Larger stacks
+    //     lose more absolute strength but the per-tick fraction is
+    //     bounded, so a fair 6v6 still takes ~7 ticks at rate=0.06.
+    //     This is the map-level "combat speed" knob — lower values
+    //     mean longer-lived brackish zones; the UI surfaces it as
+    //     the "Attrition" map setting.
+    //   attritionFloor            — absolute per-tick raw-strength
+    //     floor. Dominates when armies are small (a 1v1 dies in
+    //     1–2 ticks); without it, small skirmishes would also drag
+    //     for many ticks, which feels wrong — small fights should
+    //     snap.
+    // Net loss per side per tick (in raw-strength units) is then
+    // scaled by enemy "causing losses" tech and divided by my "taking
+    // losses" tech — see Tile.resolveConflicts.
+    this.attritionRate = attritionRate;
+    // Floor scales with rate so the "Attrition" map setting actually
+    // moves the needle on long fights. With a flat 0.5 floor, lowering
+    // the rate barely slowed fair 6v6s (the floor accounted for >half
+    // the per-tick loss). Floor = 3 × rate keeps small fights snapping
+    // (1v1 still resolves in 1–2 ticks) while letting big fights
+    // brackish for much longer at low rates. Capped below at 0.1 so a
+    // pathological rate=0 doesn't deadlock.
+    this.attritionFloor = Math.max(0.1, attritionRate * 3);
     // "classic" (default): adjacent-only attacks, garrison floor from
     //   the move tech. Existing 391 bots target this model.
     // "budget": tile-local movement budget recharges per tick (scaled
@@ -150,7 +182,22 @@ export class Game {
     }
     this.armies.push(army);
     army.tile = tile;
+    const wasEmpty = tile.armies.length === 0;
     tile.registerArmy(army);
+    // Sticky holder update on arrival to an empty tile:
+    //   - first-ever occupant -> seed holder
+    //   - returning holder    -> no change (no conquest)
+    //   - new player walking into an abandoned/cleared tile -> conquest:
+    //     flip holder and zero the per-tile budget (mirrors the
+    //     budget reset that resolveConflicts performs on a forced flip).
+    if (wasEmpty) {
+      if (tile._holderPid == null) {
+        tile._holderPid = army.player.id;
+      } else if (tile._holderPid !== army.player.id) {
+        tile._holderPid = army.player.id;
+        tile.budget = 0;
+      }
+    }
     if (tile.armies.length > 1 && !tile.dirty) {
       tile.dirty = true;
       this._dirtyTiles.push(tile);
@@ -161,11 +208,10 @@ export class Game {
 
   // Apply one queued move from the pending-moves drain. Deducts power
   // from the source army (and the source-tile budget in budget mode),
-  // then spawns a fresh attacker army on the destination. We spawn a
-  // new Army even when a friendly already holds the destination so the
-  // attacker bonus contribution survives into resolveConflicts; the
-  // same-player merge happens there via joinForces with the wasAttacker
-  // flag preserved.
+  // then spawns a fresh army on the destination. We spawn a new Army
+  // even when a friendly already holds the destination — the same-player
+  // merge happens in resolveConflicts via joinForces, which keeps this
+  // path branch-free.
   _commitMove(m) {
     const army = m.army;
     if (!army || !army.alive) return;
@@ -187,10 +233,23 @@ export class Game {
       maxStrength: this.maxArmy,
       tile: dest,
     });
-    newArmy.isAttacker = true;
     newArmy.bornAt = this.tick;
     this.armies.push(newArmy);
+    const wasEmpty = dest.armies.length === 0;
     dest.registerArmy(newArmy);
+    // Sticky holder update on arrival to an empty tile. Mirrors the
+    // logic in spawnArmy (which _commitMove deliberately bypasses so
+    // friendly-on-tile arrivals fold via resolveConflicts instead of
+    // inline). Walking an empty tile that was previously held by
+    // someone else is a conquest: flip holder and zero budget.
+    if (wasEmpty) {
+      if (dest._holderPid == null) {
+        dest._holderPid = army.player.id;
+      } else if (dest._holderPid !== army.player.id) {
+        dest._holderPid = army.player.id;
+        dest.budget = 0;
+      }
+    }
     if (dest.armies.length > 1 && !dest.dirty) {
       dest.dirty = true;
       this._dirtyTiles.push(dest);
@@ -371,8 +430,11 @@ export class Game {
     for (let i = 0; i < list.length; i++) list[i].totals.territory = 0;
     const tiles = this.map.tiles;
     for (let i = 0; i < tiles.length; i++) {
-      const armies = tiles[i].armies;
-      if (armies.length > 0) armies[0].player.totals.territory++;
+      // ownerArmy() returns the strongest occupant. On contested tiles
+      // this attributes territory to the current holder rather than to
+      // whichever army happens to be at armies[0].
+      const owner = tiles[i].ownerArmy();
+      if (owner) owner.player.totals.territory++;
     }
     this._territoryDirty = false;
   }
@@ -416,6 +478,8 @@ export class Game {
     for (let i = 0; i < tiles.length; i++) {
       tiles[i].armies.length = 0;
       tiles[i].dirty = false;
+      tiles[i]._holderPid = null;
+      tiles[i].budget = 0;
     }
     this._territoryDirty = true;
   }
