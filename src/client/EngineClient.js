@@ -38,6 +38,24 @@ const PALETTE = [
   { color: "#7cffb2", accent: "#bbffd6" },
 ];
 
+// Build a per-slot palette permuted so the highest-rated bot in the
+// lineup gets PALETTE[0] (red), the next gets PALETTE[1], and so on.
+// Slots without a known rating fall to the back, ties keep their
+// original lineup order.
+function paletteByRank(lineupStrategies, ratings) {
+  const n = lineupStrategies.length;
+  const order = lineupStrategies.map((s, i) => {
+    const r = ratings?.[s?.name];
+    return { i, r: typeof r === "number" ? r : -Infinity };
+  });
+  order.sort((a, b) => (b.r - a.r) || (a.i - b.i));
+  const palette = new Array(n);
+  for (let rank = 0; rank < n; rank++) {
+    palette[order[rank].i] = PALETTE[rank % PALETTE.length];
+  }
+  return palette;
+}
+
 export class EngineClient {
   constructor() {
     this.game = new GameView();
@@ -71,8 +89,8 @@ export class EngineClient {
   // before the first snapshot arrives.
   // ------------------------------------------------------------------
 
-  loadCustom({ mapConfig, lineupStrategies, startPositions, seed, customStrategies = [] }) {
-    const palette = PALETTE.slice(0, lineupStrategies.length);
+  loadCustom({ mapConfig, lineupStrategies, startPositions, seed, customStrategies = [], ratings = null }) {
+    const palette = paletteByRank(lineupStrategies, ratings);
     const lineup = lineupStrategies.map((s) => s.name);
     this._primeView({
       mapConfig,
@@ -90,8 +108,8 @@ export class EngineClient {
     });
   }
 
-  loadReplay({ mapConfig, seed, lineupStrategies, lineupTech, startPositions }) {
-    const palette = PALETTE.slice(0, lineupStrategies.length);
+  loadReplay({ mapConfig, seed, lineupStrategies, lineupTech, startPositions, ratings = null }) {
+    const palette = paletteByRank(lineupStrategies, ratings);
     const lineup = lineupStrategies.map((s) => s.name);
     this._primeView({
       mapConfig,
