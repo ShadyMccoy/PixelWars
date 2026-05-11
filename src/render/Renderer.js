@@ -13,6 +13,7 @@ export class Renderer {
     this.showMoves = true;
     this.showConflicts = true;
     this.showOverlay = false;
+    this.showOrders = true;
     // "circle" | "line": visual used to depict an in-flight move.
     this.moveStyle = "circle";
     // 3D iso view: each tile becomes a colored prism whose height is
@@ -232,6 +233,8 @@ export class Renderer {
 
     if (this.showMoves) this.drawMoves();
 
+    if (this.showOrders) this.drawOrders();
+
     this.drawArmies(now);
 
     if (this.showOverlay) this.drawStrategyOverlay();
@@ -244,11 +247,43 @@ export class Renderer {
     const ctx = this.ctx;
     const ts = this.tileSize;
     for (const tile of this.game.map.tiles) {
-      const owner = tile.ownerArmy();
-      if (!owner || !owner.player) continue;
-      const alpha = 0.10 + 0.20 * (owner.strength / owner.maxStrength);
-      ctx.fillStyle = hexToRgba(owner.player.color, alpha);
-      ctx.fillRect(tile.pos.x * ts, tile.pos.y * ts, ts, ts);
+      const armies = tile.armies;
+      const n = armies.length;
+      if (n === 0) continue;
+      const holder = tile.ownerArmy();
+      const x = tile.pos.x * ts;
+      const y = tile.pos.y * ts;
+      // Holder base tint: matches the historical look. Holder may be
+      // null when the tile is in flux (contested with no prior holder,
+      // or the prior holder just died and multiple challengers remain)
+      // — in that case the base layer stays bare and only the marbled
+      // pips below paint, reading as a neutral-gray contested tile.
+      if (holder && holder.player) {
+        const alpha = 0.10 + 0.20 * (holder.strength / holder.maxStrength);
+        ctx.fillStyle = hexToRgba(holder.player.color, alpha);
+        ctx.fillRect(x, y, ts, ts);
+      }
+      if (n === 1) continue;
+      // Contested tile: paint each non-holder occupant as a concentric
+      // square whose size scales with their share of total strength on
+      // the tile. A near-50/50 brackish tile draws a big inner square;
+      // a near-cleared minority shrinks to a small central pip.
+      let total = 0;
+      for (let i = 0; i < n; i++) total += armies[i].strength;
+      if (total <= 0) continue;
+      const sorted = armies.slice().sort((a, b) => a.strength - b.strength);
+      for (let i = 0; i < sorted.length; i++) {
+        const a = sorted[i];
+        if (!a.player) continue;
+        if (a === holder) continue;
+        const share = a.strength / total;
+        const inset = ts * 0.5 * (1 - Math.sqrt(Math.min(1, 2 * share)));
+        const innerSize = ts - inset * 2;
+        if (innerSize <= 0) continue;
+        const alpha = 0.18 + 0.25 * share;
+        ctx.fillStyle = hexToRgba(a.player.color, alpha);
+        ctx.fillRect(x + inset, y + inset, innerSize, innerSize);
+      }
     }
   }
 
@@ -352,8 +387,25 @@ export class Renderer {
       if (!army.bornAt) army.bornAt = now;
       const ratio = Math.max(0, Math.min(1, army.strength / army.maxStrength));
       const radiusFactor = minRadius + (maxRadius - minRadius) * Math.pow(ratio, exponent);
-      const cx = (army.pos.x + 0.5) * ts;
-      const cy = (army.pos.y + 0.5) * ts;
+      // Offset armies that share a contested tile so their glyphs don't
+      // stack on the center. Position by index within tile.armies on a
+      // small ring; a 2-occupant tile reads as two side-by-side circles.
+      let ox = 0;
+      let oy = 0;
+      const tile = army.tile;
+      if (tile && tile.armies.length > 1) {
+        const arr = tile.armies;
+        let idx = 0;
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i] === army) { idx = i; break; }
+        }
+        const angle = (idx / arr.length) * Math.PI * 2;
+        const r = ts * 0.18;
+        ox = Math.cos(angle) * r;
+        oy = Math.sin(angle) * r;
+      }
+      const cx = (army.pos.x + 0.5) * ts + ox;
+      const cy = (army.pos.y + 0.5) * ts + oy;
       const age = (now - army.bornAt) / 1000;
       const pulse = 1 + Math.sin(age * 4 + army.id) * 0.04;
       const drawRadius = ts * radiusFactor * pulse;
@@ -383,6 +435,89 @@ export class Renderer {
   // exceptional roles (SINK = hold, SORTIE = attack lance) and a faint
   // flow tick on interior tiles within 2 steps of a front. The default
   // FRONT/INTERIOR roles get nothing — the territory tint already
+  // Paint each active player order as a brush stroke: a soft, alpha-
+  // hatched rectangle in the player's color over the order's region,
+  // plus an arrow pointing in the order vector. Alpha fades with
+  // remaining TTL so a campaign that's almost over reads quieter than
+  // a fresh push. Wraps the region across the map seam so a campaign
+  // straddling the seam paints contiguously on the visible copy.
+  drawOrders() {
+    const ctx = this.ctx;
+    const game = this.game;
+    const orders = game.orders;
+    if (!orders || orders.length === 0) return;
+    const ts = this.tileSize;
+    const z = this.zoom;
+    const mapW = game.map.width;
+    const mapH = game.map.height;
+    const byId = game.players.byId;
+
+    ctx.save();
+    for (let i = 0; i < orders.length; i++) {
+      const o = orders[i];
+      const player = byId.get(o.playerId);
+      if (!player) continue;
+      // Fade from full at birth to ~0.25 at expiry. We don't know the
+      // original TTL here, only what's left, so use a fixed shape:
+      //   alpha = 0.16 + 0.10 * min(ttl, 10) / 10
+      // It's enough variation to read "this one is fresher" without
+      // making short-TTL orders invisible.
+      const ttlBoost = Math.min(o.ttl, 10) / 10;
+      const baseAlpha = 0.16 + 0.10 * ttlBoost;
+      const r = o.region;
+
+      // Tile across the seam: on a wrap map a region with x+w > mapW
+      // needs two passes so the renderer's tile-replicated world
+      // shows it contiguously.
+      const drawRect = (rx, ry, rw, rh) => {
+        ctx.fillStyle = hexToRgba(player.color, baseAlpha);
+        ctx.fillRect(rx * ts, ry * ts, rw * ts, rh * ts);
+        ctx.strokeStyle = hexToRgba(player.accent, baseAlpha * 2.0);
+        ctx.lineWidth = Math.max(1, ts * 0.06) / z;
+        ctx.strokeRect(rx * ts, ry * ts, rw * ts, rh * ts);
+      };
+
+      drawRect(r.x, r.y, r.w, r.h);
+      if (game.map.wrap) {
+        if (r.x + r.w > mapW) drawRect(r.x - mapW, r.y, r.w, r.h);
+        if (r.y + r.h > mapH) drawRect(r.x, r.y - mapH, r.w, r.h);
+      }
+
+      // Arrow from the region center along the vector. Length scales
+      // with intensity so a half-intensity skirmish reads weaker than
+      // a full-power campaign.
+      const cx = (r.x + r.w / 2) * ts;
+      const cy = (r.y + r.h / 2) * ts;
+      const vlen = Math.hypot(o.vector.dx, o.vector.dy) || 1;
+      const ux = o.vector.dx / vlen;
+      const uy = o.vector.dy / vlen;
+      const armLen = ts * Math.min(r.w, r.h) * 0.5 * (0.4 + 0.6 * o.intensity);
+      const tipX = cx + ux * armLen;
+      const tipY = cy + uy * armLen;
+      const headLen = ts * 0.4;
+      const headAngle = 0.55;
+      const cos = Math.cos(headAngle);
+      const sin = Math.sin(headAngle);
+      // Two perpendiculars rotated by ±headAngle off the arrow tail.
+      const tailX1 = tipX - headLen * (ux * cos - uy * sin);
+      const tailY1 = tipY - headLen * (uy * cos + ux * sin);
+      const tailX2 = tipX - headLen * (ux * cos + uy * sin);
+      const tailY2 = tipY - headLen * (uy * cos - ux * sin);
+      ctx.strokeStyle = hexToRgba(player.accent, 0.85);
+      ctx.lineWidth = Math.max(2, ts * 0.10) / z;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(tipX, tipY);
+      ctx.moveTo(tipX, tipY);
+      ctx.lineTo(tailX1, tailY1);
+      ctx.moveTo(tipX, tipY);
+      ctx.lineTo(tailX2, tailY2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   // shows ownership; we only mark what the painter has decided is
   // *unusual*.
   drawStrategyOverlay() {

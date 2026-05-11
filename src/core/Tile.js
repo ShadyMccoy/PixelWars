@@ -16,6 +16,15 @@ export class Tile {
     // and resets to 0 when the tile changes hands. Only consulted in
     // "budget" movement mode; classic mode ignores it.
     this.budget = 0;
+    // Sticky holder id: the player who "controls" this tile across
+    // ticks. Null while the tile is neutral or contested-in-flux. Only
+    // flips when one side has cleared the tile, or when the prior
+    // holder loses their last army on it. Contested tiles where the
+    // prior holder still has an army keep their _holderPid — that
+    // lets territory tint and territory totals stay stable while a
+    // campaign bulges in and evaporates, instead of strobing whenever
+    // an attacker briefly out-effectives the defender.
+    this._holderPid = null;
   }
 
   registerArmy(army) {
@@ -44,24 +53,21 @@ export class Tile {
 
     const grouped = [];
     const groupedPids = [];
-    // Identify the previous holder (army that was already on the tile,
-    // not arrived this tick) for conquest detection. If no
-    // non-attacker is present the tile was effectively neutral.
-    let prevHolderPid = null;
+    // Group friendlies on this tile into one army per player. The
+    // engine invariant (at most one alive army per player per tile)
+    // means duplicates only arise when an attack synthesizes a new
+    // army at the destination while a friendly is already there —
+    // joinForces folds them. With the sticky-holder model we don't
+    // need to track per-army attacker status during grouping; role
+    // is derived from tile holder below.
     for (let k = 0; k < list.length; k++) {
       const a = list[k];
       if (!a.alive) continue;
       const pid = a.player.id;
-      if (!a.isAttacker && prevHolderPid === null) prevHolderPid = pid;
       let merged = false;
       for (let g = 0; g < groupedPids.length; g++) {
         if (groupedPids[g] === pid) {
-          const head = grouped[g];
-          // A group is "attacking" if any contributing army arrived this
-          // tick as an attacker.
-          const wasAttacker = head.isAttacker || a.isAttacker;
-          head.joinForces(a);
-          head.isAttacker = wasAttacker;
+          grouped[g].joinForces(a);
           merged = true;
           break;
         }
@@ -72,98 +78,141 @@ export class Tile {
       }
     }
 
-    // N-way symmetric resolution. Every side simultaneously fights the
-    // union of all the others; only the unique strongest can survive.
-    //
-    //   lanchester (default): post²(i) = e_i² − Σ_{j≠i} e_j².
-    //     Comes from the square-law ODE under simultaneous focused
-    //     fire from all opponents. Order-independent. Reduces to the
-    //     2-way result sqrt(wE² − lE²). Concentration of mass pays
-    //     super-linearly, so coalitions out-fight a single larger
-    //     side once their summed squares cross.
-    //   linear: post(i) = e_i − Σ_{j≠i} e_j.
-    //     Additive damage; ganging up is purely cumulative.
-    //
-    // If no unique top (top-2 tie within ε), all sides annihilate.
     const game = grouped[0] && grouped[0].game;
-    const bonus = (game && game.attackerBonus) || 1;
     const model = (game && game.combatModel) || "lanchester";
 
-    // Total strength engaged across all sides — fed to the renderer as
-    // conflict magnitude so the red residue scales with fight size.
-    // Only meaningful when at least two distinct players collided here;
-    // single-player merges are not conflicts.
-    let engagedStrength = 0;
-    if (grouped.length > 1) {
-      for (let i = 0; i < grouped.length; i++) engagedStrength += grouped[i].strength;
-    }
-    const armyMult = (army) => {
-      const m = army.player.techMults;
-      if (army.isAttacker) return bonus * (m ? m.atk : 1);
-      return m ? m.def : 1;
-    };
-    const eff = (army) => army.strength * armyMult(army);
-
-    let survivor = null;
+    // Single-player tile after friendly merging: no combat, place the
+    // survivor and exit. Common path for reinforcement-on-friend.
     if (grouped.length === 1) {
-      survivor = grouped[0];
-    } else if (grouped.length > 1) {
-      let totalSq = 0;
-      let totalLin = 0;
-      let bestIdx = -1;
-      let bestE = -Infinity;
-      let secondE = -Infinity;
-      const effs = new Array(grouped.length);
-      for (let i = 0; i < grouped.length; i++) {
-        const e = eff(grouped[i]);
-        effs[i] = e;
-        totalSq += e * e;
-        totalLin += e;
-        if (e > bestE) {
-          secondE = bestE;
-          bestE = e;
-          bestIdx = i;
-        } else if (e > secondE) {
-          secondE = e;
-        }
+      const survivor = grouped[0];
+      if (survivor.alive) {
+        survivor.tile = this;
+        this.armies.push(survivor);
       }
-      const tied = bestE - secondE < 1e-9;
-      if (!tied) {
-        const winner = grouped[bestIdx];
-        const wMult = armyMult(winner);
-        const wE = bestE;
-        let postRaw;
-        if (model === "lanchester") {
-          const sq = wE * wE - (totalSq - wE * wE);
-          postRaw = sq > 0 ? Math.sqrt(sq) / wMult : 0;
-        } else {
-          const lin = wE - (totalLin - wE);
-          postRaw = lin > 0 ? lin / wMult : 0;
-        }
-        winner.strength = postRaw;
-        if (winner.strength < 0.5) {
-          winner.die();
-        } else {
-          survivor = winner;
-        }
-      }
+      return;
+    }
+
+    // Combat math:
+    //  - pressure is computed on raw strength (lanchester square law
+    //    encodes "concentrating force wins decisively" without any
+    //    role-based effective-strength fudging).
+    //  - tech.atk is "causing losses" — multiplies the damage I deal.
+    //  - tech.def is "taking losses" — divides the damage I receive.
+    //    Both apply symmetrically regardless of whether I'm holding
+    //    the tile or invading it; the structural defender advantage
+    //    comes from the sticky holder mechanic, not from doubling up
+    //    bonuses on the army that happens to be on its home tile.
+    const atkOf = (army) => army.player.techMults?.atk ?? 1;
+    const defOf = (army) => army.player.techMults?.def ?? 1;
+
+    let engagedStrength = 0;
+    for (let i = 0; i < grouped.length; i++) engagedStrength += grouped[i].strength;
+
+    // Staged attrition: base per-tick loss is (rate × pressure + floor)
+    // in raw-strength units, then scaled by enemy "causing losses"
+    // (averaged across enemies, weighted by their strength share) and
+    // divided by my "taking losses". A fair 6v6 between neutral-tech
+    // sides resolves in roughly 6/(rate*6 + floor) ≈ 6/0.86 ≈ 7 ticks
+    // at the default rate=0.06; small fights still snap because the
+    // floor dominates relative to the small stack. Pressure is capped
+    // at my own strength so a tiny outnumbered force can't take
+    // impossible losses; the 0.5 death threshold ends mismatched
+    // fights cleanly.
+    //
+    // Lanchester branch normalizes the rate-term pressure by myStr so
+    // a fair 1v1 matches linear at the same rate, but a 2x ratio
+    // compounds (~4x damage advantage on the heavier side).
+    const k = (game && game.attritionRate) || 0.06;
+    const floorRaw = (game && game.attritionFloor) || 0.5;
+    const strs = new Array(grouped.length);
+    let totalStr = 0;
+    for (let i = 0; i < grouped.length; i++) {
+      strs[i] = grouped[i].strength;
+      totalStr += strs[i];
+    }
+
+    if (model === "lanchester") {
+      let totalStrSq = 0;
+      for (let i = 0; i < strs.length; i++) totalStrSq += strs[i] * strs[i];
       for (let i = 0; i < grouped.length; i++) {
-        if (grouped[i] === survivor) continue;
-        if (grouped[i].alive) grouped[i].die();
+        const army = grouped[i];
+        const myStr = strs[i];
+        const enemyStrSq = totalStrSq - myStr * myStr;
+        if (enemyStrSq <= 0) continue;
+        const denom = myStr > 0 ? myStr : 1;
+        const pressure = Math.min(myStr, enemyStrSq / denom);
+        const base = Math.min(myStr, k * pressure + floorRaw);
+        let enemyAtkSum = 0;
+        let enemyStrSum = 0;
+        for (let j = 0; j < grouped.length; j++) {
+          if (j === i) continue;
+          enemyAtkSum += strs[j] * atkOf(grouped[j]);
+          enemyStrSum += strs[j];
+        }
+        const avgEnemyAtk = enemyStrSum > 0 ? enemyAtkSum / enemyStrSum : 1;
+        army.strength -= base * avgEnemyAtk / defOf(army);
+        if (army.strength < 0.5) army.die();
+      }
+    } else {
+      for (let i = 0; i < grouped.length; i++) {
+        const army = grouped[i];
+        const myStr = strs[i];
+        const enemyStr = totalStr - myStr;
+        if (enemyStr <= 0) continue;
+        const pressure = Math.min(myStr, enemyStr);
+        const base = Math.min(myStr, k * pressure + floorRaw);
+        let enemyAtkSum = 0;
+        let enemyStrSum = 0;
+        for (let j = 0; j < grouped.length; j++) {
+          if (j === i) continue;
+          enemyAtkSum += strs[j] * atkOf(grouped[j]);
+          enemyStrSum += strs[j];
+        }
+        const avgEnemyAtk = enemyStrSum > 0 ? enemyAtkSum / enemyStrSum : 1;
+        army.strength -= base * avgEnemyAtk / defOf(army);
+        if (army.strength < 0.5) army.die();
       }
     }
 
-    // Conquest reset: if ownership of the tile changes (or the tile
-    // empties out entirely), zero the per-tile movement budget. Only
-    // meaningful in "budget" movement mode; otherwise it's a no-op.
-    const newPid = survivor && survivor.alive ? survivor.player.id : null;
-    if (newPid !== prevHolderPid) this.budget = 0;
-
-    if (survivor && survivor.alive) {
-      survivor.isAttacker = false;
-      this.armies.push(survivor);
-      survivor.tile = this;
+    // Re-place survivors. Multiple groups may persist on the tile while
+    // the fight continues; GameMap.resolveConflicts re-queues this tile
+    // for the next tick whenever it stays contested. Sort descending so
+    // armies[0] is the strongest occupant — useful for legacy reads,
+    // even though ownerArmy() now keys off _holderPid.
+    const survivors = [];
+    for (let i = 0; i < grouped.length; i++) {
+      if (grouped[i].alive) survivors.push(grouped[i]);
     }
+    survivors.sort((a, b) => b.strength - a.strength);
+
+    for (let i = 0; i < survivors.length; i++) {
+      const a = survivors[i];
+      a.tile = this;
+      this.armies.push(a);
+    }
+
+    // Sticky-holder update. _holderPid was seeded on the tile's first
+    // occupation (Game.spawnArmy), so the prior-holder lookup is just
+    // a state read; no need for a per-tick fallback. The tile flips
+    // only when the prior holder has no army left on it. When the
+    // remaining survivors are multiple non-holders (e.g., two
+    // attackers contesting after the defender fell), the tile is in
+    // flux — no holder until one side clears it.
+    const aliveByPid = new Set();
+    for (let i = 0; i < survivors.length; i++) aliveByPid.add(survivors[i].player.id);
+    const priorHolder = this._holderPid;
+    let nextHolder;
+    if (aliveByPid.size === 0) {
+      nextHolder = priorHolder;
+    } else if (aliveByPid.size === 1) {
+      nextHolder = survivors[0].player.id;
+    } else if (priorHolder != null && aliveByPid.has(priorHolder)) {
+      nextHolder = priorHolder;
+    } else {
+      nextHolder = null;
+    }
+    if (nextHolder !== priorHolder) this.budget = 0;
+    this._holderPid = nextHolder;
 
     if (engagedStrength > 0 && game && game.recordConflict) {
       game.recordConflict(this, engagedStrength);
@@ -171,7 +220,29 @@ export class Tile {
   }
 
   ownerArmy() {
-    return this.armies.length > 0 ? this.armies[0] : null;
+    if (this._holderPid == null) return null;
+    const armies = this.armies;
+    for (let i = 0; i < armies.length; i++) {
+      if (armies[i].player.id === this._holderPid) return armies[i];
+    }
+    // Holder is recorded but has no army on the tile right now — either
+    // their army was just killed in a contested tick, or the tile is
+    // empty post-mutual-annihilation. Reads as in-flux / neutral:
+    // territory totals don't credit anyone, renderer paints brackish.
+    return null;
+  }
+
+  // True iff multiple distinct players have alive armies on this tile.
+  // Used by the renderer to paint brackish tiles and by GameMap to
+  // re-queue contested tiles for next tick's combat pass.
+  isContested() {
+    const armies = this.armies;
+    if (armies.length < 2) return false;
+    const first = armies[0].player.id;
+    for (let i = 1; i < armies.length; i++) {
+      if (armies[i].player.id !== first) return true;
+    }
+    return false;
   }
 
   equals(other) {

@@ -68,6 +68,34 @@ import { sumStrength, totalStrength } from "../core/Army.js";
 | `sumStrength(armies, viewer)`   | **Signed** sum: friendlies of `viewer` add, enemies subtract. Useful for "is this tile net-friendly to me?". |
 | `totalStrength(armies)`         | Plain unsigned sum. |
 
+## Order-based bots (`plan(game, player)`)
+
+A strategy can define `plan(game, player)` instead of (or alongside — though armies pick one path based on owner) `act(army, game)`. The engine calls `plan` once per player per tick during Phase B; the bot issues orders that drive its armies for many ticks without per-army micromanagement.
+
+```js
+export default {
+  name: "MyBot",
+  plan(game, player) {
+    if (player.orders.length > 0) return;             // existing order still active
+    game.issueOrder(player, {
+      region: { x: 0, y: 0, w: game.map.width, h: game.map.height },  // wrap-aware rect
+      vector: { dx: 1, dy: 0 },                       // push east
+      intensity: 0.85,                                // 0..1; fraction of attackPower per tick
+      ttl: 20,                                        // ticks; auto-decrements, auto-removed
+      commitment: "campaign",                         // 'skirmish' | 'push' | 'campaign'
+    });
+  },
+}
+```
+
+| Call | Effect |
+|------|--------|
+| `game.issueOrder(player, spec)` | Adds an order. Returns the order (with `id`) on success, `null` if `player.orders.length >= game.orderBudget`. |
+| `game.cancelOrder(player, id)`  | Removes one order by id. |
+| `player.orders`                 | Read-only-ish array of the player's currently-active orders. Sorted in issue order. |
+
+Each tick, the engine expands all of a player's orders into per-army moves: every army of that player whose tile falls inside *any* order's region picks its target neighbor by the strength-weighted sum of those orders' vectors, and commits `attackPower × clamped(Σintensity, 1)` toward it. Armies on order-less tiles are idle. Bots that only define `act` are unaffected — the two paths coexist per player.
+
 ## What you can't do
 
 - Read or mutate other players' armies.
@@ -79,9 +107,10 @@ import { sumStrength, totalStrength } from "../core/Army.js";
 ## Conflict resolution (so you can reason about what happens after `attack`)
 
 1. Each `attack(tile, power)` enqueues a move at end-of-tick.
-2. Tiles with multiple owners' armies fight: opposing strengths cancel pairwise.
-3. Friendlies on the same tile merge to one army (capped at `maxStrength`).
-4. Survivors update `tile.ownership` based on net strength.
-5. Each army then `run`s — gains `growth × prod × interval` strength, capped.
+2. Friendlies on the same tile merge to one army (capped at `maxStrength`).
+3. **Roles are derived from the tile holder**, not from per-army flags. An army is a *defender* iff `army.player.id === tile.ownerArmy()?.player.id` (the sticky holder); every other army on the tile is an *attacker/invader*. The structural attacker/defender asymmetry comes from the sticky holder mechanic + Lanchester's square law — the legacy global `attackerBonus` defaults to 1.0.
+4. **Staged attrition** on tiles with multiple players' armies. Each side's per-tick base loss is `min(myStr, rate × pressure + floor)` raw strength (defaults `rate = 0.06`, `floor = 0.5`; `rate` is the map-level "Attrition" setting). The base loss is then scaled by enemy "causing losses" tech and divided by my "taking losses" tech — `tech.atk` and `tech.def` apply symmetrically regardless of holder role: `tech.atk` multiplies the damage I cause to enemies, `tech.def` divides the damage I take from them. A fair neutral-tech 6v6 takes ~7 ticks; a 1v1 snaps in 1–2 (the floor dominates). `combatModel` controls how pressure is computed: `lanchester` (default) uses sum-of-squared enemy strengths so a 2x ratio compounds (~4x advantage); `linear` uses raw enemy strength.
+5. **Sticky holder**: the tile's owner persists across ticks while the prior holder still has any army on the tile. Ownership only transfers when the prior holder loses their last army there. When multiple non-holder armies are left after that (e.g., two attackers contesting after the defender fell), the tile is in flux — `tile.ownerArmy()` returns `null` and the tile reads as neutral for territory totals until one side clears it.
+6. Each army then `run`s — gains `growth × prod × interval` strength, capped.
 
-This means you commonly see `army.attack` and *then* the engine resolves; your bot does not see post-resolution state until the next tick.
+This means contested tiles can persist with multiple players' armies for several ticks, creating "brackish" zones where a campaign has bulged into enemy territory. Your bot does not see post-resolution state until the next tick. **`tile.armies` is sorted by descending raw strength after resolution**, but use `tile.ownerArmy()` (sticky holder) to ask *who controls this tile right now*, not `tile.armies[0]`.

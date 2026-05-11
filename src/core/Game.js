@@ -2,6 +2,7 @@ import { GameMap } from "./GameMap.js";
 import { Army } from "./Army.js";
 import { Players } from "./Player.js";
 import { makeRng } from "./rng.js";
+import { makeOrder, cellInRegion, pickCardinal } from "./Order.js";
 
 export class Game {
   constructor({
@@ -11,8 +12,10 @@ export class Game {
     growth = 1,
     maxArmy = 6,
     decay = 0.05,
-    attackerBonus = 1.4,
+    attackerBonus = 1.0,
     combatModel = "lanchester",
+    attritionRate = 0.06,
+    orderBudget = 4,
     movementModel = "classic",
     maxBudget = null,         // budget mode: cap. null -> defaults to maxArmy.
     baseBudgetRecharge = 1.0, // budget mode: budget gained per tick at neutral move-tech.
@@ -29,15 +32,52 @@ export class Game {
     this.growth = growth;
     this.maxArmy = maxArmy;
     this.decay = decay;
+    // Legacy global multiplier for invader effective strength. Kept on
+    // the Game object so bots that read game.attackerBonus for their
+    // commit math don't crash, but default is now 1.0 — Lanchester's
+    // square law produces the "concentrating force wins decisively"
+    // dynamic that the flat 1.4 used to encode, and a staged-combat
+    // perpetual bonus would make attackers absurdly strong.
     this.attackerBonus = attackerBonus;
-    // "lanchester" (default): post(i) = sqrt(max(0, e_i² − Σ_{j≠i} e_j²)).
-    //   N-way symmetric square-law -- every side simultaneously fights
-    //   the union of all the others. Concentration of force compounds:
-    //   2x ratio is ~4x more efficient, coalitions out-fight a single
-    //   larger side once their summed squares cross.
-    // "linear": post(i) = e_i − Σ_{j≠i} e_j. Additive damage; ganging
-    //   up is purely cumulative.
+    // Combat is staged across multiple ticks (see Tile.resolveConflicts).
+    // combatModel controls the pressure curve fed into per-tick attrition:
+    //   "lanchester" (default): pressure uses sum-of-squared enemy raw
+    //     strengths, so a 2x ratio compounds (~4x damage advantage).
+    //     Concentrating mass at the breakthrough still pays even under
+    //     staged resolution.
+    //   "linear": pressure uses raw enemy strength. Equal forces bleed
+    //     at the same rate per tick; no nonlinear reward for overkill.
     this.combatModel = combatModel;
+    // Per-tick attrition on contested tiles has two components:
+    //   attritionRate × pressure  — percentage shaping. Larger stacks
+    //     lose more absolute strength but the per-tick fraction is
+    //     bounded, so a fair 6v6 still takes ~7 ticks at rate=0.06.
+    //     This is the map-level "combat speed" knob — lower values
+    //     mean longer-lived brackish zones; the UI surfaces it as
+    //     the "Attrition" map setting.
+    //   attritionFloor            — absolute per-tick raw-strength
+    //     floor. Dominates when armies are small (a 1v1 dies in
+    //     1–2 ticks); without it, small skirmishes would also drag
+    //     for many ticks, which feels wrong — small fights should
+    //     snap.
+    // Net loss per side per tick (in raw-strength units) is then
+    // scaled by enemy "causing losses" tech and divided by my "taking
+    // losses" tech — see Tile.resolveConflicts.
+    this.attritionRate = attritionRate;
+    // Floor scales with rate so the "Attrition" map setting actually
+    // moves the needle on long fights. With a flat 0.5 floor, lowering
+    // the rate barely slowed fair 6v6s (the floor accounted for >half
+    // the per-tick loss). Floor = 3 × rate keeps small fights snapping
+    // (1v1 still resolves in 1–2 ticks) while letting big fights
+    // brackish for much longer at low rates. Capped below at 0.1 so a
+    // pathological rate=0 doesn't deadlock.
+    this.attritionFloor = Math.max(0.1, attritionRate * 3);
+    // Maximum simultaneous orders per player in the bot-command system.
+    // Surfaced as the "Order budget" map setting. Lower budgets force
+    // bots to pick what matters most each tick (skill ceiling rises),
+    // higher budgets allow more reactive multi-front play. Bots that
+    // only use the legacy act() callback ignore this entirely.
+    this.orderBudget = Math.max(1, Math.floor(orderBudget));
     // "classic" (default): adjacent-only attacks, garrison floor from
     //   the move tech. Existing 391 bots target this model.
     // "budget": tile-local movement budget recharges per tick (scaled
@@ -150,7 +190,22 @@ export class Game {
     }
     this.armies.push(army);
     army.tile = tile;
+    const wasEmpty = tile.armies.length === 0;
     tile.registerArmy(army);
+    // Sticky holder update on arrival to an empty tile:
+    //   - first-ever occupant -> seed holder
+    //   - returning holder    -> no change (no conquest)
+    //   - new player walking into an abandoned/cleared tile -> conquest:
+    //     flip holder and zero the per-tile budget (mirrors the
+    //     budget reset that resolveConflicts performs on a forced flip).
+    if (wasEmpty) {
+      if (tile._holderPid == null) {
+        tile._holderPid = army.player.id;
+      } else if (tile._holderPid !== army.player.id) {
+        tile._holderPid = army.player.id;
+        tile.budget = 0;
+      }
+    }
     if (tile.armies.length > 1 && !tile.dirty) {
       tile.dirty = true;
       this._dirtyTiles.push(tile);
@@ -161,11 +216,10 @@ export class Game {
 
   // Apply one queued move from the pending-moves drain. Deducts power
   // from the source army (and the source-tile budget in budget mode),
-  // then spawns a fresh attacker army on the destination. We spawn a
-  // new Army even when a friendly already holds the destination so the
-  // attacker bonus contribution survives into resolveConflicts; the
-  // same-player merge happens there via joinForces with the wasAttacker
-  // flag preserved.
+  // then spawns a fresh army on the destination. We spawn a new Army
+  // even when a friendly already holds the destination — the same-player
+  // merge happens in resolveConflicts via joinForces, which keeps this
+  // path branch-free.
   _commitMove(m) {
     const army = m.army;
     if (!army || !army.alive) return;
@@ -187,15 +241,124 @@ export class Game {
       maxStrength: this.maxArmy,
       tile: dest,
     });
-    newArmy.isAttacker = true;
     newArmy.bornAt = this.tick;
     this.armies.push(newArmy);
+    const wasEmpty = dest.armies.length === 0;
     dest.registerArmy(newArmy);
+    // Sticky holder update on arrival to an empty tile. Mirrors the
+    // logic in spawnArmy (which _commitMove deliberately bypasses so
+    // friendly-on-tile arrivals fold via resolveConflicts instead of
+    // inline). Walking an empty tile that was previously held by
+    // someone else is a conquest: flip holder and zero budget.
+    if (wasEmpty) {
+      if (dest._holderPid == null) {
+        dest._holderPid = army.player.id;
+      } else if (dest._holderPid !== army.player.id) {
+        dest._holderPid = army.player.id;
+        dest.budget = 0;
+      }
+    }
     if (dest.armies.length > 1 && !dest.dirty) {
       dest.dirty = true;
       this._dirtyTiles.push(dest);
     }
     this._territoryDirty = true;
+  }
+
+  // Issue a new order for `player`. Rejected (returns null) if the
+  // player is already at orderBudget — bots have to either let an
+  // existing order expire or cancel one explicitly. birthTick is
+  // stamped automatically so commitment bonuses can use age later.
+  issueOrder(player, spec) {
+    if (!player) return null;
+    if (player.orders.length >= this.orderBudget) return null;
+    const order = makeOrder({
+      ...spec,
+      playerId: player.id,
+      birthTick: this.tick,
+    });
+    player.orders.push(order);
+    return order;
+  }
+
+  cancelOrder(player, id) {
+    if (!player) return false;
+    const arr = player.orders;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].id === id) {
+        arr.splice(i, 1);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Expand every player's orders into per-army _pendingMoves entries
+  // for this tick. Called from step() between Phase B (bot decisions)
+  // and Phase C (commit moves). Multiple orders covering the same
+  // army merge: their intensities sum (clamped at 1.0) and their
+  // vectors weighted-average so a campaign + a skirmish overlapping
+  // produces one coherent direction.
+  _expandOrders() {
+    const list = this.players.list;
+    for (let pi = 0; pi < list.length; pi++) {
+      const player = list[pi];
+      const orders = player.orders;
+      if (!orders || orders.length === 0) continue;
+
+      // Per-army intent accumulator. Most armies hit at most a couple
+      // of orders, so we just use a Map keyed by army id.
+      const intents = new Map();
+      const armies = this.armies;
+      for (let ai = 0; ai < armies.length; ai++) {
+        const army = armies[ai];
+        if (!army.alive || army.player.id !== player.id) continue;
+        const tile = army.tile;
+        if (!tile) continue;
+        let sumI = 0;
+        let sumVx = 0;
+        let sumVy = 0;
+        for (let oi = 0; oi < orders.length; oi++) {
+          const o = orders[oi];
+          if (o.kind !== "move") continue;
+          if (!cellInRegion(tile.pos.x, tile.pos.y, o.region, this.map.width, this.map.height)) continue;
+          sumI += o.intensity;
+          sumVx += o.intensity * o.vector.dx;
+          sumVy += o.intensity * o.vector.dy;
+        }
+        if (sumI <= 0) continue;
+        const clampedI = sumI > 1 ? 1 : sumI;
+        const norm = sumI > 0 ? sumI : 1;
+        intents.set(army.id, {
+          army,
+          intensity: clampedI,
+          vector: { dx: sumVx / norm, dy: sumVy / norm },
+        });
+      }
+
+      // Emit one move per affected army. We pick a cardinal neighbor
+      // for now (matches the classic-movement world); when budget
+      // movementModel is on, the army can attack further but we still
+      // step the order by one tile per tick for steady advance.
+      for (const intent of intents.values()) {
+        const army = intent.army;
+        const tile = army.tile;
+        if (!tile) continue;
+        const card = pickCardinal(intent.vector, this.rng);
+        if (card.dx === 0 && card.dy === 0) continue;
+        const dest = this.map.getTile(tile.pos.x + card.dx, tile.pos.y + card.dy);
+        if (!dest || dest === tile) continue;
+        // Skip emission when the target is a friendly tile and the
+        // order has nowhere to "push toward". Friendly-on-friendly
+        // moves just redistribute strength; the simplest sane policy
+        // is to only emit when the dest is not a friend, so a campaign
+        // doesn't leak into the rear unnecessarily.
+        if (dest._holderPid === player.id && dest.armies.length === 1) continue;
+        const power = army.attackPower * intent.intensity;
+        if (!(power > 0.5)) continue;
+        army.attack(dest, power);
+      }
+    }
   }
 
   placeArmy({ x, y, player, strength = 1 }) {
@@ -240,11 +403,25 @@ export class Game {
       if (a.canActThisTick()) eligible.push(a);
     }
 
-    // Phase B: simultaneous decision. Shuffle the act order so equally-
-    // valid same-tile targeting breaks ties uniformly at random instead
-    // of by army-index. Each army's act() runs once and any attack()
-    // calls only enqueue moves into _pendingMoves -- no strength deltas,
-    // no tile.armies mutation. Bots see the start-of-tick world.
+    // Phase B: simultaneous decision. Two paths coexist per player:
+    //   Order-based: if the player's strategy has a `plan(game, player)`
+    //     method, call it once. The bot mutates player.orders via
+    //     game.issueOrder / game.cancelOrder; nothing else mutates.
+    //     Then expand all of that player's active orders into moves
+    //     in _expandOrders below.
+    //   Legacy act: per-army act() runs once per available credit,
+    //     enqueuing moves into _pendingMoves.
+    // Both paths only enqueue; no strength deltas or tile.armies
+    // mutation happens here. Bots see the start-of-tick world.
+    const players = this.players.list;
+    for (let pi = 0; pi < players.length; pi++) {
+      const p = players[pi];
+      const strat = p.strategy;
+      if (strat && typeof strat.plan === "function") strat.plan(this, p);
+    }
+    this._expandOrders();
+    // Shuffle the legacy-act order so equally-valid same-tile targeting
+    // breaks ties uniformly at random instead of by army-index.
     const n = eligible.length;
     for (let i = n - 1; i > 0; i--) {
       const j = (this.rng() * (i + 1)) | 0;
@@ -253,6 +430,10 @@ export class Game {
     for (let i = 0; i < n; i++) {
       const a = eligible[i];
       if (!a.alive) continue;
+      // Skip armies whose owner uses the order-based API. plan() has
+      // already enqueued their moves; running act() too would
+      // double-decide.
+      if (a.player.strategy && typeof a.player.strategy.plan === "function") continue;
       a.runAct();
     }
 
@@ -305,6 +486,22 @@ export class Game {
         const next = tile.budget + baseRate * mult;
         tile.budget = next > cap ? cap : next;
       }
+    }
+
+    // Order TTL decrement: drop any order that just ran its last tick.
+    // Done after the move phase so the order fires on its final tick
+    // before expiring. ttl=1 means "active for exactly this tick".
+    const playersForTtl = this.players.list;
+    for (let pi = 0; pi < playersForTtl.length; pi++) {
+      const arr = playersForTtl[pi].orders;
+      if (!arr || arr.length === 0) continue;
+      let w = 0;
+      for (let i = 0; i < arr.length; i++) {
+        const o = arr[i];
+        o.ttl -= 1;
+        if (o.ttl > 0) arr[w++] = o;
+      }
+      arr.length = w;
     }
 
     if (this.recentMoves.length > 0) {
@@ -371,8 +568,11 @@ export class Game {
     for (let i = 0; i < list.length; i++) list[i].totals.territory = 0;
     const tiles = this.map.tiles;
     for (let i = 0; i < tiles.length; i++) {
-      const armies = tiles[i].armies;
-      if (armies.length > 0) armies[0].player.totals.territory++;
+      // ownerArmy() returns the strongest occupant. On contested tiles
+      // this attributes territory to the current holder rather than to
+      // whichever army happens to be at armies[0].
+      const owner = tiles[i].ownerArmy();
+      if (owner) owner.player.totals.territory++;
     }
     this._territoryDirty = false;
   }
@@ -407,6 +607,8 @@ export class Game {
     this._deadCount = 0;
     this._dirtyTiles.length = 0;
     this._pendingMoves.length = 0;
+    const players = this.players.list;
+    for (let i = 0; i < players.length; i++) players[i].orders.length = 0;
     this.recentMoves.length = 0;
     this.recentConflicts.length = 0;
     this.tick = 0;
@@ -416,6 +618,8 @@ export class Game {
     for (let i = 0; i < tiles.length; i++) {
       tiles[i].armies.length = 0;
       tiles[i].dirty = false;
+      tiles[i]._holderPid = null;
+      tiles[i].budget = 0;
     }
     this._territoryDirty = true;
   }

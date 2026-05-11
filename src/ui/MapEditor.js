@@ -20,11 +20,13 @@ export class MapEditor {
     this.height = document.getElementById("me-height");
     this.growth = document.getElementById("me-growth");
     this.maxArmy = document.getElementById("me-max-army");
+    this.attrition = document.getElementById("me-attrition");
+    this.orderBudget = document.getElementById("me-order-budget");
     this.players = document.getElementById("me-players");
     this.wrap = document.getElementById("me-wrap");
     this.presets = document.getElementById("me-presets");
 
-    const inputs = [this.width, this.height, this.growth, this.maxArmy, this.players, this.wrap];
+    const inputs = [this.width, this.height, this.growth, this.maxArmy, this.attrition, this.orderBudget, this.players, this.wrap];
     for (const el of inputs) {
       el.addEventListener("change", () => this.app.applyMapForm());
     }
@@ -52,6 +54,7 @@ export class MapEditor {
     this.height.value = c.height;
     this.growth.value = c.growth;
     this.maxArmy.value = c.maxArmy;
+    if (c.attritionRate != null) this.attrition.value = c.attritionRate;
     this.wrap.checked = !!c.wrap;
     this.players.value = preset.players ?? DEFAULT_PRESET_PLAYERS;
     this.app.applyMapForm();
@@ -63,6 +66,8 @@ export class MapEditor {
       height: clampInt(this.height.value, 6, 120, 22),
       growth: clampFloat(this.growth.value, 0.1, 5, 1.8),
       maxArmy: clampInt(this.maxArmy.value, 1, 20, 6),
+      attritionRate: clampFloat(this.attrition.value, 0.02, 0.30, 0.06),
+      orderBudget: clampInt(this.orderBudget.value, 1, 12, 4),
       numPlayers: clampInt(this.players.value, 2, 8, 4),
       wrap: !!this.wrap.checked,
     };
@@ -71,11 +76,13 @@ export class MapEditor {
   // Sync form fields from an external config (e.g. URL-loaded match)
   // without firing the change handlers — the caller is already doing
   // its own load and shouldn't be rebounded back into applyMapForm.
-  write({ width, height, growth, maxArmy, wrap, numPlayers }) {
+  write({ width, height, growth, maxArmy, attritionRate, orderBudget, wrap, numPlayers }) {
     if (width != null) this.width.value = width;
     if (height != null) this.height.value = height;
     if (growth != null) this.growth.value = growth;
     if (maxArmy != null) this.maxArmy.value = maxArmy;
+    if (attritionRate != null) this.attrition.value = attritionRate;
+    if (orderBudget != null) this.orderBudget.value = orderBudget;
     if (wrap != null) this.wrap.checked = !!wrap;
     if (numPlayers != null) this.players.value = numPlayers;
   }

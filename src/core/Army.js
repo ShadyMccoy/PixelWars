@@ -15,7 +15,6 @@ export class Army {
     this.game = game;
     this.tile = tile;
     this.alive = true;
-    this.isAttacker = false;
     this.lastTick = 0;
     this.bornAt = 0;
     // Movement is rate-limited: act() runs at most once per tick, only
