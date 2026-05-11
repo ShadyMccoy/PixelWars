@@ -72,26 +72,22 @@ export class Tile {
       }
     }
 
-    // Risk-style: attackers fight with bonus effective strength, so
-    // even a slightly-smaller attacker can dislodge a defender, and a
-    // larger attacker keeps more troops after a successful conquest.
-    // Per-player tech further multiplies: atkMult on attackers,
-    // defMult on defenders.
+    // N-way symmetric resolution. Every side simultaneously fights the
+    // union of all the others; only the unique strongest can survive.
     //
-    // Two combat models, switched at the Game level:
-    //   linear (default): winner's post-fight raw strength is
-    //     (wE - lE) / wMult — flat subtractive, overkill earns
-    //     nothing nonlinear, equal effective forces annihilate.
-    //   lanchester: winner's post-fight effective strength is
-    //     sqrt(wE^2 - lE^2). A 2x ratio is ~4x more efficient than
-    //     a 1.01x ratio, so concentrating mass at a breakthrough
-    //     pays compounding dividends. Bots tuned on linear (e.g.
-    //     Conqueror's enemy/1.4 + MARGIN commit math) under-commit
-    //     here — closed-form min-overkill becomes a strict
-    //     underestimate of the right attack size.
+    //   lanchester (default): post²(i) = e_i² − Σ_{j≠i} e_j².
+    //     Comes from the square-law ODE under simultaneous focused
+    //     fire from all opponents. Order-independent. Reduces to the
+    //     2-way result sqrt(wE² − lE²). Concentration of mass pays
+    //     super-linearly, so coalitions out-fight a single larger
+    //     side once their summed squares cross.
+    //   linear: post(i) = e_i − Σ_{j≠i} e_j.
+    //     Additive damage; ganging up is purely cumulative.
+    //
+    // If no unique top (top-2 tie within ε), all sides annihilate.
     const game = grouped[0] && grouped[0].game;
     const bonus = (game && game.attackerBonus) || 1;
-    const model = (game && game.combatModel) || "linear";
+    const model = (game && game.combatModel) || "lanchester";
 
     // Total strength engaged across all sides — fed to the renderer as
     // conflict magnitude so the red residue scales with fight size.
@@ -109,30 +105,52 @@ export class Tile {
     const eff = (army) => army.strength * armyMult(army);
 
     let survivor = null;
-    for (let i = 0; i < grouped.length; i++) {
-      const army = grouped[i];
-      if (!army.alive) continue;
-      if (!survivor) {
-        survivor = army;
-        continue;
+    if (grouped.length === 1) {
+      survivor = grouped[0];
+    } else if (grouped.length > 1) {
+      let totalSq = 0;
+      let totalLin = 0;
+      let bestIdx = -1;
+      let bestE = -Infinity;
+      let secondE = -Infinity;
+      const effs = new Array(grouped.length);
+      for (let i = 0; i < grouped.length; i++) {
+        const e = eff(grouped[i]);
+        effs[i] = e;
+        totalSq += e * e;
+        totalLin += e;
+        if (e > bestE) {
+          secondE = bestE;
+          bestE = e;
+          bestIdx = i;
+        } else if (e > secondE) {
+          secondE = e;
+        }
       }
-      const aE = eff(army);
-      const sE = eff(survivor);
-      const winner = aE >= sE ? army : survivor;
-      const loser = aE >= sE ? survivor : army;
-      const wE = aE >= sE ? aE : sE;
-      const lE = aE >= sE ? sE : aE;
-      let postRaw;
-      if (model === "lanchester") {
-        const sq = wE * wE - lE * lE;
-        postRaw = sq > 0 ? Math.sqrt(sq) / armyMult(winner) : 0;
-      } else {
-        postRaw = wE > lE ? (wE - lE) / armyMult(winner) : 0;
+      const tied = bestE - secondE < 1e-9;
+      if (!tied) {
+        const winner = grouped[bestIdx];
+        const wMult = armyMult(winner);
+        const wE = bestE;
+        let postRaw;
+        if (model === "lanchester") {
+          const sq = wE * wE - (totalSq - wE * wE);
+          postRaw = sq > 0 ? Math.sqrt(sq) / wMult : 0;
+        } else {
+          const lin = wE - (totalLin - wE);
+          postRaw = lin > 0 ? lin / wMult : 0;
+        }
+        winner.strength = postRaw;
+        if (winner.strength < 0.5) {
+          winner.die();
+        } else {
+          survivor = winner;
+        }
       }
-      winner.strength = postRaw;
-      if (winner.strength < 0.5) winner.die();
-      loser.die();
-      survivor = winner.alive ? winner : null;
+      for (let i = 0; i < grouped.length; i++) {
+        if (grouped[i] === survivor) continue;
+        if (grouped[i].alive) grouped[i].die();
+      }
     }
 
     // Conquest reset: if ownership of the tile changes (or the tile

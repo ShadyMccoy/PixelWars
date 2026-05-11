@@ -9,4 +9,4 @@
 // `tournament/rank.js` ignores matches whose rulesVersion ≠ this string,
 // so old entries stay on disk but stop influencing rankings until
 // they're regenerated.
-export const RULES_VERSION = "v9";
+export const RULES_VERSION = "v10";
