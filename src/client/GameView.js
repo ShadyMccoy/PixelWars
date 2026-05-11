@@ -106,6 +106,9 @@ export class GameView {
     this.conflictFadeTicks = 45;
     this.maxArmy = 6;
     this.history = [];
+    // Active player orders from the bot-command system. Renderer reads
+    // these in drawOrders() to paint brush strokes.
+    this.orders = [];
     // Toggled by the renderer's territory check; safe to leave false
     // since the worker recomputes territory before each snapshot.
     this._territoryDirty = false;
@@ -158,6 +161,7 @@ export class GameView {
     this._armiesById.clear();
     this.recentMoves = [];
     this.recentConflicts = [];
+    this.orders = [];
     this.history = [];
     if (this.map.width === width && this.map.height === height && this.map.wrap === wrap) {
       for (const t of this.map.tiles) t.armies.length = 0;
@@ -252,6 +256,7 @@ export class GameView {
     // Recent moves: plain copies, no shared refs.
     this.recentMoves = snapshot.recentMoves || [];
     this.recentConflicts = snapshot.recentConflicts || [];
+    this.orders = snapshot.orders || [];
 
     // History: replace wholesale - bounded by maxHistory in the engine.
     this.history = snapshot.history || [];

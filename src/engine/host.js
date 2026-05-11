@@ -322,6 +322,33 @@ export class EngineHost {
     const recentMoves = game.recentMoves.map((m) => ({ ...m }));
     const recentConflicts = game.recentConflicts.map((c) => ({ ...c }));
 
+    // Active orders per player. Cheap to serialize because orderBudget
+    // caps the total at ~maxPlayers × orderBudget (a couple dozen at
+    // most). The renderer paints these as brush strokes in
+    // drawOrders(); strategy code on the client doesn't run, so the
+    // order's `commitment` tag is purely visual.
+    const orders = [];
+    const playersList = game.players.list;
+    for (let i = 0; i < playersList.length; i++) {
+      const p = playersList[i];
+      const arr = p.orders;
+      if (!arr || arr.length === 0) continue;
+      for (let j = 0; j < arr.length; j++) {
+        const o = arr[j];
+        orders.push({
+          id: o.id,
+          playerId: o.playerId,
+          kind: o.kind,
+          region: { x: o.region.x, y: o.region.y, w: o.region.w, h: o.region.h },
+          vector: { dx: o.vector.dx, dy: o.vector.dy },
+          intensity: o.intensity,
+          ttl: o.ttl,
+          commitment: o.commitment,
+          birthTick: o.birthTick,
+        });
+      }
+    }
+
     // Strategy-overlay plan caches. Only included when the client has
     // toggled overlay on; otherwise we'd ship ~4 bytes/tile/player every
     // snapshot for nothing. Each plan owns three typed arrays sized by
@@ -362,6 +389,7 @@ export class EngineHost {
       playerTotals,
       recentMoves,
       recentConflicts,
+      orders,
       history,
       plans,
     };

@@ -13,6 +13,7 @@ export class Renderer {
     this.showMoves = true;
     this.showConflicts = true;
     this.showOverlay = false;
+    this.showOrders = true;
     // "circle" | "line": visual used to depict an in-flight move.
     this.moveStyle = "circle";
     // 3D iso view: each tile becomes a colored prism whose height is
@@ -232,6 +233,8 @@ export class Renderer {
 
     if (this.showMoves) this.drawMoves();
 
+    if (this.showOrders) this.drawOrders();
+
     this.drawArmies(now);
 
     if (this.showOverlay) this.drawStrategyOverlay();
@@ -432,6 +435,89 @@ export class Renderer {
   // exceptional roles (SINK = hold, SORTIE = attack lance) and a faint
   // flow tick on interior tiles within 2 steps of a front. The default
   // FRONT/INTERIOR roles get nothing — the territory tint already
+  // Paint each active player order as a brush stroke: a soft, alpha-
+  // hatched rectangle in the player's color over the order's region,
+  // plus an arrow pointing in the order vector. Alpha fades with
+  // remaining TTL so a campaign that's almost over reads quieter than
+  // a fresh push. Wraps the region across the map seam so a campaign
+  // straddling the seam paints contiguously on the visible copy.
+  drawOrders() {
+    const ctx = this.ctx;
+    const game = this.game;
+    const orders = game.orders;
+    if (!orders || orders.length === 0) return;
+    const ts = this.tileSize;
+    const z = this.zoom;
+    const mapW = game.map.width;
+    const mapH = game.map.height;
+    const byId = game.players.byId;
+
+    ctx.save();
+    for (let i = 0; i < orders.length; i++) {
+      const o = orders[i];
+      const player = byId.get(o.playerId);
+      if (!player) continue;
+      // Fade from full at birth to ~0.25 at expiry. We don't know the
+      // original TTL here, only what's left, so use a fixed shape:
+      //   alpha = 0.16 + 0.10 * min(ttl, 10) / 10
+      // It's enough variation to read "this one is fresher" without
+      // making short-TTL orders invisible.
+      const ttlBoost = Math.min(o.ttl, 10) / 10;
+      const baseAlpha = 0.16 + 0.10 * ttlBoost;
+      const r = o.region;
+
+      // Tile across the seam: on a wrap map a region with x+w > mapW
+      // needs two passes so the renderer's tile-replicated world
+      // shows it contiguously.
+      const drawRect = (rx, ry, rw, rh) => {
+        ctx.fillStyle = hexToRgba(player.color, baseAlpha);
+        ctx.fillRect(rx * ts, ry * ts, rw * ts, rh * ts);
+        ctx.strokeStyle = hexToRgba(player.accent, baseAlpha * 2.0);
+        ctx.lineWidth = Math.max(1, ts * 0.06) / z;
+        ctx.strokeRect(rx * ts, ry * ts, rw * ts, rh * ts);
+      };
+
+      drawRect(r.x, r.y, r.w, r.h);
+      if (game.map.wrap) {
+        if (r.x + r.w > mapW) drawRect(r.x - mapW, r.y, r.w, r.h);
+        if (r.y + r.h > mapH) drawRect(r.x, r.y - mapH, r.w, r.h);
+      }
+
+      // Arrow from the region center along the vector. Length scales
+      // with intensity so a half-intensity skirmish reads weaker than
+      // a full-power campaign.
+      const cx = (r.x + r.w / 2) * ts;
+      const cy = (r.y + r.h / 2) * ts;
+      const vlen = Math.hypot(o.vector.dx, o.vector.dy) || 1;
+      const ux = o.vector.dx / vlen;
+      const uy = o.vector.dy / vlen;
+      const armLen = ts * Math.min(r.w, r.h) * 0.5 * (0.4 + 0.6 * o.intensity);
+      const tipX = cx + ux * armLen;
+      const tipY = cy + uy * armLen;
+      const headLen = ts * 0.4;
+      const headAngle = 0.55;
+      const cos = Math.cos(headAngle);
+      const sin = Math.sin(headAngle);
+      // Two perpendiculars rotated by ±headAngle off the arrow tail.
+      const tailX1 = tipX - headLen * (ux * cos - uy * sin);
+      const tailY1 = tipY - headLen * (uy * cos + ux * sin);
+      const tailX2 = tipX - headLen * (ux * cos + uy * sin);
+      const tailY2 = tipY - headLen * (uy * cos - ux * sin);
+      ctx.strokeStyle = hexToRgba(player.accent, 0.85);
+      ctx.lineWidth = Math.max(2, ts * 0.10) / z;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(tipX, tipY);
+      ctx.moveTo(tipX, tipY);
+      ctx.lineTo(tailX1, tailY1);
+      ctx.moveTo(tipX, tipY);
+      ctx.lineTo(tailX2, tailY2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   // shows ownership; we only mark what the painter has decided is
   // *unusual*.
   drawStrategyOverlay() {
