@@ -244,11 +244,43 @@ export class Renderer {
     const ctx = this.ctx;
     const ts = this.tileSize;
     for (const tile of this.game.map.tiles) {
-      const owner = tile.ownerArmy();
-      if (!owner || !owner.player) continue;
-      const alpha = 0.10 + 0.20 * (owner.strength / owner.maxStrength);
-      ctx.fillStyle = hexToRgba(owner.player.color, alpha);
-      ctx.fillRect(tile.pos.x * ts, tile.pos.y * ts, ts, ts);
+      const armies = tile.armies;
+      const n = armies.length;
+      if (n === 0) continue;
+      const holder = tile.ownerArmy();
+      const x = tile.pos.x * ts;
+      const y = tile.pos.y * ts;
+      // Holder base tint: matches the historical look. Holder may be
+      // null when the tile is in flux (contested with no prior holder,
+      // or the prior holder just died and multiple challengers remain)
+      // — in that case the base layer stays bare and only the marbled
+      // pips below paint, reading as a neutral-gray contested tile.
+      if (holder && holder.player) {
+        const alpha = 0.10 + 0.20 * (holder.strength / holder.maxStrength);
+        ctx.fillStyle = hexToRgba(holder.player.color, alpha);
+        ctx.fillRect(x, y, ts, ts);
+      }
+      if (n === 1) continue;
+      // Contested tile: paint each non-holder occupant as a concentric
+      // square whose size scales with their share of total strength on
+      // the tile. A near-50/50 brackish tile draws a big inner square;
+      // a near-cleared minority shrinks to a small central pip.
+      let total = 0;
+      for (let i = 0; i < n; i++) total += armies[i].strength;
+      if (total <= 0) continue;
+      const sorted = armies.slice().sort((a, b) => a.strength - b.strength);
+      for (let i = 0; i < sorted.length; i++) {
+        const a = sorted[i];
+        if (!a.player) continue;
+        if (a === holder) continue;
+        const share = a.strength / total;
+        const inset = ts * 0.5 * (1 - Math.sqrt(Math.min(1, 2 * share)));
+        const innerSize = ts - inset * 2;
+        if (innerSize <= 0) continue;
+        const alpha = 0.18 + 0.25 * share;
+        ctx.fillStyle = hexToRgba(a.player.color, alpha);
+        ctx.fillRect(x + inset, y + inset, innerSize, innerSize);
+      }
     }
   }
 
@@ -352,8 +384,25 @@ export class Renderer {
       if (!army.bornAt) army.bornAt = now;
       const ratio = Math.max(0, Math.min(1, army.strength / army.maxStrength));
       const radiusFactor = minRadius + (maxRadius - minRadius) * Math.pow(ratio, exponent);
-      const cx = (army.pos.x + 0.5) * ts;
-      const cy = (army.pos.y + 0.5) * ts;
+      // Offset armies that share a contested tile so their glyphs don't
+      // stack on the center. Position by index within tile.armies on a
+      // small ring; a 2-occupant tile reads as two side-by-side circles.
+      let ox = 0;
+      let oy = 0;
+      const tile = army.tile;
+      if (tile && tile.armies.length > 1) {
+        const arr = tile.armies;
+        let idx = 0;
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i] === army) { idx = i; break; }
+        }
+        const angle = (idx / arr.length) * Math.PI * 2;
+        const r = ts * 0.18;
+        ox = Math.cos(angle) * r;
+        oy = Math.sin(angle) * r;
+      }
+      const cx = (army.pos.x + 0.5) * ts + ox;
+      const cy = (army.pos.y + 0.5) * ts + oy;
       const age = (now - army.bornAt) / 1000;
       const pulse = 1 + Math.sin(age * 4 + army.id) * 0.04;
       const drawRadius = ts * radiusFactor * pulse;

@@ -15,7 +15,6 @@ export class Army {
     this.game = game;
     this.tile = tile;
     this.alive = true;
-    this.isAttacker = false;
     this.lastTick = 0;
     this.bornAt = 0;
     // Movement is rate-limited: act() runs once per accumulated credit,
@@ -136,7 +135,6 @@ export class Army {
         maxStrength: this.game.maxArmy,
         tile,
       });
-      newArmy.isAttacker = true;
       this.game.spawnArmy(newArmy, tile);
       return true;
     }
@@ -169,7 +167,6 @@ export class Army {
       maxStrength: this.game.maxArmy,
       tile,
     });
-    newArmy.isAttacker = true;
     this.game.spawnArmy(newArmy, tile);
     return true;
   }

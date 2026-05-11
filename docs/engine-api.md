@@ -79,9 +79,10 @@ import { sumStrength, totalStrength } from "../core/Army.js";
 ## Conflict resolution (so you can reason about what happens after `attack`)
 
 1. Each `attack(tile, power)` enqueues a move at end-of-tick.
-2. Tiles with multiple owners' armies fight: opposing strengths cancel pairwise.
-3. Friendlies on the same tile merge to one army (capped at `maxStrength`).
-4. Survivors update `tile.ownership` based on net strength.
-5. Each army then `run`s — gains `growth × prod × interval` strength, capped.
+2. Friendlies on the same tile merge to one army (capped at `maxStrength`).
+3. **Roles are derived from the tile holder**, not from per-army flags. An army is a *defender* iff `army.player.id === tile.ownerArmy()?.player.id` (the sticky holder); every other army on the tile is an *attacker/invader*. Defenders use `tech.def`, attackers use `tech.atk`. The legacy global `attackerBonus` defaults to 1.0 — concentration of force pays via Lanchester's square law instead.
+4. **Staged attrition** on tiles with multiple players' armies: each side loses `min(myEff, rate × pressure + floor)` effective strength per tick (default `rate = 0.15`, `floor = 0.5`). The 0.5 raw-strength death threshold then kills any army that drops too low. A fair 6v6 takes ~5–6 ticks; a 1v1 resolves in 1–2 ticks (the floor dominates). `combatModel` controls how pressure is computed: `lanchester` (default) uses sum-of-squared enemy effectives so a 2x ratio compounds (~4x advantage); `linear` uses raw enemy effective.
+5. **Sticky holder**: the tile's owner persists across ticks while the prior holder still has any army on the tile. Ownership only transfers when the prior holder loses their last army there. When multiple non-holder armies are left after that (e.g., two attackers contesting after the defender fell), the tile is in flux — `tile.ownerArmy()` returns `null` and the tile reads as neutral for territory totals until one side clears it.
+6. Each army then `run`s — gains `growth × prod × interval` strength, capped.
 
-This means you commonly see `army.attack` and *then* the engine resolves; your bot does not see post-resolution state until the next tick.
+This means contested tiles can persist with multiple players' armies for several ticks, creating "brackish" zones where a campaign has bulged into enemy territory. Your bot does not see post-resolution state until the next tick. **`tile.armies` is sorted by descending raw strength after resolution**, but use `tile.ownerArmy()` (sticky holder) to ask *who controls this tile right now*, not `tile.armies[0]`.
