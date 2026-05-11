@@ -92,68 +92,84 @@ export class Tile {
       return;
     }
 
-    // Defender/attacker is derived from the persisted holder, not from
-    // a stale per-army flag. While a campaign is intermingling, the
-    // invader keeps the atk multiplier every tick and the defender
-    // keeps the def multiplier — the engine has stable, explicit
-    // role-tracking based on whose tile this actually is rather than
-    // who arrived this tick. With combatModel="lanchester" the global
-    // attacker advantage is encoded by the square law instead of a
-    // flat per-tick coefficient, so no extra bonus is layered on top.
-    const holderPid = this._holderPid;
-    const armyMult = (army) => {
-      const m = army.player.techMults;
-      if (!m) return 1;
-      return army.player.id === holderPid ? m.def : m.atk;
-    };
-    const eff = (army) => army.strength * armyMult(army);
+    // Combat math:
+    //  - pressure is computed on raw strength (lanchester square law
+    //    encodes "concentrating force wins decisively" without any
+    //    role-based effective-strength fudging).
+    //  - tech.atk is "causing losses" — multiplies the damage I deal.
+    //  - tech.def is "taking losses" — divides the damage I receive.
+    //    Both apply symmetrically regardless of whether I'm holding
+    //    the tile or invading it; the structural defender advantage
+    //    comes from the sticky holder mechanic, not from doubling up
+    //    bonuses on the army that happens to be on its home tile.
+    const atkOf = (army) => army.player.techMults?.atk ?? 1;
+    const defOf = (army) => army.player.techMults?.def ?? 1;
 
     let engagedStrength = 0;
     for (let i = 0; i < grouped.length; i++) engagedStrength += grouped[i].strength;
 
-    // Staged attrition: each group loses (rate × pressure + floor) of
-    // its effective strength per tick. The rate term shapes large
-    // fights so two 6v6 stacks resolve over ~5–6 ticks (visible
-    // brackish bulge); the floor term ensures small fights snap to
-    // near-instant — a 1v1 dies in 1–2 ticks. Pressure is capped at
-    // myEff so a tiny outnumbered force can't take impossible losses,
-    // and the 0.5 death threshold ends mismatched fights cleanly.
+    // Staged attrition: base per-tick loss is (rate × pressure + floor)
+    // in raw-strength units, then scaled by enemy "causing losses"
+    // (averaged across enemies, weighted by their strength share) and
+    // divided by my "taking losses". A fair 6v6 between neutral-tech
+    // sides resolves in roughly 6/(rate*6 + floor) ≈ 6/0.86 ≈ 7 ticks
+    // at the default rate=0.06; small fights still snap because the
+    // floor dominates relative to the small stack. Pressure is capped
+    // at my own strength so a tiny outnumbered force can't take
+    // impossible losses; the 0.5 death threshold ends mismatched
+    // fights cleanly.
     //
-    // Lanchester branch normalizes the rate-term pressure by myEff so
-    // a fair 1v1 matches linear at the same k, but a 2x ratio still
+    // Lanchester branch normalizes the rate-term pressure by myStr so
+    // a fair 1v1 matches linear at the same rate, but a 2x ratio
     // compounds (~4x damage advantage on the heavier side).
-    const k = (game && game.conflictAttritionRate) || 0.15;
-    const floorEff = (game && game.conflictAttritionFloor) || 0.5;
-    const effs = new Array(grouped.length);
-    let totalEff = 0;
+    const k = (game && game.attritionRate) || 0.06;
+    const floorRaw = (game && game.attritionFloor) || 0.5;
+    const strs = new Array(grouped.length);
+    let totalStr = 0;
     for (let i = 0; i < grouped.length; i++) {
-      effs[i] = eff(grouped[i]);
-      totalEff += effs[i];
+      strs[i] = grouped[i].strength;
+      totalStr += strs[i];
     }
 
     if (model === "lanchester") {
-      let totalEffSq = 0;
-      for (let i = 0; i < effs.length; i++) totalEffSq += effs[i] * effs[i];
+      let totalStrSq = 0;
+      for (let i = 0; i < strs.length; i++) totalStrSq += strs[i] * strs[i];
       for (let i = 0; i < grouped.length; i++) {
         const army = grouped[i];
-        const myEff = effs[i];
-        const enemyEffSq = totalEffSq - myEff * myEff;
-        if (enemyEffSq <= 0) continue;
-        const denom = myEff > 0 ? myEff : 1;
-        const pressureRaw = Math.min(myEff, enemyEffSq / denom);
-        const lossesEff = Math.min(myEff, k * pressureRaw + floorEff);
-        army.strength -= lossesEff / armyMult(army);
+        const myStr = strs[i];
+        const enemyStrSq = totalStrSq - myStr * myStr;
+        if (enemyStrSq <= 0) continue;
+        const denom = myStr > 0 ? myStr : 1;
+        const pressure = Math.min(myStr, enemyStrSq / denom);
+        const base = Math.min(myStr, k * pressure + floorRaw);
+        let enemyAtkSum = 0;
+        let enemyStrSum = 0;
+        for (let j = 0; j < grouped.length; j++) {
+          if (j === i) continue;
+          enemyAtkSum += strs[j] * atkOf(grouped[j]);
+          enemyStrSum += strs[j];
+        }
+        const avgEnemyAtk = enemyStrSum > 0 ? enemyAtkSum / enemyStrSum : 1;
+        army.strength -= base * avgEnemyAtk / defOf(army);
         if (army.strength < 0.5) army.die();
       }
     } else {
       for (let i = 0; i < grouped.length; i++) {
         const army = grouped[i];
-        const myEff = effs[i];
-        const enemyEff = totalEff - myEff;
-        if (enemyEff <= 0) continue;
-        const pressureRaw = Math.min(myEff, enemyEff);
-        const lossesEff = Math.min(myEff, k * pressureRaw + floorEff);
-        army.strength -= lossesEff / armyMult(army);
+        const myStr = strs[i];
+        const enemyStr = totalStr - myStr;
+        if (enemyStr <= 0) continue;
+        const pressure = Math.min(myStr, enemyStr);
+        const base = Math.min(myStr, k * pressure + floorRaw);
+        let enemyAtkSum = 0;
+        let enemyStrSum = 0;
+        for (let j = 0; j < grouped.length; j++) {
+          if (j === i) continue;
+          enemyAtkSum += strs[j] * atkOf(grouped[j]);
+          enemyStrSum += strs[j];
+        }
+        const avgEnemyAtk = enemyStrSum > 0 ? enemyAtkSum / enemyStrSum : 1;
+        army.strength -= base * avgEnemyAtk / defOf(army);
         if (army.strength < 0.5) army.die();
       }
     }

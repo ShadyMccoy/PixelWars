@@ -13,6 +13,7 @@ export class Game {
     decay = 0.05,
     attackerBonus = 1.0,
     combatModel = "lanchester",
+    attritionRate = 0.06,
     movementModel = "classic",
     maxBudget = null,         // budget mode: cap. null -> defaults to maxArmy.
     baseBudgetRecharge = 1.0, // budget mode: budget gained per tick at neutral move-tech.
@@ -42,19 +43,30 @@ export class Game {
     // "linear": losses use raw effective strength. Equal forces
     //   annihilate at the same rate, no nonlinear reward for overkill.
     this.combatModel = combatModel;
-    // Per-tick attrition has two components on contested tiles:
-    //   conflictAttritionRate × pressure  — percentage shaping. Large
-    //     stacks lose more in absolute terms but still take ~5–6 ticks
-    //     to resolve a fair 6v6, so a campaign visibly intermingles.
-    //   conflictAttritionFloor             — absolute floor in effective
-    //     units. Dominates when armies are small: a 1v1 dies in 1–2
-    //     ticks (near-instant), a 2v2 in ~2–3 ticks. Without the floor,
-    //     small skirmishes would also drag for ~5 ticks, which feels
-    //     wrong — small fights should snap.
-    // Net loss per side per tick (in effective units):
-    //   min(myEff, rate*pressure + floor) / armyMult
-    this.conflictAttritionRate = 0.15;
-    this.conflictAttritionFloor = 0.5;
+    // Per-tick attrition on contested tiles has two components:
+    //   attritionRate × pressure  — percentage shaping. Larger stacks
+    //     lose more absolute strength but the per-tick fraction is
+    //     bounded, so a fair 6v6 still takes ~7 ticks at rate=0.06.
+    //     This is the map-level "combat speed" knob — lower values
+    //     mean longer-lived brackish zones; the UI surfaces it as
+    //     the "Attrition" map setting.
+    //   attritionFloor            — absolute per-tick raw-strength
+    //     floor. Dominates when armies are small (a 1v1 dies in
+    //     1–2 ticks); without it, small skirmishes would also drag
+    //     for many ticks, which feels wrong — small fights should
+    //     snap.
+    // Net loss per side per tick (in raw-strength units) is then
+    // scaled by enemy "causing losses" tech and divided by my "taking
+    // losses" tech — see Tile.resolveConflicts.
+    this.attritionRate = attritionRate;
+    // Floor scales with rate so the "Attrition" map setting actually
+    // moves the needle on long fights. With a flat 0.5 floor, lowering
+    // the rate barely slowed fair 6v6s (the floor accounted for >half
+    // the per-tick loss). Floor = 3 × rate keeps small fights snapping
+    // (1v1 still resolves in 1–2 ticks) while letting big fights
+    // brackish for much longer at low rates. Capped below at 0.1 so a
+    // pathological rate=0 doesn't deadlock.
+    this.attritionFloor = Math.max(0.1, attritionRate * 3);
     // "classic" (default): adjacent-only attacks, garrison floor from
     //   the move tech. Existing 391 bots target this model.
     // "budget": tile-local movement budget recharges per tick (scaled
