@@ -105,7 +105,16 @@ export class HUD {
       this.root.innerHTML = `<div class="hud-empty">No players. Add one in Sandbox.</div>`;
       return;
     }
-    for (const player of this.game.players.list) {
+    const ratings = this.app?.ratings;
+    const sorted = this.game.players.list.slice().sort((a, b) => {
+      const ra = ratings?.[a.strategy?.name];
+      const rb = ratings?.[b.strategy?.name];
+      const va = typeof ra === "number" ? ra : -Infinity;
+      const vb = typeof rb === "number" ? rb : -Infinity;
+      if (vb !== va) return vb - va;
+      return a.id - b.id;
+    });
+    for (const player of sorted) {
       const row = document.createElement("div");
       row.className = "player-row";
       row.style.setProperty("--player-color", player.color);
