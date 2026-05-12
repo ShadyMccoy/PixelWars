@@ -4,6 +4,14 @@ import { Players } from "./Player.js";
 import { makeRng } from "./rng.js";
 import { makeOrder, cellInRegion, pickCardinal, nearestRectDelta, WALL_PULL_RADIUS } from "./Order.js";
 
+// Fraction of attackPower an army commits when no stratagem applies
+// and a non-friendly neighbor exists. Visible expansion without being
+// strong enough to drown out a 1.0-intensity stratagem (stratagems
+// stay roughly 3x the default behavior). Frontier armies creep into
+// the weakest adjacent non-friendly tile; rear armies — all four
+// neighbors held by their player — sit still.
+const IDLE_CREEP_INTENSITY = 0.3;
+
 export class Game {
   constructor({
     width = 40,
@@ -295,34 +303,41 @@ export class Game {
 
   // Expand every player's orders into per-army _pendingMoves entries
   // for this tick. Called from step() between Phase B (bot decisions)
-  // and Phase C (commit moves). For each friendly army:
-  //   1. Walk every active order looking for hits on the army's tile.
-  //   2. 'move' orders add (intensity × vector) to the army's net intent.
-  //   3. 'wall' orders pin the army in place when it's inside the
-  //      region (suppress all push) and pull it toward the nearest
-  //      wall tile when it's outside-but-within WALL_PULL_RADIUS.
-  //   4. If still unpinned and the net intent vector is nonzero, emit
-  //      one cardinal-step attack toward a neighbor that matches the
-  //      vector best, committing attackPower × clamped(Σintensity).
+  // and Phase C (commit moves). Iterates EVERY alive army (regardless
+  // of whether its owner has any stratagems active), so armies in
+  // unmanaged regions still creep outward as a default behavior:
+  //
+  //   1. Walk the army's owner's orders. 'move' orders inside the
+  //      tile contribute (intensity × vector) to the net intent;
+  //      'wall' orders pin the army when inside or pull it in when
+  //      within WALL_PULL_RADIUS.
+  //   2. If pinned, skip — the army holds the wall.
+  //   3. If net intent vector is nonzero, emit one cardinal-step
+  //      attack toward the matched neighbor at attackPower × Σi.
+  //   4. Else fall back to IDLE_CREEP: push into the weakest non-
+  //      friendly neighbor at IDLE_CREEP_INTENSITY. This is what
+  //      makes the rest of the map come alive without the bot
+  //      having to place stratagems everywhere — armies on the
+  //      frontier naturally claim adjacent neutral/enemy tiles
+  //      while interior reserves sit still (no non-friendly
+  //      neighbor exists for them).
   _expandOrders() {
-    const list = this.players.list;
     const mapW = this.map.width;
     const mapH = this.map.height;
-    for (let pi = 0; pi < list.length; pi++) {
-      const player = list[pi];
+    const armies = this.armies;
+    for (let ai = 0; ai < armies.length; ai++) {
+      const army = armies[ai];
+      if (!army.alive) continue;
+      const tile = army.tile;
+      if (!tile) continue;
+      const player = army.player;
       const orders = player.orders;
-      if (!orders || orders.length === 0) continue;
 
-      const armies = this.armies;
-      for (let ai = 0; ai < armies.length; ai++) {
-        const army = armies[ai];
-        if (!army.alive || army.player.id !== player.id) continue;
-        const tile = army.tile;
-        if (!tile) continue;
-        let sumI = 0;
-        let sumVx = 0;
-        let sumVy = 0;
-        let pinned = false;
+      let sumI = 0;
+      let sumVx = 0;
+      let sumVy = 0;
+      let pinned = false;
+      if (orders && orders.length > 0) {
         for (let oi = 0; oi < orders.length; oi++) {
           const o = orders[oi];
           const inside = cellInRegion(tile.pos.x, tile.pos.y, o.region, mapW, mapH);
@@ -334,8 +349,8 @@ export class Game {
           } else if (o.kind === "wall") {
             if (inside) {
               // Army is manning the wall: hold position, ignore any
-              // simultaneous push intent. The defense bonus is
-              // applied in Tile.resolveConflicts.
+              // simultaneous push intent (and skip idle creep). The
+              // defense bonus is applied in Tile.resolveConflicts.
               pinned = true;
             } else {
               const d = nearestRectDelta(tile.pos.x, tile.pos.y, o.region, mapW, mapH);
@@ -353,10 +368,13 @@ export class Game {
             }
           }
         }
-        if (pinned) continue;
-        if (sumI <= 0) continue;
+      }
+      if (pinned) continue;
+
+      if (sumI > 0) {
+        // Stratagem-driven emission.
         const clampedI = sumI > 1 ? 1 : sumI;
-        const norm = sumI > 0 ? sumI : 1;
+        const norm = sumI;
         const card = pickCardinal({ dx: sumVx / norm, dy: sumVy / norm }, this.rng);
         if (card.dx === 0 && card.dy === 0) continue;
         const dest = this.map.getTile(tile.pos.x + card.dx, tile.pos.y + card.dy);
@@ -368,6 +386,18 @@ export class Game {
         const power = army.attackPower * clampedI;
         if (!(power > 0.5)) continue;
         army.attack(dest, power);
+      } else {
+        // Idle creep: nudge into the most enemy-leaning neighbor at a
+        // low intensity (~a third of attackPower). Frontier armies
+        // expand naturally; rear armies (all four neighbors are solid
+        // friendlies) sit still. This is what keeps the map from
+        // becoming a static lake where no stratagem reaches.
+        const target = army.weakestAdjacent();
+        if (!target || target === tile) continue;
+        if (target._holderPid === player.id && target.armies.length === 1) continue;
+        const power = army.attackPower * IDLE_CREEP_INTENSITY;
+        if (!(power > 0.5)) continue;
+        army.attack(target, power);
       }
     }
   }
