@@ -59,6 +59,7 @@ import Smith from "./Smith.js";
 import Coastal from "./Coastal.js";
 import Huddle from "./Huddle.js";
 import Painter from "./Painter.js";
+import Fortress from "./Fortress.js";
 import Pulse from "./Pulse.js";
 import Escort from "./Escort.js";
 import Conduit from "./Conduit.js";
@@ -72,6 +73,7 @@ import { NEUTRAL_TECH } from "../core/Tech.js";
 // `--list` and (after filtering) the default tournament pool.
 export const ALL_STRATEGY_LIST = [
   Painter,
+  Fortress,
   SlowAndSteady,
   Repel,
   Trinity,

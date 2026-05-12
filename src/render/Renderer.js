@@ -477,11 +477,49 @@ export class Renderer {
         ctx.strokeRect(rx * ts, ry * ts, rw * ts, rh * ts);
       };
 
-      drawRect(r.x, r.y, r.w, r.h);
+      const drawWallHatch = (rx, ry, rw, rh) => {
+        // Crenelated double-border + diagonal hatch so walls read as
+        // fortifications, not push arrows.
+        const px = rx * ts;
+        const py = ry * ts;
+        const pw = rw * ts;
+        const ph = rh * ts;
+        ctx.fillStyle = hexToRgba(player.color, baseAlpha * 1.3);
+        ctx.fillRect(px, py, pw, ph);
+        // Diagonal hatching at ~tile spacing.
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(px, py, pw, ph);
+        ctx.clip();
+        ctx.strokeStyle = hexToRgba(player.accent, baseAlpha * 1.5);
+        ctx.lineWidth = Math.max(1, ts * 0.06) / z;
+        const step = ts * 0.5;
+        for (let d = -ph; d < pw + ph; d += step) {
+          ctx.beginPath();
+          ctx.moveTo(px + d, py);
+          ctx.lineTo(px + d + ph, py + ph);
+          ctx.stroke();
+        }
+        ctx.restore();
+        // Heavier outer border.
+        ctx.strokeStyle = hexToRgba(player.accent, baseAlpha * 3.0);
+        ctx.lineWidth = Math.max(2, ts * 0.12) / z;
+        ctx.strokeRect(px, py, pw, ph);
+      };
+
+      const paint = (rx, ry, rw, rh) => {
+        if (o.kind === "wall") drawWallHatch(rx, ry, rw, rh);
+        else drawRect(rx, ry, rw, rh);
+      };
+
+      paint(r.x, r.y, r.w, r.h);
       if (game.map.wrap) {
-        if (r.x + r.w > mapW) drawRect(r.x - mapW, r.y, r.w, r.h);
-        if (r.y + r.h > mapH) drawRect(r.x, r.y - mapH, r.w, r.h);
+        if (r.x + r.w > mapW) paint(r.x - mapW, r.y, r.w, r.h);
+        if (r.y + r.h > mapH) paint(r.x, r.y - mapH, r.w, r.h);
       }
+
+      // Walls have no direction; only move orders get an arrow.
+      if (o.kind !== "move") continue;
 
       // Arrow from the region center along the vector. Length scales
       // with intensity so a half-intensity skirmish reads weaker than

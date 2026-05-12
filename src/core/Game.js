@@ -2,7 +2,7 @@ import { GameMap } from "./GameMap.js";
 import { Army } from "./Army.js";
 import { Players } from "./Player.js";
 import { makeRng } from "./rng.js";
-import { makeOrder, cellInRegion, pickCardinal } from "./Order.js";
+import { makeOrder, cellInRegion, pickCardinal, nearestRectDelta, WALL_PULL_RADIUS } from "./Order.js";
 
 export class Game {
   constructor({
@@ -295,20 +295,24 @@ export class Game {
 
   // Expand every player's orders into per-army _pendingMoves entries
   // for this tick. Called from step() between Phase B (bot decisions)
-  // and Phase C (commit moves). Multiple orders covering the same
-  // army merge: their intensities sum (clamped at 1.0) and their
-  // vectors weighted-average so a campaign + a skirmish overlapping
-  // produces one coherent direction.
+  // and Phase C (commit moves). For each friendly army:
+  //   1. Walk every active order looking for hits on the army's tile.
+  //   2. 'move' orders add (intensity × vector) to the army's net intent.
+  //   3. 'wall' orders pin the army in place when it's inside the
+  //      region (suppress all push) and pull it toward the nearest
+  //      wall tile when it's outside-but-within WALL_PULL_RADIUS.
+  //   4. If still unpinned and the net intent vector is nonzero, emit
+  //      one cardinal-step attack toward a neighbor that matches the
+  //      vector best, committing attackPower × clamped(Σintensity).
   _expandOrders() {
     const list = this.players.list;
+    const mapW = this.map.width;
+    const mapH = this.map.height;
     for (let pi = 0; pi < list.length; pi++) {
       const player = list[pi];
       const orders = player.orders;
       if (!orders || orders.length === 0) continue;
 
-      // Per-army intent accumulator. Most armies hit at most a couple
-      // of orders, so we just use a Map keyed by army id.
-      const intents = new Map();
       const armies = this.armies;
       for (let ai = 0; ai < armies.length; ai++) {
         const army = armies[ai];
@@ -318,43 +322,50 @@ export class Game {
         let sumI = 0;
         let sumVx = 0;
         let sumVy = 0;
+        let pinned = false;
         for (let oi = 0; oi < orders.length; oi++) {
           const o = orders[oi];
-          if (o.kind !== "move") continue;
-          if (!cellInRegion(tile.pos.x, tile.pos.y, o.region, this.map.width, this.map.height)) continue;
-          sumI += o.intensity;
-          sumVx += o.intensity * o.vector.dx;
-          sumVy += o.intensity * o.vector.dy;
+          const inside = cellInRegion(tile.pos.x, tile.pos.y, o.region, mapW, mapH);
+          if (o.kind === "move") {
+            if (!inside) continue;
+            sumI += o.intensity;
+            sumVx += o.intensity * o.vector.dx;
+            sumVy += o.intensity * o.vector.dy;
+          } else if (o.kind === "wall") {
+            if (inside) {
+              // Army is manning the wall: hold position, ignore any
+              // simultaneous push intent. The defense bonus is
+              // applied in Tile.resolveConflicts.
+              pinned = true;
+            } else {
+              const d = nearestRectDelta(tile.pos.x, tile.pos.y, o.region, mapW, mapH);
+              if (d.dist > 0 && d.dist <= WALL_PULL_RADIUS) {
+                // Linear falloff: a tile right next to the wall pulls
+                // at full intensity, one at the edge of the radius
+                // pulls at near zero.
+                const pull = o.intensity * (1 - (d.dist - 1) / WALL_PULL_RADIUS);
+                if (pull > 0) {
+                  sumI += pull;
+                  sumVx += pull * d.dx;
+                  sumVy += pull * d.dy;
+                }
+              }
+            }
+          }
         }
+        if (pinned) continue;
         if (sumI <= 0) continue;
         const clampedI = sumI > 1 ? 1 : sumI;
         const norm = sumI > 0 ? sumI : 1;
-        intents.set(army.id, {
-          army,
-          intensity: clampedI,
-          vector: { dx: sumVx / norm, dy: sumVy / norm },
-        });
-      }
-
-      // Emit one move per affected army. We pick a cardinal neighbor
-      // for now (matches the classic-movement world); when budget
-      // movementModel is on, the army can attack further but we still
-      // step the order by one tile per tick for steady advance.
-      for (const intent of intents.values()) {
-        const army = intent.army;
-        const tile = army.tile;
-        if (!tile) continue;
-        const card = pickCardinal(intent.vector, this.rng);
+        const card = pickCardinal({ dx: sumVx / norm, dy: sumVy / norm }, this.rng);
         if (card.dx === 0 && card.dy === 0) continue;
         const dest = this.map.getTile(tile.pos.x + card.dx, tile.pos.y + card.dy);
         if (!dest || dest === tile) continue;
-        // Skip emission when the target is a friendly tile and the
-        // order has nowhere to "push toward". Friendly-on-friendly
-        // moves just redistribute strength; the simplest sane policy
-        // is to only emit when the dest is not a friend, so a campaign
-        // doesn't leak into the rear unnecessarily.
+        // Skip friendly-tile pushes that would just redistribute
+        // strength without changing fronts. Friendlies with their own
+        // contested situation are still valid destinations.
         if (dest._holderPid === player.id && dest.armies.length === 1) continue;
-        const power = army.attackPower * intent.intensity;
+        const power = army.attackPower * clampedI;
         if (!(power > 0.5)) continue;
         army.attack(dest, power);
       }
@@ -392,7 +403,6 @@ export class Game {
     // Phase A: production. Grow strength and bank movement credit on
     // every living army. No strategy code runs here -- we want a fully
     // settled world before any army decides its move.
-    const eligible = [];
     for (let i = 0; i < armies.length; i++) {
       const a = armies[i];
       if (!a.alive) continue;
@@ -400,19 +410,17 @@ export class Game {
         a.runGrowth(interval, growth, decay);
         a.lastTick = tick;
       }
-      if (a.canActThisTick()) eligible.push(a);
     }
 
-    // Phase B: simultaneous decision. Two paths coexist per player:
-    //   Order-based: if the player's strategy has a `plan(game, player)`
-    //     method, call it once. The bot mutates player.orders via
-    //     game.issueOrder / game.cancelOrder; nothing else mutates.
-    //     Then expand all of that player's active orders into moves
-    //     in _expandOrders below.
-    //   Legacy act: per-army act() runs once per available credit,
-    //     enqueuing moves into _pendingMoves.
-    // Both paths only enqueue; no strength deltas or tile.armies
-    // mutation happens here. Bots see the start-of-tick world.
+    // Phase B: stratagem-driven decision. Each player's plan() runs
+    // exactly once; the bot mutates its order list via issueOrder /
+    // cancelOrder and never touches armies or tiles directly. Tile
+    // (army) behavior is then derived in _expandOrders from the union
+    // of active stratagems: an army on a tile inside a move order
+    // pushes toward the order's vector; an army inside a wall is
+    // pinned and defended; armies near a wall are pulled in. No
+    // per-army act() callback exists on this branch — bots that lack
+    // a plan() method have no agency.
     const players = this.players.list;
     for (let pi = 0; pi < players.length; pi++) {
       const p = players[pi];
@@ -420,22 +428,6 @@ export class Game {
       if (strat && typeof strat.plan === "function") strat.plan(this, p);
     }
     this._expandOrders();
-    // Shuffle the legacy-act order so equally-valid same-tile targeting
-    // breaks ties uniformly at random instead of by army-index.
-    const n = eligible.length;
-    for (let i = n - 1; i > 0; i--) {
-      const j = (this.rng() * (i + 1)) | 0;
-      const t = eligible[i]; eligible[i] = eligible[j]; eligible[j] = t;
-    }
-    for (let i = 0; i < n; i++) {
-      const a = eligible[i];
-      if (!a.alive) continue;
-      // Skip armies whose owner uses the order-based API. plan() has
-      // already enqueued their moves; running act() too would
-      // double-decide.
-      if (a.player.strategy && typeof a.player.strategy.plan === "function") continue;
-      a.runAct();
-    }
 
     // Phase C: commit queued moves. Deduct source strength and budget,
     // spawn one fresh attacker army per move on the destination tile.
@@ -447,11 +439,12 @@ export class Game {
       this._commitMove(moves[i]);
     }
     moves.length = 0;
-    for (let i = 0; i < eligible.length; i++) {
-      const a = eligible[i];
-      a._queuedSpend = 0;
-      a._queuedWork = 0;
-    }
+    // _queuedSpend / _queuedWork are reset at the top of every Phase A
+    // (runGrowth), so we don't need an explicit reset pass here. The
+    // legacy code did this because it tracked which armies actually
+    // burned move credit; with stratagems we iterate every army of a
+    // planning player in _expandOrders, so the universal reset in
+    // runGrowth is sufficient.
 
     // Phase D: resolve combats on every tile that ended up with more
     // than one army.

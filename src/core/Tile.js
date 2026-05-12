@@ -1,4 +1,5 @@
 import { GamePos } from "./GamePos.js";
+import { cellInRegion, WALL_DEF_SCALE } from "./Order.js";
 
 export class Tile {
   constructor(pos) {
@@ -103,7 +104,30 @@ export class Tile {
     //    comes from the sticky holder mechanic, not from doubling up
     //    bonuses on the army that happens to be on its home tile.
     const atkOf = (army) => army.player.techMults?.atk ?? 1;
-    const defOf = (army) => army.player.techMults?.def ?? 1;
+    // Defensive multiplier picks up a bonus when the army is on a
+    // tile covered by its owner's wall stratagem(s). Each wall
+    // contributes intensity × WALL_DEF_SCALE (default 0.5), and walls
+    // of the same player stack additively — a fortress with three
+    // overlapping intensity-1 walls gives +150% def. Walls of an
+    // enemy player do nothing for this army.
+    const mapW = game?.map?.width;
+    const mapH = game?.map?.height;
+    const tx = this.pos.x;
+    const ty = this.pos.y;
+    const defOf = (army) => {
+      const base = army.player.techMults?.def ?? 1;
+      const orders = army.player.orders;
+      if (!orders || orders.length === 0) return base;
+      let wallBonus = 0;
+      for (let i = 0; i < orders.length; i++) {
+        const o = orders[i];
+        if (o.kind !== "wall") continue;
+        if (cellInRegion(tx, ty, o.region, mapW, mapH)) {
+          wallBonus += o.intensity * WALL_DEF_SCALE;
+        }
+      }
+      return base * (1 + wallBonus);
+    };
 
     let engagedStrength = 0;
     for (let i = 0; i < grouped.length; i++) engagedStrength += grouped[i].strength;

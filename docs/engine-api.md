@@ -68,9 +68,11 @@ import { sumStrength, totalStrength } from "../core/Army.js";
 | `sumStrength(armies, viewer)`   | **Signed** sum: friendlies of `viewer` add, enemies subtract. Useful for "is this tile net-friendly to me?". |
 | `totalStrength(armies)`         | Plain unsigned sum. |
 
-## Order-based bots (`plan(game, player)`)
+## Stratagem-driven bots (`plan(game, player)`)
 
-A strategy can define `plan(game, player)` instead of (or alongside — though armies pick one path based on owner) `act(army, game)`. The engine calls `plan` once per player per tick during Phase B; the bot issues orders that drive its armies for many ticks without per-army micromanagement.
+> **Branch note:** the per-army `act(army, game)` callback is gone on this branch. A bot's only influence on the world is the set of stratagems it places on the map. Bots that don't define `plan()` have no agency — their armies grow and decay but never move. This is the experimental "tile (army) behavior is purely downstream of stratagems" path.
+
+The engine calls `plan(game, player)` once per player per tick during Phase B. The bot mutates its order list via `issueOrder` / `cancelOrder`; the engine then expands every active order into per-army moves and combat modifiers automatically.
 
 ```js
 export default {
@@ -78,23 +80,33 @@ export default {
   plan(game, player) {
     if (player.orders.length > 0) return;             // existing order still active
     game.issueOrder(player, {
+      kind: "move",                                   // 'move' | 'wall'
       region: { x: 0, y: 0, w: game.map.width, h: game.map.height },  // wrap-aware rect
-      vector: { dx: 1, dy: 0 },                       // push east
+      vector: { dx: 1, dy: 0 },                       // 'move' only; cardinal pick from this
       intensity: 0.85,                                // 0..1; fraction of attackPower per tick
       ttl: 20,                                        // ticks; auto-decrements, auto-removed
-      commitment: "campaign",                         // 'skirmish' | 'push' | 'campaign'
+      commitment: "campaign",                         // 'skirmish' | 'push' | 'campaign' | 'wall'
     });
   },
 }
 ```
 
+### Stratagem kinds
+
+| Kind   | Region behavior |
+|--------|-----------------|
+| `move` | Armies on tiles inside the region commit `attackPower × intensity` toward a cardinal neighbor matching the vector each tick. |
+| `wall` | Armies on tiles inside the region don't push out — they hold position and gain a defensive multiplier (`1 + intensity × 0.5` per covering wall, stacking additively). Friendly armies outside the region but within 5 tiles' Chebyshev distance are pulled toward the nearest wall tile with linear falloff. No vector field; the rectangle is the whole spec. |
+
+### API
+
 | Call | Effect |
 |------|--------|
 | `game.issueOrder(player, spec)` | Adds an order. Returns the order (with `id`) on success, `null` if `player.orders.length >= game.orderBudget`. |
 | `game.cancelOrder(player, id)`  | Removes one order by id. |
-| `player.orders`                 | Read-only-ish array of the player's currently-active orders. Sorted in issue order. |
+| `player.orders`                 | Read-only-ish array of the player's currently-active orders, in issue order. |
 
-Each tick, the engine expands all of a player's orders into per-army moves: every army of that player whose tile falls inside *any* order's region picks its target neighbor by the strength-weighted sum of those orders' vectors, and commits `attackPower × clamped(Σintensity, 1)` toward it. Armies on order-less tiles are idle. Bots that only define `act` are unaffected — the two paths coexist per player.
+Each tick, the engine walks every army of every player against that player's order list: move vectors sum (intensity-weighted), walls suppress the push when the army is inside one and pull it in when nearby, and the army emits at most one cardinal-step `attack()` toward the merged destination at `attackPower × clamped(Σintensity, 1)`. Friendlies on uncontested tiles are skipped as destinations to keep campaigns from leaking into the rear.
 
 ## What you can't do
 
