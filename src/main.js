@@ -5,7 +5,6 @@ import { TerritoryChart } from "./render/TerritoryChart.js";
 import { HUD } from "./ui/HUD.js";
 import { Controls } from "./ui/Controls.js";
 import { MatchPicker } from "./ui/MatchPicker.js";
-import { LeagueViewer } from "./ui/LeagueViewer.js";
 import { MapEditor } from "./ui/MapEditor.js";
 import { CodeModal } from "./ui/CodeModal.js";
 import { CustomBots, loadStrategyFromCode } from "./ui/CustomBots.js";
@@ -115,16 +114,13 @@ class App {
       // initial canvas with a top-tier match once rankings.json arrives.
       this._userChoseMode = false;
     }
-    this.leagueViewer = new LeagueViewer({
-      root: document.getElementById("league-viewer"),
-      refreshButton: document.getElementById("btn-leagues-refresh"),
-      app: this,
-      onFirstLoad: (rankings) => {
-        if (this._userChoseMode) return;
-        if (!rankings) return;
-        this.leagueViewer.watchMatch();
-      },
-    });
+    // LeagueViewer is disabled on this experimental branch: rankings.json
+    // lists 250+ legacy act()-style bots that no longer exist in the
+    // strategy pool, so auto-spawning a top-tier match would crash in
+    // loadCustomMap when names don't resolve. The null-checks at the
+    // applyMapForm call site (`this.leagueViewer?.canWatch()`) already
+    // handle this. The HTML container stays in the DOM but empty.
+    this.leagueViewer = null;
     this.startLoop();
   }
 
